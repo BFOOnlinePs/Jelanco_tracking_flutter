@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/my_bloc_observer.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/splash_modules/splash_screen.dart';
 
 import 'core/constants/user_data.dart';
 import 'network/local/cache_helper.dart';
@@ -25,7 +26,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
@@ -37,7 +37,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  LoginScreen(),
+      // home:  LoginScreen(),
+      home: SplashScreen(
+        homeWidget: LoginScreen(),
+      ),
     );
   }
 }
