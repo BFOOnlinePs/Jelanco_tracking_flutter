@@ -95,7 +95,12 @@ class MyTextFormField extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
                     TextFormFieldSizeConstants.borderRadius),
+                // borderSide: BorderSide(
+                //   color: Colors.red,
+                //   width: 10.0,
+                // ),
               ),
+
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
               suffixIcon: suffixIcon,

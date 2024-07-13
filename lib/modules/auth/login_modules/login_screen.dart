@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
-import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_auth_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 import '../../../core/constants/user_data.dart';
 import '../../../network/local/cache_helper.dart';
+import '../../home_modules/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +88,10 @@ class LoginScreen extends StatelessWidget {
                             // await FirebaseApi().initNotification();
                             // firebaseTokenVar = CacheHelper.getData(key: 'firebaseToken');
 
-                            // navigateAndFinishScreens(
-                            //   context,
-                            //   HomeScreen(),
-                            // );
+                            NavigationServices.navigateTo(
+                              context,
+                              HomeScreen(),
+                            );
                           });
                         } else {
                           print(state.userLoginModel.message);
@@ -166,7 +167,6 @@ class LoginScreen extends StatelessWidget {
                                       if (loginCubit.loginFormKey.currentState!
                                           .validate()) {
                                         loginCubit.userLogin();
-                                        print('go to home');
                                       }
                                     },
                               child: state is LoginLoadingState

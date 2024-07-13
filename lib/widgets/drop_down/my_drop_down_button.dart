@@ -54,10 +54,10 @@ class MyDropdownButton<T> extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
               border: Border.all(
-                color: Colors.grey,
+                color: Colors.black,
                 width: 1.0,
               ),
             ),

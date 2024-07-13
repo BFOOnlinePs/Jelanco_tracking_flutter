@@ -10,4 +10,10 @@ class EndPointsConstants {
 
   // shared
 
+
+  // tasks
+  static const String tasks = 'tasks';
+
+  // categories
+  static const String taskCategories = 'task-categories';
 }

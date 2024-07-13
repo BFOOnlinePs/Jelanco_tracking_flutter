@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.
 import 'package:jelanco_tracking_system/modules/splash_modules/splash_screen.dart';
 
 import 'core/constants/user_data.dart';
+import 'modules/home_modules/home_screen.dart';
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
 
@@ -22,11 +23,26 @@ void main() async {
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
-  runApp(const MyApp());
+
+  Widget homeWidget;
+
+  if (UserDataConstants.token == null || UserDataConstants.token == '') {
+    homeWidget = const LoginScreen();
+  } else {
+    homeWidget = const HomeScreen();
+  }
+
+  runApp(
+    MyApp(
+      homeWidget: homeWidget,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  Widget homeWidget;
+
+  MyApp({super.key, required this.homeWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +55,7 @@ class MyApp extends StatelessWidget {
       ),
       // home:  LoginScreen(),
       home: SplashScreen(
-        homeWidget: LoginScreen(),
+        homeWidget: homeWidget,
       ),
     );
   }

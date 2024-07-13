@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/constants/end_points.dart';
+import '../../core/constants/user_data.dart';
 
 class DioHelper {
   static late Dio dio;
@@ -27,9 +28,9 @@ class DioHelper {
       final response = await dio.get(
         url,
         queryParameters: query,
-        // options: Options(
-        //   headers: {'Authorization': 'Bearer ${UserDataConstants.token}'},
-        // ),
+        options: Options(
+          headers: {'Authorization': 'Bearer ${UserDataConstants.token}'},
+        ),
         cancelToken: cancelToken,
       );
       return response;
@@ -62,8 +63,8 @@ class DioHelper {
       final response = await dio.post(url,
           data: data,
           queryParameters: query,
-          // options: Options(
-          //     headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
+          options: Options(
+              headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
           cancelToken: cancelToken);
       print('response is good'); // 200
       return response;
@@ -97,8 +98,8 @@ class DioHelper {
         url,
         data: data,
         queryParameters: query,
-        // options: Options(
-        //     headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
+        options: Options(
+            headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
       );
       return response;
     } on DioException catch (e) {
