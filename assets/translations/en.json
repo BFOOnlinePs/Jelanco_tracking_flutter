@@ -1,0 +1,9 @@
+{
+  "_comment" : "login screen",
+  "login_title": "Welcome back",
+  "login_subtitle": "Login to your account",
+  "login_email_field": "Email",
+  "login_password_field": "Password",
+  "login_forgot_password": "Forgot password",
+  "login_login_button": "Login"
+}

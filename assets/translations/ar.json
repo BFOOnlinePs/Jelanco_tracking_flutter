@@ -1,0 +1,9 @@
+{
+  "_comment" : "login screen",
+  "login_title": "أهلاً بعودتك",
+  "login_subtitle": "قم بتسجيل الدخول إلى حسابك",
+  "login_email_field": "البريد الإلكتروني",
+  "login_password_field": "كلمة المرور",
+  "login_forgot_password": "نسيت كلمة المرور",
+  "login_login_button": "تسجيل الدخول"
+}
