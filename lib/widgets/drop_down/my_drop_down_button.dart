@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
+import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 
 class MyDropdownButton<T> extends StatelessWidget {
   final String? label;
@@ -40,7 +41,7 @@ class MyDropdownButton<T> extends StatelessWidget {
           label != null
               ? Row(
                   children: [
-                    Text(label ?? '', style: TextStyle(fontSize: 16)),
+                    Text(label ?? '', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                     isRequired
                         ? Text(
                             ' *',
@@ -79,7 +80,7 @@ class MyDropdownButton<T> extends StatelessWidget {
                   isExpanded: true,
                   // underline: Container(), // to remove the line
 
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(
                       borderSide: BorderSide.none,
                     ),

@@ -5,7 +5,7 @@ class LoaderWithDisable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Stack(
+    return Stack(
       children: [
         // Modal barrier to disable user interactions
         ModalBarrier(

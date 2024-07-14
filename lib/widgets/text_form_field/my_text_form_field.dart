@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 
 class MyTextFormField extends StatelessWidget {
@@ -65,7 +66,7 @@ class MyTextFormField extends StatelessWidget {
                         Text(
                           titleText!,
                           style: const TextStyle(
-                              fontSize: TextFormFieldSizeConstants.titleSize),
+                              fontSize: SharedSize.textFiledTitleSize),
                         ),
                         isFieldRequired
                             ? Text(
