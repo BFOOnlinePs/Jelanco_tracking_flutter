@@ -13,6 +13,8 @@ class FilterUsersOnSearchState extends AddTaskStates {}
 
 class CheckBoxChangedState extends AddTaskStates {}
 
+class ChangeSelectedUsersState extends AddTaskStates {}
+
 class AddTaskLoadingState extends AddTaskStates {}
 
 class AddTaskSuccessState extends AddTaskStates {
@@ -50,3 +52,6 @@ class GetAllUsersErrorState extends AddTaskStates {
 
   GetAllUsersErrorState({required this.error});
 }
+
+// Assigned To Mixin
+

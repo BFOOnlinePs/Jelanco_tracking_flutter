@@ -37,8 +37,8 @@ class AddTaskScreen extends StatelessWidget {
           print('hi');
           print(state);
           if (state is GetAllUsersSuccessState) {
-            addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
-            addTaskCubit.filteredUsers = addTaskCubit.users;
+            // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
+            // addTaskCubit.filteredUsers = addTaskCubit.users;
           } else if (state is AddTaskSuccessState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -160,17 +160,23 @@ class AddTaskScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => BlocProvider.value(
-                                          value: addTaskCubit,
-                                          child: AssignedToScreen(
-                                              // onSelected: (selectedUsers) {
-                                              //   setState(() {
-                                              //     addTaskCubit.assignedTo =
-                                              //         selectedUsers;
-                                              //   });
-                                              // },
-                                              ),
-                                        )),
+                                  builder: (context) {
+                                    // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
+                                    // addTaskCubit.filteredUsers = addTaskCubit.users;
+                                    return AssignedToScreen(
+                                      isAddTask: true,
+                                      onSelected: (selectedUsers) {
+                                        addTaskCubit
+                                            .changeSelectedUsers(selectedUsers);
+                                        // addTaskCubit.selectedUsers =
+                                        //     selectedUsers;
+                                      },
+                                      users:
+                                          addTaskCubit.getAllUsersModel!.users!,
+                                      selectedUsers: addTaskCubit.selectedUsers,
+                                    );
+                                  },
+                                ),
                               );
                             },
                             child: Container(

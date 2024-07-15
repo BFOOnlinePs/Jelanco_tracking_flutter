@@ -9,6 +9,14 @@ class CategoriesMixinStates extends EditTaskStates {} // for the mixin
 
 class UsersMixinStates extends EditTaskStates {} // for the mixin
 
+class FilterUsersOnSearchState extends EditTaskStates {}
+
+class CheckBoxChangedState extends EditTaskStates {}
+
+class PlannedTimePickedState extends EditTaskStates {}
+
+class ChangeSelectedUsersState extends EditTaskStates {}
+
 class EditTaskLoadingState extends EditTaskStates {}
 
 class EditTaskSuccessState extends EditTaskStates {
@@ -21,4 +29,28 @@ class EditTaskErrorState extends EditTaskStates {
   final String error;
 
   EditTaskErrorState({required this.error});
+}
+
+// Categories Mixin
+
+class CategoriesLoadingState extends EditTaskStates {}
+
+class CategoriesSuccessState extends EditTaskStates {}
+
+class CategoriesErrorState extends EditTaskStates {
+  final String error;
+
+  CategoriesErrorState({required this.error});
+}
+
+// Users Mixin
+
+class GetAllUsersLoadingState extends EditTaskStates {}
+
+class GetAllUsersSuccessState extends EditTaskStates {}
+
+class GetAllUsersErrorState extends EditTaskStates {
+  final String error;
+
+  GetAllUsersErrorState({required this.error});
 }

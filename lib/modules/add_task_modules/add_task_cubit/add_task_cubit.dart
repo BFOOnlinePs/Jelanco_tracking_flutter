@@ -12,10 +12,10 @@ import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart'
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
-import '../../../core/utils/mixins/categories_mixin/categories_states.dart';
-
 class AddTaskCubit extends Cubit<AddTaskStates>
-    with CategoriesMixin<AddTaskStates>, UsersMixin<AddTaskStates>{
+    with
+        CategoriesMixin<AddTaskStates>,
+        UsersMixin<AddTaskStates>{
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
@@ -30,6 +30,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   DateTime? plannedStartTime;
   DateTime? plannedEndTime;
   TaskCategoryModel? selectedCategory;
+  List<UserModel> selectedUsers = [];
 
   Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
     DateTime initialDate = isStartTime
@@ -70,32 +71,10 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     }
   }
 
-  // for AssignToScreen
-  List<UserModel> users = []; // all users
-  List<UserModel> selectedUsers = []; // checked
-  List<UserModel> filteredUsers = []; // from search
-
-  void filterUsers(String query) {
-    if (query.isEmpty) {
-      filteredUsers = users;
-    } else {
-      filteredUsers = users
-          .where(
-              (user) => user.name!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    }
-    emit(FilterUsersOnSearchState());
-  }
-
-  void checkBoxChanged(bool? value, UserModel user){
-    if (value != null) {
-      if (value) {
-        selectedUsers.add(user);
-      } else {
-        selectedUsers.remove(user);
-      }
-    }
-    emit(CheckBoxChangedState());
+  // after pop from AssignedToScreen
+  void changeSelectedUsers(List<UserModel> selectedUsersList){
+    selectedUsers = selectedUsersList;
+    emit(ChangeSelectedUsersState());
   }
 
   // add
