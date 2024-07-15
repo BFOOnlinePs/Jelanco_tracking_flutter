@@ -10,9 +10,9 @@ class EndPointsConstants {
 
   // shared
 
-
   // tasks
   static const String tasks = 'tasks';
+  static const String tasksAddedByUser = '$tasks/added-by-user';
 
   // categories
   static const String taskCategories = 'task-categories';

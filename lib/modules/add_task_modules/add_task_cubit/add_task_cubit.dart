@@ -25,12 +25,9 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   final formKey = GlobalKey<FormState>();
   TextEditingController contentController = TextEditingController();
 
-  // String? content;
-
   DateTime? plannedStartTime;
   DateTime? plannedEndTime;
   TaskCategoryModel? selectedCategory;
-  // List<UserModel> assignedTo = [];
 
   Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
     DateTime initialDate = isStartTime

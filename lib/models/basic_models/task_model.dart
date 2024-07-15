@@ -1,16 +1,23 @@
+import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
+
 class TaskModel {
   final int? tId;
   final String? tContent;
   final DateTime? tPlanedStartTime;
   final DateTime? tPlanedEndTime;
   final String? tStatus;
-  final String? tCategoryId;
+  final int? tCategoryId;
   final int? tAddedBy;
   final String? tAssignedTo;
-  final DateTime? updatedAt;
+  final String? tSupervisorNotes;
+  final String? tManagerNotes;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final List<String>? assignedToNames;
+  final TaskCategoryModel? taskCategory;
 
   TaskModel({
+    this.tId,
     this.tContent,
     this.tPlanedStartTime,
     this.tPlanedEndTime,
@@ -18,12 +25,16 @@ class TaskModel {
     this.tCategoryId,
     this.tAddedBy,
     this.tAssignedTo,
-    this.updatedAt,
+    this.tSupervisorNotes,
+    this.tManagerNotes,
     this.createdAt,
-    this.tId,
+    this.updatedAt,
+    this.assignedToNames,
+    this.taskCategory,
   });
 
   factory TaskModel.fromMap(Map<String, dynamic> json) => TaskModel(
+    tId: json["t_id"],
     tContent: json["t_content"],
     tPlanedStartTime: json["t_planed_start_time"] == null ? null : DateTime.parse(json["t_planed_start_time"]),
     tPlanedEndTime: json["t_planed_end_time"] == null ? null : DateTime.parse(json["t_planed_end_time"]),
@@ -31,12 +42,16 @@ class TaskModel {
     tCategoryId: json["t_category_id"],
     tAddedBy: json["t_added_by"],
     tAssignedTo: json["t_assigned_to"],
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    tSupervisorNotes: json["t_supervisor_notes"],
+    tManagerNotes: json["t_manager_notes"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    tId: json["t_id"],
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    assignedToNames: json["assigned_to_names"] == null ? [] : List<String>.from(json["assigned_to_names"]!.map((x) => x)),
+    taskCategory: json["task_category"] == null ? null : TaskCategoryModel.fromMap(json["task_category"]),
   );
 
   Map<String, dynamic> toMap() => {
+    "t_id": tId,
     "t_content": tContent,
     "t_planed_start_time": tPlanedStartTime?.toIso8601String(),
     "t_planed_end_time": tPlanedEndTime?.toIso8601String(),
@@ -44,8 +59,11 @@ class TaskModel {
     "t_category_id": tCategoryId,
     "t_added_by": tAddedBy,
     "t_assigned_to": tAssignedTo,
-    "updated_at": updatedAt?.toIso8601String(),
+    "t_supervisor_notes": tSupervisorNotes,
+    "t_manager_notes": tManagerNotes,
     "created_at": createdAt?.toIso8601String(),
-    "t_id": tId,
+    "updated_at": updatedAt?.toIso8601String(),
+    "assigned_to_names": assignedToNames == null ? [] : List<dynamic>.from(assignedToNames!.map((x) => x)),
+    "task_category": taskCategory?.toMap(),
   };
 }

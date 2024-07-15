@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
@@ -16,12 +15,9 @@ import '../../core/utils/mixins/categories_mixin/categories_states.dart';
 import '../../core/utils/mixins/users_mixin/users_states.dart';
 import 'add_task_widgets/assigned_to_screen.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  @override
-  _AddTaskScreenState createState() => _AddTaskScreenState();
-}
+class AddTaskScreen extends StatelessWidget {
+  AddTaskScreen({super.key});
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
   late AddTaskCubit addTaskCubit;
 
   @override
@@ -131,9 +127,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     .getTaskCategoriesModel?.taskCategories ??
                                 [],
                             onChanged: (value) {
-                              setState(() {
-                                addTaskCubit.selectedCategory = value;
-                              });
+                              addTaskCubit.selectedCategory = value;
                             },
                             value: addTaskCubit.selectedCategory,
                             displayText: (TaskCategoryModel taskCategory) =>
@@ -163,13 +157,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     builder: (context) => BlocProvider.value(
                                           value: addTaskCubit,
                                           child: AssignedToScreen(
-                                            // onSelected: (selectedUsers) {
-                                            //   setState(() {
-                                            //     addTaskCubit.assignedTo =
-                                            //         selectedUsers;
-                                            //   });
-                                            // },
-                                          ),
+                                              // onSelected: (selectedUsers) {
+                                              //   setState(() {
+                                              //     addTaskCubit.assignedTo =
+                                              //         selectedUsers;
+                                              //   });
+                                              // },
+                                              ),
                                         )),
                               );
                             },
@@ -212,7 +206,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               if (addTaskCubit.formKey.currentState!
                                   .validate()) {
                                 addTaskCubit.addTask();
-
                               }
                             },
                             child: Text('Add Task'),

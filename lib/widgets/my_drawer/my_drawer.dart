@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
+import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 
 import 'drawer_item.dart';
 
@@ -56,6 +57,17 @@ class MyDrawer extends StatelessWidget {
                     );
                   },
                 ),
+                DrawerItem(
+                  icon: Icons.task_alt,
+                  text: 'Tasks I Added',
+                  onTap: () {
+                    NavigationServices.navigateTo(
+                      context,
+                      TasksAddedByUserScreen(),
+                    );
+                  },
+                ),
+                // Tasks Assigned to Me
               ],
             ),
           ),
