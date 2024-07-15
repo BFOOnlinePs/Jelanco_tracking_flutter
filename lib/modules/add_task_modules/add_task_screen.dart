@@ -11,8 +11,6 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 import '../../core/constants/button_size.dart';
-import '../../core/utils/mixins/categories_mixin/categories_states.dart';
-import '../../core/utils/mixins/users_mixin/users_states.dart';
 import 'add_task_widgets/assigned_to_screen.dart';
 
 class AddTaskScreen extends StatelessWidget {
@@ -24,8 +22,16 @@ class AddTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddTaskCubit()
-        ..getTaskCategories()
-        ..getAllUsers(),
+        ..getTaskCategories(
+          loadingState: CategoriesLoadingState(),
+          successState: CategoriesSuccessState(),
+          errorState: (error) => CategoriesErrorState(error: error),
+        )
+        ..getAllUsers(
+          loadingState: GetAllUsersLoadingState(),
+          successState: GetAllUsersSuccessState(),
+          errorState: (error) => GetAllUsersErrorState(error: error),
+        ),
       child: BlocConsumer<AddTaskCubit, AddTaskStates>(
         listener: (context, state) {
           print('hi');

@@ -5,6 +5,10 @@ abstract class EditTaskStates {}
 
 class EditTaskInitialState extends EditTaskStates {}
 
+class CategoriesMixinStates extends EditTaskStates {} // for the mixin
+
+class UsersMixinStates extends EditTaskStates {} // for the mixin
+
 class EditTaskLoadingState extends EditTaskStates {}
 
 class EditTaskSuccessState extends EditTaskStates {

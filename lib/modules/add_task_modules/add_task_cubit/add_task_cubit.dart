@@ -12,8 +12,10 @@ import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart'
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
+import '../../../core/utils/mixins/categories_mixin/categories_states.dart';
+
 class AddTaskCubit extends Cubit<AddTaskStates>
-    with CategoriesMixin<AddTaskStates>, UsersMixin<AddTaskStates> {
+    with CategoriesMixin<AddTaskStates>, UsersMixin<AddTaskStates>{
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
