@@ -16,6 +16,7 @@ class TaskModel {
   final DateTime? updatedAt;
   final List<UserModel>? assignedToUsers;
   final TaskCategoryModel? taskCategory;
+  final UserModel? addedByUser;
 
   TaskModel({
     this.tId,
@@ -32,6 +33,7 @@ class TaskModel {
     this.updatedAt,
     this.assignedToUsers,
     this.taskCategory,
+    this.addedByUser,
   });
 
   factory TaskModel.fromMap(Map<String, dynamic> json) => TaskModel(
@@ -49,6 +51,7 @@ class TaskModel {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     assignedToUsers: json["assigned_to_users"] == null ? [] : List<UserModel>.from(json["assigned_to_users"]!.map((x) => UserModel.fromMap(x))),
     taskCategory: json["task_category"] == null ? null : TaskCategoryModel.fromMap(json["task_category"]),
+    addedByUser: json["added_by_user"] == null ? null : UserModel.fromMap(json["added_by_user"]),
   );
 
   Map<String, dynamic> toMap() => {
@@ -66,5 +69,6 @@ class TaskModel {
     "updated_at": updatedAt?.toIso8601String(),
     "assigned_to_users": assignedToUsers == null ? [] : List<dynamic>.from(assignedToUsers!.map((x) => x.toMap())),
     "task_category": taskCategory?.toMap(),
+    "added_by_user": addedByUser?.toMap(),
   };
 }

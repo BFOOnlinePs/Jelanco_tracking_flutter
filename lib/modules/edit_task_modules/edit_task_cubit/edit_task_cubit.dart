@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categories_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
@@ -28,19 +29,23 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   DateTime? plannedEndTime;
   TaskCategoryModel? selectedCategory;
   List<UserModel> selectedUsers = [];
+  TaskStatusEnum? selectedTaskStatusEnum;
 
   void initialValues({
     String? content,
     DateTime? startTime,
     DateTime? endTime,
+    TaskStatusEnum? taskStatus,
   }) {
     contentController.text = content ?? '';
     plannedStartTime = startTime;
     plannedEndTime = endTime;
+    selectedTaskStatusEnum = taskStatus;
     emit(InitialValuesState());
   }
 
-  Future<void> selectDateTime(BuildContext context, bool isStartTime, TaskModel task) async {
+  Future<void> selectDateTime(
+      BuildContext context, bool isStartTime, TaskModel task) async {
     DateTime initialDate = isStartTime // when reopen
         ? (plannedStartTime ?? DateTime.now())
         : (plannedEndTime ?? DateTime.now());
@@ -98,6 +103,11 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(ChangeSelectedCategoryState());
   }
 
+  void changeSelectedTaskStatus({required TaskStatusEnum taskStatusEnum}) {
+    selectedTaskStatusEnum = taskStatusEnum;
+    emit(ChangeSelectedTaskStatusState());
+  }
+
   // edit
 
   EditTaskModel? editTaskModel;
@@ -110,7 +120,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       'end_time': plannedEndTime.toString(),
       'category_id': selectedCategory?.cId,
       'assigned_to': FormatUtils.formatUsersList(selectedUsers),
-      'status': 'active',
+      'status': selectedTaskStatusEnum!.statusName,
     };
     DioHelper.postData(
             url: '${EndPointsConstants.tasks}/$taskId', data: dataObject)

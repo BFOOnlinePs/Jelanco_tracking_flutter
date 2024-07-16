@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 
 class MyDropdownButton<T> extends StatelessWidget {
   final String? label;
@@ -16,6 +17,7 @@ class MyDropdownButton<T> extends StatelessWidget {
   final bool isRequired;
   final AlignmentGeometry alignmentGeometry;
   final double? menuMaxHeight;
+  final bool isFieldRequired;
 
   MyDropdownButton({
     this.label,
@@ -29,31 +31,42 @@ class MyDropdownButton<T> extends StatelessWidget {
     this.isRequired = false,
     this.alignmentGeometry = AlignmentDirectional.centerStart,
     this.menuMaxHeight,
+    this.isFieldRequired = false
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 7.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           label != null
-              ? Row(
-                  children: [
-                    Text(label ?? '', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
-                    isRequired
-                        ? Text(
-                            ' *',
-                            style: TextStyle(fontSize: 16, color: Colors.red),
-                          )
-                        : Container(),
-                    SizedBox(height: 8.0),
-                  ],
-                )
+              ? Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    label!,
+                    style: const TextStyle(
+                        fontSize: SharedSize.textFiledTitleSize),
+                  ),
+                  isFieldRequired
+                      ? Text(
+                    ' *',
+                    style:
+                    TextStyle(fontSize: 16, color: Colors.red),
+                  )
+                      : Container(),
+                ],
+              ),
+              SizedBox(
+                height: TextFormFieldSizeConstants.sizedBoxHeight,
+              ),
+            ],
+          )
               : Container(),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            // padding: EdgeInsets.symmetric(horizontal: 10.0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),

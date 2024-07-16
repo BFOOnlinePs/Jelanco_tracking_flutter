@@ -21,6 +21,8 @@ class ChangeSelectedUsersState extends EditTaskStates {}
 
 class ChangeSelectedCategoryState extends EditTaskStates {}
 
+class ChangeSelectedTaskStatusState extends EditTaskStates {}
+
 class EditTaskLoadingState extends EditTaskStates {}
 
 class EditTaskSuccessState extends EditTaskStates {

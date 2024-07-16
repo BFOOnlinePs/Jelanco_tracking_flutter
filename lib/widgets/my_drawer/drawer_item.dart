@@ -6,7 +6,7 @@ class DrawerItem extends StatelessWidget {
   final String text;
   final GestureTapCallback onTap;
 
-  const DrawerItem({
+  const DrawerItem({super.key,
     required this.icon,
     required this.text,
     required this.onTap,

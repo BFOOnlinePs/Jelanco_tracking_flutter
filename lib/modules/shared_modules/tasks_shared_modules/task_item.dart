@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_dialog/my_dialog.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
@@ -10,7 +11,12 @@ import '../../../widgets/my_buttons/my_elevated_button.dart';
 class TaskItem extends StatelessWidget {
   final TaskModel task;
 
-  TaskItem({required this.task});
+  // final bool isAddedByUser;
+
+  TaskItem({
+    required this.task,
+    // this.isAddedByUser = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +29,18 @@ class TaskItem extends StatelessWidget {
               MyElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => TaskDetailsScreen(task: task),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TaskDetailsScreen(task: mockTask),
+                    ),
+                  );
                 },
                 child: Text('View Details'),
               ),
               MyElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -132,7 +138,14 @@ class TaskItem extends StatelessWidget {
                   color: Colors.blueGrey,
                 ),
               ),
-              SizedBox(height: 10),
+              Text(
+                'Added by: ${task.addedByUser?.name}',
+                style: const TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              MyVerticalSpacer(),
               Divider(),
               const Text(
                 'Supervisor Notes:',

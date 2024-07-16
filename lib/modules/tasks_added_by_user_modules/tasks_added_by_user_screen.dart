@@ -9,7 +9,7 @@ import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import '../shared_modules/tasks_shared_modules/task_item.dart';
 
 class TasksAddedByUserScreen extends StatelessWidget {
-  TasksAddedByUserScreen({super.key});
+  const TasksAddedByUserScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

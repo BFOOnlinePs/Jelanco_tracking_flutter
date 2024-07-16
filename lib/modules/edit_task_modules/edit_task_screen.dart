@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
@@ -28,9 +29,11 @@ class EditTaskScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => EditTaskCubit()
         ..initialValues(
-            content: taskModel.tContent,
-            startTime: taskModel.tPlanedStartTime,
-            endTime: taskModel.tPlanedEndTime)
+          content: taskModel.tContent,
+          startTime: taskModel.tPlanedStartTime,
+          endTime: taskModel.tPlanedEndTime,
+          taskStatus: TaskStatusEnum.getStatus(taskModel.tStatus!),
+        )
         ..getTaskCategories(
           loadingState: CategoriesLoadingState(),
           successState: CategoriesSuccessState(),
@@ -104,26 +107,8 @@ class EditTaskScreen extends StatelessWidget {
                     child: Form(
                       key: editTaskCubit.editTaskFormKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DropdownButton<TaskStatusEnum>(
-                            value: TaskStatusEnum.getStatus(
-                                taskModel.tStatus ?? ''),
-                            onChanged: (TaskStatusEnum? newStatus) {
-                              // if (newStatus != null) {
-                              //   _changeTaskStatus(taskModel, newStatus);
-                              // }
-                            },
-                            items: TaskStatusEnum.getAllStatuses()
-                                .map<DropdownMenuItem<TaskStatusEnum>>(
-                                    (TaskStatusEnum value) {
-                              return DropdownMenuItem<TaskStatusEnum>(
-                                value: value,
-                                child: Text(
-                                  value.statusEn,
-                                ),
-                              );
-                            }).toList(),
-                          ),
                           MyTextFormField(
                               titleText: 'Task Content',
                               labelText: 'Enter task content',
@@ -195,12 +180,16 @@ class EditTaskScreen extends StatelessWidget {
                               Text('Assigned to',
                                   style: TextStyle(
                                       fontSize: SharedSize.textFiledTitleSize)),
+
                               // Text(
                               //   ' *',
                               //   style: TextStyle(fontSize: 16, color: Colors.red),
                               // ),
-                              SizedBox(height: 8.0),
+                              // SizedBox(height: 8.0),
                             ],
+                          ),
+                          SizedBox(
+                            height: TextFormFieldSizeConstants.sizedBoxHeight,
                           ),
                           GestureDetector(
                             onTap: () {
@@ -243,20 +232,38 @@ class EditTaskScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    editTaskCubit.selectedUsers.isEmpty
-                                        ? 'Assigned To'
-                                        : editTaskCubit.selectedUsers
-                                            .map((user) => user.name)
-                                            .join(', '),
-                                    style: TextStyle(color: Colors.black54),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(
+                                      editTaskCubit.selectedUsers.isEmpty
+                                          ? 'Assigned To'
+                                          : editTaskCubit.selectedUsers
+                                              .map((user) => user.name)
+                                              .join(', '),
+                                      style: TextStyle(color: Colors.black54),
+                                    ),
                                   ),
                                   Icon(Icons.arrow_forward),
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          MyVerticalSpacer(),
+
+                          MyDropdownButton<TaskStatusEnum>(
+                            label: 'Status',
+                            displayText: (status) => status.statusEn,
+                            value: TaskStatusEnum.getStatus(
+                                taskModel.tStatus ?? ''),
+                            onChanged: (TaskStatusEnum? newStatus) {
+                              editTaskCubit.changeSelectedTaskStatus(
+                                  taskStatusEnum: newStatus!);
+                            },
+                            items: TaskStatusEnum.getAllStatuses(),
+                          ),
+
+                          MyVerticalSpacer(),
 
                           // Submit Button
                           ElevatedButton(
