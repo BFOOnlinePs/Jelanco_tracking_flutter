@@ -15,6 +15,8 @@ class CheckBoxChangedState extends AddTaskStates {}
 
 class ChangeSelectedUsersState extends AddTaskStates {}
 
+class ChangeSelectedCategoryState extends AddTaskStates {}
+
 class AddTaskLoadingState extends AddTaskStates {}
 
 class AddTaskSuccessState extends AddTaskStates {

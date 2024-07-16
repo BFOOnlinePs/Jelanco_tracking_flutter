@@ -1,4 +1,5 @@
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 
 class TaskModel {
   final int? tId;
@@ -13,7 +14,7 @@ class TaskModel {
   final String? tManagerNotes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final List<String>? assignedToNames;
+  final List<UserModel>? assignedToUsers;
   final TaskCategoryModel? taskCategory;
 
   TaskModel({
@@ -29,7 +30,7 @@ class TaskModel {
     this.tManagerNotes,
     this.createdAt,
     this.updatedAt,
-    this.assignedToNames,
+    this.assignedToUsers,
     this.taskCategory,
   });
 
@@ -46,7 +47,7 @@ class TaskModel {
     tManagerNotes: json["t_manager_notes"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    assignedToNames: json["assigned_to_names"] == null ? [] : List<String>.from(json["assigned_to_names"]!.map((x) => x)),
+    assignedToUsers: json["assigned_to_users"] == null ? [] : List<UserModel>.from(json["assigned_to_users"]!.map((x) => UserModel.fromMap(x))),
     taskCategory: json["task_category"] == null ? null : TaskCategoryModel.fromMap(json["task_category"]),
   );
 
@@ -63,7 +64,7 @@ class TaskModel {
     "t_manager_notes": tManagerNotes,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
-    "assigned_to_names": assignedToNames == null ? [] : List<dynamic>.from(assignedToNames!.map((x) => x)),
+    "assigned_to_users": assignedToUsers == null ? [] : List<dynamic>.from(assignedToUsers!.map((x) => x.toMap())),
     "task_category": taskCategory?.toMap(),
   };
 }

@@ -126,7 +126,7 @@ class TaskItem extends StatelessWidget {
               ),
               MyVerticalSpacer(),
               Text(
-                'Assigned To: ${task.assignedToNames!.join(', ')}',
+                'Assigned To: ${task.assignedToUsers?.map((user) => user.name).join(', ')}',
                 style: const TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.blueGrey,

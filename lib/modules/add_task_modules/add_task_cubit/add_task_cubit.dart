@@ -13,9 +13,7 @@ import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class AddTaskCubit extends Cubit<AddTaskStates>
-    with
-        CategoriesMixin<AddTaskStates>,
-        UsersMixin<AddTaskStates>{
+    with CategoriesMixin<AddTaskStates>, UsersMixin<AddTaskStates> {
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
@@ -72,9 +70,15 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   }
 
   // after pop from AssignedToScreen
-  void changeSelectedUsers(List<UserModel> selectedUsersList){
+  void changeSelectedUsers(List<UserModel> selectedUsersList) {
     selectedUsers = selectedUsersList;
     emit(ChangeSelectedUsersState());
+  }
+
+  void changeSelectedCategory(
+      {required TaskCategoryModel? newSelectedCategory}) {
+    selectedCategory = newSelectedCategory;
+    emit(ChangeSelectedCategoryState());
   }
 
   // add

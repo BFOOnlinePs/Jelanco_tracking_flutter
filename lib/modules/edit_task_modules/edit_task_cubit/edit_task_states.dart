@@ -9,6 +9,8 @@ class CategoriesMixinStates extends EditTaskStates {} // for the mixin
 
 class UsersMixinStates extends EditTaskStates {} // for the mixin
 
+class InitialValuesState extends EditTaskStates {}
+
 class FilterUsersOnSearchState extends EditTaskStates {}
 
 class CheckBoxChangedState extends EditTaskStates {}
@@ -16,6 +18,8 @@ class CheckBoxChangedState extends EditTaskStates {}
 class PlannedTimePickedState extends EditTaskStates {}
 
 class ChangeSelectedUsersState extends EditTaskStates {}
+
+class ChangeSelectedCategoryState extends EditTaskStates {}
 
 class EditTaskLoadingState extends EditTaskStates {}
 

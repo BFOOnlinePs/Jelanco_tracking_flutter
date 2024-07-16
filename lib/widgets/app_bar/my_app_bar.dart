@@ -16,11 +16,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title ?? '',
+        // style: TextStyle(color: Colors.white),
         style: TextStyle(color: Colors.white),
       ),
+      // iconTheme: IconThemeData(color: Colors.white),
       iconTheme: IconThemeData(color: Colors.white),
       centerTitle: true,
       actions: actions,
+      // bottom: PreferredSize(
+      //   preferredSize: Size.fromHeight(4.0), // Here you can specify the height of the line
+      //   child: Container(
+      //     color: Colors.grey, // The color of the line
+      //     height: 0.5, // The height of the line
+      //   ),
+      // ),
       flexibleSpace: Container(
         decoration: BoxDecoration(gradient: ColorsConstants.myLinearGradient),
       ),

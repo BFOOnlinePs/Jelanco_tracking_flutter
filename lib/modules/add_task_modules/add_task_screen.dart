@@ -85,6 +85,8 @@ class AddTaskScreen extends StatelessWidget {
                               titleText: 'Task Content',
                               labelText: 'Enter task content',
                               controller: addTaskCubit.contentController,
+                              textInputAction: TextInputAction.newline,
+                              keyboardType: TextInputType.multiline,
                               isFieldRequired: true,
                               maxLines: 3,
                               // onChanged: (value) => addTaskCubit.content = value,
@@ -133,7 +135,8 @@ class AddTaskScreen extends StatelessWidget {
                                     .getTaskCategoriesModel?.taskCategories ??
                                 [],
                             onChanged: (value) {
-                              addTaskCubit.selectedCategory = value;
+                              addTaskCubit.changeSelectedCategory(
+                                  newSelectedCategory: value);
                             },
                             value: addTaskCubit.selectedCategory,
                             displayText: (TaskCategoryModel taskCategory) =>

@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categories_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/edit_task_model.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
@@ -27,17 +29,35 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   TaskCategoryModel? selectedCategory;
   List<UserModel> selectedUsers = [];
 
-  Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
-    DateTime initialDate = isStartTime
-        ? (plannedStartTime ?? DateTime.now()) // when reopen
+  void initialValues({
+    String? content,
+    DateTime? startTime,
+    DateTime? endTime,
+  }) {
+    contentController.text = content ?? '';
+    plannedStartTime = startTime;
+    plannedEndTime = endTime;
+    emit(InitialValuesState());
+  }
+
+  Future<void> selectDateTime(BuildContext context, bool isStartTime, TaskModel task) async {
+    DateTime initialDate = isStartTime // when reopen
+        ? (plannedStartTime ?? DateTime.now())
         : (plannedEndTime ?? DateTime.now());
+
+    // DateTime? temp;
+    // if(plannedStartTime != null && plannedEndTime != null ) {
+    //   temp = plannedStartTime!.isBefore(plannedEndTime!)
+    //       ? plannedStartTime
+    //       : plannedEndTime;
+    // }
 
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
       // firstDate: DateTime(2000),
       // lastDate: DateTime(2101),
-      firstDate: DateTime.now(),
+      firstDate: task.createdAt ?? DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
@@ -72,13 +92,28 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(ChangeSelectedUsersState());
   }
 
+  void changeSelectedCategory(
+      {required TaskCategoryModel? newSelectedCategory}) {
+    selectedCategory = newSelectedCategory;
+    emit(ChangeSelectedCategoryState());
+  }
+
   // edit
 
   EditTaskModel? editTaskModel;
 
   void editTask({required int taskId}) {
     emit(EditTaskLoadingState());
-    DioHelper.postData(url: '${EndPointsConstants.tasks}/$taskId')
+    Map<String, dynamic> dataObject = {
+      'content': contentController.text,
+      'start_time': plannedStartTime.toString(),
+      'end_time': plannedEndTime.toString(),
+      'category_id': selectedCategory?.cId,
+      'assigned_to': FormatUtils.formatUsersList(selectedUsers),
+      'status': 'active',
+    };
+    DioHelper.postData(
+            url: '${EndPointsConstants.tasks}/$taskId', data: dataObject)
         .then((value) {
       print(value?.data);
       editTaskModel = EditTaskModel.fromMap(value?.data);

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_screen.dart';
 
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
+import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
@@ -25,6 +27,10 @@ class EditTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => EditTaskCubit()
+        ..initialValues(
+            content: taskModel.tContent,
+            startTime: taskModel.tPlanedStartTime,
+            endTime: taskModel.tPlanedEndTime)
         ..getTaskCategories(
           loadingState: CategoriesLoadingState(),
           successState: CategoriesSuccessState(),
@@ -39,9 +45,24 @@ class EditTaskScreen extends StatelessWidget {
         listener: (context, state) {
           print('hi');
           print(state);
+          // if (state is GetAllUsersSuccessState) {
+          //   // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
+          //   // addTaskCubit.filteredUsers = addTaskCubit.users;
+          // } else
+
           if (state is GetAllUsersSuccessState) {
-            // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
-            // addTaskCubit.filteredUsers = addTaskCubit.users;
+            // to display the old assigned to users
+            editTaskCubit.selectedUsers = editTaskCubit.getAllUsersModel!.users!
+                .where((user) => taskModel.assignedToUsers!
+                    .any((assignedUser) => assignedUser.id == user.id))
+                .toList();
+          } else if (state is CategoriesSuccessState) {
+            // to display the old category
+            editTaskCubit.selectedCategory = taskModel.tCategoryId == null
+                ? null
+                : editTaskCubit.getTaskCategoriesModel!.taskCategories!
+                    .firstWhere(
+                        (category) => category.cId == taskModel.tCategoryId);
           } else if (state is EditTaskSuccessState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -72,8 +93,8 @@ class EditTaskScreen extends StatelessWidget {
           editTaskCubit = EditTaskCubit.get(context);
 
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Edit Task'),
+            appBar: MyAppBar(
+              title: 'Edit Task',
             ),
             body: Stack(
               children: [
@@ -84,10 +105,31 @@ class EditTaskScreen extends StatelessWidget {
                       key: editTaskCubit.editTaskFormKey,
                       child: Column(
                         children: [
+                          DropdownButton<TaskStatusEnum>(
+                            value: TaskStatusEnum.getStatus(
+                                taskModel.tStatus ?? ''),
+                            onChanged: (TaskStatusEnum? newStatus) {
+                              // if (newStatus != null) {
+                              //   _changeTaskStatus(taskModel, newStatus);
+                              // }
+                            },
+                            items: TaskStatusEnum.getAllStatuses()
+                                .map<DropdownMenuItem<TaskStatusEnum>>(
+                                    (TaskStatusEnum value) {
+                              return DropdownMenuItem<TaskStatusEnum>(
+                                value: value,
+                                child: Text(
+                                  value.statusEn,
+                                ),
+                              );
+                            }).toList(),
+                          ),
                           MyTextFormField(
                               titleText: 'Task Content',
                               labelText: 'Enter task content',
                               controller: editTaskCubit.contentController,
+                              textInputAction: TextInputAction.newline,
+                              keyboardType: TextInputType.multiline,
                               isFieldRequired: true,
                               maxLines: 3,
                               // onChanged: (value) => addTaskCubit.content = value,
@@ -102,8 +144,8 @@ class EditTaskScreen extends StatelessWidget {
                             titleText: 'Planned Start Time',
                             labelText: 'Select the task planned start time',
                             readOnly: true,
-                            onTap: () =>
-                                editTaskCubit.selectDateTime(context, true),
+                            onTap: () => editTaskCubit.selectDateTime(
+                                context, true, taskModel),
                             validator: (value) =>
                                 editTaskCubit.plannedStartTime == null
                                     ? 'Select a start time'
@@ -118,8 +160,8 @@ class EditTaskScreen extends StatelessWidget {
                             titleText: 'Planned End Time',
                             labelText: 'Select the task planned end time',
                             readOnly: true,
-                            onTap: () =>
-                                editTaskCubit.selectDateTime(context, false),
+                            onTap: () => editTaskCubit.selectDateTime(
+                                context, false, taskModel),
                             validator: (value) =>
                                 editTaskCubit.plannedEndTime == null
                                     ? 'Select an end time'
@@ -137,7 +179,8 @@ class EditTaskScreen extends StatelessWidget {
                                     .getTaskCategoriesModel?.taskCategories ??
                                 [],
                             onChanged: (value) {
-                              editTaskCubit.selectedCategory = value;
+                              editTaskCubit.changeSelectedCategory(
+                                  newSelectedCategory: value);
                             },
                             value: editTaskCubit.selectedCategory,
                             displayText: (TaskCategoryModel taskCategory) =>
