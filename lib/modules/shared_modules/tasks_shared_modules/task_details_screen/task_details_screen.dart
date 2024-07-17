@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
+import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 class Task {
   final int? tId;
@@ -78,7 +81,6 @@ class Comment {
   Comment({required this.commenterName, required this.content});
 }
 
-
 Task mockTask = Task(
   tId: 1,
   tContent: 'Design new UI for the mobile app',
@@ -105,7 +107,9 @@ Task mockTask = Task(
       status: 'Submitted',
       comments: [
         Comment(commenterName: 'John Doe', content: 'Looks good!'),
-        Comment(commenterName: 'Jane Smith', content: 'Can we change the color scheme?'),
+        Comment(
+            commenterName: 'Jane Smith',
+            content: 'Can we change the color scheme?'),
       ],
     ),
     Submission(
@@ -122,9 +126,6 @@ Task mockTask = Task(
   ],
 );
 
-
-
-
 class TaskDetailsScreen extends StatelessWidget {
   final Task task;
 
@@ -134,7 +135,7 @@ class TaskDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Task Detailss'),
+        title: Text('Task Details'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -161,46 +162,220 @@ class TaskDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Task Details'),
-        _buildDetailRow('Task Content', task.tContent ?? 'N/A', Icons.description, isMultiline: true),
-        _buildDetailRow('Planned Start Time', task.tPlanedStartTime?.toString() ?? 'N/A', Icons.timer),
-        _buildDetailRow('Planned End Time', task.tPlanedEndTime?.toString() ?? 'N/A', Icons.timer_off),
-        _buildStatusRow('Status', task.tStatus ?? 'N/A', Icons.flag),
-        _buildCategoryRow('Category', task.taskCategory?.name ?? 'N/A'),
-        _buildDetailRow('Assigned To', task.tAssignedTo ?? 'N/A', Icons.person),
-        _buildDetailRow('Supervisor Notes', task.tSupervisorNotes ?? 'N/A', Icons.notes, isMultiline: true),
-        _buildDetailRow('Manager Notes', task.tManagerNotes ?? 'N/A', Icons.notes, isMultiline: true),
-        _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A', Icons.calendar_today),
-        _buildDateRow('Updated At', task.updatedAt?.toString() ?? 'N/A', Icons.update),
+        _buildSectionTitle('Task Details',
+            statusValue: task.tStatus!, statusIcon: Icons.flag),
+        _buildContent('Task Content', task.tContent!, Icons.description),
+        task.taskCategory != null
+            ? _buildCategoryRow('Category', task.taskCategory!.name)
+            : Container(),
+        _buildAssignedToWidget(
+            'Assigned To', task.tAssignedTo ?? 'N/A', Icons.person),
+        MyVerticalSpacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            task.tPlanedStartTime != null
+                ? Expanded(
+                    child: _buildTimeWidget('Planned Start Time',
+                        task.tPlanedStartTime!, Icons.timer),
+                  )
+                : Container(),
+            task.tPlanedStartTime != null && task.tPlanedEndTime != null
+                ? SizedBox(width: 10)
+                : Container(),
+            task.tPlanedEndTime != null
+                ? Expanded(
+                    child: _buildTimeWidget('Planned End Time',
+                        task.tPlanedEndTime!, Icons.timer_off),
+                  )
+                : Container(),
+          ],
+        ),
+        MyVerticalSpacer(),
+
+        _buildNotesWidget(
+          'Supervisor Notes',
+          task.tSupervisorNotes ?? 'N/A',
+          Icons.notes,
+        ),
+        _buildNotesWidget(
+          'Manager Notes',
+          task.tManagerNotes ?? 'N/A',
+          Icons.notes,
+        ),
+        // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',
+        //     Icons.calendar_today),
+        // _buildDateRow(
+        //     'Updated At', task.updatedAt?.toString() ?? 'N/A', Icons.update),
       ],
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title,
+      {String? statusValue, IconData? statusIcon}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.blue[900],
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue[900],
+            ),
+          ),
+          statusValue != null
+              ? Row(
+                  children: [
+                    Icon(statusIcon, color: Colors.green, size: 18),
+                    SizedBox(width: 6),
+                    Text(
+                      statusValue,
+                      style: TextStyle(color: Colors.green, fontSize: 16),
+                    ),
+                  ],
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Text(
+            value,
+            style: TextStyle(
+              color: Colors.grey[800],
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTimeWidget(
+    String label,
+    DateTime value,
+    IconData icon,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: ColorsConstants.primaryColor, width: 0.6),
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white, // Background color
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: ColorsConstants.primaryColor),
+            SizedBox(height: 5),
+            Text(
+              '$label: ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: ColorsConstants.primaryColor,
+              ),
+            ),
+            Text(
+              MyDateUtils.formatDateTime(value),
+              style: TextStyle(color: Colors.grey[800], fontSize: 12),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value, IconData icon, {bool isMultiline = false}) {
+  Widget _buildNotesWidget(
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: ColorsConstants.primaryColor.withOpacity(0.02),
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black12, blurRadius: 2.0, offset: Offset(0, 2)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: ColorsConstants.primaryColor)),
+          SizedBox(height: 4),
+          Text(value, style: TextStyle(color: Colors.grey[800], fontSize: 14)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAssignedToWidget(
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    return Row(
+      children: [
+        Icon(icon, color: ColorsConstants.primaryColor),
+        SizedBox(width: 10),
+        Text(
+          '$label: ',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: ColorsConstants.primaryColor),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(color: Colors.grey[800], fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, IconData icon,
+      {bool isMultiline = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        crossAxisAlignment: isMultiline ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+        crossAxisAlignment:
+            isMultiline ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.blue[700]),
           SizedBox(width: 10),
           Text(
             '$label: ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue[900]),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.blue[900]),
           ),
           Expanded(
             child: Text(
@@ -237,7 +412,10 @@ class TaskDetailsScreen extends StatelessWidget {
           SizedBox(width: 10),
           Text(
             '$label: ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue[900]),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.blue[900]),
           ),
           Expanded(
             child: Text(
@@ -255,23 +433,19 @@ class TaskDetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(Icons.category, color: Colors.purple[700]),
+          Icon(Icons.category, color: ColorsConstants.primaryColor),
           SizedBox(width: 10),
           Text(
             '$label: ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue[900]),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: ColorsConstants.primaryColor),
           ),
           Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              decoration: BoxDecoration(
-                color: Colors.purple[100],
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Text(
-                value,
-                style: TextStyle(color: Colors.purple[900], fontSize: 16),
-              ),
+            child: Text(
+              value,
+              style: TextStyle(color: Colors.grey[800], fontSize: 16),
             ),
           ),
         ],
@@ -288,7 +462,10 @@ class TaskDetailsScreen extends StatelessWidget {
           SizedBox(width: 10),
           Text(
             '$label: ',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue[900]),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.blue[900]),
           ),
           Expanded(
             child: Text(
@@ -307,33 +484,42 @@ class TaskDetailsScreen extends StatelessWidget {
       children: [
         _buildSectionTitle('Submissions'),
         ...task.submissions?.map((submission) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0),
-            padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.orange[50],
-              border: Border(
-                left: BorderSide(
-                  color: Colors.orange,
-                  width: 5.0,
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.orange[50],
+                  border: Border(
+                    left: BorderSide(
+                      color: Colors.orange,
+                      width: 5.0,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSubmissionHeader(submission),
-                _buildDetailRow('Content', submission.content, Icons.content_copy, isMultiline: true),
-                _buildDetailRow('Actual Start Time', submission.actualStartTime.toString(), Icons.access_time),
-                _buildDetailRow('Actual End Time', submission.actualEndTime.toString(), Icons.access_time_outlined),
-                _buildDetailRow('File', submission.file, Icons.attach_file),
-                _buildStatusRow('Status', submission.status, Icons.info),
-                SizedBox(height: 10),
-                _buildCommentsSection(submission.comments),
-              ],
-            ),
-          );
-        }).toList() ?? [],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildSubmissionHeader(submission),
+                    _buildDetailRow(
+                        'Content', submission.content, Icons.content_copy,
+                        isMultiline: true),
+                    _buildDetailRow(
+                        'Actual Start Time',
+                        submission.actualStartTime.toString(),
+                        Icons.access_time),
+                    _buildDetailRow(
+                        'Actual End Time',
+                        submission.actualEndTime.toString(),
+                        Icons.access_time_outlined),
+                    _buildDetailRow('File', submission.file, Icons.attach_file),
+                    // _buildStatusRow('Status', submission.status, Icons.info),
+                    SizedBox(height: 10),
+                    _buildCommentsSection(submission.comments),
+                  ],
+                ),
+              );
+            }).toList() ??
+            [],
       ],
     );
   }
@@ -344,7 +530,10 @@ class TaskDetailsScreen extends StatelessWidget {
       children: [
         Text(
           'Submission: ${submission.name}',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.orange[800]),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: Colors.orange[800]),
         ),
         IconButton(
           icon: Icon(Icons.edit, color: Colors.orange[800]),
@@ -360,7 +549,11 @@ class TaskDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Comments:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.orange[800])),
+        Text('Comments:',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.orange[800])),
         ...comments.map((comment) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -373,7 +566,10 @@ class TaskDetailsScreen extends StatelessWidget {
                     SizedBox(width: 10),
                     Text(
                       comment.commenterName,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800], fontSize: 16),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
+                          fontSize: 16),
                     ),
                   ],
                 ),
@@ -392,7 +588,3 @@ class TaskDetailsScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
