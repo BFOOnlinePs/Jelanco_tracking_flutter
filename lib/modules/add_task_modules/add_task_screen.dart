@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
+import 'package:jelanco_tracking_system/widgets/error_text/my_error_field_text.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
+import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
+import 'package:jelanco_tracking_system/widgets/my_spacers/my_horizontal_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
@@ -80,82 +84,39 @@ class AddTaskScreen extends StatelessWidget {
                     child: Form(
                       key: addTaskCubit.formKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           MyTextFormField(
-                              titleText: 'Task Content',
-                              labelText: 'Enter task content',
-                              controller: addTaskCubit.contentController,
-                              textInputAction: TextInputAction.newline,
-                              keyboardType: TextInputType.multiline,
-                              isFieldRequired: true,
-                              maxLines: 3,
-                              // onChanged: (value) => addTaskCubit.content = value,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter task content';
-                                }
-                              }),
-                          // const MyVerticalSpacer(),
-                          MyTextFormField(
-                            titleText: 'Planned Start Time',
-                            labelText: 'Select the task planned start time',
-                            readOnly: true,
-                            onTap: () =>
-                                addTaskCubit.selectDateTime(context, true),
-                            validator: (value) =>
-                                addTaskCubit.plannedStartTime == null
-                                    ? 'Select a start time'
-                                    : null,
-                            controller: TextEditingController(
-                                text: addTaskCubit.plannedStartTime != null
-                                    ? addTaskCubit.plannedStartTime!.toString()
-                                    : ''),
-                          ),
-                          // const MyVerticalSpacer(),
-                          MyTextFormField(
-                            titleText: 'Planned End Time',
-                            labelText: 'Select the task planned end time',
-                            readOnly: true,
-                            onTap: () =>
-                                addTaskCubit.selectDateTime(context, false),
-                            validator: (value) =>
-                                addTaskCubit.plannedEndTime == null
-                                    ? 'Select an end time'
-                                    : null,
-                            controller: TextEditingController(
-                                text: addTaskCubit.plannedEndTime != null
-                                    ? addTaskCubit.plannedEndTime!.toString()
-                                    : ''),
-                          ),
-
-                          MyDropdownButton<TaskCategoryModel>(
-                            label: 'Category',
-                            hint: 'Select the task category',
-                            items: addTaskCubit
-                                    .getTaskCategoriesModel?.taskCategories ??
-                                [],
-                            onChanged: (value) {
-                              addTaskCubit.changeSelectedCategory(
-                                  newSelectedCategory: value);
+                            titleText: 'Task Content',
+                            labelText: 'Enter task content',
+                            controller: addTaskCubit.contentController,
+                            textInputAction: TextInputAction.newline,
+                            keyboardType: TextInputType.multiline,
+                            isFieldRequired: true,
+                            maxLines: 3,
+                            // onChanged: (value) => addTaskCubit.content = value,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter task content';
+                              }
                             },
-                            value: addTaskCubit.selectedCategory,
-                            displayText: (TaskCategoryModel taskCategory) =>
-                                taskCategory.cName ?? '',
-                            // validator: (value) =>
-                            //     value == null ? 'Select a category' : null,
                           ),
-
-                          const MyVerticalSpacer(),
-                          Row(
+                          const Column(
                             children: [
-                              Text('Assigned to',
-                                  style: TextStyle(
-                                      fontSize: SharedSize.textFiledTitleSize)),
-                              // Text(
-                              //   ' *',
-                              //   style: TextStyle(fontSize: 16, color: Colors.red),
-                              // ),
-                              SizedBox(height: 8.0),
+                              Row(
+                                children: [
+                                  Text('Assigned to',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SharedSize.textFiledTitleSize)),
+                                  Text(
+                                    ' *',
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10.0),
                             ],
                           ),
                           GestureDetector(
@@ -213,11 +174,87 @@ class AddTaskScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 16),
+                          // addTaskCubit.addTaskModel != null &&
+                          addTaskCubit.isAddClicked &&
+                                  addTaskCubit.selectedUsers.isEmpty
+                              ? MyErrorFieldText(
+                                  text: 'Please select at least one user')
+                              : Container(),
+                          // const MyVerticalSpacer(),
+                          const MyVerticalSpacer(),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: MyTextFormField(
+                                  titleText: 'Planned Start Time',
+                                  labelText: 'Select the time',
+                                  readOnly: true,
+                                  onTap: () => addTaskCubit.selectDateTime(
+                                      context, true),
+                                  // validator: (value) =>
+                                  //     addTaskCubit.plannedStartTime == null
+                                  //         ? 'Select a start time'
+                                  //         : null,
+                                  controller: TextEditingController(
+                                      text: addTaskCubit.plannedStartTime !=
+                                              null
+                                          ? MyDateUtils.formatDateTime(
+                                              addTaskCubit.plannedStartTime!)
+                                          : ''),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              MyHorizontalSpacer(),
+                              Expanded(
+                                child: MyTextFormField(
+                                  titleText: 'Planned End Time',
+                                  labelText: 'Select the time',
+                                  readOnly: true,
+                                  onTap: () => addTaskCubit.selectDateTime(
+                                      context, false),
+                                  // validator: (value) =>
+                                  //     addTaskCubit.plannedEndTime == null
+                                  //         ? 'Select an end time'
+                                  //         : null,
+                                  controller: TextEditingController(
+                                      text: addTaskCubit.plannedEndTime != null
+                                          ? addTaskCubit.plannedEndTime!
+                                              .toString()
+                                          : ''),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          MyDropdownButton<TaskCategoryModel>(
+                            label: 'Category',
+                            hint: 'Select the task category',
+                            items: addTaskCubit
+                                    .getTaskCategoriesModel?.taskCategories ??
+                                [],
+                            onChanged: (value) {
+                              addTaskCubit.changeSelectedCategory(
+                                  newSelectedCategory: value);
+                            },
+                            value: addTaskCubit.selectedCategory,
+                            displayText: (TaskCategoryModel taskCategory) =>
+                                taskCategory.cName ?? '',
+                            // validator: (value) =>
+                            //     value == null ? 'Select a category' : null,
+                          ),
+
+                          const MyVerticalSpacer(),
 
                           // Submit Button
-                          ElevatedButton(
+                          MyElevatedButton(
                             onPressed: () {
+                              addTaskCubit.changeIsAddClicked(true);
                               if (addTaskCubit.formKey.currentState!
                                   .validate()) {
                                 addTaskCubit.addTask();

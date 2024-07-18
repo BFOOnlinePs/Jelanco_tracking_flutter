@@ -25,6 +25,7 @@ class MyTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Widget? prefix;
   final Widget? prefixIcon;
+  final TextStyle? style;
 
   MyTextFormField({
     this.controller,
@@ -48,6 +49,7 @@ class MyTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.prefix,
     this.prefixIcon,
+    this.style
   });
 
   @override
@@ -120,7 +122,9 @@ class MyTextFormField extends StatelessWidget {
             onChanged: onChanged,
             readOnly: readOnly,
             inputFormatters: inputFormatters,
+            style: style,
           ),
+
         ],
       ),
     );

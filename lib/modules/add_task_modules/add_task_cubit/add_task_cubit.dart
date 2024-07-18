@@ -84,6 +84,12 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   // add
 
   AddTaskModel? addTaskModel;
+  bool isAddClicked = false; // for assignedTo error message
+
+  void changeIsAddClicked(bool value) {
+    isAddClicked = value;
+    emit(ChangeIsAddClickedState());
+  }
 
   void addTask() {
     emit(AddTaskLoadingState());

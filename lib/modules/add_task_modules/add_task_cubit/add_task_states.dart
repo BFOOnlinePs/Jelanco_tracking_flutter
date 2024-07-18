@@ -17,6 +17,8 @@ class ChangeSelectedUsersState extends AddTaskStates {}
 
 class ChangeSelectedCategoryState extends AddTaskStates {}
 
+class ChangeIsAddClickedState extends AddTaskStates {}
+
 class AddTaskLoadingState extends AddTaskStates {}
 
 class AddTaskSuccessState extends AddTaskStates {

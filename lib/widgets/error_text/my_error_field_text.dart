@@ -9,7 +9,7 @@ class MyErrorFieldText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsDirectional.only(start: 16),
+      padding: EdgeInsetsDirectional.only(start: 16, top: 6),
       child: Text(
         text,
         style: TextStyle(
