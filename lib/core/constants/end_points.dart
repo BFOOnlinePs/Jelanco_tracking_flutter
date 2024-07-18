@@ -14,6 +14,8 @@ class EndPointsConstants {
   static const String tasks = 'tasks';
   static const String tasksAddedByUser = '$tasks/added-by-user';
   static const String tasksAssignedToUser = '$tasks/assigned-to-user';
+  static const String tasksWithSubmissionsAndComments = 'submissions-and-comments'; // /tasks/10/submissions-and-comments
+
 
   // categories
   static const String taskCategories = 'task-categories';

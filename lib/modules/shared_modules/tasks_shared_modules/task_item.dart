@@ -9,12 +9,12 @@ import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.da
 import '../../../widgets/my_buttons/my_elevated_button.dart';
 
 class TaskItem extends StatelessWidget {
-  final TaskModel task;
+  final TaskModel taskModel;
 
-  // final bool isAddedByUser;
+  // final bool isAddedByUser;   // or use role and permissions as global
 
   TaskItem({
-    required this.task,
+    required this.taskModel,
     // this.isAddedByUser = false,
   });
 
@@ -32,7 +32,9 @@ class TaskItem extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TaskDetailsScreen(task: mockTask),
+                      builder: (context) => TaskDetailsScreen(
+                        taskId: taskModel.tId!,
+                      ),
                     ),
                   );
                 },
@@ -45,7 +47,7 @@ class TaskItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditTaskScreen(
-                        taskModel: task,
+                        taskModel: taskModel,
                       ),
                     ),
                   );
@@ -71,7 +73,7 @@ class TaskItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      task.tContent ?? 'content',
+                      taskModel.tContent ?? 'content',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -87,12 +89,13 @@ class TaskItem extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                     decoration: BoxDecoration(
-                      color:
-                          task.tStatus == 'active' ? Colors.green : Colors.red,
+                      color: taskModel.tStatus == 'active'
+                          ? Colors.green
+                          : Colors.red,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      task.tStatus ?? 'status',
+                      taskModel.tStatus ?? 'status',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -107,7 +110,7 @@ class TaskItem extends StatelessWidget {
                   const Icon(Icons.calendar_today, color: Colors.grey),
                   const SizedBox(width: 8),
                   Text(
-                    'Start:  ${MyDateUtils.formatDateTime(task.tPlanedStartTime)}',
+                    'Start:  ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -117,7 +120,7 @@ class TaskItem extends StatelessWidget {
                   const Icon(Icons.calendar_today, color: Colors.grey),
                   SizedBox(width: 8),
                   Text(
-                    'End:    ${MyDateUtils.formatDateTime(task.tPlanedEndTime)}',
+                    'End:    ${MyDateUtils.formatDateTime(taskModel.tPlanedEndTime)}',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -127,19 +130,20 @@ class TaskItem extends StatelessWidget {
                 children: [
                   Icon(Icons.category, color: Colors.grey),
                   SizedBox(width: 8),
-                  Text('Category: ${task.taskCategory?.cName ?? 'undefined'}'),
+                  Text(
+                      'Category: ${taskModel.taskCategory?.cName ?? 'undefined'}'),
                 ],
               ),
               MyVerticalSpacer(),
               Text(
-                'Assigned To: ${task.assignedToUsers?.map((user) => user.name).join(', ')}',
+                'Assigned To: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
                 style: const TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.blueGrey,
                 ),
               ),
               Text(
-                'Added by: ${task.addedByUser?.name}',
+                'Added by: ${taskModel.addedByUser?.name}',
                 style: const TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.blueGrey,
@@ -151,13 +155,13 @@ class TaskItem extends StatelessWidget {
                 'Supervisor Notes:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text(task.tSupervisorNotes ?? ''),
+              Text(taskModel.tSupervisorNotes ?? ''),
               SizedBox(height: 10),
               const Text(
                 'Manager Notes:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text(task.tManagerNotes ?? ''),
+              Text(taskModel.tManagerNotes ?? ''),
             ],
           ),
         ),

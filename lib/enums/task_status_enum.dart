@@ -16,20 +16,20 @@ class TaskStatusEnum {
   static const TaskStatusEnum active = TaskStatusEnum(
     statusName: 'active',
     statusAr: 'مفعل',
-    statusEn: 'active',
+    statusEn: 'Active',
     statusColor: Colors.green,
   );
   static const TaskStatusEnum notActive = TaskStatusEnum(
     statusName: 'notActive',
     statusAr: 'غير مفعل',
-    statusEn: 'not active',
+    statusEn: 'Not Active',
     statusColor: Colors.red,
   );
 
   static const TaskStatusEnum undefined = TaskStatusEnum(
     statusName: 'undefined',
     statusAr: 'غير معرف',
-    statusEn: 'undefined',
+    statusEn: 'Undefined',
     statusColor: Colors.grey,
   );
 

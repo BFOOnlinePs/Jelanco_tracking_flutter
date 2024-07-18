@@ -32,7 +32,7 @@ class AssignedTasksScreen extends StatelessWidget {
                                 .getTasksAssignedToUserModel!.tasks!.length,
                             itemBuilder: (context, index) {
                               return TaskItem(
-                                task: assignedTasksCubit
+                                taskModel: assignedTasksCubit
                                     .getTasksAssignedToUserModel!.tasks![index],
                               );
                             },
