@@ -86,21 +86,6 @@ class AddTaskScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          MyTextFormField(
-                            titleText: 'Task Content',
-                            labelText: 'Enter task content',
-                            controller: addTaskCubit.contentController,
-                            textInputAction: TextInputAction.newline,
-                            keyboardType: TextInputType.multiline,
-                            isFieldRequired: true,
-                            maxLines: 3,
-                            // onChanged: (value) => addTaskCubit.content = value,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter task content';
-                              }
-                            },
-                          ),
                           const Column(
                             children: [
                               Row(
@@ -174,6 +159,22 @@ class AddTaskScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                          MyTextFormField(
+                            titleText: 'Task Content',
+                            labelText: 'Enter task content',
+                            controller: addTaskCubit.contentController,
+                            textInputAction: TextInputAction.newline,
+                            keyboardType: TextInputType.multiline,
+                            isFieldRequired: true,
+                            maxLines: 3,
+                            // onChanged: (value) => addTaskCubit.content = value,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter task content';
+                              }
+                            },
+                          ),
+
                           // addTaskCubit.addTaskModel != null &&
                           addTaskCubit.isAddClicked &&
                                   addTaskCubit.selectedUsers.isEmpty
@@ -221,8 +222,8 @@ class AddTaskScreen extends StatelessWidget {
                                   //         : null,
                                   controller: TextEditingController(
                                       text: addTaskCubit.plannedEndTime != null
-                                          ? addTaskCubit.plannedEndTime!
-                                              .toString()
+                                          ? MyDateUtils.formatDateTime(
+                                              addTaskCubit.plannedEndTime!)
                                           : ''),
                                   style: TextStyle(
                                     fontSize: 14,
