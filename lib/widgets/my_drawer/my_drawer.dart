@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
@@ -34,14 +36,14 @@ class MyDrawer extends StatelessWidget {
               SnackbarHelper.showSnackbar(
                 context: context,
                 snackBarStates: SnackBarStates.error,
-                message: 'حدث خطأ أثناء تسجيل الخروج، حاول لاحقاً.',
+                message: 'drawer_logout_error'.tr(),
               );
             }
-          } else  if (state is LogoutErrorState) {
+          } else if (state is LogoutErrorState) {
             SnackbarHelper.showSnackbar(
               context: context,
               snackBarStates: SnackBarStates.error,
-              message: 'حدث خطأ أثناء تسجيل الخروج، حاول لاحقاً.',
+              message: 'drawer_logout_error'.tr(),
             );
           }
         },
@@ -58,7 +60,7 @@ class MyDrawer extends StatelessWidget {
                         decoration: const BoxDecoration(
                           gradient: ColorsConstants.myLinearGradient,
                         ),
-                        child: const Column(
+                        child:  Column(
                           children: [
                             // CircleAvatar(
                             //   radius: 40,
@@ -66,14 +68,14 @@ class MyDrawer extends StatelessWidget {
                             // ),
                             SizedBox(height: 26),
                             Text(
-                              'Username',
+                              UserDataConstants.name ?? '',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
                               ),
                             ),
                             Text(
-                              'email@example.com',
+                              UserDataConstants.email ?? '',
                               style: TextStyle(
                                 color: Colors.white70,
                               ),
@@ -87,7 +89,7 @@ class MyDrawer extends StatelessWidget {
                           children: [
                             DrawerItem(
                               icon: Icons.add_task,
-                              text: 'Add Task',
+                              text: 'drawer_add_task_title'.tr(),
                               onTap: () {
                                 NavigationServices.navigateTo(
                                   context,
@@ -97,7 +99,7 @@ class MyDrawer extends StatelessWidget {
                             ),
                             DrawerItem(
                               icon: Icons.task_alt,
-                              text: 'Tasks I Added',
+                              text: 'drawer_tasks_i_added_title'.tr(),
                               onTap: () {
                                 NavigationServices.navigateTo(
                                   context,
@@ -107,7 +109,7 @@ class MyDrawer extends StatelessWidget {
                             ),
                             DrawerItem(
                               icon: Icons.task_alt,
-                              text: 'Assigned Tasks',
+                              text: 'drawer_tasks_assigned_to_me_title'.tr(),
                               onTap: () {
                                 NavigationServices.navigateTo(
                                   context,
@@ -115,25 +117,23 @@ class MyDrawer extends StatelessWidget {
                                 );
                               },
                             ),
-                            DrawerItem(
-                              icon: Icons.logout,
-                              text: 'تسجيل الخروج',
-                              onTap: () {
-                                drawerCubit.userLogout();
-                              },
-                            ),
+                            // DrawerItem(
+                            //   icon: Icons.logout,
+                            //   text: 'drawer_logout_title'.tr(),
+                            //   onTap: () {
+                            //     drawerCubit.userLogout();
+                            //   },
+                            // ),
                           ],
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.info_outline),
-                            SizedBox(width: 10),
-                            Text('Version 1.0.0'),
-                          ],
-                        ),
+
+                      DrawerItem(
+                        icon: Icons.logout,
+                        text: 'drawer_logout_title'.tr(),
+                        onTap: () {
+                          drawerCubit.userLogout();
+                        },
                       ),
                     ],
                   ),

@@ -4,8 +4,10 @@ class UserDataConstants {
   static String? token;
 
   static int? userId;
+  static String? name;
+  static String? email;
 
-  static UserModel? userModel;
+  // static UserModel? userModel;
 
   // static String? firebaseTokenVra;
 

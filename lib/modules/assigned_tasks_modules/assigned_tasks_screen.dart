@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_cubit/assigned_tasks_cubit.dart';
@@ -14,7 +15,7 @@ class AssignedTasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'Assigned Tasks'),
+      appBar: MyAppBar(title: 'assigned_tasks_title'.tr()),
       body: BlocProvider(
         create: (context) => AssignedTasksCubit()..getAssignedTasks(),
         child: BlocConsumer<AssignedTasksCubit, AssignedTasksStates>(
@@ -26,7 +27,7 @@ class AssignedTasksScreen extends StatelessWidget {
                 : Container(
                     child: assignedTasksCubit
                             .getTasksAssignedToUserModel!.tasks!.isEmpty
-                        ? Center(child: Text('No tasks available'))
+                        ? Center(child: Text('assigned_tasks_no_tasks'.tr()))
                         : ListView.builder(
                             itemCount: assignedTasksCubit
                                 .getTasksAssignedToUserModel!.tasks!.length,

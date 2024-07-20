@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -14,8 +14,8 @@ class TasksAddedByUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(
-        title: 'Tasks I Added',
+      appBar: MyAppBar(
+        title: 'tasks_i_added_title'.tr(),
       ),
       body: BlocProvider(
         create: (context) => TasksAddedByUserCubit()..getTasksAddedByUser(),
@@ -31,7 +31,7 @@ class TasksAddedByUserScreen extends StatelessWidget {
                 : Container(
                     child: tasksAddedByUserCubit
                             .getTasksAddedByUserModel!.tasks!.isEmpty
-                        ? Center(child: Text('No tasks available'))
+                        ? Center(child: Text('tasks_i_added_no_tasks'.tr()))
                         : ListView.builder(
                             itemCount: tasksAddedByUserCubit
                                 .getTasksAddedByUserModel!.tasks!.length,

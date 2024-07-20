@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/my_bloc_observer.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
+import 'package:jelanco_tracking_system/core/values/constants.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
 import 'package:jelanco_tracking_system/modules/splash_modules/splash_screen.dart';
 
@@ -20,10 +22,13 @@ void main() async {
 
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
-  // firebaseTokenVar = CacheHelper.getData(key: 'firebaseToken');
+  UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
+  UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
+  print('name: ${UserDataConstants.name.toString()}');
+  print('email: ${UserDataConstants.email.toString()}');
 
   Widget homeWidget;
 
@@ -34,8 +39,14 @@ void main() async {
   }
 
   runApp(
-    MyApp(
-      homeWidget: homeWidget,
+    EasyLocalization(
+      supportedLocales: Constants.locals,
+      path: AssetsKeys.translations,
+      fallbackLocale: Constants.defaultLocal,
+      startLocale: Constants.defaultLocal,
+      child: MyApp(
+        homeWidget: homeWidget,
+      ),
     ),
   );
 }
@@ -48,12 +59,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Jelanco Tracking System',
+      title: 'app_title'.tr(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       home: SplashScreen(
         homeWidget: homeWidget,
       ),

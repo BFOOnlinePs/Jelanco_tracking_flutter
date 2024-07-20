@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
@@ -39,12 +41,12 @@ class LoginScreen extends StatelessWidget {
             children: [
               Spacer(flex: 2),
               Image.asset(
-                'assets/images/jelanco_logo.png',
+                AssetsKeys.appLogo,
                 height: SharedSize.logoImageHeight,
               ),
               Spacer(),
               Text(
-                'Welcome Back',
+                'أهلاً بعودتك'.tr(),
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -52,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'Login to your account',
+                'login_subtitle'.tr(),
                 style: TextStyle(
                   fontSize: 18,
                   color: ColorsConstants.primaryColor,
@@ -77,12 +79,24 @@ class LoginScreen extends StatelessWidget {
                           ).then((value) async {
                             await CacheHelper.saveData(
                               key: MyCacheKeys.userId,
-                              value: state.userLoginModel.user!.id,
+                              value: state.userLoginModel.user?.id,
+                            );
+                            await CacheHelper.saveData(
+                              key: MyCacheKeys.name,
+                              value: state.userLoginModel.user?.name,
+                            );
+                            await CacheHelper.saveData(
+                              key: MyCacheKeys.email,
+                              value: state.userLoginModel.user?.email,
                             );
                             UserDataConstants.token =
                                 state.userLoginModel.token;
                             UserDataConstants.userId =
                                 state.userLoginModel.user!.id;
+                            UserDataConstants.name =
+                                state.userLoginModel.user!.name;
+                            UserDataConstants.email =
+                                state.userLoginModel.user!.email;
 
                             // to give it an FCM token and save it in the database
                             // await FirebaseApi().initNotification();
@@ -122,30 +136,33 @@ class LoginScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             MyTextFormField(
-                              labelText: 'Email',
+                              labelText: 'login_email_field'.tr(),
                               prefixIcon: const Icon(Icons.person),
                               controller: loginCubit.emailController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter your email";
+                                  return "login_email_field_required_validation"
+                                      .tr();
                                 }
                                 if (!ValidationUtils.isEmailValid(value)) {
-                                  return "Email format is not valid";
+                                  return "login_email_field_format_validation"
+                                      .tr();
                                 }
                                 return null;
                               },
                             ),
                             const MyVerticalSpacer(),
                             MyTextFormField(
-                              labelText: 'Password',
+                              labelText: 'login_password_field'.tr(),
                               controller: loginCubit.passwordController,
                               prefixIcon: Icon(Icons.lock),
                               obscureText: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter your password";
+                                  return "login_password_field_required_validation"
+                                      .tr();
                                 }
                                 return null;
                               },
@@ -154,7 +171,7 @@ class LoginScreen extends StatelessWidget {
                               alignment: AlignmentDirectional.centerStart,
                               child: TextButton(
                                 onPressed: () {},
-                                child: Text('Forgot Password?',
+                                child: Text('login_forgot_password'.tr(),
                                     style: TextStyle(
                                         color: ColorsConstants.primaryColor)),
                               ),
@@ -174,7 +191,7 @@ class LoginScreen extends StatelessWidget {
                                       color: Colors.white,
                                     )
                                   : Text(
-                                      'LOGIN',
+                                      'login_login_button'.tr(),
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),

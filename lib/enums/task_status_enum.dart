@@ -37,7 +37,7 @@ class TaskStatusEnum {
     return [active, notActive];
   }
 
-  static TaskStatusEnum getStatus(String status) {
+  static TaskStatusEnum getStatus(String? status) {
     switch (status) {
       case 'active':
         return active;

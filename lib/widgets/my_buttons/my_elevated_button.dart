@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 
-
 class MyElevatedButton extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
+  final bool isWidthFull;
 
-  const MyElevatedButton({required this.onPressed, required this.child});
+  const MyElevatedButton({
+    required this.onPressed,
+    required this.child,
+    this.isWidthFull = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: isWidthFull ? double.infinity : null,
       // decoration: BoxDecoration(
       //   gradient: ColorsConstants.myLinearGradient
       // ),
@@ -26,7 +31,7 @@ class MyElevatedButton extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 0),
+                padding: EdgeInsets.symmetric(vertical: 0),
                 // constraints:
                 //     const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
                 child: child),

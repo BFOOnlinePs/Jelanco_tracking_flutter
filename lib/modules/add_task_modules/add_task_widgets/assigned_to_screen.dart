@@ -1,14 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
-import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_states.dart';
-import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_cubit.dart';
-
-import '../add_task_cubit/add_task_cubit.dart';
 
 class AssignedToScreen extends StatelessWidget {
   final Function(List<UserModel>) onSelected;
@@ -30,7 +27,7 @@ class AssignedToScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Assign To'),
+        title: Text('assigned_to_title'.tr()),
       ),
       body: BlocProvider(
         create: (context) => AssignedToCubit()
@@ -48,7 +45,7 @@ class AssignedToScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: 'Search users...',
+                      hintText: 'assigned_to_search_box'.tr(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(
                             ButtonSizeConstants.borderRadius),

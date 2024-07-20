@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
@@ -22,7 +24,7 @@ class TaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => myDialog(context,
-          title: 'Task Options',
+          title: 'task_item_options_dialog_title'.tr(),
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -38,7 +40,7 @@ class TaskItem extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('View Details'),
+                child: Text('task_item_options_dialog_view_details'.tr()),
               ),
               MyElevatedButton(
                 onPressed: () {
@@ -52,7 +54,7 @@ class TaskItem extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('Edit Task'),
+                child: Text('task_item_options_dialog_edit'.tr()),
               ),
             ],
           )),
@@ -89,13 +91,11 @@ class TaskItem extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                     decoration: BoxDecoration(
-                      color: taskModel.tStatus == 'active'
-                          ? Colors.green
-                          : Colors.red,
+                      color: TaskStatusEnum.getStatus(taskModel.tStatus).statusColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      taskModel.tStatus ?? 'status',
+                      TaskStatusEnum.getStatus(taskModel.tStatus).statusAr ?? 'status',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

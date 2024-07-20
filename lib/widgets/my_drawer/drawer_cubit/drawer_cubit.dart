@@ -23,8 +23,13 @@ class DrawerCubit extends Cubit<DrawerStates> {
       print(value);
       userLogoutModel = UserLogoutModel.fromMap(value?.data);
       CacheHelper.removeData(key: MyCacheKeys.token).then((value) async {
+        // CacheHelper.removeData(key: MyCacheKeys.userId);
         CacheHelper.removeData(key: MyCacheKeys.userId);
-        UserDataConstants.userModel = null; // empty it so the data of previous user did not show
+        CacheHelper.removeData(key: MyCacheKeys.name);
+        CacheHelper.removeData(key: MyCacheKeys.email);
+        UserDataConstants.userId = null; // empty it so the data of previous user did not show
+        UserDataConstants.name = null; // empty it so the data of previous user did not show
+        UserDataConstants.email = null; // empty it so the data of previous user did not show
         // await FCMServices.deleteFCMTokenFromLocalAndServer(firebaseTokenVar!);
         emit(LogoutSuccessState(userLogoutModel: userLogoutModel!));
       });

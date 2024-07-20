@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
@@ -74,197 +75,206 @@ class AddTaskScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text('Add Task'),
+              title: Text('add_task_title'.tr()),
             ),
             body: Stack(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: addTaskCubit.formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text('Assigned to',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SharedSize.textFiledTitleSize)),
-                                  Text(
-                                    ' *',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.red),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.0),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
-                                    // addTaskCubit.filteredUsers = addTaskCubit.users;
-                                    return AssignedToScreen(
-                                      isAddTask: true,
-                                      onSelected: (selectedUsers) {
-                                        addTaskCubit
-                                            .changeSelectedUsers(selectedUsers);
-                                        // addTaskCubit.selectedUsers =
-                                        //     selectedUsers;
-                                      },
-                                      users:
-                                          addTaskCubit.getAllUsersModel!.users!,
-                                      selectedUsers: addTaskCubit.selectedUsers,
+                  child: Form(
+                    key: addTaskCubit.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('add_task_assign_to_field'.tr(),
+                                            style: const TextStyle(
+                                                fontSize:
+                                                    SharedSize.textFiledTitleSize)),
+                                        const Text(
+                                          ' *',
+                                          style: TextStyle(
+                                              fontSize: 16, color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.0),
+                                  ],
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
+                                          // addTaskCubit.filteredUsers = addTaskCubit.users;
+                                          return AssignedToScreen(
+                                            isAddTask: true,
+                                            onSelected: (selectedUsers) {
+                                              addTaskCubit
+                                                  .changeSelectedUsers(selectedUsers);
+                                              // addTaskCubit.selectedUsers =
+                                              //     selectedUsers;
+                                            },
+                                            users:
+                                                addTaskCubit.getAllUsersModel!.users!,
+                                            selectedUsers: addTaskCubit.selectedUsers,
+                                          );
+                                        },
+                                      ),
                                     );
                                   },
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 15,
-                                horizontal: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(
-                                    ButtonSizeConstants.borderRadius),
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    addTaskCubit.selectedUsers.isEmpty
-                                        ? 'Assigned To'
-                                        : addTaskCubit.selectedUsers
-                                            .map((user) => user.name)
-                                            .join(', '),
-                                    style: TextStyle(color: Colors.black54),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          ButtonSizeConstants.borderRadius),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          addTaskCubit.selectedUsers.isEmpty
+                                              ? 'add_task_assign_to_field'.tr()
+                                              : addTaskCubit.selectedUsers
+                                                  .map((user) => user.name)
+                                                  .join(', '),
+                                          style: TextStyle(color: Colors.black54),
+                                        ),
+                                        Icon(Icons.arrow_forward),
+                                      ],
+                                    ),
                                   ),
-                                  Icon(Icons.arrow_forward),
-                                ],
-                              ),
+                                ),
+                                // addTaskCubit.addTaskModel != null &&
+                                addTaskCubit.isAddClicked &&
+                                        addTaskCubit.selectedUsers.isEmpty
+                                    ? MyErrorFieldText(
+                                        text:
+                                            'add_task_assign_to_field_required_validation'
+                                                .tr())
+                                    : Container(),
+                                const MyVerticalSpacer(),
+                                MyTextFormField(
+                                  titleText: 'add_task_content_field'.tr(),
+                                  labelText: 'add_task_content_field_label'.tr(),
+                                  controller: addTaskCubit.contentController,
+                                  textInputAction: TextInputAction.newline,
+                                  keyboardType: TextInputType.multiline,
+                                  isFieldRequired: true,
+                                  maxLines: 3,
+                                  // onChanged: (value) => addTaskCubit.content = value,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'add_task_content_field_required_validation'
+                                          .tr();
+                                    }
+                                  },
+                                ),
+                                const MyVerticalSpacer(),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: MyTextFormField(
+                                        titleText: 'add_task_start_time_field'.tr(),
+                                        labelText:
+                                            'add_task_start_time_field_label'.tr(),
+                                        readOnly: true,
+                                        onTap: () => addTaskCubit.selectDateTime(
+                                            context, true),
+                                        // validator: (value) =>
+                                        //     addTaskCubit.plannedStartTime == null
+                                        //         ? 'Select a start time'
+                                        //         : null,
+                                        controller: TextEditingController(
+                                            text: addTaskCubit.plannedStartTime !=
+                                                    null
+                                                ? MyDateUtils.formatDateTime(
+                                                    addTaskCubit.plannedStartTime!)
+                                                : ''),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    MyHorizontalSpacer(),
+                                    Expanded(
+                                      child: MyTextFormField(
+                                        titleText: 'add_task_end_time_field'.tr(),
+                                        labelText:
+                                            'add_task_end_time_field_label'.tr(),
+                                        readOnly: true,
+                                        onTap: () => addTaskCubit.selectDateTime(
+                                            context, false),
+                                        // validator: (value) =>
+                                        //     addTaskCubit.plannedEndTime == null
+                                        //         ? 'Select an end time'
+                                        //         : null,
+                                        controller: TextEditingController(
+                                            text: addTaskCubit.plannedEndTime != null
+                                                ? MyDateUtils.formatDateTime(
+                                                    addTaskCubit.plannedEndTime!)
+                                                : ''),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const MyVerticalSpacer(),
+                                MyDropdownButton<TaskCategoryModel>(
+                                  label: 'add_task_category_field'.tr(),
+                                  hint: 'add_task_category_field_hint'.tr(),
+                                  items: addTaskCubit
+                                          .getTaskCategoriesModel?.taskCategories ??
+                                      [],
+                                  onChanged: (value) {
+                                    addTaskCubit.changeSelectedCategory(
+                                        newSelectedCategory: value);
+                                  },
+                                  value: addTaskCubit.selectedCategory,
+                                  displayText: (TaskCategoryModel taskCategory) =>
+                                      taskCategory.cName ?? '',
+                                  // validator: (value) =>
+                                  //     value == null ? 'Select a category' : null,
+                                ),
+                                const MyVerticalSpacer(),
+                              ],
                             ),
                           ),
-                          MyTextFormField(
-                            titleText: 'Task Content',
-                            labelText: 'Enter task content',
-                            controller: addTaskCubit.contentController,
-                            textInputAction: TextInputAction.newline,
-                            keyboardType: TextInputType.multiline,
-                            isFieldRequired: true,
-                            maxLines: 3,
-                            // onChanged: (value) => addTaskCubit.content = value,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter task content';
-                              }
-                            },
-                          ),
-
-                          // addTaskCubit.addTaskModel != null &&
-                          addTaskCubit.isAddClicked &&
-                                  addTaskCubit.selectedUsers.isEmpty
-                              ? MyErrorFieldText(
-                                  text: 'Please select at least one user')
-                              : Container(),
-                          // const MyVerticalSpacer(),
-                          const MyVerticalSpacer(),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: MyTextFormField(
-                                  titleText: 'Planned Start Time',
-                                  labelText: 'Select the time',
-                                  readOnly: true,
-                                  onTap: () => addTaskCubit.selectDateTime(
-                                      context, true),
-                                  // validator: (value) =>
-                                  //     addTaskCubit.plannedStartTime == null
-                                  //         ? 'Select a start time'
-                                  //         : null,
-                                  controller: TextEditingController(
-                                      text: addTaskCubit.plannedStartTime !=
-                                              null
-                                          ? MyDateUtils.formatDateTime(
-                                              addTaskCubit.plannedStartTime!)
-                                          : ''),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              MyHorizontalSpacer(),
-                              Expanded(
-                                child: MyTextFormField(
-                                  titleText: 'Planned End Time',
-                                  labelText: 'Select the time',
-                                  readOnly: true,
-                                  onTap: () => addTaskCubit.selectDateTime(
-                                      context, false),
-                                  // validator: (value) =>
-                                  //     addTaskCubit.plannedEndTime == null
-                                  //         ? 'Select an end time'
-                                  //         : null,
-                                  controller: TextEditingController(
-                                      text: addTaskCubit.plannedEndTime != null
-                                          ? MyDateUtils.formatDateTime(
-                                              addTaskCubit.plannedEndTime!)
-                                          : ''),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          MyDropdownButton<TaskCategoryModel>(
-                            label: 'Category',
-                            hint: 'Select the task category',
-                            items: addTaskCubit
-                                    .getTaskCategoriesModel?.taskCategories ??
-                                [],
-                            onChanged: (value) {
-                              addTaskCubit.changeSelectedCategory(
-                                  newSelectedCategory: value);
-                            },
-                            value: addTaskCubit.selectedCategory,
-                            displayText: (TaskCategoryModel taskCategory) =>
-                                taskCategory.cName ?? '',
-                            // validator: (value) =>
-                            //     value == null ? 'Select a category' : null,
-                          ),
-
-                          const MyVerticalSpacer(),
-
-                          // Submit Button
-                          MyElevatedButton(
-                            onPressed: () {
-                              addTaskCubit.changeIsAddClicked(true);
-                              if (addTaskCubit.formKey.currentState!
-                                  .validate()) {
-                                addTaskCubit.addTask();
-                              }
-                            },
-                            child: Text('Add Task'),
-                          ),
-                        ],
-                      ),
+                        ),
+                  
+                        MyElevatedButton(
+                          onPressed: () {
+                            addTaskCubit.changeIsAddClicked(true);
+                            if (addTaskCubit.formKey.currentState!
+                                .validate()) {
+                              addTaskCubit.addTask();
+                            }
+                          },
+                          child: Text('add_task_add_button'.tr()),
+                          isWidthFull: true,
+                        ),
+                      ],
                     ),
                   ),
                 ),
