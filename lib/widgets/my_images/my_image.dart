@@ -8,12 +8,13 @@ class MyImage extends StatelessWidget {
   final bool showDeleteIcon;
   final Function()? onDeletePressed;
 
-  const MyImage(
-      {required this.height,
-      this.margin,
-      required this.child,
-      this.showDeleteIcon = false,
-      this.onDeletePressed});
+  const MyImage({
+    required this.height,
+    this.margin,
+    required this.child,
+    this.showDeleteIcon = false,
+    this.onDeletePressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class MyImage extends StatelessWidget {
                   ),
                   splashRadius: 20,
                 )
-              : Text(''),
+              : Container(),
         ],
       ),
     );

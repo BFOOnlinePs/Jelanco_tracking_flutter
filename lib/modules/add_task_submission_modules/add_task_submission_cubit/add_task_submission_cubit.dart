@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:video_player/video_player.dart';
@@ -52,14 +53,9 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       pickedVideosList.add(video);
       print('Picked video path: ${video.path}');
 
-      // VideoPlayerController controller =
-      //     VideoPlayerController.file(File(video.path));
-      // videoControllers.add(controller);
-      // controller.initialize();
-
-      initializeVideoController(File(video.path));
+      await initializeVideoController(File(video.path));
       emit(PickMultipleVideosState());
-      print('videoControllers: ${videoControllers[0]?.value?.duration}');
+      // print('videoControllers: ${videoControllers[0]?.value?.duration}');
       print('videoControllers: ${videoControllers.length}');
     }
 
@@ -75,6 +71,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       try {
         await controller.initialize();
         videoControllers.add(controller);
+        print('videoControllers:: ${videoControllers.length}');
         emit(InitializeVideoControllerState());
       } catch (e) {
         print('Error initializing video controller: $e');
@@ -85,6 +82,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       //   emit(InitializeVideoControllerState());
       // });
     } else {
+      // message = 'File is not a video';
       videoControllers.add(null);
     }
   }
@@ -94,6 +92,15 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     videoControllers[index]?.dispose();
     videoControllers.removeAt(index);
     emit(DeletePickedVideoFromListState());
+  }
+
+  void toggleVideoPlayPause(int index) {
+    if (videoControllers[index] != null) {
+      videoControllers[index]!.value.isPlaying
+          ? videoControllers[index]!.pause()
+          : videoControllers[index]!.play();
+      emit(ToggleVideoPlayPauseState());
+    }
   }
 
   // files
@@ -145,6 +152,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       'task_id': taskId,
       'content': contentController.text,
     };
+
     FormData formData = FormData.fromMap(dataObject);
 
     for (int i = 0; i < thePickedImagesList.length; i++) {
@@ -156,6 +164,26 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       ]);
     }
 
+    for (int i = 0; i < pickedVideosList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "videos[]",
+          await MultipartFile.fromFile(pickedVideosList[i].path),
+        ),
+      ]);
+    }
+
+    for (int i = 0; i < pickedFilesList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "documents[]",
+          await MultipartFile.fromFile(pickedFilesList[i].path),
+        ),
+      ]);
+    }
+
+    AddTaskSubmissionModel? addTaskSubmissionModel;
+
     print('formData: ${formData.fields}');
 
     DioHelper.postData(
@@ -163,21 +191,13 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       data: formData,
     ).then((value) {
       print(value?.data);
-
-      emit(AddTaskSubmissionSuccessState());
+      addTaskSubmissionModel = AddTaskSubmissionModel.fromMap(value?.data);
+      emit(AddTaskSubmissionSuccessState(
+          addTaskSubmissionModel: addTaskSubmissionModel!));
     }).catchError((error) {
       emit(AddTaskSubmissionErrorState(error: error.toString()));
       print(error.toString());
     });
-  }
-
-  void toggleVideoPlayPause(int index) {
-    if (videoControllers[index] != null) {
-      videoControllers[index]!.value.isPlaying
-          ? videoControllers[index]!.pause()
-          : videoControllers[index]!.play();
-      emit(ToggleVideoPlayPauseState());
-    }
   }
 
   @override

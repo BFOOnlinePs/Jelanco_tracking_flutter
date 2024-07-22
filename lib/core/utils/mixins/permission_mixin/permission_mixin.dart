@@ -1,4 +1,3 @@
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +62,8 @@ mixin PermissionsMixin<T> on Cubit<T> {
     if (photoPermission.isGranted && videoPermission.isGranted) {
       permissionStatus = photoPermission; // Assuming both are granted
     } else {
-      permissionStatus = PermissionStatus.denied; // Default to denied if any are denied
+      permissionStatus =
+          PermissionStatus.denied; // Default to denied if any are denied
     }
   }
 
@@ -95,7 +95,6 @@ mixin PermissionsMixin<T> on Cubit<T> {
     );
   }
 }
-
 
 // import 'package:device_info_plus/device_info_plus.dart';
 // import 'package:easy_localization/easy_localization.dart';

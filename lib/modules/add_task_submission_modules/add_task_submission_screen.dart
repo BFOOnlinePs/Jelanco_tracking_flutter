@@ -7,15 +7,20 @@ import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permi
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_images/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
+import 'package:jelanco_tracking_system/widgets/my_video/my_video.dart';
+import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 import 'package:video_player/video_player.dart';
 
 class AddTaskSubmissionScreen extends StatelessWidget {
-  AddTaskSubmissionScreen({super.key});
+  final int taskId;
+
+  AddTaskSubmissionScreen({super.key, required this.taskId});
 
   late AddTaskSubmissionCubit addTaskSubmissionCubit;
 
@@ -24,7 +29,23 @@ class AddTaskSubmissionScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AddTaskSubmissionCubit(),
       child: BlocConsumer<AddTaskSubmissionCubit, AddTaskSubmissionStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AddTaskSubmissionSuccessState) {
+            if (state.addTaskSubmissionModel.status == true) {
+              SnackbarHelper.showSnackbar(
+                context: context,
+                snackBarStates: SnackBarStates.success,
+                message: state.addTaskSubmissionModel.message,
+              );
+            } else {
+              SnackbarHelper.showSnackbar(
+                context: context,
+                snackBarStates: SnackBarStates.error,
+                message: state.addTaskSubmissionModel.message,
+              );
+            }
+          }
+        },
         builder: (context, state) {
           addTaskSubmissionCubit = AddTaskSubmissionCubit.get(context);
           return Scaffold(
@@ -33,6 +54,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
               children: [
                 MyScreen(
                   child: Form(
+                    key: addTaskSubmissionCubit.addTaskSubmissionFormKey,
                     child: Column(
                       children: [
                         Expanded(
@@ -41,11 +63,12 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                               children: [
                                 MyTextFormField(
                                   titleText:
-                                  'add_task_submission_content_field'.tr(),
+                                      'add_task_submission_content_field'.tr(),
                                   labelText:
-                                  'add_task_submission_content_field_label'
-                                      .tr(),
-                                  // controller: addTaskCubit.contentController,
+                                      'add_task_submission_content_field_label'
+                                          .tr(),
+                                  controller:
+                                      addTaskSubmissionCubit.contentController,
                                   textInputAction: TextInputAction.newline,
                                   keyboardType: TextInputType.multiline,
                                   isFieldRequired: true,
@@ -57,248 +80,233 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     }
                                   },
                                 ),
-                                // MyTextButton(
-                                //     onPressed: () {
-                                //       addTaskSubmissionCubit.requestPermission(
-                                //           context: context,
-                                //           permissionType:
-                                //               PermissionType.storage,
-                                //           functionWhenGranted:
-                                //               addTaskSubmissionCubit
-                                //                   .pickMultipleVideosFromGallery);
-                                //     },
-                                //     child: Text('صور / فيديوهات')),
-                                // addTaskSubmissionCubit
-                                //         .thePickedVideosList.isEmpty
-                                //     ? Text('قم بإختيار فيديوهات')
-                                //     : Container(
-                                //         height: 200,
-                                //         child: ListView.builder(
-                                //           scrollDirection: Axis.horizontal,
-                                //           shrinkWrap: true,
-                                //           itemBuilder: (context, index) =>
-                                //               MyImage(
-                                //                   height: 100,
-                                //                   showDeleteIcon: true,
-                                //                   onDeletePressed: () {
-                                //                     addTaskSubmissionCubit
-                                //                         .deletedPickedVideoFromList(
-                                //                             index: index);
-                                //                   },
-                                //                   child: Image.file(
-                                //                     File(addTaskSubmissionCubit
-                                //                         .thePickedVideosList[
-                                //                             index]
-                                //                         .path),
-                                //                   ),
-                                //                   margin: EdgeInsetsDirectional
-                                //                       .only(end: 10)),
-                                //           itemCount: addTaskSubmissionCubit
-                                //               .thePickedVideosList.length,
-                                //         ),
-                                //       ),
                                 MyTextButton(
                                     onPressed: () {
                                       addTaskSubmissionCubit.requestPermission(
                                           context: context,
                                           permissionType:
-                                          PermissionType.storage,
+                                              PermissionType.storage,
                                           functionWhenGranted:
-                                          addTaskSubmissionCubit
-                                              .pickMultipleImagesFromGallery);
+                                              addTaskSubmissionCubit
+                                                  .pickMultipleImagesFromGallery);
                                     },
                                     child: Text('صور')),
                                 addTaskSubmissionCubit
-                                    .thePickedImagesList.isEmpty
+                                        .thePickedImagesList.isEmpty
                                     ? Text('قم بإختيار الصور')
                                     : Container(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) =>
-                                        MyImage(
-                                            height: 100,
-                                            showDeleteIcon: true,
-                                            onDeletePressed: () {
-                                              addTaskSubmissionCubit
-                                                  .deletedPickedImageFromList(
-                                                  index: index);
-                                            },
-                                            child: Image.file(
-                                              File(addTaskSubmissionCubit
-                                                  .thePickedImagesList[
-                                              index]
-                                                  .path),
-                                            ),
-                                            margin: EdgeInsetsDirectional
-                                                .only(end: 10)),
-                                    itemCount: addTaskSubmissionCubit
-                                        .thePickedImagesList.length,
-                                  ),
-                                ),
-
+                                        height: 200,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) =>
+                                              MyImage(
+                                                  height: 100,
+                                                  showDeleteIcon: true,
+                                                  onDeletePressed: () {
+                                                    addTaskSubmissionCubit
+                                                        .deletedPickedImageFromList(
+                                                            index: index);
+                                                  },
+                                                  child: Image.file(
+                                                    File(addTaskSubmissionCubit
+                                                        .thePickedImagesList[
+                                                            index]
+                                                        .path),
+                                                  ),
+                                                  margin: EdgeInsetsDirectional
+                                                      .only(end: 10)),
+                                          itemCount: addTaskSubmissionCubit
+                                              .thePickedImagesList.length,
+                                        ),
+                                      ),
                                 MyTextButton(
                                     onPressed: () {
                                       addTaskSubmissionCubit.requestPermission(
                                           context: context,
                                           permissionType:
-                                          PermissionType.storage,
+                                              PermissionType.storage,
                                           functionWhenGranted:
-                                          addTaskSubmissionCubit
-                                              .pickMultipleVideosFromGallery);
+                                              addTaskSubmissionCubit
+                                                  .pickMultipleVideosFromGallery);
                                     },
                                     child: Text('فيديوهات')),
                                 addTaskSubmissionCubit.pickedVideosList.isEmpty
                                     ? Text('قم بإختيار الفيديوهات')
                                     : Container(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        children: [
-                                          // if (addTaskSubmissionCubit
-                                          //     .videoControllers[index]?.value
-                                          //     .isInitialized == true)
-                                            Container(
-                                              height: 100,
-                                              child: AspectRatio(
-                                                aspectRatio: addTaskSubmissionCubit
-                                                    .videoControllers[index]!
-                                                    .value.aspectRatio,
-                                                child: VideoPlayer(
-                                                    addTaskSubmissionCubit
-                                                        .videoControllers[index]!),
-                                              ),
-                                            ),
-                                          if (addTaskSubmissionCubit
-                                              .videoControllers[index]?.value
-                                              .isInitialized == true)
-                                            Container(
-                                              width: 100,
-                                              child: VideoProgressIndicator(
+                                        height: 280,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return MyVideo(
+                                              videoPlayerController:
                                                   addTaskSubmissionCubit
-                                                      .videoControllers[index]!,
-                                                  allowScrubbing: true),
-                                            ),
-                                          // IconButton(
-                                          //   icon: Icon(addTaskSubmissionCubit
-                                          //       .videoControllers[index]!.value
-                                          //       .isPlaying ? Icons.pause : Icons
-                                          //       .play_arrow),
-                                          //   onPressed: () {
-                                          //     addTaskSubmissionCubit
-                                          //         .toggleVideoPlayPause(index);
-                                          //   },
-                                          // ),
-                                        ],
-                                      );
-                                    },
-                                    // MyImage(
-                                    //     height: 100,
-                                    //     showDeleteIcon: true,
-                                    //     onDeletePressed: () {
-                                    //       addTaskSubmissionCubit
-                                    //           .deletedPickedVideoFromList(
-                                    //               index: index);
-                                    //     },
-                                    //     child: Image.file(
-                                    //       File(addTaskSubmissionCubit
-                                    //           .pickedVideosList[index]
-                                    //           .path),
-                                    //     ),
-                                    //     margin: EdgeInsetsDirectional
-                                    //         .only(end: 10)),
-                                    itemCount: addTaskSubmissionCubit
-                                    .pickedVideosList.length,
-                                  ),
-                                ),
+                                                      .videoControllers[index],
+                                              index: index,
+                                              onTogglePlayPause:
+                                                  addTaskSubmissionCubit
+                                                      .toggleVideoPlayPause,
+                                              showDeleteIcon: true,
+                                              onDeletePressed: () {
+                                                addTaskSubmissionCubit
+                                                    .deletedPickedVideoFromList(
+                                                        index: index);
+                                              },
 
+                                            );
+                                            // return Column(
+                                            //   children: [
+                                            //     if (addTaskSubmissionCubit
+                                            //             .videoControllers[index]
+                                            //             ?.value
+                                            //             .isInitialized ==
+                                            //         true)
+                                            //
+                                            //       Container(
+                                            //         height: 220,
+                                            //         child: AspectRatio(
+                                            //           aspectRatio:
+                                            //               addTaskSubmissionCubit
+                                            //                   .videoControllers[
+                                            //                       index]!
+                                            //                   .value
+                                            //                   .aspectRatio,
+                                            //           child: VideoPlayer(
+                                            //               addTaskSubmissionCubit
+                                            //                       .videoControllers[
+                                            //                   index]!),
+                                            //         ),
+                                            //       ),
+                                            //     if (addTaskSubmissionCubit
+                                            //             .videoControllers[index]
+                                            //             ?.value
+                                            //             .isInitialized ==
+                                            //         true)
+                                            //       Container(
+                                            //         width: 120,
+                                            //         child: VideoProgressIndicator(
+                                            //             addTaskSubmissionCubit
+                                            //                     .videoControllers[
+                                            //                 index]!,
+                                            //             allowScrubbing: true),
+                                            //       ),
+                                            //     IconButton(
+                                            //       icon: Icon(
+                                            //           addTaskSubmissionCubit
+                                            //                   .videoControllers[
+                                            //                       index]!
+                                            //                   .value
+                                            //                   .isPlaying
+                                            //               ? Icons.pause
+                                            //               : Icons.play_arrow),
+                                            //       onPressed: () {
+                                            //         addTaskSubmissionCubit
+                                            //             .toggleVideoPlayPause(
+                                            //                 index);
+                                            //       },
+                                            //     ),
+                                            //   ],
+                                            // );
+                                          },
+                                          itemCount: addTaskSubmissionCubit
+                                              .pickedVideosList.length,
+                                        ),
+                                      ),
                                 MyTextButton(
                                     onPressed: () {
                                       addTaskSubmissionCubit.requestPermission(
                                           context: context,
                                           permissionType:
-                                          PermissionType.storage,
+                                              PermissionType.storage,
                                           functionWhenGranted:
-                                          addTaskSubmissionCubit
-                                              .pickReportFile);
+                                              addTaskSubmissionCubit
+                                                  .pickReportFile);
                                     },
                                     child: Text('ملفات')),
                                 addTaskSubmissionCubit.pickedFilesList.isEmpty
                                     ? Text('قم بإختيار الملفات')
                                     : Container(
-                                  // height: 200,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                    NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      String fileName =
-                                          addTaskSubmissionCubit
-                                              .pickedFilesList[index].path
-                                              .split('/')
-                                              .last;
-                                      return Container(
-                                        margin: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 16),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-                                          borderRadius:
-                                          BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black12,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 4,
-                                            ),
-                                          ],
-                                        ),
-                                        child: ListTile(
-                                          leading: IconButton(
-                                            icon: Icon(Icons.close),
-                                            onPressed: () =>
+                                        // height: 200,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            String fileName =
                                                 addTaskSubmissionCubit
-                                                    .deletedPickedFileFromList(
-                                                    index: index),
-                                          ),
-                                          title: Text(fileName),
-                                          // subtitle: Text(pickedFiles[index].path),
+                                                    .pickedFilesList[index].path
+                                                    .split('/')
+                                                    .last;
+                                            return Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 8, horizontal: 16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black12,
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 4,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: ListTile(
+                                                leading: IconButton(
+                                                  icon: Icon(Icons.close),
+                                                  onPressed: () =>
+                                                      addTaskSubmissionCubit
+                                                          .deletedPickedFileFromList(
+                                                              index: index),
+                                                ),
+                                                title: Text(fileName),
+                                                // subtitle: Text(pickedFiles[index].path),
+                                              ),
+                                            );
+                                          },
+                                          //     ListTile(
+                                          //   leading: IconButton(
+                                          //     icon: Icon(Icons.close),
+                                          //     onPressed: () =>
+                                          //         addTaskSubmissionCubit
+                                          //             .deletedPickedfileFromList(
+                                          //                 index: index),
+                                          //   ),
+                                          //   title: Text(addTaskSubmissionCubit
+                                          //       .pickedFilesList[index].path
+                                          //       .split('/')
+                                          //       .last),
+                                          // ),
+                                          itemCount: addTaskSubmissionCubit
+                                              .pickedFilesList.length,
                                         ),
-                                      );
-                                    },
-                                    //     ListTile(
-                                    //   leading: IconButton(
-                                    //     icon: Icon(Icons.close),
-                                    //     onPressed: () =>
-                                    //         addTaskSubmissionCubit
-                                    //             .deletedPickedfileFromList(
-                                    //                 index: index),
-                                    //   ),
-                                    //   title: Text(addTaskSubmissionCubit
-                                    //       .pickedFilesList[index].path
-                                    //       .split('/')
-                                    //       .last),
-                                    // ),
-                                    itemCount: addTaskSubmissionCubit
-                                        .pickedFilesList.length,
-                                  ),
-                                ),
+                                      ),
                               ],
                             ),
                           ),
                         ),
                         MyElevatedButton(
-                          onPressed: () {},
-                          child: Text('add_task_submission_button_submit'.tr()),
+                          onPressed: () {
+                            if (addTaskSubmissionCubit
+                                .addTaskSubmissionFormKey.currentState!
+                                .validate()) {
+                              addTaskSubmissionCubit.addNewTaskSubmission(
+                                  taskId: taskId);
+                            }
+                          },
+                          // child: Text('add_task_submission_button_submit'.tr()),
                           isWidthFull: true,
+                          buttonText: 'add_task_submission_button_submit'.tr(),
                         ),
                       ],
                     ),
                   ),
                 ),
+                addTaskSubmissionCubit.state is AddTaskSubmissionLoadingState
+                    ? const LoaderWithDisable()
+                    : Container(),
               ],
             ),
           );

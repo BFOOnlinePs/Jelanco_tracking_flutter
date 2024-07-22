@@ -3,14 +3,16 @@ import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 
 class MyElevatedButton extends StatelessWidget {
-  final Widget child;
+  // final Widget child;
   final Function()? onPressed;
   final bool isWidthFull;
+  final String buttonText;
 
   const MyElevatedButton({
     required this.onPressed,
-    required this.child,
+    // required this.child,
     this.isWidthFull = false,
+    required this.buttonText,
   });
 
   @override
@@ -35,7 +37,10 @@ class MyElevatedButton extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 0),
                 // constraints:
                 //     const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
-                child: child),
+                child: Text(
+                  buttonText,
+                  style: TextStyle(color: Colors.white),
+                )),
           ),
         ),
         // style: ElevatedButton.styleFrom(
@@ -50,7 +55,8 @@ class MyElevatedButton extends StatelessWidget {
         //   ),
         // ),
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(ColorsConstants.primaryColor),
+          backgroundColor:
+              WidgetStateProperty.all(ColorsConstants.primaryColor),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius:

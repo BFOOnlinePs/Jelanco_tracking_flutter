@@ -61,7 +61,9 @@ class TaskItem extends StatelessWidget {
                 Navigator.of(context).pop();
                 NavigationServices.navigateTo(
                   context,
-                  AddTaskSubmissionScreen(),
+                  AddTaskSubmissionScreen(
+                    taskId: taskModel.tId!,
+                  ),
                 );
               },
               child: Text(

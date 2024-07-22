@@ -272,8 +272,9 @@ class AddTaskScreen extends StatelessWidget {
                               addTaskCubit.addTask();
                             }
                           },
-                          child: Text('add_task_add_button'.tr()),
+                          // child: Text('add_task_add_button'.tr()),
                           isWidthFull: true,
+                          buttonText: 'add_task_add_button'.tr(),
                         ),
                       ],
                     ),
