@@ -11,15 +11,18 @@ class AddTaskSubmissionModel {
     this.taskSubmission,
   });
 
-  factory AddTaskSubmissionModel.fromMap(Map<String, dynamic> json) => AddTaskSubmissionModel(
-    status: json["status"],
-    message: json["message"],
-    taskSubmission: json["task_submission"] == null ? null : TaskSubmissionModel.fromMap(json["task_submission"]),
-  );
+  factory AddTaskSubmissionModel.fromMap(Map<String, dynamic> json) =>
+      AddTaskSubmissionModel(
+        status: json["status"],
+        message: json["message"],
+        taskSubmission: json["task_submission"] == null
+            ? null
+            : TaskSubmissionModel.fromMap(json["task_submission"]),
+      );
 
   Map<String, dynamic> toMap() => {
-    "status": status,
-    "message": message,
-    "task_submission": taskSubmission?.toMap(),
-  };
+        "status": status,
+        "message": message,
+        "task_submission": taskSubmission?.toMap(),
+      };
 }

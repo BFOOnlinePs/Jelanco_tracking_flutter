@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
@@ -126,21 +127,21 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(DeletePickedFilesFromListState());
   }
 
-  // Position? position;
-  //
-  // Future<void> getCurrentLocation() async {
-  //   position = null;
-  //   try {
-  //     position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high,
-  //     );
-  //     print(
-  //         "Latitude: ${position?.latitude}, Longitude: ${position?.longitude}");
-  //   } catch (e) {
-  //     print("Error: $e");
-  //     emit(RequestLocationPermissionGetDeniedState());
-  //   }
-  // }
+  Position? position;
+
+  Future<void> getCurrentLocation() async {
+    position = null;
+    try {
+      position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      print(
+          "Latitude: ${position?.latitude}, Longitude: ${position?.longitude}");
+    } catch (e) {
+      print("Error: $e");
+      emit(RequestLocationPermissionGetDeniedState());
+    }
+  }
 
   // add
 

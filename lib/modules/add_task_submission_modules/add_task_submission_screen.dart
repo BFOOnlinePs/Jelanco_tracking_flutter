@@ -153,7 +153,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                     .deletedPickedVideoFromList(
                                                         index: index);
                                               },
-
                                             );
                                             // return Column(
                                             //   children: [
@@ -292,8 +291,19 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                             if (addTaskSubmissionCubit
                                 .addTaskSubmissionFormKey.currentState!
                                 .validate()) {
-                              addTaskSubmissionCubit.addNewTaskSubmission(
-                                  taskId: taskId);
+                              addTaskSubmissionCubit.requestPermission(
+                                context: context,
+                                permissionType: PermissionType.location,
+                                functionWhenGranted:
+                                    addTaskSubmissionCubit.getCurrentLocation,
+                              ).then((value){
+                                addTaskSubmissionCubit.addNewTaskSubmission(
+                                    taskId: taskId);
+                              }).catchError((error){
+                                print('error with location !!');
+                              });
+
+
                             }
                           },
                           // child: Text('add_task_submission_button_submit'.tr()),

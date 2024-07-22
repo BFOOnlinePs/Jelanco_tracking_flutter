@@ -11,8 +11,6 @@ import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_dialog/my_dialog.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
-import '../../../widgets/my_buttons/my_elevated_button.dart';
-
 class TaskItem extends StatelessWidget {
   final TaskModel taskModel;
 
