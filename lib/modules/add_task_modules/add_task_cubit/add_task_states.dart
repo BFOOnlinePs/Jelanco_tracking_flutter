@@ -1,7 +1,4 @@
-import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categories_states.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart';
-
-import '../../../core/utils/mixins/users_mixin/users_states.dart';
 
 abstract class AddTaskStates {}
 

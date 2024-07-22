@@ -43,5 +43,18 @@
   "_comment": "task item",
   "task_item_options_dialog_title": "خيارات المهمة",
   "task_item_options_dialog_view_details": "عرض التفاصيل",
-  "task_item_options_dialog_edit": "تعديل المهمة"
+  "task_item_options_dialog_add_submission": "تسليم المهمة",
+  "task_item_options_dialog_edit": "تعديل المهمة",
+  "_comment": "add task submission",
+  "add_task_submission_title": "تسليم المهمة",
+  "add_task_submission_button_submit": "تسليم المهمة",
+  "add_task_submission_content_field": "محتوى التسليم",
+  "add_task_submission_content_field_label": "محتوى التسليم",
+  "add_task_submission_content_required_validation": "يجب أدخال محتوى التسليم",
+  "_comment": "permission mixin",
+  "permission_denied": "تم رفض الإذن",
+  "permission_needed": "يرجى منح الإذن لإتمام العملية.",
+  "permission_go_to_settings": "اضغط للانتقال الى الاعدادات",
+  "permission_exit_button": "إلغاء",
+  "": ""
 }

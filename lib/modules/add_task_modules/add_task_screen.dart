@@ -6,10 +6,12 @@ import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
+import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/error_text/my_error_field_text.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
+import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_horizontal_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
@@ -74,19 +76,18 @@ class AddTaskScreen extends StatelessWidget {
           addTaskCubit = AddTaskCubit.get(context);
 
           return Scaffold(
-            appBar: AppBar(
-              title: Text('add_task_title'.tr()),
+            appBar: MyAppBar(
+             title: 'add_task_title'.tr(),
             ),
             body: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+                MyScreen(
+                  // padding: const EdgeInsets.all(16.0),
                   child: Form(
                     key: addTaskCubit.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         Expanded(
                           child: SingleChildScrollView(
                             child: Column(

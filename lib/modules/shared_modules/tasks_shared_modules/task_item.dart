@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
+import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
+import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_dialog/my_dialog.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
@@ -23,41 +26,51 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => myDialog(context,
-          title: 'task_item_options_dialog_title'.tr(),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MyElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TaskDetailsScreen(
-                        taskId: taskModel.tId!,
-                      ),
-                    ),
-                  );
-                },
-                child: Text('task_item_options_dialog_view_details'.tr()),
+      onTap: () => myDialog(
+        context,
+        title: 'task_item_options_dialog_title'.tr(),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                NavigationServices.navigateTo(
+                  context,
+                  TaskDetailsScreen(
+                    taskId: taskModel.tId!,
+                  ),
+                );
+              },
+              child: Text('task_item_options_dialog_view_details'.tr()),
+            ),
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                NavigationServices.navigateTo(
+                  context,
+                  EditTaskScreen(
+                    taskModel: taskModel,
+                  ),
+                );
+              },
+              child: Text('task_item_options_dialog_edit'.tr()),
+            ),
+            MyTextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                NavigationServices.navigateTo(
+                  context,
+                  AddTaskSubmissionScreen(),
+                );
+              },
+              child: Text(
+                'task_item_options_dialog_add_submission'.tr(),
               ),
-              MyElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditTaskScreen(
-                        taskModel: taskModel,
-                      ),
-                    ),
-                  );
-                },
-                child: Text('task_item_options_dialog_edit'.tr()),
-              ),
-            ],
-          )),
+            )
+          ],
+        ),
+      ),
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         elevation: 4,
@@ -91,11 +104,13 @@ class TaskItem extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                     decoration: BoxDecoration(
-                      color: TaskStatusEnum.getStatus(taskModel.tStatus).statusColor,
+                      color: TaskStatusEnum.getStatus(taskModel.tStatus)
+                          .statusColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      TaskStatusEnum.getStatus(taskModel.tStatus).statusAr ?? 'status',
+                      TaskStatusEnum.getStatus(taskModel.tStatus).statusAr ??
+                          'status',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

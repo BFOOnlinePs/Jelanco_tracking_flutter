@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
+import 'package:jelanco_tracking_system/core/constants/colors.dart';
 
 class MyElevatedButton extends StatelessWidget {
   final Widget child;
@@ -49,7 +50,8 @@ class MyElevatedButton extends StatelessWidget {
         //   ),
         // ),
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          backgroundColor: WidgetStateProperty.all(ColorsConstants.primaryColor),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.circular(ButtonSizeConstants.borderRadius),
