@@ -14,7 +14,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            'Submitted By: ${submission.submitterUser?.name}',
+            'مقدم بواسطة: ${submission.submitterUser?.name}',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,

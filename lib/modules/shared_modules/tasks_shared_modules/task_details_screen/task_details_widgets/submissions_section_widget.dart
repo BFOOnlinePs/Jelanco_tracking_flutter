@@ -11,76 +11,77 @@ import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.da
 
 class SubmissionsSectionWidget extends StatelessWidget {
   final TaskDetailsCubit taskDetailsCubit;
+
   const SubmissionsSectionWidget({super.key, required this.taskDetailsCubit});
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitleWidget('Submissions'),
+        SectionTitleWidget('عمليات التسليم'),
         ...taskDetailsCubit
-            .getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions
-            ?.map((submission) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0),
-            padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.orange[50],
-              border: Border(
-                left: BorderSide(
-                  color: ColorsConstants.secondaryColor,
-                  width: 5.0,
+                .getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions
+                ?.map((submission) {
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.orange[50],
+                  border: Border(
+                    right: BorderSide(
+                      color: ColorsConstants.secondaryColor,
+                      width: 5.0,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SubmissionHeaderWidget(submission),
-                ContentWidget('Content', submission.tsContent ?? '',
-                    Icons.content_copy,
-                    isSubmission: true),
-
-                DetailRowWidget(
-                    'File', submission.tsFile ?? '', Icons.attach_file),
-
-                MyVerticalSpacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    submission.tsActualStartTime != null
-                        ? Expanded(
-                      child: TimeWidget(
-                          'Actual Start Time',
-                          submission.tsActualStartTime!,
-                          Icons.access_time),
-                    )
-                        : Container(),
-                    submission.tsActualStartTime != null &&
+                    SubmissionHeaderWidget(submission),
+                    ContentWidget('Content', submission.tsContent ?? '',
+                        Icons.content_copy,
+                        isSubmission: true),
+
+                    DetailRowWidget(
+                        'الملفات', submission.tsFile ?? '', Icons.attach_file),
+
+                    MyVerticalSpacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        submission.tsActualStartTime != null
+                            ? Expanded(
+                                child: TimeWidget(
+                                    'وقت البدء الفعلي',
+                                    submission.tsActualStartTime!,
+                                    Icons.access_time),
+                              )
+                            : Container(),
+                        submission.tsActualStartTime != null &&
+                                submission.tsActualEndTime != null
+                            ? SizedBox(width: 10)
+                            : Container(),
                         submission.tsActualEndTime != null
-                        ? SizedBox(width: 10)
-                        : Container(),
-                    submission.tsActualEndTime != null
-                        ? Expanded(
-                      child: TimeWidget(
-                          'Actual End Time',
-                          submission.tsActualEndTime!,
-                          Icons.access_time_outlined),
-                    )
+                            ? Expanded(
+                                child: TimeWidget(
+                                    'وقت الإنتهاء الفعلي',
+                                    submission.tsActualEndTime!,
+                                    Icons.access_time_outlined),
+                              )
+                            : Container(),
+                      ],
+                    ),
+
+                    // _buildStatusRow('Status', submission.status, Icons.info),
+                    MyVerticalSpacer(),
+                    submission.submissionComments!.isNotEmpty
+                        ? CommentsSectionWidget(submission.submissionComments!)
                         : Container(),
                   ],
                 ),
-
-                // _buildStatusRow('Status', submission.status, Icons.info),
-                MyVerticalSpacer(),
-                submission.submissionComments!.isNotEmpty
-                    ? CommentsSectionWidget(submission.submissionComments!)
-                    : Container(),
-              ],
-            ),
-          );
-        }).toList() ??
+              );
+            }).toList() ??
             [],
       ],
     );

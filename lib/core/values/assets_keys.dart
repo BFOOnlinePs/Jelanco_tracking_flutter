@@ -5,5 +5,4 @@ class AssetsKeys {
   // static const String appIcon = 'app_icon';
 
   static const String translations = 'assets/translations';
-
 }

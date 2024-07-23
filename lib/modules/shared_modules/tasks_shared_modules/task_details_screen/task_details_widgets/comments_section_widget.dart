@@ -11,7 +11,7 @@ class CommentsSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Comments:',
+        Text('التعليقات:',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,

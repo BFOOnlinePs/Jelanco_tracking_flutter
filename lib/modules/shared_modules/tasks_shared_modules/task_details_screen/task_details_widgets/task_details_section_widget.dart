@@ -18,7 +18,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitleWidget('Task Details',
+        SectionTitleWidget('تفاصيل المهمة',
             status: TaskStatusEnum.getStatus(taskDetailsCubit
                 .getTaskWithSubmissionsAndCommentsModel!.task!.tStatus!),
             statusIcon: Icons.flag),
@@ -31,7 +31,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
             ?.taskCategory !=
             null
             ? CategoryRowWidget(
-            'Category',
+            'التصنيف',
             taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
                 .taskCategory!.cName ??
                 '')
@@ -40,7 +40,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
         taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
             .assignedToUsers!.isNotEmpty
             ? AssignedToWidget(
-            'Assigned To',
+            'الموظفين المكلفين',
             taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
                 ?.assignedToUsers!
                 .map((user) => user.name)
@@ -57,7 +57,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                 null
                 ? Expanded(
               child: TimeWidget(
-                  'Planned Start Time',
+                  'وقت البدء المخطط له',
                   taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
                       .task!.tPlanedStartTime!,
                   Icons.timer),
@@ -76,7 +76,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                 null
                 ? Expanded(
               child: TimeWidget(
-                  'Planned End Time',
+                  'وقت الانتهاء المخطط له',
                   taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
                       .task!.tPlanedEndTime!,
                   Icons.timer_off),
@@ -85,26 +85,26 @@ class TaskDetailsSectionWidget extends StatelessWidget {
           ],
         ),
         MyVerticalSpacer(),
-        taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-            .tSupervisorNotes !=
-            null
-            ? NotesWidget(
-          'Supervisor Notes',
-          taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-              .tSupervisorNotes!,
-          Icons.notes,
-        )
-            : Container(),
-        taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-            .tManagerNotes !=
-            null
-            ? NotesWidget(
-          'Manager Notes',
-          taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-              .tManagerNotes!,
-          Icons.notes,
-        )
-            : Container(),
+        // taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
+        //     .tSupervisorNotes !=
+        //     null
+        //     ? NotesWidget(
+        //   'Supervisor Notes',
+        //   taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
+        //       .tSupervisorNotes!,
+        //   Icons.notes,
+        // )
+        //     : Container(),
+        // taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
+        //     .tManagerNotes !=
+        //     null
+        //     ? NotesWidget(
+        //   'Manager Notes',
+        //   taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
+        //       .tManagerNotes!,
+        //   Icons.notes,
+        // )
+        //     : Container(),
         // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',
         //     Icons.calendar_today),
         // _buildDateRow(

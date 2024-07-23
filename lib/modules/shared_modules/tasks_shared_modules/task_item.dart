@@ -125,7 +125,7 @@ class TaskItem extends StatelessWidget {
                   const Icon(Icons.calendar_today, color: Colors.grey),
                   const SizedBox(width: 8),
                   Text(
-                    'Start:  ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
+                    'تاريخ البدء:     ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -135,7 +135,7 @@ class TaskItem extends StatelessWidget {
                   const Icon(Icons.calendar_today, color: Colors.grey),
                   SizedBox(width: 8),
                   Text(
-                    'End:    ${MyDateUtils.formatDateTime(taskModel.tPlanedEndTime)}',
+                    'تاريخ الإنتهاء:  ${MyDateUtils.formatDateTime(taskModel.tPlanedEndTime)}',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -146,37 +146,37 @@ class TaskItem extends StatelessWidget {
                   Icon(Icons.category, color: Colors.grey),
                   SizedBox(width: 8),
                   Text(
-                      'Category: ${taskModel.taskCategory?.cName ?? 'undefined'}'),
+                      'التصنيف: ${taskModel.taskCategory?.cName ?? 'undefined'}'),
                 ],
               ),
               MyVerticalSpacer(),
               Text(
-                'Assigned To: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
+                'الموظفين المكلفين: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
                 style: const TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.blueGrey,
                 ),
               ),
               Text(
-                'Added by: ${taskModel.addedByUser?.name}',
+                'أُضيف بواسطة: ${taskModel.addedByUser?.name}',
                 style: const TextStyle(
                   fontStyle: FontStyle.italic,
                   color: Colors.blueGrey,
                 ),
               ),
-              MyVerticalSpacer(),
-              Divider(),
-              const Text(
-                'Supervisor Notes:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(taskModel.tSupervisorNotes ?? ''),
-              SizedBox(height: 10),
-              const Text(
-                'Manager Notes:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(taskModel.tManagerNotes ?? ''),
+              // MyVerticalSpacer(),
+              // Divider(),
+              // const Text(
+              //   'Supervisor Notes:',
+              //   style: TextStyle(fontWeight: FontWeight.bold),
+              // ),
+              // Text(taskModel.tSupervisorNotes ?? ''),
+              // SizedBox(height: 10),
+              // const Text(
+              //   'Manager Notes:',
+              //   style: TextStyle(fontWeight: FontWeight.bold),
+              // ),
+              // Text(taskModel.tManagerNotes ?? ''),
             ],
           ),
         ),
