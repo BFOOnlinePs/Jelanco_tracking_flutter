@@ -8,7 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
-import 'package:jelanco_tracking_system/core/utils/mixins/compress_video_mixin/compress_video_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
@@ -18,7 +19,10 @@ import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
 class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
-    with PermissionsMixin, CompressVideoMixin<AddTaskSubmissionStates> {
+    with
+        PermissionsMixin,
+        CompressVideoMixin<AddTaskSubmissionStates>,
+        CompressImagesMixin<AddTaskSubmissionStates> {
   AddTaskSubmissionCubit() : super(AddTaskSubmissionInitialState());
 
   static AddTaskSubmissionCubit get(context) => BlocProvider.of(context);
@@ -32,20 +36,34 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   // images
 
-  List<XFile> thePickedImagesList = [];
+  List<XFile> pickedImagesList = [];
+  List<XFile?> compressedImagesList = [];
 
   Future<void> pickMultipleImagesFromGallery() async {
     final List<XFile> pickedImages = await picker.pickMultiImage();
     if (pickedImages.isNotEmpty) {
-      thePickedImagesList.addAll(pickedImages);
+      pickedImagesList.addAll(pickedImages);
     }
-    print("Image List Length:" + thePickedImagesList.length.toString());
+    print("Image List Length:" + pickedImagesList.length.toString());
     emit(PickMultipleImagesState());
   }
 
   void deletedPickedImageFromList({required int index}) {
-    thePickedImagesList.removeAt(index);
+    pickedImagesList.removeAt(index);
     emit(DeletePickedImageFromListState());
+  }
+
+  Future<void> compressAllImages() async {
+    emit(CompressAllImagesLoadingState());
+    compressedImagesList.clear();
+    for (int i = 0; i < pickedImagesList.length; i++) {
+      print('thePickedImagesList[i].path: ${pickedImagesList[i].path}');
+      XFile? compressed = await compressImage(
+        File(pickedImagesList[i].path),
+      );
+      compressedImagesList.add(compressed);
+    }
+    emit(CompressAllImagesSuccessState());
   }
 
   // videos
@@ -111,8 +129,9 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   }
 
   Future<void> compressVideos() async {
+    compressedVideoList.clear();
 
-    for(int i = 0; i < pickedVideosList.length; i++) {
+    for (int i = 0; i < pickedVideosList.length; i++) {
       print('pickedVideosList[i].path: ${pickedVideosList[i].path}');
       var compressed = await compressVideo(
         pickedVideosList[i].path,
@@ -195,7 +214,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   Future<void> addNewTaskSubmission({required int taskId}) async {
     emit(AddTaskSubmissionLoadingState());
 
-    // compress videos before send  to back-end
+    // compress images videos before send  to back-end
+    await compressAllImages();
     await compressVideos();
 
     Map<String, dynamic> dataObject = {
@@ -208,11 +228,12 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
     FormData formData = FormData.fromMap(dataObject);
 
-    for (int i = 0; i < thePickedImagesList.length; i++) {
+    // compressedImagesList instead of pickedImagesList
+    for (int i = 0; i < compressedImagesList.length; i++) {
       formData.files.addAll([
         MapEntry(
           "images[]",
-          await MultipartFile.fromFile(thePickedImagesList[i].path),
+          await MultipartFile.fromFile(compressedImagesList[i]!.path),
         ),
       ]);
     }

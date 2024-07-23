@@ -97,7 +97,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     },
                                     child: Text('صور')),
                                 addTaskSubmissionCubit
-                                        .thePickedImagesList.isEmpty
+                                        .pickedImagesList.isEmpty
                                     ? Text('قم بإختيار الصور')
                                     : Container(
                                         height: 200,
@@ -115,14 +115,14 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                   },
                                                   child: Image.file(
                                                     File(addTaskSubmissionCubit
-                                                        .thePickedImagesList[
+                                                        .pickedImagesList[
                                                             index]
                                                         .path),
                                                   ),
                                                   margin: EdgeInsetsDirectional
                                                       .only(end: 10)),
                                           itemCount: addTaskSubmissionCubit
-                                              .thePickedImagesList.length,
+                                              .pickedImagesList.length,
                                         ),
                                       ),
                                 MyTextButton(
