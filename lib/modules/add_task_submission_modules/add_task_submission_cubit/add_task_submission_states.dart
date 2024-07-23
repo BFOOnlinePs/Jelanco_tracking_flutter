@@ -31,6 +31,8 @@ class ToggleVideoPlayPauseState extends AddTaskSubmissionStates {}
 
 class AddTaskSubmissionLoadingState extends AddTaskSubmissionStates {}
 
+class EmitLoadingState extends AddTaskSubmissionStates {}
+
 class AddTaskSubmissionSuccessState extends AddTaskSubmissionStates {
   final AddTaskSubmissionModel addTaskSubmissionModel;
 

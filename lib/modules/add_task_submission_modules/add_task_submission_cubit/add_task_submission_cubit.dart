@@ -209,12 +209,19 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
+  void emitLoading(){
+    emit(EmitLoadingState());
+  }
+
   // add
 
-  Future<void> addNewTaskSubmission({required int taskId}) async {
-    emit(AddTaskSubmissionLoadingState());
+  AddTaskSubmissionModel? addTaskSubmissionModel;
+  bool isAddTaskSubmissionLoading = false;
 
-    // compress images videos before send  to back-end
+  Future<void> addNewTaskSubmission({required int taskId}) async {
+    isAddTaskSubmissionLoading = true;
+    emit(AddTaskSubmissionLoadingState());
+    // compress images videos before send them to back-end
     await compressAllImages();
     await compressVideos();
 
@@ -257,11 +264,9 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       ]);
     }
 
-    AddTaskSubmissionModel? addTaskSubmissionModel;
-
     print('formData: ${formData.fields}');
 
-    DioHelper.postData(
+    await DioHelper.postData(
       url: EndPointsConstants.taskSubmissions,
       data: formData,
     ).then((value) {
@@ -273,6 +278,10 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       emit(AddTaskSubmissionErrorState(error: error.toString()));
       print(error.toString());
     });
+    isAddTaskSubmissionLoading = false;
+    emitLoading();
+
+
   }
 
   @override

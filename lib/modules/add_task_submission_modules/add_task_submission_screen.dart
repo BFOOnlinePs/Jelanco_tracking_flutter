@@ -96,8 +96,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                   .pickMultipleImagesFromGallery);
                                     },
                                     child: Text('صور')),
-                                addTaskSubmissionCubit
-                                        .pickedImagesList.isEmpty
+                                addTaskSubmissionCubit.pickedImagesList.isEmpty
                                     ? Text('قم بإختيار الصور')
                                     : Container(
                                         height: 200,
@@ -115,8 +114,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                   },
                                                   child: Image.file(
                                                     File(addTaskSubmissionCubit
-                                                        .pickedImagesList[
-                                                            index]
+                                                        .pickedImagesList[index]
                                                         .path),
                                                   ),
                                                   margin: EdgeInsetsDirectional
@@ -244,6 +242,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                 .addTaskSubmissionFormKey.currentState!
                                 .validate()) {
                               addTaskSubmissionCubit
+                                  .isAddTaskSubmissionLoading = true;
+                              addTaskSubmissionCubit.emitLoading();
+                              addTaskSubmissionCubit
                                   .requestPermission(
                                 context: context,
                                 permissionType: PermissionType.location,
@@ -251,7 +252,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     addTaskSubmissionCubit.getCurrentLocation,
                               )
                                   .then((value) {
-
                                 addTaskSubmissionCubit.addNewTaskSubmission(
                                     taskId: taskId);
                               }).catchError((error) {
@@ -267,7 +267,8 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                addTaskSubmissionCubit.state is AddTaskSubmissionLoadingState
+                // addTaskSubmissionCubit.state is AddTaskSubmissionLoadingState
+                addTaskSubmissionCubit.isAddTaskSubmissionLoading
                     ? const LoaderWithDisable()
                     : Container(),
               ],

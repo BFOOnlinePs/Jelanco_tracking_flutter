@@ -7,11 +7,11 @@ import 'package:path_provider/path_provider.dart';
 mixin CompressImagesMixin<T> on Cubit<T> {
   Future<XFile?> compressImage(
     File file,
-  //     {
-  //   required T loadingState,
-  //   required T successState,
-  //   required T Function(String error) errorState,
-  // }
+    //     {
+    //   required T loadingState,
+    //   required T successState,
+    //   required T Function(String error) errorState,
+    // }
   ) async {
     // Get the temporary directory
     final tempDir = await getTemporaryDirectory();
@@ -20,11 +20,11 @@ mixin CompressImagesMixin<T> on Cubit<T> {
     // Get the original file name and extension
     final fileName = file.uri.pathSegments.last;
     final fileExtension = fileName.split('.').last;
-    final fileNameWithoutExtension = fileName.replaceFirst(RegExp(r'\.[^.]+$'), '');
+    final fileNameWithoutExtension =
+        fileName.replaceFirst(RegExp(r'\.[^.]+$'), '');
 
     // Create a unique file name for the compressed image
-    final compressedFileName =
-        '$fileNameWithoutExtension.$fileExtension';
+    final compressedFileName = '$fileNameWithoutExtension.$fileExtension';
     final compressedFilePath = '$tempPath/$compressedFileName';
 
     print('fileName: $fileName');
