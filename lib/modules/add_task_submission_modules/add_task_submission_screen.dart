@@ -15,7 +15,6 @@ import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_video/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
-import 'package:video_player/video_player.dart';
 
 class AddTaskSubmissionScreen extends StatelessWidget {
   final int taskId;
@@ -44,6 +43,12 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                 message: state.addTaskSubmissionModel.message,
               );
             }
+          } else if (state is AddTaskSubmissionFileSelectErrorState) {
+            SnackbarHelper.showSnackbar(
+              context: context,
+              snackBarStates: SnackBarStates.error,
+              message: state.error,
+            );
           }
         },
         builder: (context, state) {
@@ -154,59 +159,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                         index: index);
                                               },
                                             );
-                                            // return Column(
-                                            //   children: [
-                                            //     if (addTaskSubmissionCubit
-                                            //             .videoControllers[index]
-                                            //             ?.value
-                                            //             .isInitialized ==
-                                            //         true)
-                                            //
-                                            //       Container(
-                                            //         height: 220,
-                                            //         child: AspectRatio(
-                                            //           aspectRatio:
-                                            //               addTaskSubmissionCubit
-                                            //                   .videoControllers[
-                                            //                       index]!
-                                            //                   .value
-                                            //                   .aspectRatio,
-                                            //           child: VideoPlayer(
-                                            //               addTaskSubmissionCubit
-                                            //                       .videoControllers[
-                                            //                   index]!),
-                                            //         ),
-                                            //       ),
-                                            //     if (addTaskSubmissionCubit
-                                            //             .videoControllers[index]
-                                            //             ?.value
-                                            //             .isInitialized ==
-                                            //         true)
-                                            //       Container(
-                                            //         width: 120,
-                                            //         child: VideoProgressIndicator(
-                                            //             addTaskSubmissionCubit
-                                            //                     .videoControllers[
-                                            //                 index]!,
-                                            //             allowScrubbing: true),
-                                            //       ),
-                                            //     IconButton(
-                                            //       icon: Icon(
-                                            //           addTaskSubmissionCubit
-                                            //                   .videoControllers[
-                                            //                       index]!
-                                            //                   .value
-                                            //                   .isPlaying
-                                            //               ? Icons.pause
-                                            //               : Icons.play_arrow),
-                                            //       onPressed: () {
-                                            //         addTaskSubmissionCubit
-                                            //             .toggleVideoPlayPause(
-                                            //                 index);
-                                            //       },
-                                            //     ),
-                                            //   ],
-                                            // );
                                           },
                                           itemCount: addTaskSubmissionCubit
                                               .pickedVideosList.length,
@@ -291,19 +243,20 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                             if (addTaskSubmissionCubit
                                 .addTaskSubmissionFormKey.currentState!
                                 .validate()) {
-                              addTaskSubmissionCubit.requestPermission(
+                              addTaskSubmissionCubit
+                                  .requestPermission(
                                 context: context,
                                 permissionType: PermissionType.location,
                                 functionWhenGranted:
                                     addTaskSubmissionCubit.getCurrentLocation,
-                              ).then((value){
+                              )
+                                  .then((value) {
+
                                 addTaskSubmissionCubit.addNewTaskSubmission(
                                     taskId: taskId);
-                              }).catchError((error){
+                              }).catchError((error) {
                                 print('error with location !!');
                               });
-
-
                             }
                           },
                           // child: Text('add_task_submission_button_submit'.tr()),

@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/core/values/constants.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
 import 'package:jelanco_tracking_system/modules/splash_modules/splash_screen.dart';
+import 'package:video_compress/video_compress.dart';
 
 import 'core/constants/user_data.dart';
 import 'modules/home_modules/home_screen.dart';

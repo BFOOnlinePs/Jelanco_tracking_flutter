@@ -17,7 +17,11 @@ class RequestLocationPermissionGetDeniedState extends AddTaskSubmissionStates {}
 
 class AddTaskSubmissionFileSelectSuccessState extends AddTaskSubmissionStates {}
 
-class AddTaskSubmissionFileSelectErrorState extends AddTaskSubmissionStates {}
+class AddTaskSubmissionFileSelectErrorState extends AddTaskSubmissionStates {
+  final String error;
+
+  AddTaskSubmissionFileSelectErrorState({required this.error});
+}
 
 class DeletePickedFilesFromListState extends AddTaskSubmissionStates {}
 
@@ -37,4 +41,18 @@ class AddTaskSubmissionErrorState extends AddTaskSubmissionStates {
   final String error;
 
   AddTaskSubmissionErrorState({required this.error});
+}
+
+class CompressAllVideosSuccessState extends AddTaskSubmissionStates {}
+
+// compress video mixin
+
+class CompressVideoLoadingState extends AddTaskSubmissionStates {}
+
+class CompressVideoSuccessState extends AddTaskSubmissionStates {}
+
+class CompressVideoErrorState extends AddTaskSubmissionStates {
+  final String error;
+
+  CompressVideoErrorState({required this.error});
 }

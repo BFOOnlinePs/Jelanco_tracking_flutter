@@ -7,14 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/compress_video_mixin/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
+import 'package:mime/mime.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
 class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
-    with PermissionsMixin {
+    with PermissionsMixin, CompressVideoMixin<AddTaskSubmissionStates> {
   AddTaskSubmissionCubit() : super(AddTaskSubmissionInitialState());
 
   static AddTaskSubmissionCubit get(context) => BlocProvider.of(context);
@@ -47,13 +51,14 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   // videos
 
   List<XFile> pickedVideosList = [];
+  List<MediaInfo?> compressedVideoList = [];
 
   Future<void> pickMultipleVideosFromGallery() async {
     final XFile? video = await picker.pickVideo(source: ImageSource.gallery);
     if (video != null) {
       pickedVideosList.add(video);
-      print('Picked video path: ${video.path}');
 
+      print('Picked video path: ${video.path}');
       await initializeVideoController(File(video.path));
       emit(PickMultipleVideosState());
       // print('videoControllers: ${videoControllers[0]?.value?.duration}');
@@ -90,6 +95,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   void deletedPickedVideoFromList({required int index}) {
     pickedVideosList.removeAt(index);
+    // compressedVideoList.removeAt(index);
     videoControllers[index]?.dispose();
     videoControllers.removeAt(index);
     emit(DeletePickedVideoFromListState());
@@ -104,6 +110,22 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
+  Future<void> compressVideos() async {
+
+    for(int i = 0; i < pickedVideosList.length; i++) {
+      print('pickedVideosList[i].path: ${pickedVideosList[i].path}');
+      var compressed = await compressVideo(
+        pickedVideosList[i].path,
+        loadingState: CompressVideoLoadingState(),
+        successState: CompressVideoSuccessState(),
+        errorState: (error) => CompressVideoErrorState(error: error),
+      );
+      compressedVideoList.add(compressed);
+    }
+
+    emit(CompressAllVideosSuccessState());
+  }
+
   // files
 
   FilePickerResult? result;
@@ -113,19 +135,44 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null) {
-      // pickedFiles = result!.paths.map((path) => File(path!)).toList();
-      pickedFilesList.addAll(result!.paths.map((path) => File(path!)).toList());
-      emit(AddTaskSubmissionFileSelectSuccessState());
-    } else {
-      emit(AddTaskSubmissionFileSelectErrorState());
-      print('User canceled the file selection');
+      for (PlatformFile file in result!.files) {
+        File selectedFile = File(file.path!);
+        String? mimeType = lookupMimeType(file.path!);
+        String extension = file.extension ?? '';
+
+        if (mimeType != null &&
+            FilesExtensionsUtils.isAcceptedFileType(extension)) {
+          pickedFilesList.add(selectedFile);
+          emit(AddTaskSubmissionFileSelectSuccessState());
+        } else {
+          emit(AddTaskSubmissionFileSelectErrorState(
+              error:
+                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+          // Show an error message if the file type is not accepted
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
+          // );
+        }
+      }
     }
+
+    // if (result != null) {
+    //   // pickedFiles = result!.paths.map((path) => File(path!)).toList();
+    //
+    //   pickedFilesList.addAll(result!.paths.map((path) => File(path!)).toList());
+    //   emit(AddTaskSubmissionFileSelectSuccessState());
+    // } else {
+    //   emit(AddTaskSubmissionFileSelectErrorState());
+    //   print('User canceled the file selection');
+    // }
   }
 
   void deletedPickedFileFromList({required int index}) {
     pickedFilesList.removeAt(index);
     emit(DeletePickedFilesFromListState());
   }
+
+  // location
 
   Position? position;
 
@@ -148,10 +195,15 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   Future<void> addNewTaskSubmission({required int taskId}) async {
     emit(AddTaskSubmissionLoadingState());
 
+    // compress videos before send  to back-end
+    await compressVideos();
+
     Map<String, dynamic> dataObject = {
       'parent_id': -1, // first submission
       'task_id': taskId,
       'content': contentController.text,
+      'start_latitude': position?.latitude,
+      'start_longitude': position?.longitude,
     };
 
     FormData formData = FormData.fromMap(dataObject);
@@ -165,11 +217,12 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       ]);
     }
 
-    for (int i = 0; i < pickedVideosList.length; i++) {
+    // compressedVideoList instead of pickedVideosList
+    for (int i = 0; i < compressedVideoList.length; i++) {
       formData.files.addAll([
         MapEntry(
           "videos[]",
-          await MultipartFile.fromFile(pickedVideosList[i].path),
+          await MultipartFile.fromFile(compressedVideoList[i]!.path!),
         ),
       ]);
     }
@@ -206,6 +259,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     for (var controller in videoControllers) {
       controller?.dispose();
     }
+    contentController.dispose();
     return super.close();
   }
 }
