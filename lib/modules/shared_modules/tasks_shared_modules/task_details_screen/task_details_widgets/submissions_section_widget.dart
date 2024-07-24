@@ -46,6 +46,10 @@ class SubmissionsSectionWidget extends StatelessWidget {
                     DetailRowWidget(
                         'الملفات', submission.tsFile ?? '', Icons.attach_file),
 
+
+
+
+
                     MyVerticalSpacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

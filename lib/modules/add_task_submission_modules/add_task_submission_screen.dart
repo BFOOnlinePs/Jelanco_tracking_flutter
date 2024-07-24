@@ -10,9 +10,9 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
-import 'package:jelanco_tracking_system/widgets/my_images/my_image.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
-import 'package:jelanco_tracking_system/widgets/my_video/my_video.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
@@ -143,20 +143,23 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                           shrinkWrap: true,
                                           itemBuilder: (context, index) {
                                             return MyVideo(
-                                              videoPlayerController:
+                                                videoPlayerController:
+                                                    addTaskSubmissionCubit
+                                                            .videoControllers[
+                                                        index],
+                                                index: index,
+                                                onTogglePlayPause:
+                                                    addTaskSubmissionCubit
+                                                        .toggleVideoPlayPause,
+                                                showDeleteIcon: true,
+                                                onDeletePressed: () {
                                                   addTaskSubmissionCubit
-                                                      .videoControllers[index],
-                                              index: index,
-                                              onTogglePlayPause:
-                                                  addTaskSubmissionCubit
-                                                      .toggleVideoPlayPause,
-                                              showDeleteIcon: true,
-                                              onDeletePressed: () {
-                                                addTaskSubmissionCubit
-                                                    .deletedPickedVideoFromList(
-                                                        index: index);
-                                              },
-                                            );
+                                                      .deletedPickedVideoFromList(
+                                                          index: index);
+                                                },
+                                                margin:
+                                                    EdgeInsetsDirectional.only(
+                                                        end: 10));
                                           },
                                           itemCount: addTaskSubmissionCubit
                                               .pickedVideosList.length,

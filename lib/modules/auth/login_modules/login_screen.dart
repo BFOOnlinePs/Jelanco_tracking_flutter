@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                'أهلاً بعودتك'.tr(),
+                'login_title'.tr(),
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,

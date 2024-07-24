@@ -6,8 +6,9 @@ class SectionTitleWidget extends StatelessWidget {
   final String title;
   final TaskStatusEnum? status;
   final IconData? statusIcon;
+
   const SectionTitleWidget(this.title,
-  {super.key, this.status, this.statusIcon});
+      {super.key, this.status, this.statusIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +27,16 @@ class SectionTitleWidget extends StatelessWidget {
           ),
           status != null
               ? Row(
-            children: [
-              Icon(statusIcon, color: Colors.green, size: 18),
-              SizedBox(width: 6),
-              Text(
-                status?.statusEn ?? '',
-                style: TextStyle(color: Colors.green, fontSize: 16),
-              ),
-            ],
-          )
+                  children: [
+                    Icon(statusIcon, color: status?.statusColor, size: 18),
+                    SizedBox(width: 6),
+                    Text(
+                      status?.statusEn ?? '',
+                      style:
+                          TextStyle(color: status?.statusColor, fontSize: 16),
+                    ),
+                  ],
+                )
               : Container(),
         ],
       ),
