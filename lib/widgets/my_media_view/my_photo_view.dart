@@ -9,6 +9,7 @@ class MyPhotoView extends StatelessWidget {
   final int startedIndex;
 
   const MyPhotoView({
+    super.key,
     required this.galleryItems,
     required this.imagesHostPath,
     required this.startedIndex,
@@ -29,9 +30,10 @@ class MyPhotoView extends StatelessWidget {
                 return PhotoViewGalleryPageOptions(
                   // imageProvider: AssetImage(widget.galleryItems[index].image),
                   imageProvider:
-                  NetworkImage(imagesHostPath + galleryItems[index]),
+                      NetworkImage(imagesHostPath + galleryItems[index]),
                   initialScale: PhotoViewComputedScale.contained * 0.8,
-                  heroAttributes: PhotoViewHeroAttributes(tag: galleryItems[index]),
+                  heroAttributes:
+                      PhotoViewHeroAttributes(tag: galleryItems[index]),
                 );
               },
               itemCount: galleryItems.length,
@@ -40,10 +42,10 @@ class MyPhotoView extends StatelessWidget {
                   width: 20.0,
                   height: 20.0,
                   child: CircularProgressIndicator(
-                    // value: event == null
-                    //     ? 0
-                    //     : event.cumulativeBytesLoaded / event.expectedTotalBytes,
-                  ),
+                      // value: event == null
+                      //     ? 0
+                      //     : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+                      ),
                 ),
               ),
               backgroundDecoration: BoxDecoration(
@@ -54,7 +56,6 @@ class MyPhotoView extends StatelessWidget {
               // onPageChanged: onPageChanged,
             ),
           );
-        }
-    );
+        });
   }
 }

@@ -30,7 +30,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   GlobalKey<FormState> addTaskSubmissionFormKey = GlobalKey<FormState>();
 
   TextEditingController contentController = TextEditingController();
-  List<VideoPlayerController?> videoControllers = [];
 
   final ImagePicker picker = ImagePicker();
 
@@ -70,6 +69,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   List<XFile> pickedVideosList = [];
   List<MediaInfo?> compressedVideoList = [];
+  List<VideoPlayerController?> videoControllers = [];
 
   Future<void> pickMultipleVideosFromGallery() async {
     final XFile? video = await picker.pickVideo(source: ImageSource.gallery);
@@ -88,6 +88,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
+
   Future<void> initializeVideoController(File file) async {
     if (file.path.endsWith('.mp4')) {
       VideoPlayerController controller = VideoPlayerController.file(file);
@@ -101,10 +102,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
         print('Error initializing video controller: $e');
         videoControllers.add(null);
       }
-      // videoControllers.add(controller);
-      // controller.initialize().then((_) {
-      //   emit(InitializeVideoControllerState());
-      // });
     } else {
       // message = 'File is not a video';
       videoControllers.add(null);

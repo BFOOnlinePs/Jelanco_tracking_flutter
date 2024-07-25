@@ -10,3 +10,5 @@ class TaskDetailsErrorState extends TaskDetailsStates {
   final String error;
   TaskDetailsErrorState({required this.error});
 }
+
+class InitializeVideoControllerState extends TaskDetailsStates {}

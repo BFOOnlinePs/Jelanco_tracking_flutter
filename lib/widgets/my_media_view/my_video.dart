@@ -4,9 +4,10 @@ import 'package:video_player/video_player.dart';
 class MyVideo extends StatelessWidget {
   final int index;
   final VideoPlayerController? videoPlayerController;
-  final void Function(int index) onTogglePlayPause;
+  final void Function(int index)? onTogglePlayPause;
   final bool showDeleteIcon;
   final Function()? onDeletePressed;
+
   // final double height;
   final EdgeInsetsGeometry? margin;
 
@@ -14,7 +15,7 @@ class MyVideo extends StatelessWidget {
     super.key,
     required this.index,
     this.videoPlayerController,
-    required this.onTogglePlayPause,
+    this.onTogglePlayPause,
     this.showDeleteIcon = false,
     this.onDeletePressed,
     // required this.height,
@@ -37,11 +38,9 @@ class MyVideo extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
-
                   child: Container(
                     height: 220,
                     child: AspectRatio(
-
                       aspectRatio: videoPlayerController!.value.aspectRatio,
                       child: VideoPlayer(videoPlayerController!),
                     ),
@@ -49,14 +48,14 @@ class MyVideo extends StatelessWidget {
                 ),
                 showDeleteIcon
                     ? IconButton(
-                  onPressed: onDeletePressed,
-                  icon: Icon(
-                    Icons.delete_forever,
-                    color: Colors.red,
-                    size: 30,
-                  ),
-                  splashRadius: 20,
-                )
+                        onPressed: onDeletePressed,
+                        icon: Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                        splashRadius: 20,
+                      )
                     : Container(),
               ],
             ),
@@ -71,9 +70,11 @@ class MyVideo extends StatelessWidget {
           icon: Icon(videoPlayerController!.value.isPlaying
               ? Icons.pause
               : Icons.play_arrow),
-          onPressed: () {
-            onTogglePlayPause(index);
-          },
+          onPressed: onTogglePlayPause != null
+              ? () {
+                  onTogglePlayPause!(index);
+                }
+              : null,
         ),
       ],
     );

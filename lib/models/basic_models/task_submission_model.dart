@@ -1,6 +1,7 @@
 import 'package:jelanco_tracking_system/models/basic_models/submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_attachment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/submission_attachment_categories_model.dart';
 
 class TaskSubmissionModel {
   final int? tsId;
@@ -20,7 +21,7 @@ class TaskSubmissionModel {
   final DateTime? updatedAt;
   final UserModel? submitterUser;
   final List<SubmissionCommentModel>? submissionComments;
-  final List<SubmissionAttachmentModel>? submissionAttachments;
+  final SubmissionAttachmentsCategories? submissionAttachmentsCategories;
 
   TaskSubmissionModel({
     this.tsId,
@@ -40,7 +41,7 @@ class TaskSubmissionModel {
     this.updatedAt,
     this.submitterUser,
     this.submissionComments,
-    this.submissionAttachments,
+    this.submissionAttachmentsCategories,
   });
 
   factory TaskSubmissionModel.fromMap(Map<String, dynamic> json) => TaskSubmissionModel(
@@ -61,7 +62,7 @@ class TaskSubmissionModel {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     submitterUser: json["submitter_user"] == null ? null : UserModel.fromMap(json["submitter_user"]),
     submissionComments: json["submission_comments"] == null ? [] : List<SubmissionCommentModel>.from(json["submission_comments"]!.map((x) => SubmissionCommentModel.fromMap(x))),
-    submissionAttachments: json["submission_attachments"] == null ? [] : List<SubmissionAttachmentModel>.from(json["submission_attachments"]!.map((x) => SubmissionAttachmentModel.fromMap(x))),
+    submissionAttachmentsCategories: json["submission_attachments_categories"] == null ? null : SubmissionAttachmentsCategories.fromMap(json["submission_attachments_categories"]),
   );
 
   Map<String, dynamic> toMap() => {
@@ -82,6 +83,6 @@ class TaskSubmissionModel {
     "updated_at": updatedAt?.toIso8601String(),
     "submitter_user": submitterUser?.toMap(),
     "submission_comments": submissionComments == null ? [] : List<dynamic>.from(submissionComments!.map((x) => x.toMap())),
-    "submission_attachments": submissionAttachments == null ? [] : List<dynamic>.from(submissionAttachments!.map((x) => x.toMap())),
+    "submission_attachments_categories": submissionAttachmentsCategories?.toMap(),
   };
 }

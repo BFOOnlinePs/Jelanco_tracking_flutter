@@ -1,3 +1,5 @@
+import 'package:video_player/video_player.dart';
+
 class SubmissionAttachmentModel {
   final int? aId;
   final String? aTable;
@@ -7,6 +9,8 @@ class SubmissionAttachmentModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  late VideoPlayerController? videoController;
+
   SubmissionAttachmentModel({
     this.aId,
     this.aTable,
@@ -15,6 +19,7 @@ class SubmissionAttachmentModel {
     this.aUserId,
     this.createdAt,
     this.updatedAt,
+    this.videoController,
   });
 
   factory SubmissionAttachmentModel.fromMap(Map<String, dynamic> json) =>
