@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/time_widget.dart';
+import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
@@ -24,44 +25,6 @@ class SubmissionsSectionWidget extends StatefulWidget {
 }
 
 class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
-  // late Future<void> _initializationFuture;
-
-  // @override
-  // void initState() async {
-  //   // widget.taskDetailsCubit.initializeVideoController();
-  //   super.initState();
-  //   _initializationFuture = _initializeControllers();
-  // }
-
-  // void initState() async {
-  //   // submission
-  //   //     .submissionAttachmentsCategories!
-  //   //     .videos![index]
-  //
-  //   await widget.taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-  //       .taskSubmissions!
-  //       .map((submission) {
-  //     return submission.submissionAttachmentsCategories!.videos!.map((video) async {
-  //       await widget.taskDetailsCubit.initializeVideoController(video);
-  //     });
-  //   });
-  //
-  //   // widget.taskDetailsCubit.initializeVideoController();
-  //   super.initState();
-  // }
-
-  // Future<void> _initializeControllers() async {
-  //   final submissions = widget.taskDetailsCubit
-  //       .getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!;
-  //
-  //   for (var submission in submissions) {
-  //     final videos = submission.submissionAttachmentsCategories?.videos ?? [];
-  //     for (var video in videos) {
-  //       await widget.taskDetailsCubit.initializeVideoController(video);
-  //     }
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,12 +34,6 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
         ...widget.taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
                 ?.taskSubmissions
                 ?.map((submission) {
-              // final videos = submission.submissionAttachmentsCategories?.videos ?? [];
-              //     for (var video in videos) {
-              //        widget.taskDetailsCubit.initializeVideoController(video);
-              //     }
-              // widget.taskDetailsCubit.initializeVideoController(
-              //     submission.submissionAttachmentsCategories!.videos![index]);
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 10.0),
                 padding: EdgeInsets.all(16.0),
@@ -98,12 +55,58 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                         isSubmission: true),
 
                     DetailRowWidget(
-                        'الملفات', submission.tsFile ?? '', Icons.attach_file),
+                        'الوسائط', submission.tsFile ?? '', Icons.attach_file),
+
+                    submission
+                            .submissionAttachmentsCategories!.files!.isNotEmpty
+                        ? Column(
+                            children: [
+                              ...submission
+                                  .submissionAttachmentsCategories!.files!
+                                  .asMap()
+                                  .entries
+                                  .map((entry) {
+                                final index = entry.key;
+                                final file = entry.value;
+
+                                return InkWell(
+                                  onTap: () {
+                                    widget.taskDetailsCubit.launchMyUrl(
+                                        storagePath: EndPointsConstants
+                                            .taskSubmissionsStorage,
+                                        uriString: file.aAttachment!);
+                                  },
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  splashColor: Colors.blue.withOpacity(0.2),
+                                  highlightColor: Colors.blue.withOpacity(0.1),
+                                  child: Container(
+                                    padding: EdgeInsets.all(8.0), // Add padding
+                                    child: Text(
+                                      'ملف رقم ${index + 1}',
+                                      style: TextStyle(
+                                        color: ColorsConstants.primaryColor,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                        shadows: [
+                                          Shadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            offset: Offset(1, 1),
+                                            blurRadius: 2,
+                                          ),
+                                        ], // Subtle shadow
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ],
+                          )
+                        : Container(),
 
                     submission
                             .submissionAttachmentsCategories!.videos!.isNotEmpty
-                        // &&
-                        //     widget.taskDetailsCubit.isInitializeVideoController
                         ? Container(
                             height: 300.0,
                             child: ListView.builder(
@@ -112,11 +115,17 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                                 return widget.taskDetailsCubit
                                         .isInitializeVideoController
                                     ? MyVideo(
+                                        // height: 200,
+                                        margin:
+                                            EdgeInsetsDirectional.only(end: 8),
                                         index: index,
                                         videoPlayerController: submission
                                             .submissionAttachmentsCategories!
                                             .videos![index]
                                             .videoController,
+                                        onTogglePlayPauseWithController: widget
+                                            .taskDetailsCubit
+                                            .toggleVideoPlayPause,
                                       )
                                     : Text('not initialized');
                               },
@@ -131,11 +140,10 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                     submission
                             .submissionAttachmentsCategories!.images!.isNotEmpty
                         ? Container(
-                            height: 300.0,
+                            height: 220.0,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-
                                 return MyImage(
                                   height: 200,
                                   margin: EdgeInsetsDirectional.only(end: 8),
@@ -152,7 +160,7 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                                                     image.aAttachment!)
                                                 .toList(),
                                             imagesHostPath:
-                                                '${EndPointsConstants.taskSubmissionsStorage}/',
+                                                '${EndPointsConstants.taskSubmissionsStorage}',
                                             startedIndex: index,
                                           ),
                                         ),
@@ -160,7 +168,7 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                                     },
                                     child: Image(
                                       image: NetworkImage(
-                                        '${EndPointsConstants.taskSubmissionsStorage}/${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+                                        '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
                                       ),
                                     ),
                                   ),

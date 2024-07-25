@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class MyVideo extends StatelessWidget {
-  final int index;
+  final int? index;
   final VideoPlayerController? videoPlayerController;
-  final void Function(int index)? onTogglePlayPause;
+  final void Function(int index)? onTogglePlayPauseWithIndex;
+  final void Function(VideoPlayerController controller)?
+      onTogglePlayPauseWithController;
   final bool showDeleteIcon;
   final Function()? onDeletePressed;
 
   // final double height;
+  final double? videoHeight;
   final EdgeInsetsGeometry? margin;
 
   const MyVideo({
     super.key,
-    required this.index,
+    this.index,
     this.videoPlayerController,
-    this.onTogglePlayPause,
+    this.onTogglePlayPauseWithIndex,
+    this.onTogglePlayPauseWithController,
     this.showDeleteIcon = false,
     this.onDeletePressed,
+    this.videoHeight = 220,
     // required this.height,
     this.margin,
   });
@@ -25,11 +30,12 @@ class MyVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (videoPlayerController?.value.isInitialized == true)
           Container(
             // height: height,
-            // margin: margin,
+            margin: margin,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               border: Border.all(color: Colors.grey),
@@ -39,7 +45,7 @@ class MyVideo extends StatelessWidget {
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   child: Container(
-                    height: 220,
+                    height: videoHeight,
                     child: AspectRatio(
                       aspectRatio: videoPlayerController!.value.aspectRatio,
                       child: VideoPlayer(videoPlayerController!),
@@ -61,7 +67,7 @@ class MyVideo extends StatelessWidget {
             ),
           ),
         if (videoPlayerController?.value.isInitialized == true)
-          Container(
+          SizedBox(
             width: 120,
             child: VideoProgressIndicator(videoPlayerController!,
                 allowScrubbing: true),
@@ -70,11 +76,15 @@ class MyVideo extends StatelessWidget {
           icon: Icon(videoPlayerController!.value.isPlaying
               ? Icons.pause
               : Icons.play_arrow),
-          onPressed: onTogglePlayPause != null
+          onPressed: onTogglePlayPauseWithIndex != null
               ? () {
-                  onTogglePlayPause!(index);
+                  onTogglePlayPauseWithIndex!(index!);
                 }
-              : null,
+              : onTogglePlayPauseWithController != null
+                  ? () {
+                      onTogglePlayPauseWithController!(videoPlayerController!);
+                    }
+                  : null,
         ),
       ],
     );

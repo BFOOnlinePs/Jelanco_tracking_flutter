@@ -143,12 +143,14 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                           shrinkWrap: true,
                                           itemBuilder: (context, index) {
                                             return MyVideo(
+
+                                                // height: 200,
                                                 videoPlayerController:
                                                     addTaskSubmissionCubit
                                                             .videoControllers[
                                                         index],
                                                 index: index,
-                                                onTogglePlayPause:
+                                                onTogglePlayPauseWithIndex:
                                                     addTaskSubmissionCubit
                                                         .toggleVideoPlayPause,
                                                 showDeleteIcon: true,
