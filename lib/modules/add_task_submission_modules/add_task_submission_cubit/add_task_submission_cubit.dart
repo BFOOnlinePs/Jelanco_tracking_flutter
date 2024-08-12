@@ -11,6 +11,7 @@ import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -33,6 +34,50 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   final ImagePicker picker = ImagePicker();
 
+  // for the edit
+  void getOldData(
+      {required bool isEdit, TaskSubmissionModel? taskSubmissionModel}) async {
+    if (isEdit) {
+      print('call the old data');
+      contentController.text = taskSubmissionModel!.tsContent ?? '';
+      // taskSubmissionModel.submissionAttachmentsCategories?.videos!
+      //    .map((vid) async => await initializeOldVideoController(vid.aAttachment!));
+      for (var vid
+          in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
+              []) {
+        await initializeOldVideoController(vid.aAttachment!);
+      }
+    } else {
+      print('don\'t call the old data');
+    }
+  }
+
+  List<VideoPlayerController?> oldVideoControllers = [];
+
+  Future<void> initializeOldVideoController(String videoPath) async {
+    print('videoPath:: $videoPath');
+    if (videoPath.endsWith('.mp4')) {
+      print('videoPath:: $videoPath');
+
+      VideoPlayerController controller = VideoPlayerController.networkUrl(
+          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
+      try {
+        await controller.initialize();
+        oldVideoControllers.add(controller);
+        print('oldVideoControllers:: ${oldVideoControllers.length}');
+        emit(InitializeVideoControllerState());
+      } catch (e) {
+        print('Error initializing video controller: $e');
+        oldVideoControllers.add(null);
+      }
+    } else {
+      // message = 'File is not a video';
+      oldVideoControllers.add(null);
+    }
+  }
+
+  // end edit
+
   // images
 
   List<XFile> pickedImagesList = [];
@@ -47,8 +92,16 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(PickMultipleImagesState());
   }
 
-  void deletedPickedImageFromList({required int index}) {
-    pickedImagesList.removeAt(index);
+  void deletedPickedImageFromList(
+      {required int index, TaskSubmissionModel? taskSubmissionModel}) {
+    if (taskSubmissionModel != null) {
+      // in edit, for the old data
+      taskSubmissionModel.submissionAttachmentsCategories!.images
+          ?.removeAt(index);
+    } else {
+      // the picked
+      pickedImagesList.removeAt(index);
+    }
     emit(DeletePickedImageFromListState());
   }
 
@@ -64,6 +117,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
     emit(CompressAllImagesSuccessState());
   }
+
+  // images for edit screen
 
   // videos
 
@@ -88,7 +143,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
-
   Future<void> initializeVideoController(File file) async {
     if (file.path.endsWith('.mp4')) {
       VideoPlayerController controller = VideoPlayerController.file(file);
@@ -108,16 +162,39 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
-  void deletedPickedVideoFromList({required int index}) {
-    pickedVideosList.removeAt(index);
-    // compressedVideoList.removeAt(index);
-    videoControllers[index]?.dispose();
-    videoControllers.removeAt(index);
+  void deletedPickedVideoFromList({
+    required int index,
+    TaskSubmissionModel? taskSubmissionModel, // for edit
+  }) {
+    if (taskSubmissionModel != null) {
+      // in edit, for the old data
+      taskSubmissionModel.submissionAttachmentsCategories!.videos
+          ?.removeAt(index);
+      oldVideoControllers[index]?.dispose();
+      oldVideoControllers.removeAt(index);
+    } else {
+      // the picked
+      pickedVideosList.removeAt(index);
+      videoControllers[index]?.dispose();
+      videoControllers.removeAt(index);
+    }
+
     emit(DeletePickedVideoFromListState());
   }
 
-  void toggleVideoPlayPause(int index) {
-    if (videoControllers[index] != null) {
+  void toggleVideoPlayPause(
+    int index, {
+    bool isOldVideos = false, // for edit
+  }) {
+    if (isOldVideos) {
+      print('old videos');
+      // in edit
+      oldVideoControllers[index]!.value.isPlaying
+          ? oldVideoControllers[index]!.pause()
+          : oldVideoControllers[index]!.play();
+      emit(ToggleVideoPlayPauseState());
+    } else if (videoControllers[index] != null) {
+      print('new videos');
       videoControllers[index]!.value.isPlaying
           ? videoControllers[index]!.pause()
           : videoControllers[index]!.play();
@@ -183,8 +260,16 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     // }
   }
 
-  void deletedPickedFileFromList({required int index}) {
-    pickedFilesList.removeAt(index);
+  void deletedPickedFileFromList(
+      {required int index, TaskSubmissionModel? taskSubmissionModel}) {
+    if (taskSubmissionModel != null) {
+      // in edit, for the old data
+      taskSubmissionModel.submissionAttachmentsCategories!.files
+          ?.removeAt(index);
+    } else {
+      // the picked
+      pickedFilesList.removeAt(index);
+    }
     emit(DeletePickedFilesFromListState());
   }
 
@@ -206,7 +291,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
-  void emitLoading(){
+  void emitLoading() {
     emit(EmitLoadingState());
   }
 
@@ -215,20 +300,32 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   AddTaskSubmissionModel? addTaskSubmissionModel;
   bool isAddTaskSubmissionLoading = false;
 
-  Future<void> addNewTaskSubmission({required int taskId}) async {
+  Future<void> addNewTaskSubmission({
+    required int taskId,
+    required bool isEdit,
+    int? taskSubmissionId,
+    List<String> oldAttachments = const [],
+  }) async {
     isAddTaskSubmissionLoading = true;
     emit(AddTaskSubmissionLoadingState());
     // compress images videos before send them to back-end
     await compressAllImages();
     await compressVideos();
 
+    // if (oldAttachments.isNotEmpty) {
+    //   setOldAttachments(oldAttachments: oldAttachments);
+    // }
+
     Map<String, dynamic> dataObject = {
-      'parent_id': -1, // first submission
+      'parent_id': taskSubmissionId, // -1 first submission
       'task_id': taskId,
       'content': contentController.text,
       'start_latitude': position?.latitude,
       'start_longitude': position?.longitude,
+      'old_attachments[]': oldAttachments
     };
+
+    print('old_attachments: ${oldAttachments.length}');
 
     FormData formData = FormData.fromMap(dataObject);
 
@@ -277,8 +374,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     });
     isAddTaskSubmissionLoading = false;
     emitLoading();
-
-
   }
 
   @override

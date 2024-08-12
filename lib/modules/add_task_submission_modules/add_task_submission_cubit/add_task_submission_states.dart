@@ -63,6 +63,8 @@ class CompressVideoErrorState extends AddTaskSubmissionStates {
   CompressVideoErrorState({required this.error});
 }
 
+class SetOldAttachmentsState extends AddTaskSubmissionStates {}
+
 // compress image mixin
 
 // class CompressImages

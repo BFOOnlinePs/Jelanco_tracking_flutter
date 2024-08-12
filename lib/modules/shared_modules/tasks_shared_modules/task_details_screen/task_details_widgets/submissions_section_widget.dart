@@ -8,7 +8,6 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/time_widget.dart';
-import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
@@ -54,8 +53,8 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                         Icons.content_copy,
                         isSubmission: true),
 
-                    DetailRowWidget(
-                        'الوسائط', submission.tsFile ?? '', Icons.attach_file),
+                    // DetailRowWidget(
+                    //     'الوسائط', submission.tsFile ?? '', Icons.attach_file),
 
                     submission
                             .submissionAttachmentsCategories!.files!.isNotEmpty

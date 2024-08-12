@@ -10,6 +10,7 @@ class MyVideo extends StatelessWidget {
   final bool showDeleteIcon;
   final Function()? onDeletePressed;
 
+
   // final double height;
   final double? videoHeight;
   final EdgeInsetsGeometry? margin;
@@ -72,6 +73,7 @@ class MyVideo extends StatelessWidget {
             child: VideoProgressIndicator(videoPlayerController!,
                 allowScrubbing: true),
           ),
+        videoPlayerController != null ?
         IconButton(
           icon: Icon(videoPlayerController!.value.isPlaying
               ? Icons.pause
@@ -85,7 +87,7 @@ class MyVideo extends StatelessWidget {
                       onTogglePlayPauseWithController!(videoPlayerController!);
                     }
                   : null,
-        ),
+        ) : Text('no contoller '),
       ],
     );
   }

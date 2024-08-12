@@ -56,16 +56,16 @@ class TaskDetailsScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add action for adding a new submission
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: ColorsConstants.primaryColor,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Add action for adding a new submission
+      //   },
+      //   child: Icon(
+      //     Icons.add,
+      //     color: Colors.white,
+      //   ),
+      //   backgroundColor: ColorsConstants.primaryColor,
+      // ),
     );
   }
 

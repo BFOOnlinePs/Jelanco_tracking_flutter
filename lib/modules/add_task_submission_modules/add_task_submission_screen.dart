@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -16,19 +18,32 @@ import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
+// to add submission, regardless if it is the original submission or edit submission / new version
 class AddTaskSubmissionScreen extends StatelessWidget {
   final int taskId;
+  final TaskSubmissionModel? taskSubmissionModel; // for edit
+  final bool isEdit; // for edit
 
-  AddTaskSubmissionScreen({super.key, required this.taskId});
+  AddTaskSubmissionScreen({
+    super.key,
+    required this.taskId,
+    this.taskSubmissionModel,
+    this.isEdit = false,
+  });
 
   late AddTaskSubmissionCubit addTaskSubmissionCubit;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddTaskSubmissionCubit(),
+      create: (context) => AddTaskSubmissionCubit()
+        ..getOldData(isEdit: isEdit, taskSubmissionModel: taskSubmissionModel),
       child: BlocConsumer<AddTaskSubmissionCubit, AddTaskSubmissionStates>(
         listener: (context, state) {
+          print('state is $state');
+          if (state is AddTaskSubmissionInitialState) {
+            print('this is the initial state');
+          }
           if (state is AddTaskSubmissionSuccessState) {
             if (state.addTaskSubmissionModel.status == true) {
               SnackbarHelper.showSnackbar(
@@ -96,7 +111,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                   .pickMultipleImagesFromGallery);
                                     },
                                     child: Text('صور')),
-                                addTaskSubmissionCubit.pickedImagesList.isEmpty
+                                addTaskSubmissionCubit.pickedImagesList
+                                        .isEmpty // new picked (from file)
+
                                     ? Text('قم بإختيار الصور')
                                     : Container(
                                         height: 200,
@@ -123,17 +140,54 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               .pickedImagesList.length,
                                         ),
                                       ),
+                                // || the old picked images list is empty (form network)
+
+                                taskSubmissionModel == null ||
+                                        taskSubmissionModel!
+                                            .submissionAttachmentsCategories!
+                                            .images!
+                                            .isEmpty
+                                    ? Text('قم بإختيار الصور')
+                                    : Container(
+                                        height: 200,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) =>
+                                              MyImage(
+                                                  height: 100,
+                                                  showDeleteIcon: true,
+                                                  onDeletePressed: () {
+                                                    addTaskSubmissionCubit
+                                                        .deletedPickedImageFromList(
+                                                            index: index,
+                                                            taskSubmissionModel:
+                                                                taskSubmissionModel!);
+                                                  },
+                                                  margin: EdgeInsetsDirectional
+                                                      .only(end: 10),
+                                                  child: Image(
+                                                    image: NetworkImage(
+                                                      '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}',
+                                                    ),
+                                                  )),
+                                          itemCount: taskSubmissionModel!
+                                              .submissionAttachmentsCategories!
+                                              .images!
+                                              .length,
+                                        ),
+                                      ),
                                 MyTextButton(
-                                    onPressed: () {
-                                      addTaskSubmissionCubit.requestPermission(
-                                          context: context,
-                                          permissionType:
-                                              PermissionType.storage,
-                                          functionWhenGranted:
-                                              addTaskSubmissionCubit
-                                                  .pickMultipleVideosFromGallery);
-                                    },
-                                    child: Text('فيديوهات')),
+                                  onPressed: () {
+                                    addTaskSubmissionCubit.requestPermission(
+                                        context: context,
+                                        permissionType: PermissionType.storage,
+                                        functionWhenGranted:
+                                            addTaskSubmissionCubit
+                                                .pickMultipleVideosFromGallery);
+                                  },
+                                  child: Text('فيديوهات'),
+                                ),
                                 addTaskSubmissionCubit.pickedVideosList.isEmpty
                                     ? Text('قم بإختيار الفيديوهات')
                                     : Container(
@@ -143,7 +197,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                           shrinkWrap: true,
                                           itemBuilder: (context, index) {
                                             return MyVideo(
-
                                                 // height: 200,
                                                 videoPlayerController:
                                                     addTaskSubmissionCubit
@@ -165,6 +218,61 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                           },
                                           itemCount: addTaskSubmissionCubit
                                               .pickedVideosList.length,
+                                        ),
+                                      ),
+
+                                taskSubmissionModel == null ||
+                                        taskSubmissionModel!
+                                            .submissionAttachmentsCategories!
+                                            .videos!
+                                            .isEmpty ||
+                                        addTaskSubmissionCubit
+                                                .oldVideoControllers.length <
+                                            taskSubmissionModel!
+                                                .submissionAttachmentsCategories!
+                                                .videos!
+                                                .length // to make sure that all the controllers initialized
+                                    ? Text('قم بإختيار الفيديوهات')
+                                    : Container(
+                                        height: 280,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return MyVideo(
+                                                // height: 200,
+
+                                                videoPlayerController:
+                                                    addTaskSubmissionCubit
+                                                            .oldVideoControllers[
+                                                        index],
+                                                index: index,
+                                                onTogglePlayPauseWithIndex:
+                                                    (index) {
+                                                  addTaskSubmissionCubit
+                                                      .toggleVideoPlayPause(
+                                                          index,
+                                                          isOldVideos: true);
+                                                },
+                                                // addTaskSubmissionCubit
+                                                //     .toggleVideoPlayPause,
+
+                                                showDeleteIcon: true,
+                                                onDeletePressed: () {
+                                                  addTaskSubmissionCubit
+                                                      .deletedPickedVideoFromList(
+                                                          index: index,
+                                                          taskSubmissionModel:
+                                                              taskSubmissionModel!);
+                                                },
+                                                margin:
+                                                    EdgeInsetsDirectional.only(
+                                                        end: 10));
+                                          },
+                                          itemCount: taskSubmissionModel!
+                                              .submissionAttachmentsCategories!
+                                              .videos!
+                                              .length,
                                         ),
                                       ),
                                 MyTextButton(
@@ -220,21 +328,67 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               ),
                                             );
                                           },
-                                          //     ListTile(
-                                          //   leading: IconButton(
-                                          //     icon: Icon(Icons.close),
-                                          //     onPressed: () =>
-                                          //         addTaskSubmissionCubit
-                                          //             .deletedPickedfileFromList(
-                                          //                 index: index),
-                                          //   ),
-                                          //   title: Text(addTaskSubmissionCubit
-                                          //       .pickedFilesList[index].path
-                                          //       .split('/')
-                                          //       .last),
-                                          // ),
                                           itemCount: addTaskSubmissionCubit
                                               .pickedFilesList.length,
+                                        ),
+                                      ),
+
+                                taskSubmissionModel == null ||
+                                        taskSubmissionModel!
+                                            .submissionAttachmentsCategories!
+                                            .files!
+                                            .isEmpty
+                                    ? Text('قم بإختيار الملفات')
+                                    : Container(
+                                        // height: 200,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            String? fileName = taskSubmissionModel!
+                                                .submissionAttachmentsCategories!
+                                                .files![index]
+                                                .aAttachment;
+                                            // String fileName =
+                                            //     addTaskSubmissionCubit
+                                            //         .pickedFilesList[index].path
+                                            //         .split('/')
+                                            //         .last;
+                                            return Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 8, horizontal: 16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black12,
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 4,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: ListTile(
+                                                leading: IconButton(
+                                                  icon: Icon(Icons.close),
+                                                  onPressed: () =>
+                                                      // .......................................
+                                                      addTaskSubmissionCubit
+                                                          .deletedPickedFileFromList(
+                                                              index: index),
+                                                ),
+                                                title: Text(
+                                                    fileName ?? 'file name'),
+                                                // subtitle: Text(pickedFiles[index].path),
+                                              ),
+                                            );
+                                          },
+                                          itemCount: taskSubmissionModel!
+                                              .submissionAttachmentsCategories!
+                                              .files!
+                                              .length,
                                         ),
                                       ),
                               ],
@@ -258,7 +412,24 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                               )
                                   .then((value) {
                                 addTaskSubmissionCubit.addNewTaskSubmission(
-                                    taskId: taskId);
+                                  taskId: taskId,
+                                  isEdit: isEdit,
+                                  taskSubmissionId:
+                                      taskSubmissionModel?.tsId ?? -1,
+                                  oldAttachments: [
+                                    ...taskSubmissionModel!
+                                        .submissionAttachmentsCategories!
+                                        .images!
+                                        .map((e) => e.aAttachment!),
+                                    ...taskSubmissionModel!
+                                        .submissionAttachmentsCategories!
+                                        .videos!
+                                        .map((e) => e.aAttachment!),
+                                    ...taskSubmissionModel!
+                                        .submissionAttachmentsCategories!.files!
+                                        .map((e) => e.aAttachment!),
+                                  ],
+                                );
                               }).catchError((error) {
                                 print('error with location !!');
                               });

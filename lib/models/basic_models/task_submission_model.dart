@@ -10,7 +10,7 @@ class TaskSubmissionModel {
   final String? tsContent;
   final DateTime? tsActualStartTime;
   final DateTime? tsActualEndTime;
-  final String? tsFile;
+  // final String? tsFile;
   final String? tsStartLatitude;
   final String? tsStartLongitude;
   final String? tsEndLatitude;
@@ -30,7 +30,7 @@ class TaskSubmissionModel {
     this.tsContent,
     this.tsActualStartTime,
     this.tsActualEndTime,
-    this.tsFile,
+    // this.tsFile,
     this.tsStartLatitude,
     this.tsStartLongitude,
     this.tsEndLatitude,
@@ -51,7 +51,7 @@ class TaskSubmissionModel {
     tsContent: json["ts_content"],
     tsActualStartTime: json["ts_actual_start_time"] == null ? null : DateTime.parse(json["ts_actual_start_time"]),
     tsActualEndTime: json["ts_actual_end_time"] == null ? null : DateTime.parse(json["ts_actual_end_time"]),
-    tsFile: json["ts_file"],
+    // tsFile: json["ts_file"],
     tsStartLatitude: json["ts_start_latitude"],
     tsStartLongitude: json["ts_start_longitude"],
     tsEndLatitude: json["ts_end_latitude"],
@@ -72,7 +72,7 @@ class TaskSubmissionModel {
     "ts_content": tsContent,
     "ts_actual_start_time": tsActualStartTime?.toIso8601String(),
     "ts_actual_end_time": tsActualEndTime?.toIso8601String(),
-    "ts_file": tsFile,
+    // "ts_file": tsFile,
     "ts_start_latitude": tsStartLatitude,
     "ts_start_longitude": tsStartLongitude,
     "ts_end_latitude": tsEndLatitude,

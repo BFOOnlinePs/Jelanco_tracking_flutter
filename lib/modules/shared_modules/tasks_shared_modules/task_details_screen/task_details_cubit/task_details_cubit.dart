@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_attachment_model.dart';
@@ -87,13 +84,12 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
     } catch (e) {
       print('Error initializing video controller: $e');
     }
-
     emit(InitializeVideoControllerState());
   }
 
   void toggleVideoPlayPause(VideoPlayerController videoPlayerController) {
     videoPlayerController.value.isPlaying
-        ? videoPlayerController.pause()
+        ? videoPlayerController.pause() 
         : videoPlayerController.play();
     emit(ToggleVideoPlayPauseState());
   }
