@@ -140,8 +140,8 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               .pickedImagesList.length,
                                         ),
                                       ),
-                                // || the old picked images list is empty (form network)
 
+                                // the old picked images list is empty (from network)
                                 taskSubmissionModel == null ||
                                         taskSubmissionModel!
                                             .submissionAttachmentsCategories!
@@ -177,6 +177,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               .length,
                                         ),
                                       ),
+
                                 MyTextButton(
                                   onPressed: () {
                                     addTaskSubmissionCubit.requestPermission(
@@ -275,6 +276,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               .length,
                                         ),
                                       ),
+
                                 MyTextButton(
                                     onPressed: () {
                                       addTaskSubmissionCubit.requestPermission(
@@ -411,24 +413,28 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     addTaskSubmissionCubit.getCurrentLocation,
                               )
                                   .then((value) {
+                                print('add task .then');
                                 addTaskSubmissionCubit.addNewTaskSubmission(
                                   taskId: taskId,
                                   isEdit: isEdit,
                                   taskSubmissionId:
                                       taskSubmissionModel?.tsId ?? -1,
-                                  oldAttachments: [
-                                    ...taskSubmissionModel!
-                                        .submissionAttachmentsCategories!
-                                        .images!
-                                        .map((e) => e.aAttachment!),
-                                    ...taskSubmissionModel!
-                                        .submissionAttachmentsCategories!
-                                        .videos!
-                                        .map((e) => e.aAttachment!),
-                                    ...taskSubmissionModel!
-                                        .submissionAttachmentsCategories!.files!
-                                        .map((e) => e.aAttachment!),
-                                  ],
+                                  oldAttachments: isEdit
+                                      ? [
+                                          ...taskSubmissionModel!
+                                              .submissionAttachmentsCategories!
+                                              .images!
+                                              .map((e) => e.aAttachment!),
+                                          ...taskSubmissionModel!
+                                              .submissionAttachmentsCategories!
+                                              .videos!
+                                              .map((e) => e.aAttachment!),
+                                          ...taskSubmissionModel!
+                                              .submissionAttachmentsCategories!
+                                              .files!
+                                              .map((e) => e.aAttachment!),
+                                        ]
+                                      : [],
                                 );
                               }).catchError((error) {
                                 print('error with location !!');

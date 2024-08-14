@@ -34,50 +34,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   final ImagePicker picker = ImagePicker();
 
-  // for the edit
-  void getOldData(
-      {required bool isEdit, TaskSubmissionModel? taskSubmissionModel}) async {
-    if (isEdit) {
-      print('call the old data');
-      contentController.text = taskSubmissionModel!.tsContent ?? '';
-      // taskSubmissionModel.submissionAttachmentsCategories?.videos!
-      //    .map((vid) async => await initializeOldVideoController(vid.aAttachment!));
-      for (var vid
-          in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
-              []) {
-        await initializeOldVideoController(vid.aAttachment!);
-      }
-    } else {
-      print('don\'t call the old data');
-    }
-  }
-
-  List<VideoPlayerController?> oldVideoControllers = [];
-
-  Future<void> initializeOldVideoController(String videoPath) async {
-    print('videoPath:: $videoPath');
-    if (videoPath.endsWith('.mp4')) {
-      print('videoPath:: $videoPath');
-
-      VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
-      try {
-        await controller.initialize();
-        oldVideoControllers.add(controller);
-        print('oldVideoControllers:: ${oldVideoControllers.length}');
-        emit(InitializeVideoControllerState());
-      } catch (e) {
-        print('Error initializing video controller: $e');
-        oldVideoControllers.add(null);
-      }
-    } else {
-      // message = 'File is not a video';
-      oldVideoControllers.add(null);
-    }
-  }
-
-  // end edit
-
   // images
 
   List<XFile> pickedImagesList = [];
@@ -117,8 +73,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
     emit(CompressAllImagesSuccessState());
   }
-
-  // images for edit screen
 
   // videos
 
@@ -312,10 +266,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     await compressAllImages();
     await compressVideos();
 
-    // if (oldAttachments.isNotEmpty) {
-    //   setOldAttachments(oldAttachments: oldAttachments);
-    // }
-
     Map<String, dynamic> dataObject = {
       'parent_id': taskSubmissionId, // -1 first submission
       'task_id': taskId,
@@ -375,6 +325,51 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     isAddTaskSubmissionLoading = false;
     emitLoading();
   }
+
+
+  // for the edit
+  void getOldData(
+      {required bool isEdit, TaskSubmissionModel? taskSubmissionModel}) async {
+    if (isEdit) {
+      print('call the old data');
+      contentController.text = taskSubmissionModel!.tsContent ?? '';
+      // taskSubmissionModel.submissionAttachmentsCategories?.videos!
+      //    .map((vid) async => await initializeOldVideoController(vid.aAttachment!));
+      for (var vid
+      in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
+          []) {
+        await initializeOldVideoController(vid.aAttachment!);
+      }
+    } else {
+      print('don\'t call the old data');
+    }
+  }
+
+  List<VideoPlayerController?> oldVideoControllers = [];
+
+  Future<void> initializeOldVideoController(String videoPath) async {
+    print('videoPath:: $videoPath');
+    if (videoPath.endsWith('.mp4')) {
+      print('videoPath:: $videoPath');
+
+      VideoPlayerController controller = VideoPlayerController.networkUrl(
+          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
+      try {
+        await controller.initialize();
+        oldVideoControllers.add(controller);
+        print('oldVideoControllers:: ${oldVideoControllers.length}');
+        emit(InitializeVideoControllerState());
+      } catch (e) {
+        print('Error initializing video controller: $e');
+        oldVideoControllers.add(null);
+      }
+    } else {
+      // message = 'File is not a video';
+      oldVideoControllers.add(null);
+    }
+  }
+
+  // end edit
 
   @override
   Future<void> close() {

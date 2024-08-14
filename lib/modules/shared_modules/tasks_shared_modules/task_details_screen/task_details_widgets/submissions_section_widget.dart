@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/add_comment_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/detail_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_media_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_time_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/time_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
@@ -29,16 +33,16 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitleWidget('عمليات التسليم'),
+        const SectionTitleWidget('عمليات التسليم'),
         ...widget.taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
                 ?.taskSubmissions
                 ?.map((submission) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                padding: EdgeInsets.all(16.0),
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.orange[50],
-                  border: Border(
+                  color: Colors.grey.withOpacity(0.04),
+                  border: const Border(
                     right: BorderSide(
                       color: ColorsConstants.secondaryColor,
                       width: 5.0,
@@ -52,167 +56,65 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                     ContentWidget('Content', submission.tsContent ?? '',
                         Icons.content_copy,
                         isSubmission: true),
-
-                    // DetailRowWidget(
-                    //     'الوسائط', submission.tsFile ?? '', Icons.attach_file),
-
-                    submission
-                            .submissionAttachmentsCategories!.files!.isNotEmpty
-                        ? Column(
-                            children: [
-                              ...submission
-                                  .submissionAttachmentsCategories!.files!
-                                  .asMap()
-                                  .entries
-                                  .map((entry) {
-                                final index = entry.key;
-                                final file = entry.value;
-
-                                return InkWell(
-                                  onTap: () {
-                                    widget.taskDetailsCubit.launchMyUrl(
-                                        storagePath: EndPointsConstants
-                                            .taskSubmissionsStorage,
-                                        uriString: file.aAttachment!);
-                                  },
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  splashColor: Colors.blue.withOpacity(0.2),
-                                  highlightColor: Colors.blue.withOpacity(0.1),
-                                  child: Container(
-                                    padding: EdgeInsets.all(8.0), // Add padding
-                                    child: Text(
-                                      'ملف رقم ${index + 1}',
-                                      style: TextStyle(
-                                        color: ColorsConstants.primaryColor,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
-                                        shadows: [
-                                          Shadow(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                            offset: Offset(1, 1),
-                                            blurRadius: 2,
-                                          ),
-                                        ], // Subtle shadow
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ],
-                          )
-                        : Container(),
-
-                    submission
-                            .submissionAttachmentsCategories!.videos!.isNotEmpty
-                        ? Container(
-                            height: 300.0,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return widget.taskDetailsCubit
-                                        .isInitializeVideoController
-                                    ? MyVideo(
-                                        // height: 200,
-                                        margin:
-                                            EdgeInsetsDirectional.only(end: 8),
-                                        index: index,
-                                        videoPlayerController: submission
-                                            .submissionAttachmentsCategories!
-                                            .videos![index]
-                                            .videoController,
-                                        onTogglePlayPauseWithController: widget
-                                            .taskDetailsCubit
-                                            .toggleVideoPlayPause,
-                                      )
-                                    : Text('not initialized');
-                              },
-                              itemCount: submission
-                                  .submissionAttachmentsCategories!
-                                  .videos!
-                                  .length,
-                            ),
-                          )
-                        : Container(),
-
-                    submission
-                            .submissionAttachmentsCategories!.images!.isNotEmpty
-                        ? Container(
-                            height: 220.0,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return MyImage(
-                                  height: 200,
-                                  margin: EdgeInsetsDirectional.only(end: 8),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MyPhotoView(
-                                            galleryItems: submission
-                                                .submissionAttachmentsCategories!
-                                                .images!
-                                                .map((image) =>
-                                                    image.aAttachment!)
-                                                .toList(),
-                                            imagesHostPath:
-                                                '${EndPointsConstants.taskSubmissionsStorage}',
-                                            startedIndex: index,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Image(
-                                      image: NetworkImage(
-                                        '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              itemCount: submission
-                                  .submissionAttachmentsCategories!
-                                  .images!
-                                  .length,
-                            ),
-                          )
-                        : Container(),
-
+                    SubmissionMediaWidget(
+                        submission: submission,
+                        taskDetailsCubit: widget.taskDetailsCubit),
                     MyVerticalSpacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        submission.tsActualStartTime != null
-                            ? Expanded(
-                                child: TimeWidget(
-                                    'وقت البدء الفعلي',
-                                    submission.tsActualStartTime!,
-                                    Icons.access_time),
-                              )
-                            : Container(),
-                        submission.tsActualStartTime != null &&
-                                submission.tsActualEndTime != null
-                            ? SizedBox(width: 10)
-                            : Container(),
-                        submission.tsActualEndTime != null
-                            ? Expanded(
-                                child: TimeWidget(
-                                    'وقت الإنتهاء الفعلي',
-                                    submission.tsActualEndTime!,
-                                    Icons.access_time_outlined),
-                              )
-                            : Container(),
-                      ],
-                    ),
-
-                    // _buildStatusRow('Status', submission.status, Icons.info),
+                    SubmissionTimeWidget(submission: submission),
                     MyVerticalSpacer(),
                     submission.submissionComments!.isNotEmpty
                         ? CommentsSectionWidget(submission.submissionComments!)
                         : Container(),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            // This allows the bottom sheet to resize when the keyboard appears
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BlocProvider.value(
+                                value: widget.taskDetailsCubit,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom, // Adjust for keyboard
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        AddCommentWidget(
+                                          taskId: submission.tsTaskId!,
+                                          taskSubmissionId: submission.tsId!,
+                                        ),
+                                        // SizedBox(height: 20),
+                                        // ElevatedButton(
+                                        //   onPressed: () {
+                                        //     Navigator.pop(context);
+                                        //   },
+                                        //   child: Text('Close'),
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ).whenComplete(() {
+                            // Unfocus when the bottom sheet is dismissed
+                            widget.taskDetailsCubit.whenCloseBottomSheet();
+                          });
+
+                          Future.delayed(Duration(milliseconds: 100), () {
+                            widget.taskDetailsCubit.focusNode.requestFocus();
+                          });
+                        },
+                        child: Text('أكتب تعليق'),
+                      ),
+                    ),
                   ],
                 ),
               );

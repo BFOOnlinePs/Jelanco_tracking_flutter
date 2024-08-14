@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
-import 'package:jelanco_tracking_system/models/basic_models/submission_comment_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 
 class CommentsSectionWidget extends StatelessWidget {
-  final List<SubmissionCommentModel> comments;
-  const CommentsSectionWidget(this.comments,{super.key});
+  final List<TaskSubmissionCommentModel> comments;
+
+  const CommentsSectionWidget(this.comments, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('التعليقات:',
+        const Text('التعليقات:',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 color: ColorsConstants.secondaryColor)),
         ...comments.map((comment) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: 5.0),
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

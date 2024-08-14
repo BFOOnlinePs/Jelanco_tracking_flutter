@@ -1,5 +1,4 @@
-import 'package:jelanco_tracking_system/models/basic_models/submission_comment_model.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_attachment_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/submission_attachment_categories_model.dart';
 
@@ -20,7 +19,7 @@ class TaskSubmissionModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final UserModel? submitterUser;
-  final List<SubmissionCommentModel>? submissionComments;
+  final List<TaskSubmissionCommentModel>? submissionComments;
   final SubmissionAttachmentsCategories? submissionAttachmentsCategories;
 
   TaskSubmissionModel({
@@ -61,7 +60,7 @@ class TaskSubmissionModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     submitterUser: json["submitter_user"] == null ? null : UserModel.fromMap(json["submitter_user"]),
-    submissionComments: json["submission_comments"] == null ? [] : List<SubmissionCommentModel>.from(json["submission_comments"]!.map((x) => SubmissionCommentModel.fromMap(x))),
+    submissionComments: json["submission_comments"] == null ? [] : List<TaskSubmissionCommentModel>.from(json["submission_comments"]!.map((x) => TaskSubmissionCommentModel.fromMap(x))),
     submissionAttachmentsCategories: json["submission_attachments_categories"] == null ? null : SubmissionAttachmentsCategories.fromMap(json["submission_attachments_categories"]),
   );
 

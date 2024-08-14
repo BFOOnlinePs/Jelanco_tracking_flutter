@@ -10,10 +10,11 @@ class MyVideo extends StatelessWidget {
   final bool showDeleteIcon;
   final Function()? onDeletePressed;
 
-
-  // final double height;
+  final double? height;
   final double? videoHeight;
   final EdgeInsetsGeometry? margin;
+  final bool showTogglePlayPause;
+  final bool showVideoIcon;
 
   const MyVideo({
     super.key,
@@ -24,8 +25,10 @@ class MyVideo extends StatelessWidget {
     this.showDeleteIcon = false,
     this.onDeletePressed,
     this.videoHeight = 220,
-    // required this.height,
+    this.height,
     this.margin,
+    this.showTogglePlayPause = true,
+    this.showVideoIcon = false,
   });
 
   @override
@@ -35,7 +38,7 @@ class MyVideo extends StatelessWidget {
       children: [
         if (videoPlayerController?.value.isInitialized == true)
           Container(
-            // height: height,
+            height: height,
             margin: margin,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -64,30 +67,62 @@ class MyVideo extends StatelessWidget {
                         splashRadius: 20,
                       )
                     : Container(),
+                if (showVideoIcon)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        // Adjust the padding as needed
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black
+                              .withOpacity(0.5), // Semi-transparent background
+                        ),
+                        child: Icon(
+                          Icons.videocam,
+                          color: Colors.white,
+                          // Change icon color to contrast with the background
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
-        if (videoPlayerController?.value.isInitialized == true)
-          SizedBox(
-            width: 120,
-            child: VideoProgressIndicator(videoPlayerController!,
-                allowScrubbing: true),
+        if (showTogglePlayPause)
+          Column(
+            children: [
+              if (videoPlayerController?.value.isInitialized == true)
+                SizedBox(
+                  width: 120,
+                  child: VideoProgressIndicator(videoPlayerController!,
+                      allowScrubbing: true),
+                ),
+              videoPlayerController != null
+                  ? IconButton(
+                      icon: Icon(videoPlayerController!.value.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow),
+                      onPressed: onTogglePlayPauseWithIndex != null
+                          ? () {
+                              onTogglePlayPauseWithIndex!(index!);
+                            }
+                          : onTogglePlayPauseWithController != null
+                              ? () {
+                                  onTogglePlayPauseWithController!(
+                                      videoPlayerController!);
+                                }
+                              : null,
+                    )
+                  : Text('no contoller '),
+            ],
           ),
-        videoPlayerController != null ?
-        IconButton(
-          icon: Icon(videoPlayerController!.value.isPlaying
-              ? Icons.pause
-              : Icons.play_arrow),
-          onPressed: onTogglePlayPauseWithIndex != null
-              ? () {
-                  onTogglePlayPauseWithIndex!(index!);
-                }
-              : onTogglePlayPauseWithController != null
-                  ? () {
-                      onTogglePlayPauseWithController!(videoPlayerController!);
-                    }
-                  : null,
-        ) : Text('no contoller '),
       ],
     );
   }

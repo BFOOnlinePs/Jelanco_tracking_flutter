@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
-import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submissions_section_widget.dart';
@@ -11,8 +7,6 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
-
-import '../../../../models/basic_models/submission_comment_model.dart';
 
 class TaskDetailsScreen extends StatelessWidget {
   final int taskId;
@@ -23,7 +17,7 @@ class TaskDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
+      appBar: const MyAppBar(
         title: 'تفاصيل المهمة',
       ),
       body: BlocProvider(
@@ -43,12 +37,14 @@ class TaskDetailsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TaskDetailsSectionWidget(taskDetailsCubit: taskDetailsCubit),
+                        TaskDetailsSectionWidget(
+                            taskDetailsCubit: taskDetailsCubit),
                         MyVerticalSpacer(),
                         MyVerticalSpacer(),
                         taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
                                 .task!.taskSubmissions!.isNotEmpty
-                            ? SubmissionsSectionWidget(taskDetailsCubit: taskDetailsCubit)
+                            ? SubmissionsSectionWidget(
+                                taskDetailsCubit: taskDetailsCubit)
                             : Container(),
                       ],
                     ),
@@ -56,17 +52,6 @@ class TaskDetailsScreen extends StatelessWidget {
           },
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // Add action for adding a new submission
-      //   },
-      //   child: Icon(
-      //     Icons.add,
-      //     color: Colors.white,
-      //   ),
-      //   backgroundColor: ColorsConstants.primaryColor,
-      // ),
     );
   }
-
 }

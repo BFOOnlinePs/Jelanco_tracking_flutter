@@ -120,35 +120,44 @@ class TaskItem extends StatelessWidget {
                 ],
               ),
               const MyVerticalSpacer(),
-              Row(
-                children: [
-                  const Icon(Icons.calendar_today, color: Colors.grey),
-                  const SizedBox(width: 8),
-                  Text(
-                    'تاريخ البدء:     ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.calendar_today, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Text(
-                    'تاريخ الإنتهاء:  ${MyDateUtils.formatDateTime(taskModel.tPlanedEndTime)}',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-              MyVerticalSpacer(),
-              Row(
-                children: [
-                  Icon(Icons.category, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Text(
-                      'التصنيف: ${taskModel.taskCategory?.cName ?? 'undefined'}'),
-                ],
-              ),
+              taskModel.tPlanedStartTime != null
+                  ? Row(
+                      children: [
+                        const Icon(Icons.calendar_today, color: Colors.grey),
+                        const SizedBox(width: 8),
+                        Text(
+                          'تاريخ البدء:     ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              taskModel.tPlanedEndTime != null
+                  ? Row(
+                      children: [
+                        const Icon(Icons.calendar_today, color: Colors.grey),
+                        SizedBox(width: 8),
+                        Text(
+                          'تاريخ الإنتهاء:  ${MyDateUtils.formatDateTime(taskModel.tPlanedEndTime)}',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              taskModel.taskCategory != null
+                  ? Column(
+                      children: [
+                        MyVerticalSpacer(),
+                        Row(
+                          children: [
+                            Icon(Icons.category, color: Colors.grey),
+                            SizedBox(width: 8),
+                            Text('التصنيف: ${taskModel.taskCategory?.cName}'),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Container(),
               MyVerticalSpacer(),
               Text(
                 'الموظفين المكلفين: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
