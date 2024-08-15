@@ -3,6 +3,7 @@ import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
@@ -84,6 +85,69 @@ class SubmissionMediaWidget extends StatelessWidget {
                                 taskDetailsCubit.toggleVideoPlayPause,
                           )
                         : Text('not initialized');
+                  },
+                  itemCount: submission
+                      .submissionAttachmentsCategories!.videos!.length,
+                ),
+              )
+            : Container(),
+        submission.submissionAttachmentsCategories!.videos!.isNotEmpty
+            ? Container(
+                // height: 200,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  // scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VideoPlayerScreen(
+                              videoUrl:
+                                  '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.videos![index].aAttachment!}',
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            // Video thumbnail image
+                            Positioned.fill(
+                              child: Image.network(
+                                'https://kidlingoo.com/wp-content/uploads/flowers_name_in_english.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            // Play icon overlay
+                            Center(
+                              child: Icon(
+                                Icons.play_circle_fill,
+                                color: Colors.white,
+                                size: 50.0,
+                              ),
+                            ),
+                            // Duration overlay
+                            // Positioned(
+                            //   bottom: 8.0,
+                            //   right: 8.0,
+                            //   child: Container(
+                            //     padding: EdgeInsets.symmetric(
+                            //         horizontal: 8.0, vertical: 4.0),
+                            //     color: Colors.black.withOpacity(0.7),
+                            //     child: Text(
+                            //       'duration',
+                            //       style: TextStyle(color: Colors.white),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
                   itemCount: submission
                       .submissionAttachmentsCategories!.videos!.length,

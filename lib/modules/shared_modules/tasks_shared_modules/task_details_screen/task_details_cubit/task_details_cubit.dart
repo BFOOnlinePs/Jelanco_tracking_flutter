@@ -45,15 +45,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       getTaskWithSubmissionsAndCommentsModel =
           GetTaskWithSubmissionsAndCommentsModel.fromMap(value?.data);
 
-// getTaskWithSubmissionsAndCommentsModel!.task!
-//       .taskSubmissions!
-//       .map((submission) {
-//     return submission.submissionAttachmentsCategories!.videos!.map((video) async {
-//       await initializeVideoController(video);
-//     });
-//   });
-
-// initialize the controllers
+      // initialize the controllers
       final task = getTaskWithSubmissionsAndCommentsModel!.task!;
       final submissions = task.taskSubmissions!;
 
@@ -62,7 +54,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
         for (var video in videos) {
           await initializeVideoController(video,
               onControllerLoaded: (controller) {
-            print('inside ii');
             video.videoController = controller;
             print('after assign the controller');
             print(video.videoController?.value.duration);
