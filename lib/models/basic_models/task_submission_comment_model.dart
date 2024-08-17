@@ -1,4 +1,5 @@
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 
 class TaskSubmissionCommentModel {
   final int? tscTaskId;
@@ -10,6 +11,7 @@ class TaskSubmissionCommentModel {
   final DateTime? createdAt;
   final int? tscId;
   final UserModel? commentedByUser;
+  final AttachmentsCategories? commentAttachmentsCategories;
 
   TaskSubmissionCommentModel({
     this.tscTaskId,
@@ -21,6 +23,7 @@ class TaskSubmissionCommentModel {
     this.createdAt,
     this.tscId,
     this.commentedByUser,
+    this.commentAttachmentsCategories,
   });
 
   factory TaskSubmissionCommentModel.fromMap(Map<String, dynamic> json) =>
@@ -40,6 +43,11 @@ class TaskSubmissionCommentModel {
         commentedByUser: json["commented_by_user"] == null
             ? null
             : UserModel.fromMap(json["commented_by_user"]),
+        commentAttachmentsCategories:
+            json["comment_attachments_categories"] == null
+                ? null
+                : AttachmentsCategories.fromMap(
+                    json["comment_attachments_categories"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -52,5 +60,6 @@ class TaskSubmissionCommentModel {
         "created_at": createdAt?.toIso8601String(),
         "tsc_id": tscId,
         "commented_by_user": commentedByUser?.toMap(),
+        "comment_attachments_categories": commentAttachmentsCategories?.toMap(),
       };
 }

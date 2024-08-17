@@ -92,31 +92,33 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       appBar: AppBar(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : GestureDetector(
-              onTap: _showIconTemporarily, // Show icon when video is tapped
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  AspectRatio(
-                    aspectRatio: _videoPlayerController.value.aspectRatio,
-                    child: VideoPlayer(_videoPlayerController),
-                  ),
-                  AnimatedOpacity(
-                    opacity: _showPlayPauseIcon ? 1.0 : 0.0,
-                    duration: Duration(milliseconds: 300), // Smooth animation
-                    child: GestureDetector(
-                      onTap: _togglePlayPause,
-                      // Toggle play/pause when icon is tapped
-                      child: Icon(
-                        _isPlaying
-                            ? Icons.pause_circle_filled
-                            : Icons.play_circle_filled,
-                        color: Colors.white.withOpacity(0.7),
-                        size: 80.0,
+          : Center(
+              child: GestureDetector(
+                onTap: _showIconTemporarily, // Show icon when video is tapped
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: _videoPlayerController.value.aspectRatio,
+                      child: VideoPlayer(_videoPlayerController),
+                    ),
+                    AnimatedOpacity(
+                      opacity: _showPlayPauseIcon ? 1.0 : 0.0,
+                      duration: Duration(milliseconds: 300), // Smooth animation
+                      child: GestureDetector(
+                        onTap: _togglePlayPause,
+                        // Toggle play/pause when icon is tapped
+                        child: Icon(
+                          _isPlaying
+                              ? Icons.pause_circle_filled
+                              : Icons.play_circle_filled,
+                          color: Colors.white.withOpacity(0.7),
+                          size: 80.0,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
     );

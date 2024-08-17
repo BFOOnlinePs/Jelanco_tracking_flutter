@@ -379,7 +379,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                       // .......................................
                                                       addTaskSubmissionCubit
                                                           .deletedPickedFileFromList(
-                                                              index: index),
+                                                              index: index,
+                                                              taskSubmissionModel:
+                                                                  taskSubmissionModel),
                                                 ),
                                                 title: Text(
                                                     fileName ?? 'file name'),

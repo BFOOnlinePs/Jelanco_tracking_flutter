@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
 
-class SubmissionMediaWidget extends StatelessWidget {
-  final TaskSubmissionModel submission;
+class CommentMediaWidget extends StatelessWidget {
+  final TaskSubmissionCommentModel comment;
   final TaskDetailsCubit taskDetailsCubit;
 
-  const SubmissionMediaWidget({
+  const CommentMediaWidget({
     super.key,
-    required this.submission,
+    required this.comment,
     required this.taskDetailsCubit,
   });
 
@@ -24,10 +24,10 @@ class SubmissionMediaWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        submission.submissionAttachmentsCategories!.files!.isNotEmpty
+        comment.commentAttachmentsCategories!.files!.isNotEmpty
             ? Column(
                 children: [
-                  ...submission.submissionAttachmentsCategories!.files!
+                  ...comment.commentAttachmentsCategories!.files!
                       .asMap()
                       .entries
                       .map((entry) {
@@ -38,7 +38,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                       onTap: () {
                         taskDetailsCubit.launchMyUrl(
                             storagePath:
-                                EndPointsConstants.taskSubmissionsStorage,
+                                EndPointsConstants.taskSubmissionsCommentStorage,
                             uriString: file.aAttachment!);
                       },
                       borderRadius: BorderRadius.circular(8.0),
@@ -68,32 +68,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                 ],
               )
             : Container(),
-        // submission.submissionAttachmentsCategories!.videos!.isNotEmpty
-        //     ? Container(
-        //         height: 300.0,
-        //         child: ListView.builder(
-        //           scrollDirection: Axis.horizontal,
-        //           itemBuilder: (context, index) {
-        //             return taskDetailsCubit.isInitializeVideoController
-        //                 ? MyVideo(
-        //                     // height: 200,
-        //                     margin: EdgeInsetsDirectional.only(end: 8),
-        //                     index: index,
-        //                     videoPlayerController: submission
-        //                         .submissionAttachmentsCategories!
-        //                         .videos![index]
-        //                         .videoController,
-        //                     onTogglePlayPauseWithController:
-        //                         taskDetailsCubit.toggleVideoPlayPause,
-        //                   )
-        //                 : Text('not initialized');
-        //           },
-        //           itemCount: submission
-        //               .submissionAttachmentsCategories!.videos!.length,
-        //         ),
-        //       )
-        //     : Container(),
-        submission.submissionAttachmentsCategories!.videos!.isNotEmpty
+        comment.commentAttachmentsCategories!.videos!.isNotEmpty
             ? Container(
                 height: 200,
                 child: ListView.builder(
@@ -108,7 +83,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => VideoPlayerScreen(
                               videoUrl:
-                                  '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.videos![index].aAttachment!}',
+                                  '${EndPointsConstants.taskSubmissionsStorage}${comment.commentAttachmentsCategories!.videos![index].aAttachment!}',
                             ),
                           ),
                         );
@@ -123,17 +98,13 @@ class SubmissionMediaWidget extends StatelessWidget {
                               index: index,
                               height: 200,
                               showVideoIcon: true,
-                              thumbnail: submission
-                                          .submissionAttachmentsCategories!
-                                          .videos![index]
-                                          .thumbnail !=
+                              thumbnail: comment.commentAttachmentsCategories!
+                                          .videos![index].thumbnail !=
                                       null
                                   ? Image.network(
                                       EndPointsConstants.thumbnailStorage +
-                                          submission
-                                              .submissionAttachmentsCategories!
-                                              .videos![index]
-                                              .thumbnail!,
+                                          comment.commentAttachmentsCategories!
+                                              .videos![index].thumbnail!,
                                       fit: BoxFit.cover,
                                     )
                                   : Image.asset(
@@ -141,58 +112,18 @@ class SubmissionMediaWidget extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                             ),
-                            // // Video thumbnail image
-                            // Positioned.fill(
-                            //   child: submission.submissionAttachmentsCategories!
-                            //               .videos![index].thumbnail !=
-                            //           null
-                            //       ? Image.network(
-                            //           EndPointsConstants.thumbnailStorage +
-                            //               submission
-                            //                   .submissionAttachmentsCategories!
-                            //                   .videos![index]
-                            //                   .thumbnail!,
-                            //           fit: BoxFit.cover,
-                            //         )
-                            //       : Image.asset(
-                            //           AssetsKeys.defaultVideoThumbnail,
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            // ),
-                            // // Play icon overlay
-                            // Center(
-                            //   child: Icon(
-                            //     Icons.play_circle_fill,
-                            //     color: Colors.white,
-                            //     size: 50.0,
-                            //   ),
-                            // ),
-                            // Duration overlay
-                            // Positioned(
-                            //   bottom: 8.0,
-                            //   right: 8.0,
-                            //   child: Container(
-                            //     padding: EdgeInsets.symmetric(
-                            //         horizontal: 8.0, vertical: 4.0),
-                            //     color: Colors.black.withOpacity(0.7),
-                            //     child: Text(
-                            //       'duration',
-                            //       style: TextStyle(color: Colors.white),
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
                     );
                   },
-                  itemCount: submission
-                      .submissionAttachmentsCategories!.videos!.length,
+                  itemCount:
+                      comment.commentAttachmentsCategories!.videos!.length,
                 ),
               )
             : Container(),
         SizedBox(height: 8.0),
-        submission.submissionAttachmentsCategories!.images!.isNotEmpty
+        comment.commentAttachmentsCategories!.images!.isNotEmpty
             ? Container(
                 height: 220.0,
                 child: ListView.builder(
@@ -207,12 +138,12 @@ class SubmissionMediaWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => MyPhotoView(
-                                galleryItems: submission
-                                    .submissionAttachmentsCategories!.images!
+                                galleryItems: comment
+                                    .commentAttachmentsCategories!.images!
                                     .map((image) => image.aAttachment!)
                                     .toList(),
                                 imagesHostPath:
-                                    '${EndPointsConstants.taskSubmissionsStorage}',
+                                    '${EndPointsConstants.taskSubmissionsCommentStorage}',
                                 startedIndex: index,
                               ),
                             ),
@@ -220,15 +151,15 @@ class SubmissionMediaWidget extends StatelessWidget {
                         },
                         child: Image(
                           image: NetworkImage(
-                            '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+                            '${EndPointsConstants.taskSubmissionsCommentStorage}${comment.commentAttachmentsCategories!.images![index].aAttachment}',
                           ),
                           // fit: BoxFit.cover,
                         ),
                       ),
                     );
                   },
-                  itemCount: submission
-                      .submissionAttachmentsCategories!.images!.length,
+                  itemCount:
+                      comment.commentAttachmentsCategories!.images!.length,
                 ),
               )
             : Container(),

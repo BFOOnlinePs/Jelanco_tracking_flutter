@@ -10,6 +10,7 @@ class MyImage extends StatelessWidget {
   final Function()? onDeletePressed;
 
   const MyImage({
+    super.key,
     required this.height,
     this.width = 136,
     this.margin = const EdgeInsetsDirectional.only(end: 8),

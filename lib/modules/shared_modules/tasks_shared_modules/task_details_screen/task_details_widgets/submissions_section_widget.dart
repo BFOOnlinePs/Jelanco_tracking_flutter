@@ -17,24 +17,18 @@ import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
-class SubmissionsSectionWidget extends StatefulWidget {
+class SubmissionsSectionWidget extends StatelessWidget {
   final TaskDetailsCubit taskDetailsCubit;
 
   const SubmissionsSectionWidget({super.key, required this.taskDetailsCubit});
 
-  @override
-  State<SubmissionsSectionWidget> createState() =>
-      _SubmissionsSectionWidgetState();
-}
-
-class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SectionTitleWidget('عمليات التسليم'),
-        ...widget.taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
+        ...taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
                 ?.taskSubmissions
                 ?.map((submission) {
               return Container(
@@ -58,23 +52,26 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                         isSubmission: true),
                     SubmissionMediaWidget(
                         submission: submission,
-                        taskDetailsCubit: widget.taskDetailsCubit),
+                        taskDetailsCubit: taskDetailsCubit),
                     MyVerticalSpacer(),
                     SubmissionTimeWidget(submission: submission),
                     MyVerticalSpacer(),
                     submission.submissionComments!.isNotEmpty
-                        ? CommentsSectionWidget(submission.submissionComments!)
+                        ? CommentsSectionWidget(
+                            comments: submission.submissionComments!,
+                            taskDetailsCubit: taskDetailsCubit,
+                          )
                         : Container(),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
                           showModalBottomSheet(
-                            isScrollControlled: true,
                             // This allows the bottom sheet to resize when the keyboard appears
+                            isScrollControlled: true,
                             context: context,
                             builder: (BuildContext context) {
                               return BlocProvider.value(
-                                value: widget.taskDetailsCubit,
+                                value: taskDetailsCubit,
                                 child: Padding(
                                   padding: EdgeInsets.only(
                                     bottom: MediaQuery.of(context)
@@ -105,11 +102,11 @@ class _SubmissionsSectionWidgetState extends State<SubmissionsSectionWidget> {
                             },
                           ).whenComplete(() {
                             // Unfocus when the bottom sheet is dismissed
-                            widget.taskDetailsCubit.whenCloseBottomSheet();
+                            taskDetailsCubit.whenCloseBottomSheet();
                           });
 
                           Future.delayed(Duration(milliseconds: 100), () {
-                            widget.taskDetailsCubit.focusNode.requestFocus();
+                            taskDetailsCubit.focusNode.requestFocus();
                           });
                         },
                         child: Text('أكتب تعليق'),

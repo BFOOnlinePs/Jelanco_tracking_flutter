@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/launch_url_mixin/launch_url_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_attachment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
@@ -25,6 +26,7 @@ import 'package:video_player/video_player.dart';
 
 class TaskDetailsCubit extends Cubit<TaskDetailsStates>
     with
+        LaunchUrlMixin,
         PermissionsMixin,
         CompressVideoMixin<TaskDetailsStates>,
         CompressImagesMixin<TaskDetailsStates> {
@@ -45,24 +47,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       getTaskWithSubmissionsAndCommentsModel =
           GetTaskWithSubmissionsAndCommentsModel.fromMap(value?.data);
 
-      // // initialize the controllers
-      // final task = getTaskWithSubmissionsAndCommentsModel!.task!;
-      // final submissions = task.taskSubmissions!;
-      //
-      // for (var submission in submissions) {
-      //   final videos = submission.submissionAttachmentsCategories?.videos ?? [];
-      //   for (var video in videos) {
-      //     await initializeVideoController(video,
-      //         onControllerLoaded: (controller) {
-      //       video.videoController = controller;
-      //       print('after assign the controller');
-      //       print(video.videoController?.value.duration);
-      //       print(controller?.value.duration);
-      //     });
-      //   }
-      // }
-      // isInitializeVideoController = true;
-
       emit(TaskDetailsSuccessState());
     }).catchError((error) {
       emit(TaskDetailsErrorState(error: error.toString()));
@@ -70,51 +54,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
     });
   }
 
-  // bool isInitializeVideoController = false;
-  //
-  // Future<void> initializeVideoController(
-  //   SubmissionAttachmentModel attachmentModel, {
-  //   required Function(VideoPlayerController?) onControllerLoaded,
-  // }) async {
-  //   var uri =
-  //       '${EndPointsConstants.taskSubmissionsStorage}${attachmentModel.aAttachment!}';
-  //
-  //   VideoPlayerController controller =
-  //       VideoPlayerController.networkUrl(Uri.parse(uri));
-  //
-  //   print('controller::: ${controller.value.duration}');
-  //
-  //   print(uri);
-  //
-  //   try {
-  //     await controller.initialize();
-  //     print(
-  //         'attachmentModel.videoController?.value?.duration:: ${controller.value?.duration}');
-  //     onControllerLoaded(controller); // Pass controller back to the caller
-  //     emit(InitializeVideoControllerState());
-  //   } catch (e) {
-  //     print('Error initializing video controller: $e');
-  //   }
-  //   emit(InitializeVideoControllerState());
-  // }
-  //
-  // void toggleVideoPlayPause(VideoPlayerController videoPlayerController) {
-  //   videoPlayerController.value.isPlaying
-  //       ? videoPlayerController.pause()
-  //       : videoPlayerController.play();
-  //   emit(ToggleVideoPlayPauseState());
-  // }
-
-  void launchMyUrl({required storagePath, required String uriString}) async {
-    final Uri uri = Uri.parse(storagePath + uriString);
-    print('uri: ${uri}');
-    if (!await launchUrl(uri)) {
-// emit(CantOpenCVFileState());
-      print('can\'t open the cv');
-    }
-  }
-
-// comments
   final FocusNode focusNode = FocusNode();
   TextEditingController commentController = TextEditingController();
 
