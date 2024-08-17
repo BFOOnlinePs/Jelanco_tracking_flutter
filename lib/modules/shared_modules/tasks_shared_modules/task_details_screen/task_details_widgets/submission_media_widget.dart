@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 
 class SubmissionMediaWidget extends StatelessWidget {
@@ -66,38 +68,38 @@ class SubmissionMediaWidget extends StatelessWidget {
                 ],
               )
             : Container(),
+        // submission.submissionAttachmentsCategories!.videos!.isNotEmpty
+        //     ? Container(
+        //         height: 300.0,
+        //         child: ListView.builder(
+        //           scrollDirection: Axis.horizontal,
+        //           itemBuilder: (context, index) {
+        //             return taskDetailsCubit.isInitializeVideoController
+        //                 ? MyVideo(
+        //                     // height: 200,
+        //                     margin: EdgeInsetsDirectional.only(end: 8),
+        //                     index: index,
+        //                     videoPlayerController: submission
+        //                         .submissionAttachmentsCategories!
+        //                         .videos![index]
+        //                         .videoController,
+        //                     onTogglePlayPauseWithController:
+        //                         taskDetailsCubit.toggleVideoPlayPause,
+        //                   )
+        //                 : Text('not initialized');
+        //           },
+        //           itemCount: submission
+        //               .submissionAttachmentsCategories!.videos!.length,
+        //         ),
+        //       )
+        //     : Container(),
         submission.submissionAttachmentsCategories!.videos!.isNotEmpty
             ? Container(
-                height: 300.0,
+                height: 200,
                 child: ListView.builder(
+                  // shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return taskDetailsCubit.isInitializeVideoController
-                        ? MyVideo(
-                            // height: 200,
-                            margin: EdgeInsetsDirectional.only(end: 8),
-                            index: index,
-                            videoPlayerController: submission
-                                .submissionAttachmentsCategories!
-                                .videos![index]
-                                .videoController,
-                            onTogglePlayPauseWithController:
-                                taskDetailsCubit.toggleVideoPlayPause,
-                          )
-                        : Text('not initialized');
-                  },
-                  itemCount: submission
-                      .submissionAttachmentsCategories!.videos!.length,
-                ),
-              )
-            : Container(),
-        submission.submissionAttachmentsCategories!.videos!.isNotEmpty
-            ? Container(
-                // height: 200,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  // scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
@@ -113,23 +115,58 @@ class SubmissionMediaWidget extends StatelessWidget {
                       },
                       child: Container(
                         height: 200,
+                        width: 132,
                         child: Stack(
                           children: [
-                            // Video thumbnail image
-                            Positioned.fill(
-                              child: Image.network(
-                                'https://kidlingoo.com/wp-content/uploads/flowers_name_in_english.jpg',
-                                fit: BoxFit.cover,
-                              ),
+                            MyThumbnailVideo(
+                              margin: EdgeInsetsDirectional.only(end: 8),
+                              index: index,
+                              height: 200,
+                              showVideoIcon: true,
+                              thumbnail: submission
+                                          .submissionAttachmentsCategories!
+                                          .videos![index]
+                                          .thumbnail !=
+                                      null
+                                  ? Image.network(
+                                      EndPointsConstants.thumbnailStorage +
+                                          submission
+                                              .submissionAttachmentsCategories!
+                                              .videos![index]
+                                              .thumbnail!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      AssetsKeys.defaultVideoThumbnail,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
-                            // Play icon overlay
-                            Center(
-                              child: Icon(
-                                Icons.play_circle_fill,
-                                color: Colors.white,
-                                size: 50.0,
-                              ),
-                            ),
+                            // // Video thumbnail image
+                            // Positioned.fill(
+                            //   child: submission.submissionAttachmentsCategories!
+                            //               .videos![index].thumbnail !=
+                            //           null
+                            //       ? Image.network(
+                            //           EndPointsConstants.thumbnailStorage +
+                            //               submission
+                            //                   .submissionAttachmentsCategories!
+                            //                   .videos![index]
+                            //                   .thumbnail!,
+                            //           fit: BoxFit.cover,
+                            //         )
+                            //       : Image.asset(
+                            //           AssetsKeys.defaultVideoThumbnail,
+                            //           fit: BoxFit.cover,
+                            //         ),
+                            // ),
+                            // // Play icon overlay
+                            // Center(
+                            //   child: Icon(
+                            //     Icons.play_circle_fill,
+                            //     color: Colors.white,
+                            //     size: 50.0,
+                            //   ),
+                            // ),
                             // Duration overlay
                             // Positioned(
                             //   bottom: 8.0,
@@ -154,6 +191,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                 ),
               )
             : Container(),
+        SizedBox(height: 8.0),
         submission.submissionAttachmentsCategories!.images!.isNotEmpty
             ? Container(
                 height: 220.0,
@@ -184,6 +222,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                           image: NetworkImage(
                             '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
                           ),
+                          // fit: BoxFit.cover,
                         ),
                       ),
                     );

@@ -5,4 +5,6 @@ class AssetsKeys {
   // static const String appIcon = 'app_icon';
 
   static const String translations = 'assets/translations';
+
+  static const String defaultVideoThumbnail = 'assets/images/default_video_thumbnail.jpg';
 }

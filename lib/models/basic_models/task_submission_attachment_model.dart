@@ -5,6 +5,7 @@ class SubmissionAttachmentModel {
   final String? aTable;
   final int? aFkId;
   final String? aAttachment;
+  final String? thumbnail;
   final int? aUserId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -16,6 +17,7 @@ class SubmissionAttachmentModel {
     this.aTable,
     this.aFkId,
     this.aAttachment,
+    this.thumbnail,
     this.aUserId,
     this.createdAt,
     this.updatedAt,
@@ -28,6 +30,7 @@ class SubmissionAttachmentModel {
         aTable: json["a_table"],
         aFkId: json["a_fk_id"],
         aAttachment: json["a_attachment"],
+        thumbnail: json["thumbnail"],
         aUserId: json["a_user_id"],
         createdAt: json["created_at"] == null
             ? null
@@ -42,6 +45,7 @@ class SubmissionAttachmentModel {
         "a_table": aTable,
         "a_fk_id": aFkId,
         "a_attachment": aAttachment,
+        "thumbnail": thumbnail,
         "a_user_id": aUserId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

@@ -45,23 +45,23 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       getTaskWithSubmissionsAndCommentsModel =
           GetTaskWithSubmissionsAndCommentsModel.fromMap(value?.data);
 
-      // initialize the controllers
-      final task = getTaskWithSubmissionsAndCommentsModel!.task!;
-      final submissions = task.taskSubmissions!;
-
-      for (var submission in submissions) {
-        final videos = submission.submissionAttachmentsCategories?.videos ?? [];
-        for (var video in videos) {
-          await initializeVideoController(video,
-              onControllerLoaded: (controller) {
-            video.videoController = controller;
-            print('after assign the controller');
-            print(video.videoController?.value.duration);
-            print(controller?.value.duration);
-          });
-        }
-      }
-      isInitializeVideoController = true;
+      // // initialize the controllers
+      // final task = getTaskWithSubmissionsAndCommentsModel!.task!;
+      // final submissions = task.taskSubmissions!;
+      //
+      // for (var submission in submissions) {
+      //   final videos = submission.submissionAttachmentsCategories?.videos ?? [];
+      //   for (var video in videos) {
+      //     await initializeVideoController(video,
+      //         onControllerLoaded: (controller) {
+      //       video.videoController = controller;
+      //       print('after assign the controller');
+      //       print(video.videoController?.value.duration);
+      //       print(controller?.value.duration);
+      //     });
+      //   }
+      // }
+      // isInitializeVideoController = true;
 
       emit(TaskDetailsSuccessState());
     }).catchError((error) {
@@ -70,40 +70,40 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
     });
   }
 
-  bool isInitializeVideoController = false;
-
-  Future<void> initializeVideoController(
-    SubmissionAttachmentModel attachmentModel, {
-    required Function(VideoPlayerController?) onControllerLoaded,
-  }) async {
-    var uri =
-        '${EndPointsConstants.taskSubmissionsStorage}${attachmentModel.aAttachment!}';
-
-    VideoPlayerController controller =
-        VideoPlayerController.networkUrl(Uri.parse(uri));
-
-    print('controller::: ${controller.value.duration}');
-
-    print(uri);
-
-    try {
-      await controller.initialize();
-      print(
-          'attachmentModel.videoController?.value?.duration:: ${controller.value?.duration}');
-      onControllerLoaded(controller); // Pass controller back to the caller
-      emit(InitializeVideoControllerState());
-    } catch (e) {
-      print('Error initializing video controller: $e');
-    }
-    emit(InitializeVideoControllerState());
-  }
-
-  void toggleVideoPlayPause(VideoPlayerController videoPlayerController) {
-    videoPlayerController.value.isPlaying
-        ? videoPlayerController.pause()
-        : videoPlayerController.play();
-    emit(ToggleVideoPlayPauseState());
-  }
+  // bool isInitializeVideoController = false;
+  //
+  // Future<void> initializeVideoController(
+  //   SubmissionAttachmentModel attachmentModel, {
+  //   required Function(VideoPlayerController?) onControllerLoaded,
+  // }) async {
+  //   var uri =
+  //       '${EndPointsConstants.taskSubmissionsStorage}${attachmentModel.aAttachment!}';
+  //
+  //   VideoPlayerController controller =
+  //       VideoPlayerController.networkUrl(Uri.parse(uri));
+  //
+  //   print('controller::: ${controller.value.duration}');
+  //
+  //   print(uri);
+  //
+  //   try {
+  //     await controller.initialize();
+  //     print(
+  //         'attachmentModel.videoController?.value?.duration:: ${controller.value?.duration}');
+  //     onControllerLoaded(controller); // Pass controller back to the caller
+  //     emit(InitializeVideoControllerState());
+  //   } catch (e) {
+  //     print('Error initializing video controller: $e');
+  //   }
+  //   emit(InitializeVideoControllerState());
+  // }
+  //
+  // void toggleVideoPlayPause(VideoPlayerController videoPlayerController) {
+  //   videoPlayerController.value.isPlaying
+  //       ? videoPlayerController.pause()
+  //       : videoPlayerController.play();
+  //   emit(ToggleVideoPlayPauseState());
+  // }
 
   void launchMyUrl({required storagePath, required String uriString}) async {
     final Uri uri = Uri.parse(storagePath + uriString);

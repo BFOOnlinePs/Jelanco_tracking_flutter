@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class MyImage extends StatelessWidget {
   final double height;
+  final double width;
   final EdgeInsetsGeometry? margin;
   final Widget child;
   final bool showDeleteIcon;
@@ -10,7 +11,8 @@ class MyImage extends StatelessWidget {
 
   const MyImage({
     required this.height,
-    this.margin,
+    this.width = 136,
+    this.margin = const EdgeInsetsDirectional.only(end: 8),
     required this.child,
     this.showDeleteIcon = false,
     this.onDeletePressed,
@@ -20,6 +22,7 @@ class MyImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
+      // width: width,
       margin: margin,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
