@@ -262,9 +262,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       emit(AddCommentSuccessState(
           addTaskSubmissionCommentModel: addTaskSubmissionCommentModel!));
       // add to the model so it will be shown in the list immediately
-
       // make the object (add the name and image from backend)
-      // TODO: add the images + videos + documents to the object
       if (addTaskSubmissionCommentModel!.status == true) {
         TaskSubmissionCommentModel newComment =
             addTaskSubmissionCommentModel!.comment!;
@@ -275,6 +273,8 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
             .submissionComments
             ?.add(newComment);
       }
+      // ..........................................
+      // emit
     }).catchError((error) {
       emit(AddCommentErrorState(error: error.toString()));
       print(error.toString());

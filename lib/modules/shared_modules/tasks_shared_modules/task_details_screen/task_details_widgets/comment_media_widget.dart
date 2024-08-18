@@ -37,8 +37,8 @@ class CommentMediaWidget extends StatelessWidget {
                     return InkWell(
                       onTap: () {
                         taskDetailsCubit.launchMyUrl(
-                            storagePath:
-                                EndPointsConstants.taskSubmissionsCommentStorage,
+                            storagePath: EndPointsConstants
+                                .taskSubmissionsCommentStorage,
                             uriString: file.aAttachment!);
                       },
                       borderRadius: BorderRadius.circular(8.0),
@@ -83,7 +83,7 @@ class CommentMediaWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => VideoPlayerScreen(
                               videoUrl:
-                                  '${EndPointsConstants.taskSubmissionsStorage}${comment.commentAttachmentsCategories!.videos![index].aAttachment!}',
+                                  '${EndPointsConstants.taskSubmissionsCommentStorage}${comment.commentAttachmentsCategories!.videos![index].aAttachment!}',
                             ),
                           ),
                         );

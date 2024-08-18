@@ -11,12 +11,12 @@ import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video
 
 class SubmissionMediaWidget extends StatelessWidget {
   final TaskSubmissionModel submission;
-  final TaskDetailsCubit taskDetailsCubit;
+  final TaskDetailsCubit? taskDetailsCubit;
 
   const SubmissionMediaWidget({
     super.key,
     required this.submission,
-    required this.taskDetailsCubit,
+    this.taskDetailsCubit,
   });
 
   @override
@@ -36,10 +36,14 @@ class SubmissionMediaWidget extends StatelessWidget {
 
                     return InkWell(
                       onTap: () {
-                        taskDetailsCubit.launchMyUrl(
-                            storagePath:
-                                EndPointsConstants.taskSubmissionsStorage,
-                            uriString: file.aAttachment!);
+                        if (taskDetailsCubit != null) {
+                          taskDetailsCubit!.launchMyUrl(
+                              storagePath:
+                                  EndPointsConstants.taskSubmissionsStorage,
+                              uriString: file.aAttachment!);
+                        } else {
+                          print('use launcher mixin');
+                        }
                       },
                       borderRadius: BorderRadius.circular(8.0),
                       splashColor: Colors.blue.withOpacity(0.2),
@@ -68,31 +72,6 @@ class SubmissionMediaWidget extends StatelessWidget {
                 ],
               )
             : Container(),
-        // submission.submissionAttachmentsCategories!.videos!.isNotEmpty
-        //     ? Container(
-        //         height: 300.0,
-        //         child: ListView.builder(
-        //           scrollDirection: Axis.horizontal,
-        //           itemBuilder: (context, index) {
-        //             return taskDetailsCubit.isInitializeVideoController
-        //                 ? MyVideo(
-        //                     // height: 200,
-        //                     margin: EdgeInsetsDirectional.only(end: 8),
-        //                     index: index,
-        //                     videoPlayerController: submission
-        //                         .submissionAttachmentsCategories!
-        //                         .videos![index]
-        //                         .videoController,
-        //                     onTogglePlayPauseWithController:
-        //                         taskDetailsCubit.toggleVideoPlayPause,
-        //                   )
-        //                 : Text('not initialized');
-        //           },
-        //           itemCount: submission
-        //               .submissionAttachmentsCategories!.videos!.length,
-        //         ),
-        //       )
-        //     : Container(),
         submission.submissionAttachmentsCategories!.videos!.isNotEmpty
             ? Container(
                 height: 200,

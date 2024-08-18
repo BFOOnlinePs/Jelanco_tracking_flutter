@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
   final TaskSubmissionModel submissionModel;
@@ -26,16 +28,29 @@ class SubmissionHeaderWidget extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.edit, color: ColorsConstants.secondaryColor),
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddTaskSubmissionScreen(
-                  taskId: submissionModel.tsTaskId!,
-                  taskSubmissionModel: submissionModel,
-                  isEdit: true,
-                ),
+            NavigationServices.navigateTo(
+              context,
+              AddTaskSubmissionScreen(
+                taskId: submissionModel.tsTaskId!,
+                taskSubmissionModel: submissionModel,
+                isEdit: true,
               ),
             );
           },
+        ),
+        IconButton(
+          onPressed: () {
+            NavigationServices.navigateTo(
+              context,
+              TaskSubmissionVersionsScreen(
+                taskSubmissionId: submissionModel.tsId!,
+              ),
+            );
+          },
+          icon: Icon(
+            Icons.layers_outlined,
+            color: ColorsConstants.secondaryColor,
+          ),
         ),
       ],
     );

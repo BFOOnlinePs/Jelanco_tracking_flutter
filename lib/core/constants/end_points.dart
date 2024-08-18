@@ -22,6 +22,7 @@ class EndPointsConstants {
 
   // tasks submissions
   static const String taskSubmissions = 'task-submissions';
+  static const String taskSubmissionVersions = 'versions'; // /task-submissions/106/versions
 
   // task submission comment
   static const String taskSubmissionComments = 'comments';
