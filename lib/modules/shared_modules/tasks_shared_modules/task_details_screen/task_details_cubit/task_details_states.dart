@@ -42,6 +42,8 @@ class PickMultipleVideosState extends TaskDetailsStates {}
 
 class DeletePickedVideoFromListState extends TaskDetailsStates {}
 
+class ChangeCommentTextState extends TaskDetailsStates {}
+
 // compress images mixin
 
 class CompressAllImagesLoadingState extends TaskDetailsStates {}

@@ -59,6 +59,11 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
 
   final ImagePicker picker = ImagePicker();
 
+  void changeCommentText({required String text}) {
+    commentController.text = text;
+    emit(ChangeCommentTextState());
+  }
+
 // images
 
   List<XFile> pickedImagesList = [];
@@ -80,16 +85,18 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
   }
 
   Future<void> compressAllImages() async {
-    emit(CompressAllImagesLoadingState());
+    // emit(CompressAllImagesLoadingState());
     compressedImagesList.clear();
+    print('pickedImagesList.length: ${pickedImagesList.length}');
     for (int i = 0; i < pickedImagesList.length; i++) {
       print('thePickedImagesList[i].path: ${pickedImagesList[i].path}');
       XFile? compressed = await compressImage(
         File(pickedImagesList[i].path),
       );
       compressedImagesList.add(compressed);
+      print('next loop');
     }
-    emit(CompressAllImagesSuccessState());
+    // emit(CompressAllImagesSuccessState());
   }
 
 // videos
@@ -148,6 +155,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
   Future<void> compressVideos() async {
     compressedVideoList.clear();
 
+    print('pickedVideosList.length: ${pickedVideosList.length}');
     for (int i = 0; i < pickedVideosList.length; i++) {
       print('pickedVideosList[i].path: ${pickedVideosList[i].path}');
       var compressed = await compressVideo(
@@ -159,7 +167,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       compressedVideoList.add(compressed);
     }
 
-    emit(CompressAllVideosSuccessState());
+    // emit(CompressAllVideosSuccessState());
   }
 
 // files
@@ -256,6 +264,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       url: EndPointsConstants.taskSubmissionComments,
       data: formData,
     ).then((value) {
+      clearCommentData();
       print(value?.data);
       addTaskSubmissionCommentModel =
           AddTaskSubmissionCommentModel.fromMap(value?.data);
@@ -283,9 +292,15 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
 
   void whenCloseBottomSheet() {
     focusNode.unfocus();
+    //     emit(ClearCommentControllerState());
+  }
+
+  void clearCommentData() {
     commentController.clear();
-// remove attachments
-    emit(ClearCommentControllerState());
+    pickedFilesList.clear();
+    pickedImagesList.clear();
+    pickedVideosList.clear();
+    videoControllers.clear();
   }
 
   @override

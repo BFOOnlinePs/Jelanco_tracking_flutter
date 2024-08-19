@@ -10,7 +10,7 @@ mixin CompressVideoMixin<T> on Cubit<T> {
     required T successState,
     required T Function(String error) errorState,
   }) async {
-    emit(loadingState);
+    // emit(loadingState);
     print('original file path: $filePath');
     try {
       mediaInfo = await VideoCompress.compressVideo(
@@ -19,9 +19,9 @@ mixin CompressVideoMixin<T> on Cubit<T> {
         deleteOrigin: false,
       );
       print('final path after compress: ${mediaInfo?.path}');
-      emit(successState);
+      // emit(successState);
     } catch (error) {
-      emit(errorState(error.toString()));
+      // emit(errorState(error.toString()));
       print('in compress mixin ${error.toString()}');
       mediaInfo = null;
     }

@@ -7,11 +7,6 @@ import 'package:path_provider/path_provider.dart';
 mixin CompressImagesMixin<T> on Cubit<T> {
   Future<XFile?> compressImage(
     File file,
-    //     {
-    //   required T loadingState,
-    //   required T successState,
-    //   required T Function(String error) errorState,
-    // }
   ) async {
     // Get the temporary directory
     final tempDir = await getTemporaryDirectory();
@@ -38,20 +33,6 @@ mixin CompressImagesMixin<T> on Cubit<T> {
       compressedFilePath,
       quality: 70,
     );
-
-    // Return the compressed file
     return compressedFile;
-
-    // XFile? result = await FlutterImageCompress.compressAndGetFile(
-    //   file.absolute.path,
-    //   targetPath,
-    //   quality: 88,
-    //   rotate: 180,
-    // );
-    //
-    // print(file.lengthSync());
-    // print(result!.length());
-    //
-    // return result;
   }
 }

@@ -1,6 +1,7 @@
 class EndPointsConstants {
   static const String baseUrl = '$url/public/api/';
   static const String url = 'http://192.168.1.15/BFO/jelanco_tracking';
+  // static const String url = 'https://we.jelanco.net';
 
   static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
   static const String taskSubmissionsCommentStorage =
@@ -10,8 +11,6 @@ class EndPointsConstants {
   // auth
   static const String login = 'login';
   static const String logout = 'logout';
-
-  // shared
 
   // tasks
   static const String tasks = 'tasks';

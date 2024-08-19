@@ -116,8 +116,8 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(EditTaskLoadingState());
     Map<String, dynamic> dataObject = {
       'content': contentController.text,
-      'start_time': plannedStartTime.toString(),
-      'end_time': plannedEndTime.toString(),
+      'start_time': plannedStartTime?.toString(),
+      'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
       'assigned_to': FormatUtils.formatUsersList(selectedUsers),
       'status': selectedTaskStatusEnum!.statusName,

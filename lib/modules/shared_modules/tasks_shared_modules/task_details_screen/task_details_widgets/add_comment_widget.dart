@@ -1,16 +1,13 @@
 import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
-import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
-import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
+import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 
 class AddCommentWidget extends StatelessWidget {
   final int taskId;
@@ -27,12 +24,30 @@ class AddCommentWidget extends StatelessWidget {
     return BlocConsumer<TaskDetailsCubit, TaskDetailsStates>(
       listener: (context, state) {
         if (state is AddCommentSuccessState) {
-          // error message when state is false
+          SnackbarHelper.showSnackbar(
+            context: context,
+            snackBarStates: state.addTaskSubmissionCommentModel.status == true
+                ? SnackBarStates.success
+                : SnackBarStates.error,
+            message: state.addTaskSubmissionCommentModel.message!,
+          );
+          Navigator.pop(context);
+        }
+        if (state is AddCommentErrorState) {
+          SnackbarHelper.showSnackbar(
+            context: context,
+            snackBarStates: SnackBarStates.error,
+            message: state.error,
+          );
+        }
+        if (state is AddCommentLoadingState) {
+          Navigator.pop(context);
         }
       },
       builder: (context, state) {
         TaskDetailsCubit taskDetailsCubit = TaskDetailsCubit.get(context);
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,6 +66,9 @@ class AddCommentWidget extends StatelessWidget {
                     focusNode: taskDetailsCubit.focusNode,
                     maxLines: 4,
                     controller: taskDetailsCubit.commentController,
+                    onChanged: (value) {
+                      taskDetailsCubit.changeCommentText(text: value);
+                    },
                     decoration: InputDecoration(
                       hintText: 'أكتب تعليق ...',
                       border: OutlineInputBorder(
@@ -69,57 +87,61 @@ class AddCommentWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            Row(
-              children: [
-                taskDetailsCubit.pickedImagesList.isEmpty
-                    ? Container()
-                    : Container(
-                        height: 150,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => MyImage(
-                              height: 100,
-                              showDeleteIcon: true,
-                              onDeletePressed: () {
-                                taskDetailsCubit.deletedPickedImageFromList(
-                                    index: index);
-                              },
-                              child: Image.file(
-                                File(taskDetailsCubit
-                                    .pickedImagesList[index].path),
-                              ),
-                              margin: EdgeInsetsDirectional.only(end: 10)),
-                          itemCount: taskDetailsCubit.pickedImagesList.length,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  taskDetailsCubit.pickedImagesList.isEmpty
+                      ? Container()
+                      : Container(
+                          height: 150,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => MyImage(
+                                height: 100,
+                                showDeleteIcon: true,
+                                onDeletePressed: () {
+                                  taskDetailsCubit.deletedPickedImageFromList(
+                                      index: index);
+                                },
+                                child: Image.file(
+                                  File(taskDetailsCubit
+                                      .pickedImagesList[index].path),
+                                ),
+                                margin: EdgeInsetsDirectional.only(end: 10)),
+                            itemCount: taskDetailsCubit.pickedImagesList.length,
+                          ),
                         ),
-                      ),
-                taskDetailsCubit.pickedVideosList.isEmpty
-                    ? Container()
-                    : Container(
-                        height: 150,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return MyVideo(
-                              height: 150,
-                              videoPlayerController:
-                                  taskDetailsCubit.videoControllers[index],
-                              index: index,
-                              showDeleteIcon: true,
-                              onDeletePressed: () {
-                                taskDetailsCubit.deletedPickedVideoFromList(
-                                    index: index);
-                              },
-                              margin: EdgeInsetsDirectional.only(end: 10),
-                              showTogglePlayPause: false,
-                              showVideoIcon: true,
-                            );
-                          },
-                          itemCount: taskDetailsCubit.pickedVideosList.length,
+                  taskDetailsCubit.pickedVideosList.isEmpty
+                      ? Container()
+                      : Container(
+                          height: 150,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return MyVideo(
+                                height: 150,
+                                videoPlayerController:
+                                    taskDetailsCubit.videoControllers[index],
+                                index: index,
+                                showDeleteIcon: true,
+                                onDeletePressed: () {
+                                  taskDetailsCubit.deletedPickedVideoFromList(
+                                      index: index);
+                                },
+                                margin: EdgeInsetsDirectional.only(end: 10),
+                                showTogglePlayPause: false,
+                                showVideoIcon: true,
+                              );
+                            },
+                            itemCount: taskDetailsCubit.pickedVideosList.length,
+                          ),
                         ),
-                      ),
-              ],
+                ],
+              ),
             ),
 
             taskDetailsCubit.pickedFilesList.isEmpty
@@ -200,16 +222,21 @@ class AddCommentWidget extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  icon: const Icon(Icons.send,
-                      color: ColorsConstants.primaryColor),
-                  onPressed: () {
-                    taskDetailsCubit.addComment(
-                      taskId: taskId,
-                      taskSubmissionId: taskSubmissionId,
-                      parentId: -1,
-                      commentContent: taskDetailsCubit.commentController.text,
-                    );
-                  },
+                  icon: Icon(Icons.send,
+                      color: taskDetailsCubit.commentController.text.isEmpty
+                          ? Colors.grey
+                          : ColorsConstants.primaryColor),
+                  onPressed: taskDetailsCubit.commentController.text.isEmpty
+                      ? null
+                      : () {
+                          taskDetailsCubit.addComment(
+                            taskId: taskId,
+                            taskSubmissionId: taskSubmissionId,
+                            parentId: -1,
+                            commentContent:
+                                taskDetailsCubit.commentController.text,
+                          );
+                        },
                 ),
               ],
             ),

@@ -28,8 +28,8 @@ class SubmissionsSectionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SectionTitleWidget('عمليات التسليم'),
-        ...taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
-                ?.taskSubmissions
+        ...taskDetailsCubit
+                .getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions
                 ?.map((submission) {
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),

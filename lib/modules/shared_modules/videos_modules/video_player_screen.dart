@@ -15,8 +15,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   late VideoPlayerController _videoPlayerController;
   bool _isPlaying = false;
   bool _isLoading = true;
-  bool _showPlayPauseIcon = false; // Icon starts hidden
-  Timer? _hideIconTimer; // Timer to hide icon after delay
+  bool _showPlayPauseIcon = false;
+  Timer? _hideIconTimer;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ..initialize().then((_) {
         setState(() {
           _isLoading = false;
-          _videoPlayerController.setLooping(true); // Enable looping
+          _videoPlayerController.setLooping(true);
           _videoPlayerController
               .play(); // Automatically start playing the video
           _isPlaying =

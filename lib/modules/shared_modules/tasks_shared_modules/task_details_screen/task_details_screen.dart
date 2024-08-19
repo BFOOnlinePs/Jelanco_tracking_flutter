@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submissions_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/task_details_section_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
@@ -32,23 +33,29 @@ class TaskDetailsScreen extends StatelessWidget {
                 ? Center(
                     child: MyLoader(),
                   )
-                : SingleChildScrollView(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TaskDetailsSectionWidget(
-                            taskDetailsCubit: taskDetailsCubit),
-                        MyVerticalSpacer(),
-                        MyVerticalSpacer(),
-                        taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
-                                .task!.taskSubmissions!.isNotEmpty
-                            ? SubmissionsSectionWidget(
-                                taskDetailsCubit: taskDetailsCubit)
-                            : Container(),
-                      ],
-                    ),
-                  );
+                : Stack(
+                  children: [
+                    SingleChildScrollView(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TaskDetailsSectionWidget(
+                                taskDetailsCubit: taskDetailsCubit),
+                            MyVerticalSpacer(),
+                            MyVerticalSpacer(),
+                            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
+                                    .task!.taskSubmissions!.isNotEmpty
+                                ? SubmissionsSectionWidget(
+                                    taskDetailsCubit: taskDetailsCubit)
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                    state is AddCommentLoadingState ? LoaderWithDisable() : Container(),
+
+                  ],
+                );
           },
         ),
       ),
