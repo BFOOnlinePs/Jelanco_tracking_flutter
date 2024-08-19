@@ -26,7 +26,6 @@ import 'package:video_player/video_player.dart';
 
 class TaskDetailsCubit extends Cubit<TaskDetailsStates>
     with
-        LaunchUrlMixin,
         PermissionsMixin,
         CompressVideoMixin<TaskDetailsStates>,
         CompressImagesMixin<TaskDetailsStates> {

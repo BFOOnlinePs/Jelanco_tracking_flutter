@@ -8,12 +8,12 @@ import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button_no_bor
 
 class CommentsSectionWidget extends StatelessWidget {
   final List<TaskSubmissionCommentModel> comments;
-  final TaskDetailsCubit taskDetailsCubit;
+  final TaskDetailsCubit? taskDetailsCubit;
 
   const CommentsSectionWidget({
     super.key,
     required this.comments,
-    required this.taskDetailsCubit,
+    this.taskDetailsCubit,
   });
 
   @override

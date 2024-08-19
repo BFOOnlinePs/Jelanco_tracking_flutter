@@ -36,7 +36,7 @@ void main() async {
   if (UserDataConstants.token == null || UserDataConstants.token == '') {
     homeWidget = const LoginScreen();
   } else {
-    homeWidget = const HomeScreen();
+    homeWidget = HomeScreen();
   }
 
   runApp(

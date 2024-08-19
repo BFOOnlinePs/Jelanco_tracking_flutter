@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
@@ -11,12 +12,12 @@ import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video
 
 class CommentMediaWidget extends StatelessWidget {
   final TaskSubmissionCommentModel comment;
-  final TaskDetailsCubit taskDetailsCubit;
+  final TaskDetailsCubit? taskDetailsCubit;
 
   const CommentMediaWidget({
     super.key,
     required this.comment,
-    required this.taskDetailsCubit,
+    this.taskDetailsCubit,
   });
 
   @override
@@ -36,7 +37,7 @@ class CommentMediaWidget extends StatelessWidget {
 
                     return InkWell(
                       onTap: () {
-                        taskDetailsCubit.launchMyUrl(
+                        LaunchUrlUtils.launchMyUrl(
                             storagePath: EndPointsConstants
                                 .taskSubmissionsCommentStorage,
                             uriString: file.aAttachment!);

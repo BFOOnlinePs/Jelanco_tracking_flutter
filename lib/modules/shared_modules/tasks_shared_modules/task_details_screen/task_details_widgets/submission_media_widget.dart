@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
@@ -36,14 +37,11 @@ class SubmissionMediaWidget extends StatelessWidget {
 
                     return InkWell(
                       onTap: () {
-                        if (taskDetailsCubit != null) {
-                          taskDetailsCubit!.launchMyUrl(
+                        LaunchUrlUtils.launchMyUrl(
                               storagePath:
                                   EndPointsConstants.taskSubmissionsStorage,
                               uriString: file.aAttachment!);
-                        } else {
-                          print('use launcher mixin');
-                        }
+
                       },
                       borderRadius: BorderRadius.circular(8.0),
                       splashColor: Colors.blue.withOpacity(0.2),
