@@ -16,7 +16,7 @@ class MyTextFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final Function(String)? onFieldSubmitted;
   final bool enabled;
-  final int maxLines;
+  final int? maxLines;
   final Function(String)? onChanged;
   final bool isFieldRequired;
   final Widget? suffixIcon;

@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildMediaOption(
+                    buildMediaOption(
                       icon: Icons.image,
                       label: 'صور',
                       color: Colors.green,
@@ -91,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Container(width: 0.2, height: 26, color: Colors.grey),
-                    _buildMediaOption(
+                    buildMediaOption(
                       icon: Icons.video_camera_back,
                       label: 'فيديوهات',
                       color: Colors.red,
@@ -101,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Container(width: 0.2, height: 26, color: Colors.grey),
-                    _buildMediaOption(
+                    buildMediaOption(
                       icon: Icons.attach_file,
                       label: 'ملفات',
                       color: Colors.blue,
@@ -242,26 +242,27 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMediaOption(
-      {required IconData icon,
+
+}
+Widget buildMediaOption(
+    {required IconData icon,
       required String label,
       required Color color,
       required Function onTap}) {
-    return InkWell(
-      onTap: () => onTap(),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          children: [
-            Icon(icon, color: color, size: 30),
-            SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
-        ),
+  return InkWell(
+    onTap: () => onTap(),
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          Icon(icon, color: color, size: 30),
+          SizedBox(width: 8),
+          Text(
+            label,
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

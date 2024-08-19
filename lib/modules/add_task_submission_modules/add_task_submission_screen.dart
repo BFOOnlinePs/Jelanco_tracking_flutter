@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permi
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
@@ -18,7 +19,7 @@ import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
-// to add submission, regardless if it is the original submission or edit submission / new version
+// to add submission, regardless if it is the original submission or edit submission / new version or submission without task
 class AddTaskSubmissionScreen extends StatelessWidget {
   final int taskId;
   final TaskSubmissionModel? taskSubmissionModel; // for edit
@@ -92,7 +93,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   textInputAction: TextInputAction.newline,
                                   keyboardType: TextInputType.multiline,
                                   isFieldRequired: true,
-                                  maxLines: 3,
+                                  maxLines: null,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'add_task_submission_content_required_validation'
@@ -100,6 +101,40 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     }
                                   },
                                 ),
+
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    buildMediaOption(
+                                      icon: Icons.image,
+                                      label: 'صور',
+                                      color: Colors.green,
+                                      onTap: () {},
+                                    ),
+                                    Container(
+                                        width: 0.2,
+                                        height: 26,
+                                        color: Colors.grey),
+                                    buildMediaOption(
+                                      icon: Icons.video_camera_back,
+                                      label: 'فيديوهات',
+                                      color: Colors.red,
+                                      onTap: () {},
+                                    ),
+                                    Container(
+                                        width: 0.2,
+                                        height: 26,
+                                        color: Colors.grey),
+                                    buildMediaOption(
+                                      icon: Icons.attach_file,
+                                      label: 'ملفات',
+                                      color: Colors.blue,
+                                      onTap: () {},
+                                    ),
+                                  ],
+                                ),
+
                                 MyTextButton(
                                     onPressed: () {
                                       addTaskSubmissionCubit.requestPermission(
@@ -111,6 +146,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                   .pickMultipleImagesFromGallery);
                                     },
                                     child: Text('صور')),
+
                                 addTaskSubmissionCubit.pickedImagesList
                                         .isEmpty // new picked (from file)
 
