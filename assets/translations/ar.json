@@ -50,7 +50,7 @@
   "add_task_submission_button_submit": "تسليم المهمة",
   "add_task_submission_content_field": "محتوى التسليم",
   "add_task_submission_content_field_label": "محتوى التسليم",
-  "add_task_submission_content_required_validation": "يجب أدخال محتوى التسليم",
+  "add_task_submission_content_required_validation": "يجب إدخال محتوى التسليم",
   "_comment": "permission mixin",
   "permission_denied": "تم رفض الإذن",
   "permission_needed": "يرجى منح الإذن لإتمام العملية.",

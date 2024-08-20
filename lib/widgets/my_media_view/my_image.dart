@@ -38,7 +38,7 @@ class MyImage extends StatelessWidget {
               ? IconButton(
                   onPressed: onDeletePressed,
                   icon: Icon(
-                    Icons.delete_forever,
+                    Icons.close,
                     color: Colors.red,
                     size: 30,
                   ),

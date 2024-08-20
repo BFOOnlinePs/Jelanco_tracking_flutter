@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
-import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
-import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
@@ -80,7 +80,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: SingleChildScrollView(
+                            controller: addTaskSubmissionCubit.scrollController,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 MyTextFormField(
                                   titleText:
@@ -93,7 +95,12 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   textInputAction: TextInputAction.newline,
                                   keyboardType: TextInputType.multiline,
                                   isFieldRequired: true,
-                                  maxLines: null,
+                                  maxLines:
+                                      addTaskSubmissionCubit.contentMaxLines,
+                                  onChanged: (text) {
+                                    addTaskSubmissionCubit
+                                        .changeContentMaxLines(text: text);
+                                  },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'add_task_submission_content_required_validation'
@@ -101,231 +108,241 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     }
                                   },
                                 ),
-
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    buildMediaOption(
-                                      icon: Icons.image,
-                                      label: 'صور',
-                                      color: Colors.green,
-                                      onTap: () {},
-                                    ),
-                                    Container(
-                                        width: 0.2,
-                                        height: 26,
-                                        color: Colors.grey),
-                                    buildMediaOption(
-                                      icon: Icons.video_camera_back,
-                                      label: 'فيديوهات',
-                                      color: Colors.red,
-                                      onTap: () {},
-                                    ),
-                                    Container(
-                                        width: 0.2,
-                                        height: 26,
-                                        color: Colors.grey),
-                                    buildMediaOption(
-                                      icon: Icons.attach_file,
-                                      label: 'ملفات',
-                                      color: Colors.blue,
-                                      onTap: () {},
-                                    ),
-                                  ],
+                                Container(
+                                  margin: EdgeInsets.only(top: 14, bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      MediaOptionWidget(
+                                        icon: Icons.image,
+                                        label: 'صور',
+                                        color: Colors.green,
+                                        onTap: () {
+                                          addTaskSubmissionCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted:
+                                                  addTaskSubmissionCubit
+                                                      .pickMultipleImagesFromGallery);
+                                        },
+                                      ),
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+                                      MediaOptionWidget(
+                                        icon: Icons.video_camera_back,
+                                        label: 'فيديوهات',
+                                        color: Colors.red,
+                                        onTap: () {
+                                          addTaskSubmissionCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted:
+                                                  addTaskSubmissionCubit
+                                                      .pickMultipleVideosFromGallery);
+                                        },
+                                      ),
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+                                      MediaOptionWidget(
+                                        icon: Icons.attach_file,
+                                        label: 'ملفات',
+                                        color: Colors.blue,
+                                        onTap: () {
+                                          addTaskSubmissionCubit
+                                              .requestPermission(
+                                                  context: context,
+                                                  permissionType:
+                                                      PermissionType.storage,
+                                                  functionWhenGranted:
+                                                      addTaskSubmissionCubit
+                                                          .pickReportFile);
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
 
-                                MyTextButton(
-                                    onPressed: () {
-                                      addTaskSubmissionCubit.requestPermission(
-                                          context: context,
-                                          permissionType:
-                                              PermissionType.storage,
-                                          functionWhenGranted:
-                                              addTaskSubmissionCubit
-                                                  .pickMultipleImagesFromGallery);
-                                    },
-                                    child: Text('صور')),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      addTaskSubmissionCubit.pickedImagesList
+                                              .isEmpty // new picked (from file)
+                                          ? Container()
+                                          : Container(
+                                              height: 200,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) =>
+                                                    MyImage(
+                                                        height: 100,
+                                                        showDeleteIcon: true,
+                                                        onDeletePressed: () {
+                                                          addTaskSubmissionCubit
+                                                              .deletedPickedImageFromList(
+                                                                  index: index);
+                                                        },
+                                                        child: Image.file(
+                                                          File(addTaskSubmissionCubit
+                                                              .pickedImagesList[index]
+                                                              .path),
+                                                        ),
+                                                        margin: EdgeInsetsDirectional
+                                                            .only(end: 10)),
+                                                itemCount: addTaskSubmissionCubit
+                                                    .pickedImagesList.length,
+                                              ),
+                                            ),
 
-                                addTaskSubmissionCubit.pickedImagesList
-                                        .isEmpty // new picked (from file)
-
-                                    ? Text('قم بإختيار الصور')
-                                    : Container(
-                                        height: 200,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) =>
-                                              MyImage(
-                                                  height: 100,
-                                                  showDeleteIcon: true,
-                                                  onDeletePressed: () {
-                                                    addTaskSubmissionCubit
-                                                        .deletedPickedImageFromList(
-                                                            index: index);
-                                                  },
-                                                  child: Image.file(
-                                                    File(addTaskSubmissionCubit
-                                                        .pickedImagesList[index]
-                                                        .path),
-                                                  ),
-                                                  margin: EdgeInsetsDirectional
-                                                      .only(end: 10)),
-                                          itemCount: addTaskSubmissionCubit
-                                              .pickedImagesList.length,
-                                        ),
-                                      ),
-
-                                // the old picked images list is empty (from network)
-                                taskSubmissionModel == null ||
-                                        taskSubmissionModel!
-                                            .submissionAttachmentsCategories!
-                                            .images!
-                                            .isEmpty
-                                    ? Text('قم بإختيار الصور')
-                                    : Container(
-                                        height: 200,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) =>
-                                              MyImage(
-                                                  height: 100,
-                                                  showDeleteIcon: true,
-                                                  onDeletePressed: () {
-                                                    addTaskSubmissionCubit
-                                                        .deletedPickedImageFromList(
-                                                            index: index,
-                                                            taskSubmissionModel:
-                                                                taskSubmissionModel!);
-                                                  },
-                                                  margin: EdgeInsetsDirectional
-                                                      .only(end: 10),
-                                                  child: Image(
-                                                    image: NetworkImage(
-                                                      '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}',
-                                                    ),
-                                                  )),
-                                          itemCount: taskSubmissionModel!
-                                              .submissionAttachmentsCategories!
-                                              .images!
-                                              .length,
-                                        ),
-                                      ),
-
-                                MyTextButton(
-                                  onPressed: () {
-                                    addTaskSubmissionCubit.requestPermission(
-                                        context: context,
-                                        permissionType: PermissionType.storage,
-                                        functionWhenGranted:
-                                            addTaskSubmissionCubit
-                                                .pickMultipleVideosFromGallery);
-                                  },
-                                  child: Text('فيديوهات'),
+                                      // the old picked images list is empty (from network)
+                                      taskSubmissionModel == null ||
+                                              taskSubmissionModel!
+                                                  .submissionAttachmentsCategories!
+                                                  .images!
+                                                  .isEmpty
+                                          ? Container()
+                                          : Container(
+                                              height: 200,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) =>
+                                                    MyImage(
+                                                        height: 100,
+                                                        showDeleteIcon: true,
+                                                        onDeletePressed: () {
+                                                          addTaskSubmissionCubit
+                                                              .deletedPickedImageFromList(
+                                                                  index: index,
+                                                                  taskSubmissionModel:
+                                                                      taskSubmissionModel!);
+                                                        },
+                                                        margin: EdgeInsetsDirectional
+                                                            .only(end: 10),
+                                                        child: Image(
+                                                          image: NetworkImage(
+                                                            '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}',
+                                                          ),
+                                                        )),
+                                                itemCount: taskSubmissionModel!
+                                                    .submissionAttachmentsCategories!
+                                                    .images!
+                                                    .length,
+                                              ),
+                                            ),
+                                    ],
+                                  ),
                                 ),
-                                addTaskSubmissionCubit.pickedVideosList.isEmpty
-                                    ? Text('قم بإختيار الفيديوهات')
-                                    : Container(
-                                        height: 280,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            return MyVideo(
-                                                // height: 200,
-                                                videoPlayerController:
-                                                    addTaskSubmissionCubit
-                                                            .videoControllers[
-                                                        index],
-                                                index: index,
-                                                onTogglePlayPauseWithIndex:
-                                                    addTaskSubmissionCubit
-                                                        .toggleVideoPlayPause,
-                                                showDeleteIcon: true,
-                                                onDeletePressed: () {
-                                                  addTaskSubmissionCubit
-                                                      .deletedPickedVideoFromList(
-                                                          index: index);
+
+                                SizedBox(
+                                  height: 14,
+                                ),
+
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      addTaskSubmissionCubit.pickedVideosList.isEmpty
+                                          ? Container()
+                                          : Container(
+                                              height: 280,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return MyVideo(
+                                                      // height: 200,
+                                                      videoPlayerController:
+                                                          addTaskSubmissionCubit
+                                                                  .videoControllers[
+                                                              index],
+                                                      index: index,
+                                                      onTogglePlayPauseWithIndex:
+                                                          addTaskSubmissionCubit
+                                                              .toggleVideoPlayPause,
+                                                      showDeleteIcon: true,
+                                                      onDeletePressed: () {
+                                                        addTaskSubmissionCubit
+                                                            .deletedPickedVideoFromList(
+                                                                index: index);
+                                                      },
+                                                      margin:
+                                                          EdgeInsetsDirectional.only(
+                                                              end: 10));
                                                 },
-                                                margin:
-                                                    EdgeInsetsDirectional.only(
-                                                        end: 10));
-                                          },
-                                          itemCount: addTaskSubmissionCubit
-                                              .pickedVideosList.length,
-                                        ),
-                                      ),
+                                                itemCount: addTaskSubmissionCubit
+                                                    .pickedVideosList.length,
+                                              ),
+                                            ),
 
-                                taskSubmissionModel == null ||
-                                        taskSubmissionModel!
-                                            .submissionAttachmentsCategories!
-                                            .videos!
-                                            .isEmpty ||
-                                        addTaskSubmissionCubit
-                                                .oldVideoControllers.length <
-                                            taskSubmissionModel!
-                                                .submissionAttachmentsCategories!
-                                                .videos!
-                                                .length // to make sure that all the controllers initialized
-                                    ? Text('قم بإختيار الفيديوهات')
-                                    : Container(
-                                        height: 280,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            return MyVideo(
-                                                // height: 200,
-
-                                                videoPlayerController:
-                                                    addTaskSubmissionCubit
-                                                            .oldVideoControllers[
-                                                        index],
-                                                index: index,
-                                                onTogglePlayPauseWithIndex:
-                                                    (index) {
-                                                  addTaskSubmissionCubit
-                                                      .toggleVideoPlayPause(
-                                                          index,
-                                                          isOldVideos: true);
-                                                },
-                                                // addTaskSubmissionCubit
-                                                //     .toggleVideoPlayPause,
-
-                                                showDeleteIcon: true,
-                                                onDeletePressed: () {
-                                                  addTaskSubmissionCubit
-                                                      .deletedPickedVideoFromList(
-                                                          index: index,
-                                                          taskSubmissionModel:
-                                                              taskSubmissionModel!);
-                                                },
-                                                margin:
-                                                    EdgeInsetsDirectional.only(
-                                                        end: 10));
-                                          },
-                                          itemCount: taskSubmissionModel!
-                                              .submissionAttachmentsCategories!
-                                              .videos!
-                                              .length,
-                                        ),
-                                      ),
-
-                                MyTextButton(
-                                    onPressed: () {
-                                      addTaskSubmissionCubit.requestPermission(
-                                          context: context,
-                                          permissionType:
-                                              PermissionType.storage,
-                                          functionWhenGranted:
+                                      taskSubmissionModel == null ||
+                                              taskSubmissionModel!
+                                                  .submissionAttachmentsCategories!
+                                                  .videos!
+                                                  .isEmpty ||
                                               addTaskSubmissionCubit
-                                                  .pickReportFile);
-                                    },
-                                    child: Text('ملفات')),
+                                                      .oldVideoControllers.length <
+                                                  taskSubmissionModel!
+                                                      .submissionAttachmentsCategories!
+                                                      .videos!
+                                                      .length // to make sure that all the controllers initialized
+                                          ? Container()
+                                          : Container(
+                                              height: 280,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return MyVideo(
+                                                      // height: 200,
+
+                                                      videoPlayerController:
+                                                          addTaskSubmissionCubit
+                                                                  .oldVideoControllers[
+                                                              index],
+                                                      index: index,
+                                                      onTogglePlayPauseWithIndex:
+                                                          (index) {
+                                                        addTaskSubmissionCubit
+                                                            .toggleVideoPlayPause(
+                                                                index,
+                                                                isOldVideos: true);
+                                                      },
+                                                      // addTaskSubmissionCubit
+                                                      //     .toggleVideoPlayPause,
+
+                                                      showDeleteIcon: true,
+                                                      onDeletePressed: () {
+                                                        addTaskSubmissionCubit
+                                                            .deletedPickedVideoFromList(
+                                                                index: index,
+                                                                taskSubmissionModel:
+                                                                    taskSubmissionModel!);
+                                                      },
+                                                      margin:
+                                                          EdgeInsetsDirectional.only(
+                                                              end: 10));
+                                                },
+                                                itemCount: taskSubmissionModel!
+                                                    .submissionAttachmentsCategories!
+                                                    .videos!
+                                                    .length,
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+
                                 addTaskSubmissionCubit.pickedFilesList.isEmpty
-                                    ? Text('قم بإختيار الملفات')
+                                    ? Container()
                                     : Container(
                                         // height: 200,
                                         child: ListView.builder(
@@ -376,7 +393,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                             .submissionAttachmentsCategories!
                                             .files!
                                             .isEmpty
-                                    ? Text('قم بإختيار الملفات')
+                                    ? Container()
                                     : Container(
                                         // height: 200,
                                         child: ListView.builder(
@@ -400,7 +417,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                 color: Colors.grey[200],
                                                 borderRadius:
                                                     BorderRadius.circular(8),
-                                                boxShadow: [
+                                                boxShadow: const [
                                                   BoxShadow(
                                                     color: Colors.black12,
                                                     offset: Offset(0, 2),
@@ -411,13 +428,11 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               child: ListTile(
                                                 leading: IconButton(
                                                   icon: Icon(Icons.close),
-                                                  onPressed: () =>
-                                                      // .......................................
-                                                      addTaskSubmissionCubit
-                                                          .deletedPickedFileFromList(
-                                                              index: index,
-                                                              taskSubmissionModel:
-                                                                  taskSubmissionModel),
+                                                  onPressed: () => addTaskSubmissionCubit
+                                                      .deletedPickedFileFromList(
+                                                          index: index,
+                                                          taskSubmissionModel:
+                                                              taskSubmissionModel),
                                                 ),
                                                 title: Text(
                                                     fileName ?? 'file name'),
@@ -477,6 +492,11 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                               }).catchError((error) {
                                 print('error with location !!');
                               });
+                            } else {
+                              print('not valid');
+                              ScrollUtils.scrollPosition(
+                                  scrollController:
+                                      addTaskSubmissionCubit.scrollController);
                             }
                           },
                           // child: Text('add_task_submission_button_submit'.tr()),

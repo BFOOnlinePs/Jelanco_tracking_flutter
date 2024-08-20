@@ -28,11 +28,29 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   static AddTaskSubmissionCubit get(context) => BlocProvider.of(context);
 
+  ScrollController scrollController = ScrollController();
   GlobalKey<FormState> addTaskSubmissionFormKey = GlobalKey<FormState>();
 
   TextEditingController contentController = TextEditingController();
 
+  int? contentMaxLines = 3;
+
   final ImagePicker picker = ImagePicker();
+
+  void changeContentMaxLines({required String text}) {
+    final lineCount = '\n'
+        .allMatches(text)
+        .length + 1;
+
+    // If the text exceeds 3 lines, set maxLines to null
+    if (lineCount > 3 && contentMaxLines != null) {
+      contentMaxLines = null;
+    } else if (lineCount <= 3 && contentMaxLines == null) {
+      // If the text is 3 lines or less, revert contentMaxLines back to 3
+      contentMaxLines = 3;
+    }
+    emit(ChangeContentMaxLinesState());
+  }
 
   // images
 
@@ -136,8 +154,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(DeletePickedVideoFromListState());
   }
 
-  void toggleVideoPlayPause(
-    int index, {
+  void toggleVideoPlayPause(int index, {
     bool isOldVideos = false, // for edit
   }) {
     if (isOldVideos) {
@@ -194,7 +211,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
         } else {
           emit(AddTaskSubmissionFileSelectErrorState(
               error:
-                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+              'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),

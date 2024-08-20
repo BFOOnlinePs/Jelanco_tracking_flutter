@@ -1,25 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
-import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/add_comment_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_media_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_time_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submissions_section_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
-import 'package:jelanco_tracking_system/widgets/my_spacers/my_horizontal_spacer.dart';
-
 import '../../widgets/my_drawer/my_drawer.dart';
 import '../../widgets/my_spacers/my_vertical_spacer.dart';
 
@@ -81,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    buildMediaOption(
+                    MediaOptionWidget(
                       icon: Icons.image,
                       label: 'صور',
                       color: Colors.green,
@@ -91,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Container(width: 0.2, height: 26, color: Colors.grey),
-                    buildMediaOption(
+                    MediaOptionWidget(
                       icon: Icons.video_camera_back,
                       label: 'فيديوهات',
                       color: Colors.red,
@@ -101,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Container(width: 0.2, height: 26, color: Colors.grey),
-                    buildMediaOption(
+                    MediaOptionWidget(
                       icon: Icons.attach_file,
                       label: 'ملفات',
                       color: Colors.blue,
@@ -243,26 +235,4 @@ class HomeScreen extends StatelessWidget {
   }
 
 
-}
-Widget buildMediaOption(
-    {required IconData icon,
-      required String label,
-      required Color color,
-      required Function onTap}) {
-  return InkWell(
-    onTap: () => onTap(),
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: 30),
-          SizedBox(width: 8),
-          Text(
-            label,
-            style: TextStyle(color: Colors.black),
-          ),
-        ],
-      ),
-    ),
-  );
 }

@@ -68,3 +68,4 @@ class CompressAllVideosSuccessState extends AddTaskSubmissionStates {}
 
 class SetOldAttachmentsState extends AddTaskSubmissionStates {}
 
+class ChangeContentMaxLinesState extends AddTaskSubmissionStates {}
