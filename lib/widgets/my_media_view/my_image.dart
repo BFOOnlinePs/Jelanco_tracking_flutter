@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 
 class MyImage extends StatelessWidget {
   final double height;
@@ -26,13 +27,13 @@ class MyImage extends StatelessWidget {
       // width: width,
       margin: margin,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(CardSizeConstants.mediaRadius)),
         border: Border.all(color: Colors.grey),
       ),
       child: Stack(
         children: [
           ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(CardSizeConstants.mediaRadius)),
               child: child),
           showDeleteIcon
               ? IconButton(

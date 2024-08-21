@@ -47,15 +47,18 @@ class SubmissionsSectionWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SubmissionHeaderWidget(submission),
-                    ContentWidget('Content', submission.tsContent ?? '',
-                        Icons.content_copy,
-                        isSubmission: true),
+                    ContentWidget(
+                      submission.tsContent ?? '',
+                      Icons.content_copy,
+                      isSubmission: true,
+                    ),
                     SubmissionMediaWidget(
-                        submission: submission,
-                        taskDetailsCubit: taskDetailsCubit),
-                    MyVerticalSpacer(),
+                      submission: submission,
+                      taskDetailsCubit: taskDetailsCubit,
+                    ),
+                    const MyVerticalSpacer(),
                     SubmissionTimeWidget(submission: submission),
-                    MyVerticalSpacer(),
+                    const MyVerticalSpacer(),
                     submission.submissionComments!.isNotEmpty
                         ? CommentsSectionWidget(
                             comments: submission.submissionComments!,

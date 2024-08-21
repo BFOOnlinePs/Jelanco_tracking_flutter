@@ -16,10 +16,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title ?? '',
-        // style: TextStyle(color: Colors.white),
         style: TextStyle(color: Colors.white),
       ),
-      // iconTheme: IconThemeData(color: Colors.white),
       iconTheme: IconThemeData(color: Colors.white),
       centerTitle: true,
       actions: actions,
@@ -31,7 +29,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       //   ),
       // ),
       flexibleSpace: Container(
-        decoration: BoxDecoration(gradient: ColorsConstants.myLinearGradient),
+        decoration:
+            const BoxDecoration(gradient: ColorsConstants.myLinearGradient),
       ),
 
       // flexibleSpace: Container(

@@ -1,5 +1,5 @@
 class CardSizeConstants {
-
-  static const double borderRadius = 20;
+  static const double cardRadius = 8;
+  static const double mediaRadius = 8;
 
 }

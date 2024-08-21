@@ -11,3 +11,14 @@ class GetUserSubmissionsErrorState extends HomeStates {
 
   GetUserSubmissionsErrorState(this.error);
 }
+
+// TasksToSubmitMixin
+class GetTasksToSubmitLoadingState extends HomeStates {}
+
+class GetTasksToSubmitSuccessState extends HomeStates {}
+
+class GetTasksToSubmitErrorState extends HomeStates {
+  final String error;
+
+  GetTasksToSubmitErrorState(this.error);
+}

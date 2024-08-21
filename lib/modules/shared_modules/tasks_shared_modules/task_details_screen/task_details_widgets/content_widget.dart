@@ -1,27 +1,45 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ContentWidget extends StatelessWidget {
-  final String label; // not used
+class ContentWidget extends StatefulWidget {
   final String value;
   final IconData icon;
-  bool isSubmission = false;
 
-  ContentWidget(this.label, this.value, this.icon,
-      {super.key, isSubmission});
+  ContentWidget(this.value, this.icon, {super.key, isSubmission});
+
+  @override
+  State<ContentWidget> createState() => _ContentWidgetState();
+}
+
+class _ContentWidgetState extends State<ContentWidget> {
+  bool isSubmission = false;
+  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        value,
-        style: TextStyle(
-          color: Colors.grey[800],
-          fontSize: 18,
-          fontWeight: isSubmission ? FontWeight.normal : FontWeight.bold,
+    return InkWell(
+      onTap: () {
+        setState(() {
+          isExpanded = !isExpanded;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12, bottom: 10),
+        child: Column(
+          children: [
+            Text(
+              widget.value,
+              maxLines: isExpanded ? null : 4,
+              overflow:
+                  isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.grey[800],
+                fontSize: 12,
+                fontWeight: isSubmission ? FontWeight.normal : FontWeight.bold,
+              ),
+              textAlign: TextAlign.start,
+            ),
+          ],
         ),
-        textAlign: TextAlign.start,
       ),
     );
   }

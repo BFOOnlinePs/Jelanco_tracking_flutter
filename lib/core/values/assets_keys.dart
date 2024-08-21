@@ -6,4 +6,6 @@ class AssetsKeys {
 
   static const String defaultVideoThumbnail =
       'assets/images/default_video_thumbnail.jpg';
+
+  static const String defaultProfileImage = 'assets/images/profile_default.png';
 }

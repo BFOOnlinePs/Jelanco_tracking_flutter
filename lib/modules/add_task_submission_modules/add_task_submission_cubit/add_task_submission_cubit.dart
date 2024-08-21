@@ -34,13 +34,11 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   TextEditingController contentController = TextEditingController();
 
   int? contentMaxLines = 3;
-
+  late int lineCount;
   final ImagePicker picker = ImagePicker();
 
   void changeContentMaxLines({required String text}) {
-    final lineCount = '\n'
-        .allMatches(text)
-        .length + 1;
+    lineCount = '\n'.allMatches(text).length + 1;
 
     // If the text exceeds 3 lines, set maxLines to null
     if (lineCount > 3 && contentMaxLines != null) {
@@ -59,6 +57,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   Future<void> pickMultipleImagesFromGallery() async {
     final List<XFile> pickedImages = await picker.pickMultiImage();
+    // final List<XFile> pickedImages = await picker.pickMultiImage();
     if (pickedImages.isNotEmpty) {
       pickedImagesList.addAll(pickedImages);
     }
@@ -154,7 +153,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(DeletePickedVideoFromListState());
   }
 
-  void toggleVideoPlayPause(int index, {
+  void toggleVideoPlayPause(
+    int index, {
     bool isOldVideos = false, // for edit
   }) {
     if (isOldVideos) {
@@ -211,7 +211,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
         } else {
           emit(AddTaskSubmissionFileSelectErrorState(
               error:
-              'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
@@ -343,7 +343,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emitLoading();
   }
 
-
   // for the edit
   void getOldData(
       {required bool isEdit, TaskSubmissionModel? taskSubmissionModel}) async {
@@ -353,8 +352,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       // taskSubmissionModel.submissionAttachmentsCategories?.videos!
       //    .map((vid) async => await initializeOldVideoController(vid.aAttachment!));
       for (var vid
-      in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
-          []) {
+          in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
+              []) {
         await initializeOldVideoController(vid.aAttachment!);
       }
     } else {

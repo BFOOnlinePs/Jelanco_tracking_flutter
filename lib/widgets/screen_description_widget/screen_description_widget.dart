@@ -15,7 +15,7 @@ class ScreenDescriptionWidget extends StatelessWidget {
       padding: EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: Colors.grey[500],
-        borderRadius: BorderRadius.circular(CardSizeConstants.borderRadius),
+        borderRadius: BorderRadius.circular(CardSizeConstants.cardRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

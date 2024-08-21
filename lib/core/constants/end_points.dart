@@ -19,6 +19,7 @@ class EndPointsConstants {
   static const String tasksAssignedToUser = '$tasks/assigned-to-user';
   static const String tasksWithSubmissionsAndComments =
       'submissions-and-comments'; // /tasks/10/submissions-and-comments
+  static const String tasksToSubmit = '$tasks/user-not-submitted-tasks';
 
   // tasks submissions
   static const String userSubmissions = 'user-submissions';

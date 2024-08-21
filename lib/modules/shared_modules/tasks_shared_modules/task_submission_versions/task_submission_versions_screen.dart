@@ -33,29 +33,27 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
                 TaskSubmissionVersionsCubit.get(context);
             return SingleChildScrollView(
               child: Column(
-                children:
-                    taskSubmissionVersionsCubit.getTaskSubmissionVersionsModel !=
-                            null
-                        ? taskSubmissionVersionsCubit
-                            .getTaskSubmissionVersionsModel!.submissionsVersions!
-                            .map((submission) {
-                            return Column(
-                              children: [
-                                ContentWidget(
-                                    'Content',
-                                    submission.tsContent ?? '',
-                                    Icons.content_copy,
-                                    isSubmission: true),
-                                SubmissionMediaWidget(
-                                  submission: submission,
-                                ),
-                                const MyVerticalSpacer(),
-                                SubmissionTimeWidget(submission: submission),
-                                const MyVerticalSpacer(),
-                              ],
-                            );
-                          }).toList()
-                        : [const Center(child: MyLoader())],
+                children: taskSubmissionVersionsCubit
+                            .getTaskSubmissionVersionsModel !=
+                        null
+                    ? taskSubmissionVersionsCubit
+                        .getTaskSubmissionVersionsModel!.submissionsVersions!
+                        .map((submission) {
+                        return Column(
+                          children: [
+                            ContentWidget(
+                                submission.tsContent ?? '', Icons.content_copy,
+                                isSubmission: true),
+                            SubmissionMediaWidget(
+                              submission: submission,
+                            ),
+                            const MyVerticalSpacer(),
+                            SubmissionTimeWidget(submission: submission),
+                            const MyVerticalSpacer(),
+                          ],
+                        );
+                      }).toList()
+                    : [const Center(child: MyLoader())],
               ),
             );
           },

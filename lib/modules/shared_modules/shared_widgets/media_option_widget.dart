@@ -23,7 +23,7 @@ class MediaOptionWidget extends StatelessWidget {
         child: Row(
           children: [
             Icon(icon, color: color, size: 30),
-            SizedBox(width: 8),
+            SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(color: Colors.black),

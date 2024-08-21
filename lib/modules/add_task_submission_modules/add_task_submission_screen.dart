@@ -1,21 +1,19 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
+import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_attachments_widget.dart';
+import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_images_widget.dart';
+import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_videos_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
@@ -168,284 +166,21 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      addTaskSubmissionCubit.pickedImagesList
-                                              .isEmpty // new picked (from file)
-                                          ? Container()
-                                          : Container(
-                                              height: 200,
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                shrinkWrap: true,
-                                                itemBuilder: (context, index) =>
-                                                    MyImage(
-                                                        height: 100,
-                                                        showDeleteIcon: true,
-                                                        onDeletePressed: () {
-                                                          addTaskSubmissionCubit
-                                                              .deletedPickedImageFromList(
-                                                                  index: index);
-                                                        },
-                                                        child: Image.file(
-                                                          File(addTaskSubmissionCubit
-                                                              .pickedImagesList[index]
-                                                              .path),
-                                                        ),
-                                                        margin: EdgeInsetsDirectional
-                                                            .only(end: 10)),
-                                                itemCount: addTaskSubmissionCubit
-                                                    .pickedImagesList.length,
-                                              ),
-                                            ),
-
-                                      // the old picked images list is empty (from network)
-                                      taskSubmissionModel == null ||
-                                              taskSubmissionModel!
-                                                  .submissionAttachmentsCategories!
-                                                  .images!
-                                                  .isEmpty
-                                          ? Container()
-                                          : Container(
-                                              height: 200,
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                shrinkWrap: true,
-                                                itemBuilder: (context, index) =>
-                                                    MyImage(
-                                                        height: 100,
-                                                        showDeleteIcon: true,
-                                                        onDeletePressed: () {
-                                                          addTaskSubmissionCubit
-                                                              .deletedPickedImageFromList(
-                                                                  index: index,
-                                                                  taskSubmissionModel:
-                                                                      taskSubmissionModel!);
-                                                        },
-                                                        margin: EdgeInsetsDirectional
-                                                            .only(end: 10),
-                                                        child: Image(
-                                                          image: NetworkImage(
-                                                            '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}',
-                                                          ),
-                                                        )),
-                                                itemCount: taskSubmissionModel!
-                                                    .submissionAttachmentsCategories!
-                                                    .images!
-                                                    .length,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                ),
-
+                                SelectedImagesWidget(
+                                    addTaskSubmissionCubit:
+                                        addTaskSubmissionCubit,
+                                    taskSubmissionModel: taskSubmissionModel),
                                 SizedBox(
                                   height: 14,
                                 ),
-
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      addTaskSubmissionCubit.pickedVideosList.isEmpty
-                                          ? Container()
-                                          : Container(
-                                              height: 280,
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                shrinkWrap: true,
-                                                itemBuilder: (context, index) {
-                                                  return MyVideo(
-                                                      // height: 200,
-                                                      videoPlayerController:
-                                                          addTaskSubmissionCubit
-                                                                  .videoControllers[
-                                                              index],
-                                                      index: index,
-                                                      onTogglePlayPauseWithIndex:
-                                                          addTaskSubmissionCubit
-                                                              .toggleVideoPlayPause,
-                                                      showDeleteIcon: true,
-                                                      onDeletePressed: () {
-                                                        addTaskSubmissionCubit
-                                                            .deletedPickedVideoFromList(
-                                                                index: index);
-                                                      },
-                                                      margin:
-                                                          EdgeInsetsDirectional.only(
-                                                              end: 10));
-                                                },
-                                                itemCount: addTaskSubmissionCubit
-                                                    .pickedVideosList.length,
-                                              ),
-                                            ),
-
-                                      taskSubmissionModel == null ||
-                                              taskSubmissionModel!
-                                                  .submissionAttachmentsCategories!
-                                                  .videos!
-                                                  .isEmpty ||
-                                              addTaskSubmissionCubit
-                                                      .oldVideoControllers.length <
-                                                  taskSubmissionModel!
-                                                      .submissionAttachmentsCategories!
-                                                      .videos!
-                                                      .length // to make sure that all the controllers initialized
-                                          ? Container()
-                                          : Container(
-                                              height: 280,
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                shrinkWrap: true,
-                                                itemBuilder: (context, index) {
-                                                  return MyVideo(
-                                                      // height: 200,
-
-                                                      videoPlayerController:
-                                                          addTaskSubmissionCubit
-                                                                  .oldVideoControllers[
-                                                              index],
-                                                      index: index,
-                                                      onTogglePlayPauseWithIndex:
-                                                          (index) {
-                                                        addTaskSubmissionCubit
-                                                            .toggleVideoPlayPause(
-                                                                index,
-                                                                isOldVideos: true);
-                                                      },
-                                                      // addTaskSubmissionCubit
-                                                      //     .toggleVideoPlayPause,
-
-                                                      showDeleteIcon: true,
-                                                      onDeletePressed: () {
-                                                        addTaskSubmissionCubit
-                                                            .deletedPickedVideoFromList(
-                                                                index: index,
-                                                                taskSubmissionModel:
-                                                                    taskSubmissionModel!);
-                                                      },
-                                                      margin:
-                                                          EdgeInsetsDirectional.only(
-                                                              end: 10));
-                                                },
-                                                itemCount: taskSubmissionModel!
-                                                    .submissionAttachmentsCategories!
-                                                    .videos!
-                                                    .length,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                ),
-
-                                addTaskSubmissionCubit.pickedFilesList.isEmpty
-                                    ? Container()
-                                    : Container(
-                                        // height: 200,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemBuilder: (context, index) {
-                                            String fileName =
-                                                addTaskSubmissionCubit
-                                                    .pickedFilesList[index].path
-                                                    .split('/')
-                                                    .last;
-                                            return Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 8, horizontal: 16),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[200],
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black12,
-                                                    offset: Offset(0, 2),
-                                                    blurRadius: 4,
-                                                  ),
-                                                ],
-                                              ),
-                                              child: ListTile(
-                                                leading: IconButton(
-                                                  icon: Icon(Icons.close),
-                                                  onPressed: () =>
-                                                      addTaskSubmissionCubit
-                                                          .deletedPickedFileFromList(
-                                                              index: index),
-                                                ),
-                                                title: Text(fileName),
-                                                // subtitle: Text(pickedFiles[index].path),
-                                              ),
-                                            );
-                                          },
-                                          itemCount: addTaskSubmissionCubit
-                                              .pickedFilesList.length,
-                                        ),
-                                      ),
-
-                                taskSubmissionModel == null ||
-                                        taskSubmissionModel!
-                                            .submissionAttachmentsCategories!
-                                            .files!
-                                            .isEmpty
-                                    ? Container()
-                                    : Container(
-                                        // height: 200,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemBuilder: (context, index) {
-                                            String? fileName = taskSubmissionModel!
-                                                .submissionAttachmentsCategories!
-                                                .files![index]
-                                                .aAttachment;
-                                            // String fileName =
-                                            //     addTaskSubmissionCubit
-                                            //         .pickedFilesList[index].path
-                                            //         .split('/')
-                                            //         .last;
-                                            return Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 8, horizontal: 16),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[200],
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black12,
-                                                    offset: Offset(0, 2),
-                                                    blurRadius: 4,
-                                                  ),
-                                                ],
-                                              ),
-                                              child: ListTile(
-                                                leading: IconButton(
-                                                  icon: Icon(Icons.close),
-                                                  onPressed: () => addTaskSubmissionCubit
-                                                      .deletedPickedFileFromList(
-                                                          index: index,
-                                                          taskSubmissionModel:
-                                                              taskSubmissionModel),
-                                                ),
-                                                title: Text(
-                                                    fileName ?? 'file name'),
-                                                // subtitle: Text(pickedFiles[index].path),
-                                              ),
-                                            );
-                                          },
-                                          itemCount: taskSubmissionModel!
-                                              .submissionAttachmentsCategories!
-                                              .files!
-                                              .length,
-                                        ),
-                                      ),
+                                SelectedVideosWidget(
+                                    addTaskSubmissionCubit:
+                                        addTaskSubmissionCubit,
+                                    taskSubmissionModel: taskSubmissionModel),
+                                SelectedAttachmentsWidget(
+                                    addTaskSubmissionCubit:
+                                        addTaskSubmissionCubit,
+                                    taskSubmissionModel: taskSubmissionModel),
                               ],
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 import 'package:video_player/video_player.dart';
 
 class MyVideo extends StatelessWidget {
@@ -25,7 +26,7 @@ class MyVideo extends StatelessWidget {
     this.showDeleteIcon = false,
     this.onDeletePressed,
     this.videoHeight = 220,
-    this.height,
+    this.height = 200,
     this.margin,
     this.showTogglePlayPause = true,
     this.showVideoIcon = false,
@@ -34,20 +35,20 @@ class MyVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (videoPlayerController?.value.isInitialized == true)
           Container(
             height: height,
             margin: margin,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(CardSizeConstants.mediaRadius)),
               border: Border.all(color: Colors.grey),
             ),
             child: Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(CardSizeConstants.mediaRadius)),
                   child: Container(
                     height: videoHeight,
                     child: AspectRatio(
@@ -76,7 +77,7 @@ class MyVideo extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: Container(
-                        padding: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(CardSizeConstants.mediaRadius),
                         // Adjust the padding as needed
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -100,9 +101,11 @@ class MyVideo extends StatelessWidget {
             children: [
               if (videoPlayerController?.value.isInitialized == true)
                 SizedBox(
-                  width: 120,
-                  child: VideoProgressIndicator(videoPlayerController!,
-                      allowScrubbing: true),
+                  width: 112,
+                  child: VideoProgressIndicator(
+                    videoPlayerController!,
+                    allowScrubbing: true,
+                  ),
                 ),
               videoPlayerController != null
                   ? IconButton(
