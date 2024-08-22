@@ -9,6 +9,10 @@
 	<key>CFBundleExecutable</key>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to allow you to pick images.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We need access to your microphone for recording videos</string>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>

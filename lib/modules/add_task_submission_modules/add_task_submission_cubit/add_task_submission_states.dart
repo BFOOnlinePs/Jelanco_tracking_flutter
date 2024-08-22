@@ -9,7 +9,7 @@ class PickMultipleImagesState extends AddTaskSubmissionStates {}
 
 class DeletePickedImageFromListState extends AddTaskSubmissionStates {}
 
-class PickMultipleVideosState extends AddTaskSubmissionStates {}
+class PickVideoState extends AddTaskSubmissionStates {}
 
 class DeletePickedVideoFromListState extends AddTaskSubmissionStates {}
 
@@ -69,3 +69,5 @@ class CompressAllVideosSuccessState extends AddTaskSubmissionStates {}
 class SetOldAttachmentsState extends AddTaskSubmissionStates {}
 
 class ChangeContentMaxLinesState extends AddTaskSubmissionStates {}
+
+class PickMediaFromCameraState extends AddTaskSubmissionStates {}

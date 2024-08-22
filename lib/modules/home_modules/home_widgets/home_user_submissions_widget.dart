@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/submission_comments_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
@@ -49,12 +51,29 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                                   )
                                 : Container(),
 
-                            const Row(
+                            Row(
                               children: [
-                                Text('3 تعليقات'),
-                                SizedBox(
-                                  width: 16,
-                                ),
+                                submission.commentsCount != null &&
+                                        submission.commentsCount! > 0
+                                    ? Row(
+                                        children: [
+                                          InkWell(
+                                              onTap: () {
+                                                NavigationServices.navigateTo(
+                                                    context,
+                                                    SubmissionCommentsScreen(
+                                                        submissionId:
+                                                            submission.tsId!));
+                                              },
+                                              child: Text(
+                                                  '${submission.commentsCount} تعليقات')),
+                                          // Text('3 تعليقات'),
+                                          SizedBox(
+                                            width: 16,
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
                                 Expanded(
                                   child: TextField(
                                     decoration: InputDecoration(

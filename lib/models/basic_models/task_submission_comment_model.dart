@@ -12,6 +12,7 @@ class TaskSubmissionCommentModel {
   final int? tscId;
   final UserModel? commentedByUser;
   final AttachmentsCategories? commentAttachmentsCategories;
+  final bool? isCurrentVersion;
 
   TaskSubmissionCommentModel({
     this.tscTaskId,
@@ -24,6 +25,7 @@ class TaskSubmissionCommentModel {
     this.tscId,
     this.commentedByUser,
     this.commentAttachmentsCategories,
+    this.isCurrentVersion,
   });
 
   factory TaskSubmissionCommentModel.fromMap(Map<String, dynamic> json) =>
@@ -48,6 +50,7 @@ class TaskSubmissionCommentModel {
                 ? null
                 : AttachmentsCategories.fromMap(
                     json["comment_attachments_categories"]),
+        isCurrentVersion: json["is_current_version"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -61,5 +64,6 @@ class TaskSubmissionCommentModel {
         "tsc_id": tscId,
         "commented_by_user": commentedByUser?.toMap(),
         "comment_attachments_categories": commentAttachmentsCategories?.toMap(),
+        "is_current_version": isCurrentVersion,
       };
 }

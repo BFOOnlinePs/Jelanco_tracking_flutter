@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
@@ -44,13 +44,13 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      MyDateUtils.formatDateTime2(submissionModel.createdAt),
+                      MyDateUtils.formatDateTimeWithAmPm(submissionModel.createdAt),
+                      // MyDateUtils.formatDateTime2(submissionModel.createdAt),
                       // submissionModel.createdAt.toString() ?? '',
                       style: const TextStyle(
                         fontSize: 12,
                       ),
                     ),
-
                   ],
                 ),
               ),

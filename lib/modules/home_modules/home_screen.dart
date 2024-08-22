@@ -41,6 +41,7 @@ class HomeScreen extends StatelessWidget {
                   const HomeAddSubmissionWidget(),
                   HomeTasksToSubmitWidget(homeCubit: homeCubit,),
                   HomeUserSubmissionsWidget(homeCubit: homeCubit,),
+
                 ],
               ),
             );

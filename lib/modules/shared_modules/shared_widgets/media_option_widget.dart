@@ -4,7 +4,7 @@ class MediaOptionWidget extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  final Function onTap;
+  final Function? onTap;
 
   const MediaOptionWidget({
     super.key,
@@ -17,7 +17,7 @@ class MediaOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap(),
+      onTap: onTap == null ? null : () => onTap!(),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8),
         child: Row(

@@ -50,6 +50,28 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(ChangeContentMaxLinesState());
   }
 
+  // from camera
+  // List<XFile> pickedFromCameraList = [];
+  // List<XFile?> compressedFromCameraList = [];
+
+  Future<void> pickMediaFromCamera({bool isImage = true}) async {
+    if (isImage) {
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        pickedImagesList.add(image);
+      }
+    } else {
+      final XFile? video = await picker.pickVideo(source: ImageSource.camera);
+      if (video != null) {
+        pickedVideosList.add(video);
+        await initializeVideoController(File(video.path));
+
+      }
+    }
+
+    emit(PickMediaFromCameraState());
+  }
+
   // images
 
   List<XFile> pickedImagesList = [];
@@ -57,7 +79,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   Future<void> pickMultipleImagesFromGallery() async {
     final List<XFile> pickedImages = await picker.pickMultiImage();
-    // final List<XFile> pickedImages = await picker.pickMultiImage();
     if (pickedImages.isNotEmpty) {
       pickedImagesList.addAll(pickedImages);
     }
@@ -97,21 +118,21 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   List<MediaInfo?> compressedVideoList = [];
   List<VideoPlayerController?> videoControllers = [];
 
-  Future<void> pickMultipleVideosFromGallery() async {
+  Future<void> pickVideoFromGallery() async {
     final XFile? video = await picker.pickVideo(source: ImageSource.gallery);
     if (video != null) {
       pickedVideosList.add(video);
 
       print('Picked video path: ${video.path}');
       await initializeVideoController(File(video.path));
-      emit(PickMultipleVideosState());
+      emit(PickVideoState());
       // print('videoControllers: ${videoControllers[0]?.value?.duration}');
       print('videoControllers: ${videoControllers.length}');
     }
 
-    for (var video in pickedVideosList) {
-      print('Final picked video: ${video.path}');
-    }
+    // for (var video in pickedVideosList) {
+    //   print('Final picked video: ${video.path}');
+    // }
   }
 
   Future<void> initializeVideoController(File file) async {

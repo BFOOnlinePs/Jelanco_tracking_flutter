@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
@@ -71,7 +71,13 @@ class MyDrawer extends StatelessWidget {
                               UserDataConstants.name ?? '',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 22,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              UserDataConstants.jobTitle ?? '',
+                              style: TextStyle(
+                                color: Colors.white70,
                               ),
                             ),
                             Text(

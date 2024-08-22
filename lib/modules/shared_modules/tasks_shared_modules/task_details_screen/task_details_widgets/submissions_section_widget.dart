@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/add_comment_widget.dart';
@@ -62,7 +62,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
                     submission.submissionComments!.isNotEmpty
                         ? CommentsSectionWidget(
                             comments: submission.submissionComments!,
-                            taskDetailsCubit: taskDetailsCubit,
+                            // taskDetailsCubit: taskDetailsCubit,
                           )
                         : Container(),
                     Center(

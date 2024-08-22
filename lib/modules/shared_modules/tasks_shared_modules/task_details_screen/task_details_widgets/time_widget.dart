@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 
 class TimeWidget extends StatelessWidget {

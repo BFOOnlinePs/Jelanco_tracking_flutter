@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 
 class MyAuthElevatedButton extends StatelessWidget {
   final Widget child;

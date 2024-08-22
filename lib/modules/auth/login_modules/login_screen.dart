@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
@@ -97,6 +97,7 @@ class LoginScreen extends StatelessWidget {
                                 state.userLoginModel.user!.name;
                             UserDataConstants.email =
                                 state.userLoginModel.user!.email;
+                            UserDataConstants.jobTitle = state.userLoginModel.user!.jobTitle;
 
                             // to give it an FCM token and save it in the database
                             // await FirebaseApi().initNotification();
@@ -105,6 +106,7 @@ class LoginScreen extends StatelessWidget {
                             NavigationServices.navigateTo(
                               context,
                               HomeScreen(),
+                              removeAll: true,
                             );
                           });
                         } else {

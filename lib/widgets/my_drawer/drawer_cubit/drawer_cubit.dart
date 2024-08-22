@@ -30,6 +30,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
         UserDataConstants.userId = null; // empty it so the data of previous user did not show
         UserDataConstants.name = null; // empty it so the data of previous user did not show
         UserDataConstants.email = null; // empty it so the data of previous user did not show
+        UserDataConstants.jobTitle = null; // empty it so the data of previous user did not show
         // await FCMServices.deleteFCMTokenFromLocalAndServer(firebaseTokenVar!);
         emit(LogoutSuccessState(userLogoutModel: userLogoutModel!));
       });

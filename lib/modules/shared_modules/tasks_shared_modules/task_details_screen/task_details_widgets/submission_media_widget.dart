@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/card_size.dart';
-import 'package:jelanco_tracking_system/core/constants/colors.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
@@ -46,15 +46,24 @@ class SubmissionMediaWidget extends StatelessWidget {
                     splashColor: Colors.blue.withOpacity(0.2),
                     highlightColor: Colors.blue.withOpacity(0.1),
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      // margin: EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         border: Border.all(
-                            color: ColorsConstants.primaryColor, width: 0.7),
-                        borderRadius: BorderRadius.circular(
-                            CardSizeConstants.mediaRadius),
+                          color: ColorsConstants.primaryColor,
+                          width: 0.7,
+                        ),
+                        borderRadius: BorderRadius.circular(CardSizeConstants.mediaRadius),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: ColorsConstants.primaryColor,
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            // offset: Offset(2, 2),
+                          ),
+                        ],
                       ),
-                      child: FaIcon(FontAwesomeIcons.fileLines,
+                      child: const FaIcon(FontAwesomeIcons.fileLines,
                           color: ColorsConstants.primaryColor, size: 30.0),
 
                       // Text(

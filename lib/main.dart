@@ -25,11 +25,13 @@ void main() async {
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
   UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
   UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
+  UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
   print('name: ${UserDataConstants.name.toString()}');
   print('email: ${UserDataConstants.email.toString()}');
+  print('jobTitle: ${UserDataConstants.jobTitle.toString()}');
 
   Widget homeWidget;
 

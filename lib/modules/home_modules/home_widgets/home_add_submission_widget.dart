@@ -57,7 +57,7 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'مطور برمجيات فلاتر',
+                                UserDataConstants.jobTitle ?? '',
                                 style: TextStyle(
                                   fontSize: 12,
                                 ),
@@ -100,6 +100,15 @@ class HomeAddSubmissionWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  MediaOptionWidget(
+                    icon: Icons.camera_alt,
+                    label: 'كاميرا',
+                    color: Colors.blue,
+                    onTap: () {
+                      NavigationServices.navigateTo(
+                          context, AddTaskSubmissionScreen(taskId: -1));
+                    },
+                  ),
                   MediaOptionWidget(
                     icon: Icons.image,
                     label: 'صورة',

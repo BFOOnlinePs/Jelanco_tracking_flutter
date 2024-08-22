@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum PermissionType { storage, location }
+enum PermissionType { storage, location, camera }
 
 mixin PermissionsMixin<T> on Cubit<T> {
   PermissionStatus? permissionStatus;
@@ -35,6 +35,11 @@ mixin PermissionsMixin<T> on Cubit<T> {
       case PermissionType.location:
         permissionStatus = await Permission.location.request();
         print('Location permission requested');
+        break;
+
+        case PermissionType.camera:
+        permissionStatus = await Permission.camera.request();
+        print('Camera permission requested');
         break;
     }
 
