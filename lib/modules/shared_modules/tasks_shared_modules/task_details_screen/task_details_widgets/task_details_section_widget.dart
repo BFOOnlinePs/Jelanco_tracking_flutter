@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/category_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/task_planed_time_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/time_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
@@ -48,41 +49,9 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                 Icons.person)
             : Container(),
         MyVerticalSpacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
-                        ?.tPlanedStartTime !=
-                    null
-                ? Expanded(
-                    child: TimeWidget(
-                        'وقت البدء المخطط له',
-                        taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
-                            .task!.tPlanedStartTime!,
-                        Icons.timer),
-                  )
-                : Container(),
-            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
-                            ?.tPlanedStartTime !=
-                        null &&
-                    taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
-                            .task?.tPlanedEndTime !=
-                        null
-                ? SizedBox(width: 10)
-                : Container(),
-            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
-                        ?.tPlanedEndTime !=
-                    null
-                ? Expanded(
-                    child: TimeWidget(
-                        'وقت الانتهاء المخطط له',
-                        taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!
-                            .task!.tPlanedEndTime!,
-                        Icons.timer_off),
-                  )
-                : Container(),
-          ],
-        ),
+        TaskPlanedTimeWidget(
+            taskModel:
+                taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!),
         MyVerticalSpacer(),
         // taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
         //     .tSupervisorNotes !=

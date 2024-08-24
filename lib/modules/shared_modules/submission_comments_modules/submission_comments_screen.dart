@@ -30,7 +30,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   submissionCommentsCubit.getSubmissionCommentsModel == null
-                      ? MyLoader()
+                      ? const Center(child: MyLoader())
                       : submissionCommentsCubit.getSubmissionCommentsModel
                                   ?.submissionComments !=
                               null

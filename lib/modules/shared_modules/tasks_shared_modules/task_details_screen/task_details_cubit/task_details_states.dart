@@ -34,11 +34,13 @@ class AddCommentErrorState extends TaskDetailsStates {
 
 class ClearCommentControllerState extends TaskDetailsStates {}
 
+class PickMediaFromCameraState extends TaskDetailsStates {}
+
 class PickMultipleImagesState extends TaskDetailsStates {}
 
 class DeletePickedImageFromListState extends TaskDetailsStates {}
 
-class PickMultipleVideosState extends TaskDetailsStates {}
+class PickVideosState extends TaskDetailsStates {}
 
 class DeletePickedVideoFromListState extends TaskDetailsStates {}
 

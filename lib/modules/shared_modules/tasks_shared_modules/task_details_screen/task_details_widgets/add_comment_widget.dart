@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
@@ -191,6 +193,38 @@ class AddCommentWidget extends StatelessWidget {
             // Media Options (File, Image, Video)
             Row(
               children: [
+                TaskOptionsWidget(
+                  child: MediaOptionButton(
+                    icon: Icons.camera_alt_outlined,
+                    onPressed: null,
+                  ),
+                  menuItems: [
+                    MenuItemModel(
+                      icon: Icons.image,
+                      iconColor: Colors.green,
+                      label: 'إلتقاط صورة',
+                      onTap: () {
+                        taskDetailsCubit.requestPermission(
+                            context: context,
+                            permissionType: PermissionType.camera,
+                            functionWhenGranted:
+                                taskDetailsCubit.pickMediaFromCamera);
+                      },
+                    ),
+                    MenuItemModel(
+                      icon: Icons.video_camera_back,
+                      label: 'إلتقاط فيديو',
+                      iconColor: Colors.red,
+                      onTap: () {
+                        taskDetailsCubit.requestPermission(
+                            context: context,
+                            permissionType: PermissionType.camera,
+                            functionWhenGranted: () => taskDetailsCubit
+                                .pickMediaFromCamera(isImage: false));
+                      },
+                    ),
+                  ],
+                ),
                 MediaOptionButton(
                   icon: Icons.image_outlined,
                   onPressed: () {
@@ -249,7 +283,7 @@ class AddCommentWidget extends StatelessWidget {
 
 class MediaOptionButton extends StatelessWidget {
   final IconData icon;
-  final Function() onPressed;
+  final Function()? onPressed;
 
   MediaOptionButton({required this.icon, required this.onPressed});
 

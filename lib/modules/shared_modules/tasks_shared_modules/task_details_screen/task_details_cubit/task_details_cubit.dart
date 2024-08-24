@@ -53,6 +53,8 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
     });
   }
 
+  // comment
+
   final FocusNode focusNode = FocusNode();
   TextEditingController commentController = TextEditingController();
 
@@ -63,7 +65,25 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
     emit(ChangeCommentTextState());
   }
 
-// images
+  // camera
+  Future<void> pickMediaFromCamera({bool isImage = true}) async {
+    if (isImage) {
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        pickedImagesList.add(image);
+      }
+    } else {
+      final XFile? video = await picker.pickVideo(source: ImageSource.camera);
+      if (video != null) {
+        pickedVideosList.add(video);
+        await initializeVideoControllerForAddComment(File(video.path));
+      }
+    }
+
+    emit(PickMediaFromCameraState());
+  }
+
+  // images
 
   List<XFile> pickedImagesList = [];
   List<XFile?> compressedImagesList = [];
@@ -111,7 +131,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
 
       print('Picked video path: ${video.path}');
       await initializeVideoControllerForAddComment(File(video.path));
-      emit(PickMultipleVideosState());
+      emit(PickVideosState());
       print('videoControllers: ${videoControllers.length}');
     }
 
@@ -281,7 +301,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
             .submissionComments
             ?.add(newComment);
       }
-      // ..........................................
       // emit
     }).catchError((error) {
       emit(AddCommentErrorState(error: error.toString()));

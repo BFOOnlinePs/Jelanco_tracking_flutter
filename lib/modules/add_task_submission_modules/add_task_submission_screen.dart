@@ -7,7 +7,6 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_mode
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/camera_options_popup_menu.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_attachments_widget.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_images_widget.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_videos_widget.dart';
@@ -116,49 +115,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       //from camera
-                                      // PopupMenuButton<String>(
-                                      //   onSelected: (String value) {
-                                      //     // if (value == 'image') {
-                                      //     //   _pickMedia(context, isVideo: false);
-                                      //     // } else if (value == 'video') {
-                                      //     //   _pickMedia(context, isVideo: true);
-                                      //     // }
-                                      //   },
-                                      //
-                                      //   itemBuilder: (BuildContext context) =>
-                                      //       <PopupMenuEntry<String>>[
-                                      //     PopupMenuItem<String>(
-                                      //       value: 'image',
-                                      //       child: ListTile(
-                                      //         leading: Icon(Icons.image),
-                                      //         title: Text('Pick Image'),
-                                      //       ),
-                                      //     ),
-                                      //     PopupMenuItem<String>(
-                                      //       value: 'video',
-                                      //       child: ListTile(
-                                      //         leading: Icon(Icons.videocam),
-                                      //         title: Text('Pick Video'),
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      //   child: MediaOptionWidget(
-                                      //     icon: Icons.camera_alt,
-                                      //     label: 'كاميرا',
-                                      //     color: Colors.blue,
-                                      //     onTap: () {
-                                      //       showPopupMenu(context);
-                                      //
-                                      //       // addTaskSubmissionCubit.requestPermission(
-                                      //       //     context: context,
-                                      //       //     permissionType:
-                                      //       //         PermissionType.camera,
-                                      //       //     functionWhenGranted:
-                                      //       //         addTaskSubmissionCubit
-                                      //       //             .pickImageFromCamera);
-                                      //     },
-                                      //   ),
-                                      // ),
 
                                       TaskOptionsWidget(
                                           child: MediaOptionWidget(
@@ -204,24 +160,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                             ),
                                           ]),
 
-                                      // MediaOptionWidget(
-                                      //   icon: Icons.camera_alt,
-                                      //   label: 'كاميرا',
-                                      //   color: Colors.blue,
-                                      //   onTap: () {
-                                      //     TaskOptionsWidget(menuItems: [
-                                      //       MenuItemModel(icon: Icons.add, label: 'label', onTap: (){})
-                                      //     ]);
-                                      //
-                                      //     // addTaskSubmissionCubit.requestPermission(
-                                      //     //     context: context,
-                                      //     //     permissionType:
-                                      //     //         PermissionType.camera,
-                                      //     //     functionWhenGranted:
-                                      //     //         addTaskSubmissionCubit
-                                      //     //             .pickImageFromCamera);
-                                      //   },
-                                      // ),
 
                                       Container(
                                           width: 0.2,

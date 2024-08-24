@@ -28,7 +28,7 @@ class TimeWidget extends StatelessWidget {
               '$label: ',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 12,
                 color: ColorsConstants.primaryColor,
               ),
             ),

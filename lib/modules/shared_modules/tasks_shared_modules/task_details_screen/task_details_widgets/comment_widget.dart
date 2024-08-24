@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 
 class CommentWidget extends StatelessWidget {
   final TaskSubmissionCommentModel comment;
+
   const CommentWidget({super.key, required this.comment});
 
   @override
@@ -21,13 +22,24 @@ class CommentWidget extends StatelessWidget {
                 color: Colors.grey[700],
               ),
               SizedBox(width: 10),
-              Text(
-                comment.commentedByUser?.name ?? '',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                    fontSize: 16),
+              Expanded(
+                child: Text(
+                  comment.commentedByUser?.name ?? '',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                      fontSize: 14),
+                ),
               ),
+              comment.isCurrentVersion == false ?
+              Row(
+                children: [
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Icon(Icons.history_toggle_off),
+                ],
+              ) : Container()
             ],
           ),
           Container(
@@ -50,10 +62,8 @@ class CommentWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      MyDateUtils.formatDateTimeWithAmPm(
-                          comment.createdAt),
-                      style: TextStyle(
-                          color: Colors.grey[600], fontSize: 12),
+                      MyDateUtils.formatDateTimeWithAmPm(comment.createdAt),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     // MyTextButtonNoBorder(
                     //   onPressed: () {

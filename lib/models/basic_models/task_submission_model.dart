@@ -1,3 +1,4 @@
+import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
@@ -9,7 +10,6 @@ class TaskSubmissionModel {
   final String? tsContent;
   final DateTime? tsActualStartTime;
   final DateTime? tsActualEndTime;
-
   // final String? tsFile;
   final String? tsStartLatitude;
   final String? tsStartLongitude;
@@ -23,6 +23,7 @@ class TaskSubmissionModel {
   final List<TaskSubmissionCommentModel>? submissionComments;
   final AttachmentsCategories? submissionAttachmentsCategories;
   final int? commentsCount;
+  final TaskModel? taskDetails;
 
   TaskSubmissionModel({
     this.tsId,
@@ -44,6 +45,7 @@ class TaskSubmissionModel {
     this.submissionComments,
     this.submissionAttachmentsCategories,
     this.commentsCount,
+    this.taskDetails,
   });
 
   factory TaskSubmissionModel.fromMap(Map<String, dynamic> json) =>
@@ -84,6 +86,9 @@ class TaskSubmissionModel {
                 : AttachmentsCategories.fromMap(
                     json["submission_attachments_categories"]),
         commentsCount: json["comments_count"],
+        taskDetails: json["task_details"] == null
+            ? null
+            : TaskModel.fromMap(json["task_details"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -109,5 +114,6 @@ class TaskSubmissionModel {
         "submission_attachments_categories":
             submissionAttachmentsCategories?.toMap(),
         "comments_count": commentsCount,
+        "task_details": taskDetails?.toMap(),
       };
 }
