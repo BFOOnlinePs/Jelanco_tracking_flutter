@@ -6,26 +6,35 @@ class AssignedToWidget extends StatelessWidget {
   final String label;
   final String value;
   final IconData icon;
+
   const AssignedToWidget(this.label, this.value, this.icon, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: ColorsConstants.primaryColor),
-        SizedBox(width: 10),
-        Text(
-          '$label: ',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: ColorsConstants.primaryColor),
+        Row(
+          children: [
+            Icon(icon, color: ColorsConstants.primaryColor),
+            SizedBox(width: 10),
+            Text(
+              '$label: ',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: ColorsConstants.primaryColor),
+            ),
+          ],
         ),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(color: Colors.grey[800], fontSize: 16),
-          ),
+        Row(
+          children: [
+            SizedBox(width: 34),
+            Text(
+              value,
+              style: TextStyle(color: Colors.grey[800], fontSize: 14),
+            ),
+          ],
         ),
       ],
     );

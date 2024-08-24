@@ -19,13 +19,13 @@ class CategoryRowWidget extends StatelessWidget {
             '$label: ',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 14,
                 color: ColorsConstants.primaryColor),
           ),
           Expanded(
             child: Text(
               value,
-              style: TextStyle(color: Colors.grey[800], fontSize: 16),
+              style: TextStyle(color: Colors.grey[800], fontSize: 14),
             ),
           ),
         ],

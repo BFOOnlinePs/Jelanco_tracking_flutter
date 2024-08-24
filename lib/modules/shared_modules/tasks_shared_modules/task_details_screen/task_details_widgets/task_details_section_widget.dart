@@ -44,7 +44,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                 taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
                         ?.assignedToUsers!
                         .map((user) => user.name)
-                        .join(', ') ??
+                        .join('\n') ??
                     '',
                 Icons.person)
             : Container(),
@@ -53,26 +53,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
             taskModel:
                 taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!),
         MyVerticalSpacer(),
-        // taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-        //     .tSupervisorNotes !=
-        //     null
-        //     ? NotesWidget(
-        //   'Supervisor Notes',
-        //   taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-        //       .tSupervisorNotes!,
-        //   Icons.notes,
-        // )
-        //     : Container(),
-        // taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-        //     .tManagerNotes !=
-        //     null
-        //     ? NotesWidget(
-        //   'Manager Notes',
-        //   taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-        //       .tManagerNotes!,
-        //   Icons.notes,
-        // )
-        //     : Container(),
+
         // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',
         //     Icons.calendar_today),
         // _buildDateRow(

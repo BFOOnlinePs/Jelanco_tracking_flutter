@@ -20,7 +20,7 @@ class SectionTitleWidget extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: ColorsConstants.primaryColor,
             ),
@@ -31,7 +31,7 @@ class SectionTitleWidget extends StatelessWidget {
                     Icon(statusIcon, color: status?.statusColor, size: 18),
                     SizedBox(width: 6),
                     Text(
-                      status?.statusEn ?? '',
+                      status?.statusAr ?? '',
                       style:
                           TextStyle(color: status?.statusColor, fontSize: 16),
                     ),

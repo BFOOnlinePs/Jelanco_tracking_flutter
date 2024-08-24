@@ -26,17 +26,17 @@ class SubmissionsSectionWidget extends StatelessWidget {
                 .getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions
                 ?.map((submission) {
               return Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.04),
-                  border: const Border(
-                    right: BorderSide(
-                      color: ColorsConstants.secondaryColor,
-                      width: 5.0,
-                    ),
-                  ),
-                ),
+                // margin: const EdgeInsets.symmetric(vertical: 10.0),
+                // padding: const EdgeInsets.all(16.0),
+                // decoration: BoxDecoration(
+                //   color: Colors.grey.withOpacity(0.04),
+                //   border: const Border(
+                //     right: BorderSide(
+                //       color: ColorsConstants.secondaryColor,
+                //       width: 5.0,
+                //     ),
+                //   ),
+                // ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
