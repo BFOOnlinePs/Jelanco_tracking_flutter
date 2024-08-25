@@ -11,6 +11,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_media_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_task_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/task_details_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/task_planed_time_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
@@ -38,26 +39,40 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SubmissionHeaderWidget(submission),
+                            ContentWidget(submission.tsContent ?? '',
+                                isSubmission: true),
+                            SubmissionMediaWidget(
+                              submission: submission,
+                              // cubit with mixin
+                            ),
+                            const MyVerticalSpacer(),
                             submission.taskDetails != null
                                 ? Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SectionTitleWidget('تفاصيل المهمة',
-                                          status: TaskStatusEnum.getStatus(
-                                              submission.taskDetails!.tStatus!),
-                                          statusIcon: Icons.flag),
-                                      ContentWidget(
-                                          submission.taskDetails!.tContent!,
-                                          Icons.description),
-                                      submission.taskDetails!.taskCategory !=
-                                              null
-                                          ? CategoryRowWidget(
-                                              'التصنيف',
-                                              submission.taskDetails!
-                                                      .taskCategory!.cName ??
-                                                  '')
-                                          : Container(),
+                                      // SectionTitleWidget('تفاصيل المهمة',
+                                      //     status: TaskStatusEnum.getStatus(
+                                      //         submission.taskDetails!.tStatus!),
+                                      //     statusIcon: Icons.flag),
+                                      Text(
+                                          'تم إسناد هذا التسليم إلى المهمة ادناه:'),
+                                      SubmissionTaskWidget(
+                                          taskContent:
+                                              submission.taskDetails!.tContent!,
+                                          taskId: submission.tsTaskId!), 
+                                      // ContentWidget(
+                                      //   submission.taskDetails!.tContent!,
+                                      // ),
+                                      // submission.taskDetails!.taskCategory !=
+                                      //         null
+                                      // ? CategoryRowWidget(
+                                      //     'التصنيف',
+                                      //     submission.taskDetails!
+                                      //             .taskCategory!.cName ??
+                                      //         '')
+                                      // : Container(),
 
                                       // submission.taskDetails!
                                       //     .assignedToUsers!.isNotEmpty
@@ -70,22 +85,13 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                                       //         '',
                                       //     Icons.person)
                                       //     : Container(),
-                                      MyVerticalSpacer(),
-                                      TaskPlanedTimeWidget(
-                                          taskModel: submission.taskDetails!),
-                                      MyVerticalSpacer(),
+                                      // MyVerticalSpacer(),
+                                      // TaskPlanedTimeWidget(
+                                      //     taskModel: submission.taskDetails!),
+                                      // MyVerticalSpacer(),
                                     ],
                                   )
                                 : Container(),
-                            SubmissionHeaderWidget(submission),
-                            ContentWidget(
-                                submission.tsContent ?? '', Icons.content_copy,
-                                isSubmission: true),
-                            SubmissionMediaWidget(
-                              submission: submission,
-                              // cubit with mixin
-                            ),
-                            const MyVerticalSpacer(),
                             // SubmissionTimeWidget(
                             //     submission: submission),
 

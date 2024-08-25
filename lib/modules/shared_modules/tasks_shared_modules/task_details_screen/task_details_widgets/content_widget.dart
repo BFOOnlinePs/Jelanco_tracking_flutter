@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class ContentWidget extends StatefulWidget {
   final String value;
-  final IconData icon;
 
-  ContentWidget(this.value, this.icon, {super.key, isSubmission});
+  ContentWidget(this.value, {super.key, isSubmission});
 
   @override
   State<ContentWidget> createState() => _ContentWidgetState();

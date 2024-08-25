@@ -41,8 +41,7 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
                         .map((submission) {
                         return Column(
                           children: [
-                            ContentWidget(
-                                submission.tsContent ?? '', Icons.content_copy,
+                            ContentWidget(submission.tsContent ?? '',
                                 isSubmission: true),
                             SubmissionMediaWidget(
                               submission: submission,

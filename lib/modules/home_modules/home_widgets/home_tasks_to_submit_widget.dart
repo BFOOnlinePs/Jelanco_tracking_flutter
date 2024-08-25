@@ -3,6 +3,7 @@ import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/task_to_submit_card_widget.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/tasks_to_submit_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button_no_border.dart';

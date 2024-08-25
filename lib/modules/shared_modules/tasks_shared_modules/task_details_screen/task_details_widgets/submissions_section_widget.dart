@@ -43,7 +43,6 @@ class SubmissionsSectionWidget extends StatelessWidget {
                     SubmissionHeaderWidget(submission),
                     ContentWidget(
                       submission.tsContent ?? '',
-                      Icons.content_copy,
                       isSubmission: true,
                     ),
                     SubmissionMediaWidget(

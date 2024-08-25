@@ -24,9 +24,9 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                 .getTaskWithSubmissionsAndCommentsModel!.task!.tStatus!),
             statusIcon: Icons.flag),
         ContentWidget(
-            taskDetailsCubit
-                .getTaskWithSubmissionsAndCommentsModel!.task!.tContent!,
-            Icons.description),
+          taskDetailsCubit
+              .getTaskWithSubmissionsAndCommentsModel!.task!.tContent!,
+        ),
         taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
                     ?.taskCategory !=
                 null
