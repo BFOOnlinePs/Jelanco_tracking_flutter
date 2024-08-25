@@ -21,22 +21,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = VideoPlayerController.network(widget.videoUrl)
-      ..initialize().then((_) {
-        setState(() {
-          _isLoading = false;
-          _videoPlayerController.setLooping(true);
-          _videoPlayerController
-              .play(); // Automatically start playing the video
-          _isPlaying =
-              true; // Update the state to reflect that the video is playing
-        });
-        _videoPlayerController.addListener(() {
-          setState(() {
-            _isPlaying = _videoPlayerController.value.isPlaying;
+    _videoPlayerController =
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+          ..initialize().then((_) {
+            setState(() {
+              _isLoading = false;
+              _videoPlayerController.setLooping(true);
+              _videoPlayerController
+                  .play(); // Automatically start playing the video
+              _isPlaying =
+                  true; // Update the state to reflect that the video is playing
+            });
+            _videoPlayerController.addListener(() {
+              setState(() {
+                _isPlaying = _videoPlayerController.value.isPlaying;
+              });
+            });
           });
-        });
-      });
   }
 
   @override
@@ -89,7 +90,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : Center(

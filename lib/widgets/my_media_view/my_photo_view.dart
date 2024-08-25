@@ -22,39 +22,36 @@ class MyPhotoView extends StatelessWidget {
     return StreamBuilder<Object>(
         stream: null,
         builder: (context, snapshot) {
-          return Container(
-            // color: Colors.black.withOpacity(0.5),
-            child: PhotoViewGallery.builder(
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: (BuildContext context, int index) {
-                return PhotoViewGalleryPageOptions(
-                  // imageProvider: AssetImage(widget.galleryItems[index].image),
-                  imageProvider:
-                      NetworkImage(imagesHostPath + galleryItems[index]),
-                  initialScale: PhotoViewComputedScale.contained * 0.8,
-                  heroAttributes:
-                      PhotoViewHeroAttributes(tag: galleryItems[index]),
-                );
-              },
-              itemCount: galleryItems.length,
-              loadingBuilder: (context, event) => Center(
-                child: Container(
-                  width: 20.0,
-                  height: 20.0,
-                  child: CircularProgressIndicator(
-                      // value: event == null
-                      //     ? 0
-                      //     : event.cumulativeBytesLoaded / event.expectedTotalBytes,
-                      ),
-                ),
+          return PhotoViewGallery.builder(
+            scrollPhysics: const BouncingScrollPhysics(),
+            builder: (BuildContext context, int index) {
+              return PhotoViewGalleryPageOptions(
+                // imageProvider: AssetImage(widget.galleryItems[index].image),
+                imageProvider:
+                    NetworkImage(imagesHostPath + galleryItems[index]),
+                initialScale: PhotoViewComputedScale.contained * 0.8,
+                heroAttributes:
+                    PhotoViewHeroAttributes(tag: galleryItems[index]),
+              );
+            },
+            itemCount: galleryItems.length,
+            loadingBuilder: (context, event) => Center(
+              child:  Container(
+                width: 20.0,
+                height: 20.0,
+                child: const CircularProgressIndicator(
+                    // value: event == null
+                    //     ? 0
+                    //     : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+                    ),
               ),
-              backgroundDecoration: BoxDecoration(
-                // color: Colors.transparent,
-                color: Colors.black,
-              ),
-              pageController: pageController,
-              // onPageChanged: onPageChanged,
             ),
+            backgroundDecoration: const BoxDecoration(
+              // color: Colors.transparent,
+              color: Colors.black,
+            ),
+            pageController: pageController,
+            // onPageChanged: onPageChanged,
           );
         });
   }

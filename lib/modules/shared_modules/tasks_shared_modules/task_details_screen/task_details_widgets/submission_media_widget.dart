@@ -11,6 +11,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/vi
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_video_view.dart';
 
 class SubmissionMediaWidget extends StatelessWidget {
   final TaskSubmissionModel submission;
@@ -53,7 +54,8 @@ class SubmissionMediaWidget extends StatelessWidget {
                           color: ColorsConstants.primaryColor,
                           width: 0.7,
                         ),
-                        borderRadius: BorderRadius.circular(CardSizeConstants.mediaRadius),
+                        borderRadius: BorderRadius.circular(
+                            CardSizeConstants.mediaRadius),
                         boxShadow: const [
                           BoxShadow(
                             color: ColorsConstants.primaryColor,
@@ -144,10 +146,20 @@ class SubmissionMediaWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => VideoPlayerScreen(
-                              videoUrl:
-                                  '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.videos![index].aAttachment!}',
+                            builder: (context) => HorizontalVideoViewer(
+                              storagePath:
+                                  EndPointsConstants.taskSubmissionsStorage,
+                              videoUrls: submission
+                                  .submissionAttachmentsCategories!.videos!
+                                  .map((video) {
+                                return video.aAttachment!;
+                              }).toList(),
+                              startIndex: index,
                             ),
+                            //     VideoPlayerScreen(
+                            //   videoUrl:
+                            //       '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.videos![index].aAttachment!}',
+                            // ),
                           ),
                         );
                       },
