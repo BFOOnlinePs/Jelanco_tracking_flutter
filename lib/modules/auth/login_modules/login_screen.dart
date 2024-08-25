@@ -90,6 +90,10 @@ class LoginScreen extends StatelessWidget {
                               key: MyCacheKeys.email,
                               value: state.userLoginModel.user?.email,
                             );
+                            await CacheHelper.saveData(
+                              key: MyCacheKeys.jobTitle,
+                              value: state.userLoginModel.user?.jobTitle,
+                            );
                             UserDataConstants.token =
                                 state.userLoginModel.token;
                             UserDataConstants.userId =

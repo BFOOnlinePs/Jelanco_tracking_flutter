@@ -3,6 +3,7 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/submission_comments_screen.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/assigned_to_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/category_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
@@ -39,7 +40,8 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                           children: [
                             submission.taskDetails != null
                                 ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SectionTitleWidget('تفاصيل المهمة',
                                           status: TaskStatusEnum.getStatus(
@@ -106,35 +108,83 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                                                 NavigationServices.navigateTo(
                                                     context,
                                                     SubmissionCommentsScreen(
+                                                        taskId: submission
+                                                                .tsTaskId ??
+                                                            -1,
                                                         submissionId:
                                                             submission.tsId!));
                                               },
                                               child: Text(
                                                   '${submission.commentsCount} تعليقات')),
-                                          // Text('3 تعليقات'),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 16,
                                           ),
                                         ],
                                       )
                                     : Container(),
                                 Expanded(
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      isDense: true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('show bottom sheet');
+                                      showModalBottomSheet(
+                                        // This allows the bottom sheet to resize when the keyboard appears
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom, // Adjust for keyboard
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  AddCommentWidget(
+                                                    taskId:
+                                                        submission.tsTaskId!,
+                                                    taskSubmissionId:
+                                                        submission.tsId!,
+                                                  ),
+                                                  // SizedBox(height: 20),
+                                                  // ElevatedButton(
+                                                  //   onPressed: () {
+                                                  //     Navigator.pop(context);
+                                                  //   },
+                                                  //   child: Text('Close'),
+                                                  // ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).whenComplete(() {
+                                        // .............................................................
+                                        // // Unfocus when the bottom sheet is dismissed
+                                        // taskDetailsCubit.whenCloseBottomSheet();
+                                      });
 
-                                      // Reduces the overall height and padding
-                                      contentPadding:
-                                          EdgeInsets.only(bottom: 0),
-                                      hintText: "أكتب تعليق ...",
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            // color: Colors.blue,
-                                            width: 2.0),
+                                      // ......................
+                                      // Future.delayed(Duration(milliseconds: 100), () {
+                                      //   taskDetailsCubit.focusNode.requestFocus();
+                                      // });
+                                    },
+                                    child: const TextField(
+                                      enabled: false,
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding:
+                                            EdgeInsets.only(bottom: 0),
+                                        hintText: "أكتب تعليق ...",
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.grey),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(width: 2.0),
+                                        ),
                                       ),
                                     ),
                                   ),

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
 import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_cubit/bottom_nav_bar_states.dart';
 import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_widgets/nav_bar_icon_widget.dart';
@@ -43,8 +44,11 @@ class BottomNavBarScreens extends StatelessWidget {
               ),
             ],
             currentIndex: bottomNavBarCubit.bottomNavBarIndex,
-            selectedItemColor: Colors.blue,
-            // onTap: bottomNavBarCubit.changeBottomNavBarIndex(index),
+            selectedItemColor: ColorsConstants.primaryColor,
+            elevation: 10,
+            // type: BottomNavigationBarType.shifting,
+            // unselectedItemColor: Colors.grey,
+            // showUnselectedLabels: true,
             onTap: (index) {
               bottomNavBarCubit.changeBottomNavBarIndex(index);
             },

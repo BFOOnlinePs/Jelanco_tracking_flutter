@@ -52,7 +52,8 @@ class TaskDetailsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    state is AddCommentLoadingState ? LoaderWithDisable() : Container(),
+                    // ..................................
+                    // state is AddCommentLoadingState ? LoaderWithDisable() : Container(),
 
                   ],
                 );
