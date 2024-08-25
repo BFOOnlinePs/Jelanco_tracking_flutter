@@ -10,20 +10,20 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
 
   static BottomNavBarCubit get(context) => BlocProvider.of(context);
 
-
   int bottomNavBarIndex = 1;
 
   List<Widget> bottomNavBarScreensList = [
-    const TasksAddedByUserScreen(),
+    const TasksAddedByUserScreen(
+      showAppBar: false,
+    ),
     HomeScreen(),
-    AssignedTasksScreen(),
+    AssignedTasksScreen(
+      showAppBar: false,
+    ),
   ];
 
   void changeBottomNavBarIndex(int index) {
     bottomNavBarIndex = index;
     emit(ChangeBottomNavBarIndexState());
   }
-
-
-
 }

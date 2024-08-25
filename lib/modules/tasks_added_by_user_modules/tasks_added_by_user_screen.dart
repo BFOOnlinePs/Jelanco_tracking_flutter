@@ -9,14 +9,18 @@ import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import '../shared_modules/tasks_shared_modules/task_item.dart';
 
 class TasksAddedByUserScreen extends StatelessWidget {
-  const TasksAddedByUserScreen({super.key});
+  final bool showAppBar;
+
+  const TasksAddedByUserScreen({super.key, this.showAppBar = true});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        title: 'tasks_i_added_title'.tr(),
-      ),
+      appBar: showAppBar
+          ? MyAppBar(
+              title: 'tasks_i_added_title'.tr(),
+            )
+          : null,
       body: BlocConsumer<TasksAddedByUserCubit, TasksAddedByUserStates>(
         listener: (context, state) {},
         builder: (context, state) {

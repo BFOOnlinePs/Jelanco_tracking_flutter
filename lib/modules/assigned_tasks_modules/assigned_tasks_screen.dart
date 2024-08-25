@@ -8,14 +8,16 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 
 class AssignedTasksScreen extends StatelessWidget {
-  AssignedTasksScreen({super.key});
+  final bool showAppBar;
+
+  AssignedTasksScreen({super.key, this.showAppBar = true});
 
   late AssignedTasksCubit assignedTasksCubit;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'assigned_tasks_title'.tr()),
+      appBar: showAppBar ? MyAppBar(title: 'assigned_tasks_title'.tr()) : null,
       body: BlocConsumer<AssignedTasksCubit, AssignedTasksStates>(
         listener: (context, state) {},
         builder: (context, state) {
