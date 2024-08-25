@@ -17,34 +17,31 @@ class TasksAddedByUserScreen extends StatelessWidget {
       appBar: MyAppBar(
         title: 'tasks_i_added_title'.tr(),
       ),
-      body: BlocProvider(
-        create: (context) => TasksAddedByUserCubit()..getTasksAddedByUser(),
-        child: BlocConsumer<TasksAddedByUserCubit, TasksAddedByUserStates>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            TasksAddedByUserCubit tasksAddedByUserCubit =
-                TasksAddedByUserCubit.get(context);
-            return tasksAddedByUserCubit.getTasksAddedByUserModel == null
-                ? const Center(
-                    child: MyLoader(),
-                  )
-                : Container(
-                    child: tasksAddedByUserCubit
-                            .getTasksAddedByUserModel!.tasks!.isEmpty
-                        ? Center(child: Text('tasks_i_added_no_tasks'.tr()))
-                        : ListView.builder(
-                            itemCount: tasksAddedByUserCubit
-                                .getTasksAddedByUserModel!.tasks!.length,
-                            itemBuilder: (context, index) {
-                              return TaskItem(
-                                taskModel: tasksAddedByUserCubit
-                                    .getTasksAddedByUserModel!.tasks![index],
-                              );
-                            },
-                          ),
-                  );
-          },
-        ),
+      body: BlocConsumer<TasksAddedByUserCubit, TasksAddedByUserStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          TasksAddedByUserCubit tasksAddedByUserCubit =
+              TasksAddedByUserCubit.get(context);
+          return tasksAddedByUserCubit.getTasksAddedByUserModel == null
+              ? const Center(
+                  child: MyLoader(),
+                )
+              : Container(
+                  child: tasksAddedByUserCubit
+                          .getTasksAddedByUserModel!.tasks!.isEmpty
+                      ? Center(child: Text('tasks_i_added_no_tasks'.tr()))
+                      : ListView.builder(
+                          itemCount: tasksAddedByUserCubit
+                              .getTasksAddedByUserModel!.tasks!.length,
+                          itemBuilder: (context, index) {
+                            return TaskItem(
+                              taskModel: tasksAddedByUserCubit
+                                  .getTasksAddedByUserModel!.tasks![index],
+                            );
+                          },
+                        ),
+                );
+        },
       ),
     );
   }

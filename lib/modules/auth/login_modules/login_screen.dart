@@ -9,6 +9,7 @@ import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
+import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_screens.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_auth_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
@@ -105,7 +106,8 @@ class LoginScreen extends StatelessWidget {
 
                             NavigationServices.navigateTo(
                               context,
-                              HomeScreen(),
+                              // HomeScreen(),
+                              BottomNavBarScreens(),
                               removeAll: true,
                             );
                           });

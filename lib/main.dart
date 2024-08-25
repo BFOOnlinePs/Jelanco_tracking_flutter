@@ -1,16 +1,20 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/utils/my_bloc_observer.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/core/values/constants.dart';
+import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_cubit/assigned_tasks_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
+import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_screens.dart';
 import 'package:jelanco_tracking_system/modules/splash_modules/splash_screen.dart';
-import 'package:video_compress/video_compress.dart';
-
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
+import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'core/constants/user_data.dart';
-import 'modules/home_modules/home_screen.dart';
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
 
@@ -38,7 +42,8 @@ void main() async {
   if (UserDataConstants.token == null || UserDataConstants.token == '') {
     homeWidget = const LoginScreen();
   } else {
-    homeWidget = HomeScreen();
+    // homeWidget = HomeScreen();
+    homeWidget = BottomNavBarScreens();
   }
 
   runApp(
@@ -61,19 +66,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'جيلانكو - نظام التتبع',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        fontFamily: 'Tajawal',
-        useMaterial3: true,
-      ),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      home: SplashScreen(
-        homeWidget: homeWidget,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => BottomNavBarCubit()),
+        BlocProvider(
+          create: (context) => HomeCubit()
+            ..getUserSubmissions()
+            ..getTasksToSubmit(
+              perPage: 3,
+              loadingState: GetTasksToSubmitLoadingState(),
+              successState: GetTasksToSubmitSuccessState(),
+              errorState: (error) => GetTasksToSubmitErrorState(error),
+            ),
+        ),
+        BlocProvider(
+            create: (context) =>
+                TasksAddedByUserCubit()..getTasksAddedByUser()),
+        BlocProvider(
+            create: (context) => AssignedTasksCubit()..getAssignedTasks()),
+      ],
+      child: MaterialApp(
+        title: 'جيلانكو - نظام التتبع',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          fontFamily: 'Tajawal',
+          useMaterial3: true,
+        ),
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        home: SplashScreen(
+          homeWidget: homeWidget,
+        ),
       ),
     );
   }

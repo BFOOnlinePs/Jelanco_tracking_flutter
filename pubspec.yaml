@@ -54,6 +54,7 @@ dependencies:
   url_launcher: ^6.3.0
   video_thumbnail: ^0.5.3
   font_awesome_flutter: ^10.7.0
+#  persistent_bottom_nav_bar: ^6.2.1
 
 flutter_launcher_icons:
   android: true
