@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_sta
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_add_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_tasks_to_submit_widget.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_user_submissions_widget.dart';
+import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -34,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen>
   //   );
   // }
 
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -44,18 +44,31 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (context, state) {
         homeCubit = HomeCubit.get(context);
 
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const HomeAddSubmissionWidget(),
-              HomeTasksToSubmitWidget(
-                homeCubit: homeCubit,
+        return MyRefreshIndicator(
+          onRefresh: () async {
+            await Future.wait([
+              homeCubit.getUserSubmissions(),
+              homeCubit.getTasksToSubmit(
+                perPage: 3,
+                loadingState: GetTasksToSubmitLoadingState(),
+                successState: GetTasksToSubmitSuccessState(),
+                errorState: (error) => GetTasksToSubmitErrorState(error),
               ),
-              HomeUserSubmissionsWidget(
-                homeCubit: homeCubit,
-              ),
-            ],
+            ]);
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const HomeAddSubmissionWidget(),
+                HomeTasksToSubmitWidget(
+                  homeCubit: homeCubit,
+                ),
+                HomeUserSubmissionsWidget(
+                  homeCubit: homeCubit,
+                ),
+              ],
+            ),
           ),
         );
       },

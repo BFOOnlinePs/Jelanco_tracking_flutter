@@ -22,7 +22,7 @@ class MediaOptionWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 8),
         child: Row(
           children: [
-            Icon(icon, color: color, size: 30),
+            Icon(icon, color: color, size: 28),
             SizedBox(width: 4),
             Text(
               label,

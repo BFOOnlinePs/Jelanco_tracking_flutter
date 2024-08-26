@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 import '../../../../core/utils/navigation_services.dart';
@@ -40,24 +41,31 @@ class TaskDetailsScreen extends StatelessWidget {
                   )
                 : Stack(
                     children: [
-                      SingleChildScrollView(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TaskDetailsSectionWidget(
-                                taskDetailsCubit: taskDetailsCubit),
-                            MyVerticalSpacer(),
-                            MyVerticalSpacer(),
-                            taskDetailsCubit
-                                    .getTaskWithSubmissionsAndCommentsModel!
-                                    .task!
-                                    .taskSubmissions!
-                                    .isNotEmpty
-                                ? SubmissionsSectionWidget(
-                                    taskDetailsCubit: taskDetailsCubit)
-                                : Container(),
-                          ],
+                      MyRefreshIndicator(
+                        onRefresh: () async {
+                          await taskDetailsCubit
+                              .getTaskWithSubmissionsAndComments(
+                                  taskId: taskId);
+                        },
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TaskDetailsSectionWidget(
+                                  taskDetailsCubit: taskDetailsCubit),
+                              MyVerticalSpacer(),
+                              MyVerticalSpacer(),
+                              taskDetailsCubit
+                                      .getTaskWithSubmissionsAndCommentsModel!
+                                      .task!
+                                      .taskSubmissions!
+                                      .isNotEmpty
+                                  ? SubmissionsSectionWidget(
+                                      taskDetailsCubit: taskDetailsCubit)
+                                  : Container(),
+                            ],
+                          ),
                         ),
                       ),
                       // ..................................

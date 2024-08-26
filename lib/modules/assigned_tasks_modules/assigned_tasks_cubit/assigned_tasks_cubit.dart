@@ -11,9 +11,9 @@ class AssignedTasksCubit extends Cubit<AssignedTasksStates> {
 
   GetTasksAssignedToUserModel? getTasksAssignedToUserModel;
 
-  void getAssignedTasks() {
+  Future<void> getAssignedTasks() async {
     emit(GetAssignedTasksLoadingState());
-    DioHelper.getData(url: EndPointsConstants.tasksAssignedToUser)
+    await DioHelper.getData(url: EndPointsConstants.tasksAssignedToUser)
         .then((value) {
       print(value?.data);
       getTasksAssignedToUserModel =

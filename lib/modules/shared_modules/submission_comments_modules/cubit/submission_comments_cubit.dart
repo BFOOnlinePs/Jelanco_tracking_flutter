@@ -11,9 +11,9 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
 
   GetSubmissionCommentsModel? getSubmissionCommentsModel;
 
-  void getSubmissionComments({required int submissionId}) {
+  Future<void> getSubmissionComments({required int submissionId}) async {
     emit(GetSubmissionCommentsLoadingState());
-    DioHelper.getData(
+    await DioHelper.getData(
       url:
           '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionComments}', // /task-submissions/139/comments
     ).then((value) {

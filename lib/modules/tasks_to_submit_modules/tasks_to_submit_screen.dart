@@ -4,6 +4,7 @@ import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/cubit/ta
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/cubit/tasks_to_submit_states.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/task_to_submit_card_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 
 class TasksToSubmitScreen extends StatelessWidget {
@@ -30,9 +31,19 @@ class TasksToSubmitScreen extends StatelessWidget {
             tasksToSubmitCubit = TasksToSubmitCubit.get(context);
             return MyScreen(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
+                  MyRefreshIndicator(
+                    onRefresh: () async {
+                      await tasksToSubmitCubit.getTasksToSubmit(
+                        loadingState: GetTasksToSubmitLoadingState(),
+                        successState: GetTasksToSubmitSuccessState(),
+                        errorState: (error) =>
+                            GetTasksToSubmitErrorState(error),
+                      );
+                    },
                     child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       child: tasksToSubmitCubit.getTasksToSubmitModel != null
                           ? Column(
                               children: [

@@ -109,6 +109,8 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                           context, AddTaskSubmissionScreen(taskId: -1));
                     },
                   ),
+                  Container(width: 0.2, height: 26, color: Colors.grey),
+
                   MediaOptionWidget(
                     icon: Icons.image,
                     label: 'صورة',

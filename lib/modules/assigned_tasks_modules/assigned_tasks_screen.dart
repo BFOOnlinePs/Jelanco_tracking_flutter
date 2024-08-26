@@ -6,6 +6,7 @@ import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_item.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 
 class AssignedTasksScreen extends StatelessWidget {
   final bool showAppBar;
@@ -28,15 +29,20 @@ class AssignedTasksScreen extends StatelessWidget {
                   child: assignedTasksCubit
                           .getTasksAssignedToUserModel!.tasks!.isEmpty
                       ? Center(child: Text('assigned_tasks_no_tasks'.tr()))
-                      : ListView.builder(
-                          itemCount: assignedTasksCubit
-                              .getTasksAssignedToUserModel!.tasks!.length,
-                          itemBuilder: (context, index) {
-                            return TaskItem(
-                              taskModel: assignedTasksCubit
-                                  .getTasksAssignedToUserModel!.tasks![index],
-                            );
+                      : MyRefreshIndicator(
+                          onRefresh: () async {
+                            await assignedTasksCubit.getAssignedTasks();
                           },
+                          child: ListView.builder(
+                            itemCount: assignedTasksCubit
+                                .getTasksAssignedToUserModel!.tasks!.length,
+                            itemBuilder: (context, index) {
+                              return TaskItem(
+                                taskModel: assignedTasksCubit
+                                    .getTasksAssignedToUserModel!.tasks![index],
+                              );
+                            },
+                          ),
                         ),
                 );
         },

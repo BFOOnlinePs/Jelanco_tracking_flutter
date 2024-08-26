@@ -4,9 +4,7 @@ import 'package:jelanco_tracking_system/models/tasks_models/get_task_with_submis
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
-
-class TaskDetailsCubit extends Cubit<TaskDetailsStates>
-{
+class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
   TaskDetailsCubit() : super(TaskDetailsInitialState());
 
   static TaskDetailsCubit get(context) => BlocProvider.of(context);
@@ -14,9 +12,9 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
   GetTaskWithSubmissionsAndCommentsModel?
       getTaskWithSubmissionsAndCommentsModel;
 
-  void getTaskWithSubmissionsAndComments({required int taskId}) {
+  Future<void> getTaskWithSubmissionsAndComments({required int taskId}) async {
     emit(TaskDetailsLoadingState());
-    DioHelper.getData(
+    await DioHelper.getData(
       url:
           '${EndPointsConstants.tasks}/$taskId/${EndPointsConstants.tasksWithSubmissionsAndComments}',
     ).then((value) async {
@@ -30,7 +28,6 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates>
       print(error.toString());
     });
   }
-
 
   @override
   Future<void> close() {

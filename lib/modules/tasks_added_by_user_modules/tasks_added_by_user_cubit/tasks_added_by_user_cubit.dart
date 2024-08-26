@@ -14,9 +14,10 @@ class TasksAddedByUserCubit extends Cubit<TasksAddedByUserStates> {
 
   GetTasksAddedByUserModel? getTasksAddedByUserModel;
 
-  void getTasksAddedByUser() {
+  Future<void> getTasksAddedByUser() async {
     emit(GetTasksAddedByUserLoadingState());
-    DioHelper.getData(url: EndPointsConstants.tasksAddedByUser).then((value) {
+    await DioHelper.getData(url: EndPointsConstants.tasksAddedByUser)
+        .then((value) {
       print(value?.data);
       getTasksAddedByUserModel = GetTasksAddedByUserModel.fromMap(value?.data);
       emit(GetTasksAddedByUserSuccessState());

@@ -6,14 +6,14 @@ import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 mixin TasksToSubmitMixin<T> on Cubit<T> {
   GetTasksModel? getTasksToSubmitModel;
 
-  void getTasksToSubmit({
+  Future<void> getTasksToSubmit({
     int? perPage = 10,
     required T loadingState,
     required T successState,
     required T Function(String error) errorState,
-  }) {
+  }) async {
     emit(loadingState);
-    DioHelper.getData(
+    await DioHelper.getData(
       url: EndPointsConstants.tasksToSubmit,
       query: {
         'per_page': perPage,

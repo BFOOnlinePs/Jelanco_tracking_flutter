@@ -17,9 +17,9 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
 
   GetUserSubmissionsModel? getUserSubmissionsModel;
 
-  void getUserSubmissions() {
+  Future<void> getUserSubmissions() async {
     emit(GetUserSubmissionsLoadingState());
-    DioHelper.getData(
+    await DioHelper.getData(
       url: EndPointsConstants.userSubmissions,
     ).then((value) {
       print(value?.data);
