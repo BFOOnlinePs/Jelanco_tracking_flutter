@@ -41,12 +41,35 @@ class TasksAddedByUserScreen extends StatelessWidget {
                           },
                           child: ListView.builder(
                             itemCount: tasksAddedByUserCubit
-                                .getTasksAddedByUserModel!.tasks!.length,
+                                    .tasksAddedByUserList.length +
+                                (tasksAddedByUserCubit.isTasksAddedByUserLastPage
+                                    ? 0
+                                    : 1),
+
                             itemBuilder: (context, index) {
+                              if (index ==
+                                      tasksAddedByUserCubit
+                                          .tasksAddedByUserList.length &&
+                                  !tasksAddedByUserCubit.isTasksAddedByUserLastPage) {
+                                if (!tasksAddedByUserCubit
+                                    .isTasksAddedByUserLoading) {
+                                  tasksAddedByUserCubit.getTasksAddedByUser(
+                                    page: tasksAddedByUserCubit
+                                            .getTasksAddedByUserModel!
+                                            .pagination!
+                                            .currentPage! +
+                                        1,
+                                  );
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                              }
                               return TaskItem(
-                                taskModel: tasksAddedByUserCubit
-                                    .getTasksAddedByUserModel!.tasks![index],
-                              );
+                                  taskModel: tasksAddedByUserCubit
+                                      .tasksAddedByUserList[index]);
                             },
                           ),
                         ),

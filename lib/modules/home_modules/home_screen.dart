@@ -56,20 +56,66 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ]);
           },
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const HomeAddSubmissionWidget(),
-                HomeTasksToSubmitWidget(
+
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: const HomeAddSubmissionWidget(),
+              ),
+              SliverToBoxAdapter(
+                child: HomeTasksToSubmitWidget(
                   homeCubit: homeCubit,
                 ),
-                HomeUserSubmissionsWidget(
-                  homeCubit: homeCubit,
+              ),
+
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    if (index == homeCubit.tasksAddedByUserList.length &&
+                        !homeCubit.isTasksAddedByUserLastPage) {
+                      if (!homeCubit.isTasksAddedByUserLoading) {
+                        homeCubit.getUserSubmissions(
+                          page: homeCubit.getUserSubmissionsModel!.pagination!
+                                  .currentPage! +
+                              1,
+                        );
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    final submission = homeCubit
+                        .tasksAddedByUserList[index]; // Replace with your data
+
+                    return HomeUserSubmissionsWidget(
+                        homeCubit: homeCubit, submission: submission);
+                  },
+                  childCount: homeCubit.tasksAddedByUserList.length +
+                      (homeCubit.isTasksAddedByUserLastPage
+                          ? 0
+                          : 1), // Replace with your data length
                 ),
-              ],
-            ),
+              ),
+
+            ],
           ),
+
+          // SingleChildScrollView(
+          //   // physics: AlwaysScrollableScrollPhysics(),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       const HomeAddSubmissionWidget(),
+          //       HomeTasksToSubmitWidget(
+          //         homeCubit: homeCubit,
+          //       ),
+          //       HomeUserSubmissionsWidget(
+          //         homeCubit: homeCubit,
+          //       ),
+          //     ],
+          //   ),
+          // ),
         );
       },
     );

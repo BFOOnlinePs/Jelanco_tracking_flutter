@@ -35,12 +35,35 @@ class AssignedTasksScreen extends StatelessWidget {
                           },
                           child: ListView.builder(
                             itemCount: assignedTasksCubit
-                                .getTasksAssignedToUserModel!.tasks!.length,
+                                    .tasksAddedByUserList.length +
+                                (assignedTasksCubit.isTasksAddedByUserLastPage
+                                    ? 0
+                                    : 1),
                             itemBuilder: (context, index) {
+                              if (index ==
+                                      assignedTasksCubit
+                                          .tasksAddedByUserList.length &&
+                                  !assignedTasksCubit
+                                      .isTasksAddedByUserLastPage) {
+                                if (!assignedTasksCubit
+                                    .isTasksAddedByUserLoading) {
+                                  assignedTasksCubit.getAssignedTasks(
+                                    page: assignedTasksCubit
+                                            .getTasksAssignedToUserModel!
+                                            .pagination!
+                                            .currentPage! +
+                                        1,
+                                  );
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                              }
                               return TaskItem(
-                                taskModel: assignedTasksCubit
-                                    .getTasksAssignedToUserModel!.tasks![index],
-                              );
+                                  taskModel: assignedTasksCubit
+                                      .tasksAddedByUserList[index]);
                             },
                           ),
                         ),
