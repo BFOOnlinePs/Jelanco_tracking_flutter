@@ -17,14 +17,14 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   static HomeCubit get(context) => BlocProvider.of(context);
 
   GetUserSubmissionsModel? getUserSubmissionsModel;
-  List<TaskSubmissionModel> tasksAddedByUserList = [];
+  List<TaskSubmissionModel> userSubmissionsList = [];
 
-  bool isTasksAddedByUserLoading = false;
-  bool isTasksAddedByUserLastPage = false;
+  bool isUserSubmissionsLoading = false;
+  bool isUserSubmissionsLastPage = false;
 
   Future<void> getUserSubmissions({int page = 1}) async {
     emit(GetUserSubmissionsLoadingState());
-    isTasksAddedByUserLoading = true;
+    isUserSubmissionsLoading = true;
     await DioHelper.getData(
       url: EndPointsConstants.userSubmissions,
       query: {'page': page},
@@ -32,18 +32,18 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       print(value?.data);
       // when refresh
       if (page == 1) {
-        tasksAddedByUserList.clear();
+        userSubmissionsList.clear();
       }
       getUserSubmissionsModel = GetUserSubmissionsModel.fromMap(value?.data);
 
-      tasksAddedByUserList
-          .addAll(getUserSubmissionsModel?.submissions as Iterable<TaskSubmissionModel>);
+      userSubmissionsList.addAll(getUserSubmissionsModel?.submissions
+          as Iterable<TaskSubmissionModel>);
 
-      isTasksAddedByUserLastPage =
+      isUserSubmissionsLastPage =
           getUserSubmissionsModel?.pagination?.lastPage ==
               getUserSubmissionsModel?.pagination?.currentPage;
 
-      isTasksAddedByUserLoading = false;
+      isUserSubmissionsLoading = false;
       emit(GetUserSubmissionsSuccessState());
     }).catchError((error) {
       emit(GetUserSubmissionsErrorState(error.toString()));

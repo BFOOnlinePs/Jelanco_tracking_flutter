@@ -71,9 +71,9 @@ class _HomeScreenState extends State<HomeScreen>
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    if (index == homeCubit.tasksAddedByUserList.length &&
-                        !homeCubit.isTasksAddedByUserLastPage) {
-                      if (!homeCubit.isTasksAddedByUserLoading) {
+                    if (index == homeCubit.userSubmissionsList.length &&
+                        !homeCubit.isUserSubmissionsLastPage) {
+                      if (!homeCubit.isUserSubmissionsLoading) {
                         homeCubit.getUserSubmissions(
                           page: homeCubit.getUserSubmissionsModel!.pagination!
                                   .currentPage! +
@@ -86,13 +86,13 @@ class _HomeScreenState extends State<HomeScreen>
                       );
                     }
                     final submission = homeCubit
-                        .tasksAddedByUserList[index]; // Replace with your data
+                        .userSubmissionsList[index];
 
                     return HomeUserSubmissionsWidget(
                         homeCubit: homeCubit, submission: submission);
                   },
-                  childCount: homeCubit.tasksAddedByUserList.length +
-                      (homeCubit.isTasksAddedByUserLastPage
+                  childCount: homeCubit.userSubmissionsList.length +
+                      (homeCubit.isUserSubmissionsLastPage
                           ? 0
                           : 1), // Replace with your data length
                 ),
