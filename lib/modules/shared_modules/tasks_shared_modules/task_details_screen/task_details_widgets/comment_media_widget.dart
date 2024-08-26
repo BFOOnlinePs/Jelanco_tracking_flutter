@@ -140,6 +140,7 @@ class CommentMediaWidget extends StatelessWidget {
                     ? Container(
                         height: 220.0,
                         child: ListView.builder(
+                          shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return MyImage(

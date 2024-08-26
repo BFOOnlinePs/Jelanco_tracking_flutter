@@ -16,9 +16,13 @@ class SubmissionTaskWidget extends StatelessWidget {
         NavigationServices.navigateTo(
             context, TaskDetailsScreen(taskId: taskId));
       },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 2, bottom: 10),
+      child: Container(
+        width: double.infinity,
+        color: Colors.grey[300],
+        margin: const EdgeInsets.only(top: 2, bottom: 10),
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               taskContent,

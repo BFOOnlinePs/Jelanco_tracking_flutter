@@ -39,7 +39,7 @@ class TaskToSubmitCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '> ${task.addedByUser?.name ?? ''}',
+                  '> بواسطة: ${task.addedByUser?.name ?? ''}',
                   style: TextStyle(color: Colors.orangeAccent),
                 ),
                 Text(

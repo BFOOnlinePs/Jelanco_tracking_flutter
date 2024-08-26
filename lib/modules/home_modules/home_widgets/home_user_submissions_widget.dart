@@ -48,7 +48,7 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
 //     status: TaskStatusEnum.getStatus(
 //         submission.taskDetails!.tStatus!),
 //     statusIcon: Icons.flag),
-                        Text('تم إسناد هذا التسليم إلى المهمة ادناه:'),
+//                         Text('تم إسناد هذا التسليم إلى المهمة ادناه:'),
                         SubmissionTaskWidget(
                             taskContent: submission.taskDetails!.tContent!,
                             taskId: submission.tsTaskId!),

@@ -48,22 +48,28 @@ class TaskDetailsScreen extends StatelessWidget {
                                   taskId: taskId);
                         },
                         child: SingleChildScrollView(
-                          padding: EdgeInsets.all(16.0),
+                          // padding: EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TaskDetailsSectionWidget(
                                   taskDetailsCubit: taskDetailsCubit),
-                              MyVerticalSpacer(),
-                              MyVerticalSpacer(),
+                              // MyVerticalSpacer(),
+                              // MyVerticalSpacer(),
                               taskDetailsCubit
                                       .getTaskWithSubmissionsAndCommentsModel!
                                       .task!
                                       .taskSubmissions!
                                       .isNotEmpty
-                                  ? SubmissionsSectionWidget(
-                                      taskDetailsCubit: taskDetailsCubit)
+                                  ? Container(
+                                padding: EdgeInsets.all(16.0),
+
+                              child: SubmissionsSectionWidget(
+                                        taskDetailsCubit: taskDetailsCubit),
+                                  )
                                   : Container(),
+
+                              SizedBox(height: 60,),
                             ],
                           ),
                         ),
