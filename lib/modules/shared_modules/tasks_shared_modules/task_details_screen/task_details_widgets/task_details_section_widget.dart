@@ -18,8 +18,9 @@ class TaskDetailsSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsetsDirectional.only(top: 10, start: 16, end: 16),
-      color: Colors.grey[300],
+      padding: const EdgeInsetsDirectional.only(
+          top: 10, start: 16, end: 16, bottom: 8),
+      color: Colors.grey[200],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,10 +54,10 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                       '',
                   Icons.person)
               : Container(),
-          MyVerticalSpacer(),
-          TaskPlanedTimeWidget(
-              taskModel: taskDetailsCubit
-                  .getTaskWithSubmissionsAndCommentsModel!.task!),
+          // MyVerticalSpacer(),
+          // TaskPlanedTimeWidget(
+          //     taskModel: taskDetailsCubit
+          //         .getTaskWithSubmissionsAndCommentsModel!.task!),
           // MyVerticalSpacer(),
 
           // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',

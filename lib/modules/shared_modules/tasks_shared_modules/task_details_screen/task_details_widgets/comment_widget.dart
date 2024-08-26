@@ -22,7 +22,7 @@ class CommentWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 18,
                     backgroundImage: AssetImage(
                       AssetsKeys.defaultProfileImage ?? '',
@@ -34,19 +34,12 @@ class CommentWidget extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              comment.commentedByUser?.name ?? '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[800],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        comment.commentedByUser?.name ?? '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
+                          fontSize: 12,
                         ),
                       ),
                       Container(
@@ -60,37 +53,8 @@ class CommentWidget extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.grey[800], fontSize: 14),
                             ),
-                            CommentMediaWidget(
-                              comment: comment,
-                              // taskDetailsCubit: taskDetailsCubit,
-                            ),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  MyDateUtils.formatDateTimeWithAmPm(
-                                      comment.createdAt),
-                                  style: TextStyle(
-                                      color: Colors.grey[600], fontSize: 12),
-                                ),
-                                // MyTextButtonNoBorder(
-                                //   onPressed: () {
-                                //
-                                //   },
-                                //   child: const Text(
-                                //     'رد',
-                                //     style: TextStyle(
-                                //       color: ColorsConstants.primaryColor,
-                                //       fontSize: 14,
-                                //       fontWeight: FontWeight.bold,
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
+
+
                           ],
                         ),
                       ),
@@ -98,20 +62,49 @@ class CommentWidget extends StatelessWidget {
                   ),
                 ],
               ),
+
               comment.isCurrentVersion == false
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        // SizedBox(
-                        //   width: 66,
-                        // ),
-                        // Spacer(),
-                        Icon(Icons.history_toggle_off),
-                      ],
-                    )
+                  ? Icon(Icons.history_toggle_off)
                   : Container(),
             ],
+          ),
+          Container(
+            margin: EdgeInsetsDirectional.only(start: 40),
+            child: Column(
+              children: [
+                CommentMediaWidget(
+                  comment: comment,
+                  // taskDetailsCubit: taskDetailsCubit,
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      MyDateUtils.formatDateTimeWithAmPm(
+                          comment.createdAt),
+                      style: TextStyle(
+                          color: Colors.grey[600], fontSize: 12),
+                    ),
+                    // MyTextButtonNoBorder(
+                    //   onPressed: () {
+                    //
+                    //   },
+                    //   child: const Text(
+                    //     'رد',
+                    //     style: TextStyle(
+                    //       color: ColorsConstants.primaryColor,
+                    //       fontSize: 14,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ],
+            ),
           ),
           Divider(thickness: 0.5, color: Colors.grey[300]),
         ],

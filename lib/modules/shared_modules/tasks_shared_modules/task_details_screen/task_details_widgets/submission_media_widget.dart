@@ -48,6 +48,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                     highlightColor: Colors.blue.withOpacity(0.1),
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
+                      margin: EdgeInsetsDirectional.only(end: 14),
                       decoration: BoxDecoration(
                         color: Theme.of(context).scaffoldBackgroundColor,
                         border: Border.all(
@@ -107,11 +108,11 @@ class SubmissionMediaWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => MyPhotoView(
-                                galleryItems: submission
+                                imagesUrls: submission
                                     .submissionAttachmentsCategories!.images!
                                     .map((image) => image.aAttachment!)
                                     .toList(),
-                                imagesHostPath:
+                                storagePath:
                                     '${EndPointsConstants.taskSubmissionsStorage}',
                                 startedIndex: index,
                               ),

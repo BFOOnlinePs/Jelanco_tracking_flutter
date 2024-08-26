@@ -4,14 +4,14 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class MyPhotoView extends StatelessWidget {
-  final String imagesHostPath;
-  final List<String> galleryItems;
+  final String storagePath;
+  final List<String> imagesUrls;
   final int startedIndex;
 
   const MyPhotoView({
     super.key,
-    required this.galleryItems,
-    required this.imagesHostPath,
+    required this.imagesUrls,
+    required this.storagePath,
     required this.startedIndex,
   });
 
@@ -28,13 +28,13 @@ class MyPhotoView extends StatelessWidget {
               return PhotoViewGalleryPageOptions(
                 // imageProvider: AssetImage(widget.galleryItems[index].image),
                 imageProvider:
-                    NetworkImage(imagesHostPath + galleryItems[index]),
+                    NetworkImage(storagePath + imagesUrls[index]),
                 initialScale: PhotoViewComputedScale.contained * 0.8,
                 heroAttributes:
-                    PhotoViewHeroAttributes(tag: galleryItems[index]),
+                    PhotoViewHeroAttributes(tag: imagesUrls[index]),
               );
             },
-            itemCount: galleryItems.length,
+            itemCount: imagesUrls.length,
             loadingBuilder: (context, event) => Center(
               child:  Container(
                 width: 20.0,

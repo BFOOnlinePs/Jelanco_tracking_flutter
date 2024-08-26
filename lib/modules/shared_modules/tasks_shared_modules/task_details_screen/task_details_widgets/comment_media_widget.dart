@@ -79,7 +79,7 @@ class CommentMediaWidget extends StatelessWidget {
                     ? Container(
                         height: 200,
                         child: ListView.builder(
-                          // shrinkWrap: true,
+                          shrinkWrap: true,
                           // physics: NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
@@ -138,45 +138,45 @@ class CommentMediaWidget extends StatelessWidget {
                 SizedBox(height: 8.0),
                 comment.commentAttachmentsCategories!.images!.isNotEmpty
                     ? Container(
-                        height: 220.0,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return MyImage(
-                              height: 200,
-                              margin: EdgeInsetsDirectional.only(end: 8),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyPhotoView(
-                                        galleryItems: comment
-                                            .commentAttachmentsCategories!
-                                            .images!
-                                            .map((image) => image.aAttachment!)
-                                            .toList(),
-                                        imagesHostPath:
-                                            '${EndPointsConstants.taskSubmissionsCommentStorage}',
-                                        startedIndex: index,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Image(
-                                  image: NetworkImage(
-                                    '${EndPointsConstants.taskSubmissionsCommentStorage}${comment.commentAttachmentsCategories!.images![index].aAttachment}',
-                                  ),
-                                  // fit: BoxFit.cover,
+                  height: 220.0,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return MyImage(
+                        height: 200,
+                        margin: EdgeInsetsDirectional.only(end: 8),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyPhotoView(
+                                  imagesUrls: comment
+                                      .commentAttachmentsCategories!
+                                      .images!
+                                      .map((image) => image.aAttachment!)
+                                      .toList(),
+                                  storagePath:
+                                  '${EndPointsConstants.taskSubmissionsCommentStorage}',
+                                  startedIndex: index,
                                 ),
                               ),
                             );
                           },
-                          itemCount: comment
-                              .commentAttachmentsCategories!.images!.length,
+                          child: Image(
+                            image: NetworkImage(
+                              '${EndPointsConstants.taskSubmissionsCommentStorage}${comment.commentAttachmentsCategories!.images![index].aAttachment}',
+                            ),
+                            // fit: BoxFit.cover,
+                          ),
                         ),
-                      )
+                      );
+                    },
+                    itemCount: comment
+                        .commentAttachmentsCategories!.images!.length,
+                  ),
+                )
                     : Container(),
               ],
             ),

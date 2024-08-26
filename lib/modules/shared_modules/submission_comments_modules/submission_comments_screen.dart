@@ -12,7 +12,8 @@ class SubmissionCommentsScreen extends StatelessWidget {
   final int taskId;
   final int submissionId;
 
-  SubmissionCommentsScreen({super.key, required this.taskId ,required this.submissionId});
+  SubmissionCommentsScreen(
+      {super.key, required this.taskId, required this.submissionId});
 
   late SubmissionCommentsCubit submissionCommentsCubit;
 
@@ -31,74 +32,78 @@ class SubmissionCommentsScreen extends StatelessWidget {
             submissionCommentsCubit = SubmissionCommentsCubit.get(context);
             return MyRefreshIndicator(
               onRefresh: () async {
-                await submissionCommentsCubit.getSubmissionComments(submissionId: submissionId);
+                await submissionCommentsCubit.getSubmissionComments(
+                    submissionId: submissionId);
               },
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    submissionCommentsCubit.getSubmissionCommentsModel == null
-                        ? const Center(child: MyLoader())
-                        : submissionCommentsCubit.getSubmissionCommentsModel
-                                    ?.submissionComments !=
-                                null
-                            ? Column(
-                                children: submissionCommentsCubit
-                                    .getSubmissionCommentsModel!
-                                    .submissionComments!
-                                    .map((comment) {
-                                  return CommentWidget(comment: comment);
-                                }).toList(),
-                              )
-                            : Container(),
-
-                    ElevatedButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          // This allows the bottom sheet to resize when the keyboard appears
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                bottom: MediaQuery.of(context)
-                                    .viewInsets
-                                    .bottom, // Adjust for keyboard
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.all(16.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    AddCommentWidget(
-                                      taskId: taskId,
-                                      taskSubmissionId: submissionId,
-                                    ),
-                                    // SizedBox(height: 20),
-                                    // ElevatedButton(
-                                    //   onPressed: () {
-                                    //     Navigator.pop(context);
-                                    //   },
-                                    //   child: Text('Close'),
-                                    // ),
-                                  ],
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      submissionCommentsCubit.getSubmissionCommentsModel == null
+                          ? const Center(child: MyLoader())
+                          : submissionCommentsCubit.getSubmissionCommentsModel
+                                      ?.submissionComments !=
+                                  null
+                              ? Column(
+                                  children: submissionCommentsCubit
+                                      .getSubmissionCommentsModel!
+                                      .submissionComments!
+                                      .map((comment) {
+                                    return CommentWidget(comment: comment);
+                                  }).toList(),
+                                )
+                              : Container(),
+                      ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            // This allows the bottom sheet to resize when the keyboard appears
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context)
+                                      .viewInsets
+                                      .bottom, // Adjust for keyboard
                                 ),
-                              ),
-                            );
-                          },
-                        ).whenComplete(() {
-                          // .............................................................
-                          // // Unfocus when the bottom sheet is dismissed
-                          // taskDetailsCubit.whenCloseBottomSheet();
-                        });
-
-                        // ......................
-                        // Future.delayed(Duration(milliseconds: 100), () {
-                        //   taskDetailsCubit.focusNode.requestFocus();
-                        // });
-                      },
-                      child: Text('أكتب تعليق'),
-                    )
-                  ],
+                                child: Container(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      AddCommentWidget(
+                                        taskId: taskId,
+                                        taskSubmissionId: submissionId,
+                                      ),
+                                      // SizedBox(height: 20),
+                                      // ElevatedButton(
+                                      //   onPressed: () {
+                                      //     Navigator.pop(context);
+                                      //   },
+                                      //   child: Text('Close'),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ).whenComplete(() {
+                            // .............................................................
+                            // // Unfocus when the bottom sheet is dismissed
+                            // taskDetailsCubit.whenCloseBottomSheet();
+                          });
+                
+                          // ......................
+                          // Future.delayed(Duration(milliseconds: 100), () {
+                          //   taskDetailsCubit.focusNode.requestFocus();
+                          // });
+                        },
+                        child: Text('أكتب تعليق'),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );
