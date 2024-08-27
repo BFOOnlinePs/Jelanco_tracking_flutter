@@ -89,7 +89,7 @@ class TaskDetailsScreen extends StatelessWidget {
               context,
               AddTaskSubmissionScreen(
                 taskId: taskId,
-                getDataCallback: () {
+                getDataCallback: (taskSubmissionModel) {
                   print('call the data');
                   taskDetailsCubit.getTaskWithSubmissionsAndComments(
                       taskId: taskId);

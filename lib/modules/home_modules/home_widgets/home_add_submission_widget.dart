@@ -22,7 +22,9 @@ class HomeAddSubmissionWidget extends StatelessWidget {
         NavigationServices.navigateTo(
             context,
             AddTaskSubmissionScreen(
-                getDataCallback: () {
+                getDataCallback: (
+                    taskSubmissionModel
+                    ) {
                   print('call the data');
                   homeCubit.getUserSubmissions();
                   homeCubit.getTasksToSubmit(

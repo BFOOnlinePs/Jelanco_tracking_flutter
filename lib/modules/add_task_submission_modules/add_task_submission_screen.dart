@@ -25,7 +25,8 @@ class AddTaskSubmissionScreen extends StatelessWidget {
   final TaskSubmissionModel? taskSubmissionModel; // for edit
   final bool isEdit; // for edit
 
-  final VoidCallback?
+  final Function(TaskSubmissionModel)?
+  // final Function(TaskSubmissionModel)?
       getDataCallback; // to get the data after add new submission
 
   AddTaskSubmissionScreen({
@@ -59,7 +60,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
 
               // Trigger the callback when popping
               if (getDataCallback != null) {
-                getDataCallback!();
+                getDataCallback!(state.addTaskSubmissionModel.taskSubmission!);
               }
               Navigator.pop(context);
             } else {

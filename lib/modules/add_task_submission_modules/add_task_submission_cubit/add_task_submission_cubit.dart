@@ -65,7 +65,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       if (video != null) {
         pickedVideosList.add(video);
         await initializeVideoController(File(video.path));
-
       }
     }
 
@@ -370,8 +369,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     if (isEdit) {
       print('call the old data');
       contentController.text = taskSubmissionModel!.tsContent ?? '';
-      // taskSubmissionModel.submissionAttachmentsCategories?.videos!
-      //    .map((vid) async => await initializeOldVideoController(vid.aAttachment!));
       for (var vid
           in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
               []) {

@@ -11,9 +11,9 @@ import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/ta
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
-  final TaskSubmissionModel submissionModel;
+  TaskSubmissionModel submissionModel;
 
-  const SubmissionHeaderWidget(this.submissionModel, {super.key});
+  SubmissionHeaderWidget(this.submissionModel, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,8 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      MyDateUtils.formatDateTimeWithAmPm(submissionModel.createdAt),
+                      MyDateUtils.formatDateTimeWithAmPm(
+                          submissionModel.createdAt),
                       // MyDateUtils.formatDateTime2(submissionModel.createdAt),
                       // submissionModel.createdAt.toString() ?? '',
                       style: const TextStyle(
@@ -70,11 +71,40 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       taskId: submissionModel.tsTaskId!,
                       taskSubmissionModel: submissionModel,
                       isEdit: true,
-                      getDataCallback: (){
+                      getDataCallback: (editedSubmissionModel) {
                         // no need for action
                         // just edit the original model with the new data
-                        print('تعديل');
+                        print('submissionModel: ${submissionModel.toMap()}');
+                        print(
+                            'editedSubmissionModel: ${editedSubmissionModel.toMap()}');
+                        // submissionModel.tsContent = editedSubmissionModel.tsContent;
+                        //
+                        submissionModel = submissionModel.copyWith(
+                          tsId: editedSubmissionModel.tsId,
+                          tsTaskId: editedSubmissionModel.tsTaskId,
+                          tsSubmitter: editedSubmissionModel.tsSubmitter,
+                          tsContent: editedSubmissionModel.tsContent,
+                          tsActualStartTime: editedSubmissionModel.tsActualStartTime,
+                          tsActualEndTime: editedSubmissionModel.tsActualEndTime,
+                          tsStartLatitude: editedSubmissionModel.tsStartLatitude,
+                          tsStartLongitude: editedSubmissionModel.tsStartLongitude,
+                          tsEndLatitude: editedSubmissionModel.tsEndLatitude,
+                          tsEndLongitude: editedSubmissionModel.tsEndLongitude,
+                          tsStatus: editedSubmissionModel.tsStatus,
+                          tsParentId: editedSubmissionModel.tsParentId,
+                          createdAt: editedSubmissionModel.createdAt,
+                          updatedAt: editedSubmissionModel.updatedAt,
+                          submitterUser: editedSubmissionModel.submitterUser,
+                          submissionComments: editedSubmissionModel.submissionComments,
+                          submissionAttachmentsCategories: editedSubmissionModel.submissionAttachmentsCategories,
+                          commentsCount: editedSubmissionModel.commentsCount,
+                          taskDetails: editedSubmissionModel.taskDetails,
 
+                        );
+                        print('submissionModel: ${submissionModel.toMap()}');
+                        print(
+                            'editedSubmissionModel: ${editedSubmissionModel.toMap()}');
+                        print('تعديل');
                       },
                     ),
                   );

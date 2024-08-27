@@ -19,7 +19,7 @@ import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.da
 
 class HomeUserSubmissionsWidget extends StatelessWidget {
   final HomeCubit homeCubit;
-  final TaskSubmissionModel submission;
+  TaskSubmissionModel submission;
 
   HomeUserSubmissionsWidget(
       {super.key, required this.homeCubit, required this.submission});
