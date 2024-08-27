@@ -70,6 +70,12 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       taskId: submissionModel.tsTaskId!,
                       taskSubmissionModel: submissionModel,
                       isEdit: true,
+                      getDataCallback: (){
+                        // no need for action
+                        // just edit the original model with the new data
+                        print('تعديل');
+
+                      },
                     ),
                   );
                 },

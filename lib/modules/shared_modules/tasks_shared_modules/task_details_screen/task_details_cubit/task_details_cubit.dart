@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/get_task_with_submissions_and_comments_model.dart';
@@ -8,6 +9,8 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
   TaskDetailsCubit() : super(TaskDetailsInitialState());
 
   static TaskDetailsCubit get(context) => BlocProvider.of(context);
+
+  ScrollController scrollController = ScrollController();
 
   GetTaskWithSubmissionsAndCommentsModel?
       getTaskWithSubmissionsAndCommentsModel;

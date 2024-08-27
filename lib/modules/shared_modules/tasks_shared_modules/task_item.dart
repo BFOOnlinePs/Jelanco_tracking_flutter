@@ -54,20 +54,20 @@ class TaskItem extends StatelessWidget {
               },
               child: Text('task_item_options_dialog_edit'.tr()),
             ),
-            MyTextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                NavigationServices.navigateTo(
-                  context,
-                  AddTaskSubmissionScreen(
-                    taskId: taskModel.tId!,
-                  ),
-                );
-              },
-              child: Text(
-                'task_item_options_dialog_add_submission'.tr(),
-              ),
-            )
+            // MyTextButton(
+            //   onPressed: () {
+            //     Navigator.of(context).pop();
+            //     NavigationServices.navigateTo(
+            //       context,
+            //       AddTaskSubmissionScreen(
+            //         taskId: taskModel.tId!,
+            //       ),
+            //     );
+            //   },
+            //   child: Text(
+            //     'task_item_options_dialog_add_submission'.tr(),
+            //   ),
+            // )
           ],
         ),
       ),

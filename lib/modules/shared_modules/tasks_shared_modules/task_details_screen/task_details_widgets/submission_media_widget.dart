@@ -31,14 +31,16 @@ class SubmissionMediaWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         submission.submissionAttachmentsCategories!.files!.isNotEmpty
-            ? FilesListViewWidget(
-                storagePath: EndPointsConstants.taskSubmissionsStorage,
-                files: submission.submissionAttachmentsCategories!.files,
-              )
+            ? Container(
+          margin: EdgeInsets.only(bottom: 10),
+
+          child: FilesListViewWidget(
+                  storagePath: EndPointsConstants.taskSubmissionsStorage,
+                  files: submission.submissionAttachmentsCategories!.files,
+                ),
+            )
             : Container(),
-        SizedBox(
-          height: 10,
-        ),
+
         submission.submissionAttachmentsCategories!.images!.isNotEmpty ||
                 submission.submissionAttachmentsCategories!.videos!.isNotEmpty
             ? Container(

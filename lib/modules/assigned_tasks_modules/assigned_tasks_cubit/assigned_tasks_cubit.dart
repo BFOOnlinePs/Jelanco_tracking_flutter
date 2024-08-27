@@ -11,14 +11,14 @@ class AssignedTasksCubit extends Cubit<AssignedTasksStates> {
   static AssignedTasksCubit get(context) => BlocProvider.of(context);
 
   GetTasksAssignedToUserModel? getTasksAssignedToUserModel;
-  List<TaskModel> tasksAddedByUserList = [];
+  List<TaskModel> tasksAssignedToUserList = [];
 
-  bool isTasksAddedByUserLoading = false;
-  bool isTasksAddedByUserLastPage = false;
+  bool isTasksAssignedToUserLoading = false;
+  bool isTasksAssignedToUserLastPage = false;
 
   Future<void> getAssignedTasks({int page = 1}) async {
     emit(GetAssignedTasksLoadingState());
-    isTasksAddedByUserLoading = true;
+    isTasksAssignedToUserLoading = true;
     await DioHelper.getData(
       url: EndPointsConstants.tasksAssignedToUser,
       query: {'page': page},
@@ -26,18 +26,18 @@ class AssignedTasksCubit extends Cubit<AssignedTasksStates> {
       print(value?.data);
       // when refresh
       if (page == 1) {
-        tasksAddedByUserList.clear();
+        tasksAssignedToUserList.clear();
       }
       getTasksAssignedToUserModel =
           GetTasksAssignedToUserModel.fromMap(value?.data);
 
-      tasksAddedByUserList
+      tasksAssignedToUserList
           .addAll(getTasksAssignedToUserModel?.tasks as Iterable<TaskModel>);
 
-      isTasksAddedByUserLastPage = getTasksAssignedToUserModel?.pagination?.lastPage ==
+      isTasksAssignedToUserLastPage = getTasksAssignedToUserModel?.pagination?.lastPage ==
           getTasksAssignedToUserModel?.pagination?.currentPage;
 
-      isTasksAddedByUserLoading = false;
+      isTasksAssignedToUserLoading = false;
       emit(GetAssignedTasksSuccessState());
     }).catchError((error) {
       emit(GetAssignedTasksErrorState(error: error.toString()));

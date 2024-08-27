@@ -24,8 +24,9 @@ class FilesListViewWidget extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => InkWell(
           onTap: () {
             LaunchUrlUtils.launchMyUrl(
-                storagePath: storagePath!,
-                uriString: files![index].aAttachment!);
+              storagePath: storagePath!,
+              uriString: files![index].aAttachment!,
+            );
           },
           borderRadius: BorderRadius.circular(8.0),
           splashColor: Colors.blue.withOpacity(0.2),

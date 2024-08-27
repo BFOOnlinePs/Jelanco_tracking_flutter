@@ -39,9 +39,9 @@ class SubmissionsSectionWidget extends StatelessWidget {
                     submission: submission,
                     taskDetailsCubit: taskDetailsCubit,
                   ),
-                  const MyVerticalSpacer(),
+                  // const MyVerticalSpacer(),
                   // SubmissionTimeWidget(submission: submission),
-                  const MyVerticalSpacer(),
+                  // const MyVerticalSpacer(),
                   submission.submissionComments!.isNotEmpty
                       ? CommentsSectionWidget(
                           comments: submission.submissionComments!,
@@ -94,8 +94,12 @@ class SubmissionsSectionWidget extends StatelessWidget {
                       // });
                     },
                     // buttonText: 'أكتب تعليق',
-                    child: Text('أكتب تعليق جديد', style: TextStyle(fontWeight: FontWeight.bold),),
+                    child: Text(
+                      'أكتب تعليق جديد',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
+                  MyVerticalSpacer(),
                 ],
               );
             }).toList() ??

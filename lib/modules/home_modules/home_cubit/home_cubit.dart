@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
@@ -15,6 +16,8 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
+
+  ScrollController scrollController = ScrollController();
 
   GetUserSubmissionsModel? getUserSubmissionsModel;
   List<TaskSubmissionModel> userSubmissionsList = [];

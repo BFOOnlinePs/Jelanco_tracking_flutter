@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 
+// it needs pagination
 class TasksToSubmitScreen extends StatelessWidget {
   TasksToSubmitScreen({super.key});
 
@@ -30,35 +31,70 @@ class TasksToSubmitScreen extends StatelessWidget {
           builder: (context, state) {
             tasksToSubmitCubit = TasksToSubmitCubit.get(context);
             return MyScreen(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  MyRefreshIndicator(
-                    onRefresh: () async {
-                      await tasksToSubmitCubit.getTasksToSubmit(
-                        loadingState: GetTasksToSubmitLoadingState(),
-                        successState: GetTasksToSubmitSuccessState(),
-                        errorState: (error) =>
-                            GetTasksToSubmitErrorState(error),
-                      );
-                    },
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: tasksToSubmitCubit.getTasksToSubmitModel != null
-                          ? Column(
-                              children: [
-                                ...tasksToSubmitCubit
-                                    .getTasksToSubmitModel!.tasks!
-                                    .map((task) {
-                                  return TaskToSubmitCardWidget(task: task);
-                                })
-                              ],
-                            )
-                          : const LinearProgressIndicator(),
-                    ),
+              child: MyRefreshIndicator(
+                  onRefresh: () async {
+                    await tasksToSubmitCubit.getTasksToSubmit(
+                      loadingState: GetTasksToSubmitLoadingState(),
+                      successState: GetTasksToSubmitSuccessState(),
+                      errorState: (error) => GetTasksToSubmitErrorState(error),
+                    );
+                  },
+                  child: tasksToSubmitCubit.getTasksToSubmitModel != null
+                      ? ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: tasksToSubmitCubit
+                                  .tasksAssignedToUserList.length +
+                              (tasksToSubmitCubit.isTasksAssignedToUserLastPage
+                                  ? 0
+                                  : 1),
+                          itemBuilder: (context, index) {
+                            if (index ==
+                                    tasksToSubmitCubit
+                                        .tasksAssignedToUserList.length &&
+                                !tasksToSubmitCubit
+                                    .isTasksAssignedToUserLastPage) {
+                              if (!tasksToSubmitCubit
+                                  .isTasksAssignedToUserLoading) {
+                                tasksToSubmitCubit.getTasksToSubmit(
+                                  loadingState: GetTasksToSubmitLoadingState(),
+                                  successState: GetTasksToSubmitSuccessState(),
+                                  errorState: (error) =>
+                                      GetTasksToSubmitErrorState(error),
+                                  page: tasksToSubmitCubit
+                                          .getTasksToSubmitModel!
+                                          .pagination!
+                                          .currentPage! +
+                                      1,
+                                );
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child:
+                                    Center(child: CircularProgressIndicator()),
+                              );
+                            }
+                            return TaskToSubmitCardWidget(
+                                task: tasksToSubmitCubit
+                                    .tasksAssignedToUserList[index]);
+                          },
+                        )
+                      : CircularProgressIndicator()
+
+                  // SingleChildScrollView(
+                  //   physics: const AlwaysScrollableScrollPhysics(),
+                  //   child: tasksToSubmitCubit.getTasksToSubmitModel != null
+                  //       ? Column(
+                  //           children: [
+                  //             ...tasksToSubmitCubit
+                  //                 .getTasksToSubmitModel!.tasks!
+                  //                 .map((task) {
+                  //               return TaskToSubmitCardWidget(task: task);
+                  //             })
+                  //           ],
+                  //         )
+                  //       : const LinearProgressIndicator(),
+                  // ),
                   ),
-                ],
-              ),
             );
           },
         ),

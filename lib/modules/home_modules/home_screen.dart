@@ -58,16 +58,18 @@ class _HomeScreenState extends State<HomeScreen>
           },
 
           child: CustomScrollView(
+            controller: homeCubit.scrollController,
             slivers: [
               SliverToBoxAdapter(
-                child: const HomeAddSubmissionWidget(),
+                child: HomeAddSubmissionWidget(
+                  homeCubit: homeCubit,
+                ),
               ),
               SliverToBoxAdapter(
                 child: HomeTasksToSubmitWidget(
                   homeCubit: homeCubit,
                 ),
               ),
-
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -85,8 +87,7 @@ class _HomeScreenState extends State<HomeScreen>
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
-                    final submission = homeCubit
-                        .userSubmissionsList[index];
+                    final submission = homeCubit.userSubmissionsList[index];
 
                     return HomeUserSubmissionsWidget(
                         homeCubit: homeCubit, submission: submission);
@@ -97,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen>
                           : 1), // Replace with your data length
                 ),
               ),
-
             ],
           ),
 

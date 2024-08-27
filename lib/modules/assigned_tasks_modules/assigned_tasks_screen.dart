@@ -36,18 +36,18 @@ class AssignedTasksScreen extends StatelessWidget {
                           child: ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(),
                             itemCount: assignedTasksCubit
-                                    .tasksAddedByUserList.length +
-                                (assignedTasksCubit.isTasksAddedByUserLastPage
+                                    .tasksAssignedToUserList.length +
+                                (assignedTasksCubit.isTasksAssignedToUserLastPage
                                     ? 0
                                     : 1),
                             itemBuilder: (context, index) {
                               if (index ==
                                       assignedTasksCubit
-                                          .tasksAddedByUserList.length &&
+                                          .tasksAssignedToUserList.length &&
                                   !assignedTasksCubit
-                                      .isTasksAddedByUserLastPage) {
+                                      .isTasksAssignedToUserLastPage) {
                                 if (!assignedTasksCubit
-                                    .isTasksAddedByUserLoading) {
+                                    .isTasksAssignedToUserLoading) {
                                   assignedTasksCubit.getAssignedTasks(
                                     page: assignedTasksCubit
                                             .getTasksAssignedToUserModel!
@@ -64,7 +64,7 @@ class AssignedTasksScreen extends StatelessWidget {
                               }
                               return TaskItem(
                                   taskModel: assignedTasksCubit
-                                      .tasksAddedByUserList[index]);
+                                      .tasksAssignedToUserList[index]);
                             },
                           ),
                         ),

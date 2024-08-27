@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
@@ -49,29 +50,28 @@ class TaskDetailsScreen extends StatelessWidget {
                         },
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
-
+                          controller: taskDetailsCubit.scrollController,
                           // padding: EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TaskDetailsSectionWidget(
                                   taskDetailsCubit: taskDetailsCubit),
-                              // MyVerticalSpacer(),
-                              // MyVerticalSpacer(),
                               taskDetailsCubit
                                       .getTaskWithSubmissionsAndCommentsModel!
                                       .task!
                                       .taskSubmissions!
                                       .isNotEmpty
                                   ? Container(
-                                padding: EdgeInsets.all(16.0),
-
-                              child: SubmissionsSectionWidget(
-                                        taskDetailsCubit: taskDetailsCubit),
-                                  )
+                                      padding: EdgeInsets.all(16.0),
+                                      child: SubmissionsSectionWidget(
+                                        taskDetailsCubit: taskDetailsCubit,
+                                      ),
+                                    )
                                   : Container(),
-
-                              SizedBox(height: 60,),
+                              const SizedBox(
+                                height: 60,
+                              ),
                             ],
                           ),
                         ),
@@ -89,14 +89,17 @@ class TaskDetailsScreen extends StatelessWidget {
               context,
               AddTaskSubmissionScreen(
                 taskId: taskId,
+                getDataCallback: () {
+                  print('call the data');
+                  taskDetailsCubit.getTaskWithSubmissionsAndComments(
+                      taskId: taskId);
+                  // scroll to the beginning
+                  ScrollUtils.scrollPosition(
+                      scrollController: taskDetailsCubit.scrollController);
+                },
               ));
         },
-        // child: Row(
-        //   children: [
-        //     Text('تسليم المهمة'),
-        //     Icon(Icons.check_circle_outline)
-        //   ],
-        // ),
+
         label: Text(
           'تسليم المهمة',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

@@ -25,11 +25,15 @@ class AddTaskSubmissionScreen extends StatelessWidget {
   final TaskSubmissionModel? taskSubmissionModel; // for edit
   final bool isEdit; // for edit
 
+  final VoidCallback?
+      getDataCallback; // to get the data after add new submission
+
   AddTaskSubmissionScreen({
     super.key,
     required this.taskId,
     this.taskSubmissionModel,
     this.isEdit = false,
+    required this.getDataCallback,
   });
 
   late AddTaskSubmissionCubit addTaskSubmissionCubit;
@@ -52,6 +56,12 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                 snackBarStates: SnackBarStates.success,
                 message: state.addTaskSubmissionModel.message,
               );
+
+              // Trigger the callback when popping
+              if (getDataCallback != null) {
+                getDataCallback!();
+              }
+              Navigator.pop(context);
             } else {
               SnackbarHelper.showSnackbar(
                 context: context,
@@ -160,7 +170,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                             ),
                                           ]),
 
-
                                       Container(
                                           width: 0.2,
                                           height: 26,
@@ -189,13 +198,14 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                         label: 'فيديو',
                                         color: Colors.red,
                                         onTap: () {
-                                          addTaskSubmissionCubit.requestPermission(
-                                              context: context,
-                                              permissionType:
-                                                  PermissionType.storage,
-                                              functionWhenGranted:
-                                                  addTaskSubmissionCubit
-                                                      .pickVideoFromGallery);
+                                          addTaskSubmissionCubit
+                                              .requestPermission(
+                                                  context: context,
+                                                  permissionType:
+                                                      PermissionType.storage,
+                                                  functionWhenGranted:
+                                                      addTaskSubmissionCubit
+                                                          .pickVideoFromGallery);
                                         },
                                       ),
                                       Container(
