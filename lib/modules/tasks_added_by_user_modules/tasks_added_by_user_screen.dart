@@ -40,6 +40,7 @@ class TasksAddedByUserScreen extends StatelessWidget {
                             await tasksAddedByUserCubit.getTasksAddedByUser();
                           },
                           child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
                             itemCount: tasksAddedByUserCubit
                                     .tasksAddedByUserList.length +
                                 (tasksAddedByUserCubit.isTasksAddedByUserLastPage

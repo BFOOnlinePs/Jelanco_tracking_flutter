@@ -94,7 +94,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                             // // Unfocus when the bottom sheet is dismissed
                             // taskDetailsCubit.whenCloseBottomSheet();
                           });
-                
+
                           // ......................
                           // Future.delayed(Duration(milliseconds: 100), () {
                           //   taskDetailsCubit.focusNode.requestFocus();
