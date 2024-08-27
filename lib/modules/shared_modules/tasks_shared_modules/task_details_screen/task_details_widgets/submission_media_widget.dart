@@ -139,9 +139,14 @@ class SubmissionMediaWidget extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Image(
-                            image: NetworkImage(
-                              '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+                          child: Container(
+                            height: 220,
+                            width: 132,
+                            child: Image(
+                              image: NetworkImage(
+                                '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+                              ),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -177,14 +182,15 @@ class SubmissionMediaWidget extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          height: 200,
+                          height: 220,
                           width: 132,
+                          margin: EdgeInsetsDirectional.only(end: 8),
+
                           child: Stack(
                             children: [
                               MyThumbnailVideo(
-                                margin: EdgeInsetsDirectional.only(end: 8),
                                 index: videoIndex,
-                                height: 200,
+                                height: 220,
                                 showVideoIcon: true,
                                 thumbnail: submission
                                             .submissionAttachmentsCategories!

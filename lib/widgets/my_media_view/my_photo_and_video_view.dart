@@ -36,6 +36,8 @@ class _MediaViewerState extends State<MediaViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(),
       body: PageView.builder(
         controller: _pageController,
         itemCount: widget.mediaList.length,
@@ -44,6 +46,9 @@ class _MediaViewerState extends State<MediaViewer> {
           if (mediaItem.type == MediaType.image) {
             return PhotoView(
               imageProvider: NetworkImage(widget.storagePath + mediaItem.url),
+              backgroundDecoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
             );
           } else {
             return VideoPlayerScreen(

@@ -23,7 +23,7 @@ class MyImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
+      // height: height,
       // width: width,
       margin: margin,
       decoration: BoxDecoration(
