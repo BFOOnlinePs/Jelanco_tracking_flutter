@@ -9,6 +9,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_mode
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_and_video_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video_view.dart';
@@ -93,155 +94,279 @@ class SubmissionMediaWidget extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        submission.submissionAttachmentsCategories!.images!.isNotEmpty
+        submission.submissionAttachmentsCategories!.images!.isNotEmpty ||
+                submission.submissionAttachmentsCategories!.videos!.isNotEmpty
             ? Container(
                 height: 220.0,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
+                  itemCount: submission
+                          .submissionAttachmentsCategories!.images!.length +
+                      submission
+                          .submissionAttachmentsCategories!.videos!.length,
                   itemBuilder: (context, index) {
-                    return MyImage(
-                      height: 200,
-                      margin: EdgeInsetsDirectional.only(end: 8),
-                      child: GestureDetector(
+                    // Determine if the current item is an image or a video
+                    if (index <
+                        submission
+                            .submissionAttachmentsCategories!.images!.length) {
+                      // This is an image
+                      return MyImage(
+                        height: 200,
+                        margin: EdgeInsetsDirectional.only(end: 8),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MediaViewer(
+                                  storagePath:
+                                      EndPointsConstants.taskSubmissionsStorage,
+                                  mediaList: submission
+                                      .submissionAttachmentsCategories!.images!
+                                      .map((image) => MediaItem(
+                                          type: MediaType.image,
+                                          url: image.aAttachment!))
+                                      .toList()
+                                    ..addAll(submission
+                                        .submissionAttachmentsCategories!
+                                        .videos!
+                                        .map((video) => MediaItem(
+                                            type: MediaType.video,
+                                            url: video.aAttachment!))),
+                                  startIndex:
+                                      index, // Start at the tapped image index
+                                ),
+                              ),
+                            );
+                          },
+                          child: Image(
+                            image: NetworkImage(
+                              '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      // This is a video
+                      int videoIndex = index -
+                          submission
+                              .submissionAttachmentsCategories!.images!.length;
+                      return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MyPhotoView(
-                                imagesUrls: submission
-                                    .submissionAttachmentsCategories!.images!
-                                    .map((image) => image.aAttachment!)
-                                    .toList(),
+                              builder: (context) => MediaViewer(
                                 storagePath:
-                                    '${EndPointsConstants.taskSubmissionsStorage}',
-                                startedIndex: index,
+                                    EndPointsConstants.taskSubmissionsStorage,
+                                mediaList: submission
+                                    .submissionAttachmentsCategories!.images!
+                                    .map((image) => MediaItem(
+                                        type: MediaType.image,
+                                        url: image.aAttachment!))
+                                    .toList()
+                                  ..addAll(submission
+                                      .submissionAttachmentsCategories!.videos!
+                                      .map((video) => MediaItem(
+                                          type: MediaType.video,
+                                          url: video.aAttachment!))),
+                                startIndex:
+                                    index, // Start at the tapped video index
                               ),
                             ),
                           );
                         },
-                        child: Image(
-                          image: NetworkImage(
-                            '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+                        child: Container(
+                          height: 200,
+                          width: 132,
+                          child: Stack(
+                            children: [
+                              MyThumbnailVideo(
+                                margin: EdgeInsetsDirectional.only(end: 8),
+                                index: videoIndex,
+                                height: 200,
+                                showVideoIcon: true,
+                                thumbnail: submission
+                                            .submissionAttachmentsCategories!
+                                            .videos![videoIndex]
+                                            .thumbnail !=
+                                        null
+                                    ? Image.network(
+                                        EndPointsConstants.thumbnailStorage +
+                                            submission
+                                                .submissionAttachmentsCategories!
+                                                .videos![videoIndex]
+                                                .thumbnail!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        AssetsKeys.defaultVideoThumbnail,
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
+                            ],
                           ),
-                          // fit: BoxFit.cover,
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
-                  itemCount: submission
-                      .submissionAttachmentsCategories!.images!.length,
                 ),
               )
             : Container(),
-        const SizedBox(height: 8.0),
-        submission.submissionAttachmentsCategories!.videos!.isNotEmpty
-            ? Container(
-                height: 200,
-                child: ListView.builder(
-                  // shrinkWrap: true,
-                  // physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HorizontalVideoViewer(
-                              storagePath:
-                                  EndPointsConstants.taskSubmissionsStorage,
-                              videoUrls: submission
-                                  .submissionAttachmentsCategories!.videos!
-                                  .map((video) {
-                                return video.aAttachment!;
-                              }).toList(),
-                              startIndex: index,
-                            ),
-                            //     VideoPlayerScreen(
-                            //   videoUrl:
-                            //       '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.videos![index].aAttachment!}',
-                            // ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        height: 200,
-                        width: 132,
-                        child: Stack(
-                          children: [
-                            MyThumbnailVideo(
-                              margin: EdgeInsetsDirectional.only(end: 8),
-                              index: index,
-                              height: 200,
-                              showVideoIcon: true,
-                              thumbnail: submission
-                                          .submissionAttachmentsCategories!
-                                          .videos![index]
-                                          .thumbnail !=
-                                      null
-                                  ? Image.network(
-                                      EndPointsConstants.thumbnailStorage +
-                                          submission
-                                              .submissionAttachmentsCategories!
-                                              .videos![index]
-                                              .thumbnail!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      AssetsKeys.defaultVideoThumbnail,
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                            // // Video thumbnail image
-                            // Positioned.fill(
-                            //   child: submission.submissionAttachmentsCategories!
-                            //               .videos![index].thumbnail !=
-                            //           null
-                            //       ? Image.network(
-                            //           EndPointsConstants.thumbnailStorage +
-                            //               submission
-                            //                   .submissionAttachmentsCategories!
-                            //                   .videos![index]
-                            //                   .thumbnail!,
-                            //           fit: BoxFit.cover,
-                            //         )
-                            //       : Image.asset(
-                            //           AssetsKeys.defaultVideoThumbnail,
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            // ),
-                            // // Play icon overlay
-                            // Center(
-                            //   child: Icon(
-                            //     Icons.play_circle_fill,
-                            //     color: Colors.white,
-                            //     size: 50.0,
-                            //   ),
-                            // ),
-                            // Duration overlay
-                            // Positioned(
-                            //   bottom: 8.0,
-                            //   right: 8.0,
-                            //   child: Container(
-                            //     padding: EdgeInsets.symmetric(
-                            //         horizontal: 8.0, vertical: 4.0),
-                            //     color: Colors.black.withOpacity(0.7),
-                            //     child: Text(
-                            //       'duration',
-                            //       style: TextStyle(color: Colors.white),
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: submission
-                      .submissionAttachmentsCategories!.videos!.length,
-                ),
-              )
-            : Container(),
+
+        // separated image and video view
+        // submission.submissionAttachmentsCategories!.images!.isNotEmpty
+        //     ? Container(
+        //         height: 220.0,
+        //         child: ListView.builder(
+        //             scrollDirection: Axis.horizontal,
+        //             itemBuilder: (context, index) {
+        //               return MyImage(
+        //                 height: 200,
+        //                 margin: EdgeInsetsDirectional.only(end: 8),
+        //                 child: GestureDetector(
+        //                   onTap: () {
+        //                     Navigator.push(
+        //                       context,
+        //                       MaterialPageRoute(
+        //                         builder: (context) => MyPhotoView(
+        //                           imagesUrls: submission
+        //                               .submissionAttachmentsCategories!.images!
+        //                               .map((image) => image.aAttachment!)
+        //                               .toList(),
+        //                           storagePath:
+        //                               EndPointsConstants.taskSubmissionsStorage,
+        //                           startedIndex: index,
+        //                         ),
+        //                       ),
+        //                     );
+        //                   },
+        //                   child: Image(
+        //                     image: NetworkImage(
+        //                       '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
+        //                     ),
+        //                     // fit: BoxFit.cover,
+        //                   ),
+        //                 ),
+        //               );
+        //             },
+        //             itemCount: submission
+        //                 .submissionAttachmentsCategories!.images!.length
+        //             // +
+        //             // submission
+        //             //     .submissionAttachmentsCategories!.videos!.length,
+        //             ),
+        //       )
+        //     : Container(),
+        // const SizedBox(height: 8.0),
+        // submission.submissionAttachmentsCategories!.videos!.isNotEmpty
+        //     ? Container(
+        //         height: 200,
+        //         child: ListView.builder(
+        //           // shrinkWrap: true,
+        //           // physics: NeverScrollableScrollPhysics(),
+        //           scrollDirection: Axis.horizontal,
+        //           itemBuilder: (context, index) {
+        //             return GestureDetector(
+        //               onTap: () {
+        //                 Navigator.push(
+        //                   context,
+        //                   MaterialPageRoute(
+        //                     builder: (context) => HorizontalVideoViewer(
+        //                       storagePath:
+        //                           EndPointsConstants.taskSubmissionsStorage,
+        //                       videoUrls: submission
+        //                           .submissionAttachmentsCategories!.videos!
+        //                           .map((video) {
+        //                         return video.aAttachment!;
+        //                       }).toList(),
+        //                       startIndex: index,
+        //                     ),
+        //                     //     VideoPlayerScreen(
+        //                     //   videoUrl:
+        //                     //       '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.videos![index].aAttachment!}',
+        //                     // ),
+        //                   ),
+        //                 );
+        //               },
+        //               child: Container(
+        //                 height: 200,
+        //                 width: 132,
+        //                 child: Stack(
+        //                   children: [
+        //                     MyThumbnailVideo(
+        //                       margin: EdgeInsetsDirectional.only(end: 8),
+        //                       index: index,
+        //                       height: 200,
+        //                       showVideoIcon: true,
+        //                       thumbnail: submission
+        //                                   .submissionAttachmentsCategories!
+        //                                   .videos![index]
+        //                                   .thumbnail !=
+        //                               null
+        //                           ? Image.network(
+        //                               EndPointsConstants.thumbnailStorage +
+        //                                   submission
+        //                                       .submissionAttachmentsCategories!
+        //                                       .videos![index]
+        //                                       .thumbnail!,
+        //                               fit: BoxFit.cover,
+        //                             )
+        //                           : Image.asset(
+        //                               AssetsKeys.defaultVideoThumbnail,
+        //                               fit: BoxFit.cover,
+        //                             ),
+        //                     ),
+        //                     // // Video thumbnail image
+        //                     // Positioned.fill(
+        //                     //   child: submission.submissionAttachmentsCategories!
+        //                     //               .videos![index].thumbnail !=
+        //                     //           null
+        //                     //       ? Image.network(
+        //                     //           EndPointsConstants.thumbnailStorage +
+        //                     //               submission
+        //                     //                   .submissionAttachmentsCategories!
+        //                     //                   .videos![index]
+        //                     //                   .thumbnail!,
+        //                     //           fit: BoxFit.cover,
+        //                     //         )
+        //                     //       : Image.asset(
+        //                     //           AssetsKeys.defaultVideoThumbnail,
+        //                     //           fit: BoxFit.cover,
+        //                     //         ),
+        //                     // ),
+        //                     // // Play icon overlay
+        //                     // Center(
+        //                     //   child: Icon(
+        //                     //     Icons.play_circle_fill,
+        //                     //     color: Colors.white,
+        //                     //     size: 50.0,
+        //                     //   ),
+        //                     // ),
+        //                     // Duration overlay
+        //                     // Positioned(
+        //                     //   bottom: 8.0,
+        //                     //   right: 8.0,
+        //                     //   child: Container(
+        //                     //     padding: EdgeInsets.symmetric(
+        //                     //         horizontal: 8.0, vertical: 4.0),
+        //                     //     color: Colors.black.withOpacity(0.7),
+        //                     //     child: Text(
+        //                     //       'duration',
+        //                     //       style: TextStyle(color: Colors.white),
+        //                     //     ),
+        //                     //   ),
+        //                     // ),
+        //                   ],
+        //                 ),
+        //               ),
+        //             );
+        //           },
+        //           itemCount: submission
+        //               .submissionAttachmentsCategories!.videos!.length,
+        //         ),
+        //       )
+        //     : Container(),
       ],
     );
   }

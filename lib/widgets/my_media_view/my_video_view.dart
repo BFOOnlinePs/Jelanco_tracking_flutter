@@ -5,15 +5,15 @@ class HorizontalVideoViewer extends StatefulWidget {
   final String storagePath;
   final List<String> videoUrls;
   final int startIndex;
+  final ValueChanged<int>? onPageChanged;
 
-  // final List<VideoPlayerScreen> videoPlayerScreens;
 
   const HorizontalVideoViewer({
     super.key,
     required this.storagePath,
     required this.videoUrls,
     required this.startIndex,
-    // required this.videoPlayerScreens,
+    this.onPageChanged,
   });
 
   @override
@@ -44,6 +44,7 @@ class _HorizontalVideoViewerState extends State<HorizontalVideoViewer> {
         controller: _pageController,
         scrollDirection: Axis.horizontal,
         itemCount: widget.videoUrls.length,
+        onPageChanged: widget.onPageChanged,
         itemBuilder: (context, index) {
           return VideoPlayerScreen(
             videoUrl: '${widget.storagePath}${widget.videoUrls[index]}',
