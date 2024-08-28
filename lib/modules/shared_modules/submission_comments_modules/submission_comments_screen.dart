@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_widget.dart';
@@ -38,6 +39,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
+                  controller: submissionCommentsCubit.scrollController,
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
@@ -76,6 +78,24 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                       AddCommentWidget(
                                         taskId: taskId,
                                         taskSubmissionId: submissionId,
+                                        whenCommentAdded: () async {
+                                          await submissionCommentsCubit
+                                              .getSubmissionComments(
+                                                  submissionId: submissionId);
+
+                                          // wait 2 seconds
+                                          await Future.delayed(
+                                            const Duration(milliseconds: 500),
+                                          );
+                                          ScrollUtils.scrollPosition(
+                                              scrollController:
+                                                  submissionCommentsCubit
+                                                      .scrollController,
+                                              offset: submissionCommentsCubit
+                                                  .scrollController
+                                                  .position
+                                                  .maxScrollExtent);
+                                        },
                                       ),
                                       // SizedBox(height: 20),
                                       // ElevatedButton(
@@ -89,16 +109,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                 ),
                               );
                             },
-                          ).whenComplete(() {
-                            // .............................................................
-                            // // Unfocus when the bottom sheet is dismissed
-                            // taskDetailsCubit.whenCloseBottomSheet();
-                          });
-
-                          // ......................
-                          // Future.delayed(Duration(milliseconds: 100), () {
-                          //   taskDetailsCubit.focusNode.requestFocus();
-                          // });
+                          ).whenComplete(() {});
                         },
                         child: Text('أكتب تعليق'),
                       )

@@ -69,6 +69,9 @@ class SubmissionsSectionWidget extends StatelessWidget {
                                   AddCommentWidget(
                                     taskId: submission.tsTaskId!,
                                     taskSubmissionId: submission.tsId!,
+                                    whenCommentAdded: (){
+                                      // call
+                                    },
                                   ),
                                   // SizedBox(height: 20),
                                   // ElevatedButton(

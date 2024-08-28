@@ -72,6 +72,11 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       taskSubmissionModel: submissionModel,
                       isEdit: true,
                       getDataCallback: (editedSubmissionModel) {
+                        // shared with 2 screens (add task submission screen and home user submissions screen)
+                        // to edit the submission
+                          
+
+
                         // no need for action
                         // just edit the original model with the new data
                         print('submissionModel: ${submissionModel.toMap()}');
@@ -79,28 +84,6 @@ class SubmissionHeaderWidget extends StatelessWidget {
                             'editedSubmissionModel: ${editedSubmissionModel.toMap()}');
                         // submissionModel.tsContent = editedSubmissionModel.tsContent;
                         //
-                        submissionModel = submissionModel.copyWith(
-                          tsId: editedSubmissionModel.tsId,
-                          tsTaskId: editedSubmissionModel.tsTaskId,
-                          tsSubmitter: editedSubmissionModel.tsSubmitter,
-                          tsContent: editedSubmissionModel.tsContent,
-                          tsActualStartTime: editedSubmissionModel.tsActualStartTime,
-                          tsActualEndTime: editedSubmissionModel.tsActualEndTime,
-                          tsStartLatitude: editedSubmissionModel.tsStartLatitude,
-                          tsStartLongitude: editedSubmissionModel.tsStartLongitude,
-                          tsEndLatitude: editedSubmissionModel.tsEndLatitude,
-                          tsEndLongitude: editedSubmissionModel.tsEndLongitude,
-                          tsStatus: editedSubmissionModel.tsStatus,
-                          tsParentId: editedSubmissionModel.tsParentId,
-                          createdAt: editedSubmissionModel.createdAt,
-                          updatedAt: editedSubmissionModel.updatedAt,
-                          submitterUser: editedSubmissionModel.submitterUser,
-                          submissionComments: editedSubmissionModel.submissionComments,
-                          submissionAttachmentsCategories: editedSubmissionModel.submissionAttachmentsCategories,
-                          commentsCount: editedSubmissionModel.commentsCount,
-                          taskDetails: editedSubmissionModel.taskDetails,
-
-                        );
                         print('submissionModel: ${submissionModel.toMap()}');
                         print(
                             'editedSubmissionModel: ${editedSubmissionModel.toMap()}');

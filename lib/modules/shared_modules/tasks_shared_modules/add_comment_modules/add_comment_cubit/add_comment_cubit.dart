@@ -84,7 +84,6 @@ class AddCommentCubit extends Cubit<AddCommentStates>
         File(pickedImagesList[i].path),
       );
       compressedImagesList.add(compressed);
-      print('next loop');
     }
     // emit(CompressAllImagesSuccessState());
   }
@@ -196,6 +195,8 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     emit(DeletePickedFilesFromListState());
   }
 
+
+
   AddTaskSubmissionCommentModel? addTaskSubmissionCommentModel;
 
   Future<void> addComment({
@@ -282,7 +283,6 @@ class AddCommentCubit extends Cubit<AddCommentStates>
 
   void whenCloseBottomSheet() {
     focusNode.unfocus();
-    //     emit(ClearCommentControllerState());
   }
 
   void clearCommentData() {

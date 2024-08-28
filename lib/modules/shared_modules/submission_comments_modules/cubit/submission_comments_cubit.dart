@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comments_model.dart';
@@ -9,8 +10,12 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
 
   static SubmissionCommentsCubit get(context) => BlocProvider.of(context);
 
+  ScrollController scrollController = ScrollController();
+
   GetSubmissionCommentsModel? getSubmissionCommentsModel;
 
+  // if pagination added, then when add new comment we should handle how it will be shown in different way
+  // calling the api one more time will get the first page only, and the comments ordered
   Future<void> getSubmissionComments({required int submissionId}) async {
     emit(GetSubmissionCommentsLoadingState());
     await DioHelper.getData(
@@ -25,5 +30,11 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
       emit(GetSubmissionCommentsErrorState(error.toString()));
       print(error.toString());
     });
+  }
+
+  @override
+  Future<void> close() {
+    scrollController.dispose();
+    return super.close();
   }
 }

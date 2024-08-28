@@ -7,6 +7,8 @@ import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dar
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_states.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
@@ -15,10 +17,16 @@ class AddCommentWidget extends StatelessWidget {
   final int taskId;
   final int taskSubmissionId;
 
-  const AddCommentWidget({
+  // call the function when pop
+  final Function() whenCommentAdded; // call get data of the previous screen
+
+  late AddCommentCubit addCommentCubit;
+
+  AddCommentWidget({
     super.key,
     required this.taskId,
     required this.taskSubmissionId,
+    required this.whenCommentAdded,
   });
 
   @override
@@ -28,13 +36,14 @@ class AddCommentWidget extends StatelessWidget {
       child: BlocConsumer<AddCommentCubit, AddCommentStates>(
         listener: (context, state) {
           if (state is AddCommentSuccessState) {
-            SnackbarHelper.showSnackbar(
-              context: context,
-              snackBarStates: state.addTaskSubmissionCommentModel.status == true
-                  ? SnackBarStates.success
-                  : SnackBarStates.error,
-              message: state.addTaskSubmissionCommentModel.message!,
-            );
+            // SnackbarHelper.showSnackbar(
+            //   context: context,
+            //   snackBarStates: state.addTaskSubmissionCommentModel.status == true
+            //       ? SnackBarStates.success
+            //       : SnackBarStates.error,
+            //   message: state.addTaskSubmissionCommentModel.message!,
+            // );
+            whenCommentAdded();
             Navigator.pop(context);
           }
           if (state is AddCommentErrorState) {
@@ -45,235 +54,258 @@ class AddCommentWidget extends StatelessWidget {
             );
           }
           if (state is AddCommentLoadingState) {
-            Navigator.pop(context);
+            addCommentCubit.focusNode.unfocus();
           }
         },
         builder: (context, state) {
-          AddCommentCubit addCommentCubit = AddCommentCubit.get(context);
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          addCommentCubit = AddCommentCubit.get(context);
+          return Stack(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.grey.withOpacity(0.12),
-                    // backgroundImage:
-                    //     NetworkImage('https://example.com/profile_pic.jpg'),
-                  ),
-                  SizedBox(width: 10),
-
-                  // Comment Input Field
-                  Expanded(
-                    child: TextFormField(
-                      focusNode: addCommentCubit.focusNode,
-                      maxLines: 4,
-                      controller: addCommentCubit.commentController,
-                      onChanged: (value) {
-                        addCommentCubit.changeCommentText(text: value);
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'أكتب تعليق ...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey.withOpacity(0.12),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              IgnorePointer(
+                ignoring: state is AddCommentLoadingState ? true : false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    addCommentCubit.pickedImagesList.isEmpty
-                        ? Container()
-                        : Container(
-                            height: 150,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => MyImage(
-                                  height: 100,
-                                  showDeleteIcon: true,
-                                  onDeletePressed: () {
-                                    addCommentCubit.deletedPickedImageFromList(
-                                        index: index);
-                                  },
-                                  child: Image.file(
-                                    File(addCommentCubit
-                                        .pickedImagesList[index].path),
-                                  ),
-                                  margin: EdgeInsetsDirectional.only(end: 10)),
-                              itemCount: addCommentCubit.pickedImagesList.length,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.grey.withOpacity(0.12),
+                          // backgroundImage:
+                          //     NetworkImage('https://example.com/profile_pic.jpg'),
+                        ),
+                        SizedBox(width: 10),
+
+                        // Comment Input Field
+                        Expanded(
+                          child: TextFormField(
+                            focusNode: addCommentCubit.focusNode,
+                            maxLines: 4,
+                            controller: addCommentCubit.commentController,
+                            onChanged: (value) {
+                              addCommentCubit.changeCommentText(text: value);
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'أكتب تعليق ...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.withOpacity(0.12),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                           ),
-                    addCommentCubit.pickedVideosList.isEmpty
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    state is AddCommentLoadingState
+                        ? Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: LinearProgressIndicator(),
+                          )
+                        : Container(),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          addCommentCubit.pickedImagesList.isEmpty
+                              ? Container()
+                              : Container(
+                                  height: 150,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) => MyImage(
+                                        height: 100,
+                                        showDeleteIcon: true,
+                                        onDeletePressed: () {
+                                          addCommentCubit
+                                              .deletedPickedImageFromList(
+                                                  index: index);
+                                        },
+                                        child: Image.file(
+                                          File(addCommentCubit
+                                              .pickedImagesList[index].path),
+                                        ),
+                                        margin: EdgeInsetsDirectional.only(
+                                            end: 10)),
+                                    itemCount:
+                                        addCommentCubit.pickedImagesList.length,
+                                  ),
+                                ),
+                          addCommentCubit.pickedVideosList.isEmpty
+                              ? Container()
+                              : Container(
+                                  height: 150,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return MyVideo(
+                                        height: 150,
+                                        videoPlayerController: addCommentCubit
+                                            .videoControllers[index],
+                                        index: index,
+                                        showDeleteIcon: true,
+                                        onDeletePressed: () {
+                                          addCommentCubit
+                                              .deletedPickedVideoFromList(
+                                                  index: index);
+                                        },
+                                        margin:
+                                            EdgeInsetsDirectional.only(end: 10),
+                                        showTogglePlayPause: false,
+                                        showVideoIcon: true,
+                                      );
+                                    },
+                                    itemCount:
+                                        addCommentCubit.pickedVideosList.length,
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+
+                    addCommentCubit.pickedFilesList.isEmpty
                         ? Container()
                         : Container(
-                            height: 150,
+                            // height: 200,
                             child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                return MyVideo(
-                                  height: 150,
-                                  videoPlayerController:
-                                      addCommentCubit.videoControllers[index],
-                                  index: index,
-                                  showDeleteIcon: true,
-                                  onDeletePressed: () {
-                                    addCommentCubit.deletedPickedVideoFromList(
-                                        index: index);
-                                  },
-                                  margin: EdgeInsetsDirectional.only(end: 10),
-                                  showTogglePlayPause: false,
-                                  showVideoIcon: true,
+                                String fileName = addCommentCubit
+                                    .pickedFilesList[index].path
+                                    .split('/')
+                                    .last;
+                                return Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 4,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    leading: IconButton(
+                                      icon: Icon(Icons.close),
+                                      onPressed: () => addCommentCubit
+                                          .deletedPickedFileFromList(
+                                              index: index),
+                                    ),
+                                    title: Text(
+                                      fileName,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    // subtitle: Text(pickedFiles[index].path),
+                                  ),
                                 );
                               },
-                              itemCount: addCommentCubit.pickedVideosList.length,
+                              itemCount: addCommentCubit.pickedFilesList.length,
                             ),
                           ),
+
+                    // Media Options (File, Image, Video)
+                    Row(
+                      children: [
+                        TaskOptionsWidget(
+                          child: MediaOptionButton(
+                            icon: Icons.camera_alt_outlined,
+                            onPressed: null,
+                          ),
+                          menuItems: [
+                            MenuItemModel(
+                              icon: Icons.image,
+                              iconColor: Colors.green,
+                              label: 'إلتقاط صورة',
+                              onTap: () {
+                                addCommentCubit.requestPermission(
+                                    context: context,
+                                    permissionType: PermissionType.camera,
+                                    functionWhenGranted:
+                                        addCommentCubit.pickMediaFromCamera);
+                              },
+                            ),
+                            MenuItemModel(
+                              icon: Icons.video_camera_back,
+                              label: 'إلتقاط فيديو',
+                              iconColor: Colors.red,
+                              onTap: () {
+                                addCommentCubit.requestPermission(
+                                    context: context,
+                                    permissionType: PermissionType.camera,
+                                    functionWhenGranted: () => addCommentCubit
+                                        .pickMediaFromCamera(isImage: false));
+                              },
+                            ),
+                          ],
+                        ),
+                        MediaOptionButton(
+                          icon: Icons.image_outlined,
+                          onPressed: () {
+                            addCommentCubit.requestPermission(
+                                context: context,
+                                permissionType: PermissionType.storage,
+                                functionWhenGranted: addCommentCubit
+                                    .pickMultipleImagesFromGallery);
+                          },
+                        ),
+                        MediaOptionButton(
+                          icon: Icons.video_library_outlined,
+                          onPressed: () {
+                            addCommentCubit.requestPermission(
+                                context: context,
+                                permissionType: PermissionType.storage,
+                                functionWhenGranted: addCommentCubit
+                                    .pickMultipleVideosFromGallery);
+                          },
+                        ),
+                        MediaOptionButton(
+                          icon: Icons.insert_drive_file_outlined,
+                          onPressed: () {
+                            addCommentCubit.requestPermission(
+                                context: context,
+                                permissionType: PermissionType.storage,
+                                functionWhenGranted:
+                                    addCommentCubit.pickReportFile);
+                          },
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.send,
+                              color:
+                                  addCommentCubit.commentController.text.isEmpty
+                                      ? Colors.grey
+                                      : ColorsConstants.primaryColor),
+                          onPressed: addCommentCubit
+                                  .commentController.text.isEmpty
+                              ? null
+                              : () {
+                                  addCommentCubit.addComment(
+                                    taskId: taskId,
+                                    taskSubmissionId: taskSubmissionId,
+                                    parentId: -1,
+                                    commentContent:
+                                        addCommentCubit.commentController.text,
+                                  );
+                                },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ),
-
-              addCommentCubit.pickedFilesList.isEmpty
-                  ? Container()
-                  : Container(
-                      // height: 200,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          String fileName = addCommentCubit
-                              .pickedFilesList[index].path
-                              .split('/')
-                              .last;
-                          return Container(
-                            margin:
-                                EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset(0, 2),
-                                  blurRadius: 4,
-                                ),
-                              ],
-                            ),
-                            child: ListTile(
-                              leading: IconButton(
-                                icon: Icon(Icons.close),
-                                onPressed: () => addCommentCubit
-                                    .deletedPickedFileFromList(index: index),
-                              ),
-                              title: Text(
-                                fileName,
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              // subtitle: Text(pickedFiles[index].path),
-                            ),
-                          );
-                        },
-                        itemCount: addCommentCubit.pickedFilesList.length,
-                      ),
-                    ),
-
-              // Media Options (File, Image, Video)
-              Row(
-                children: [
-                  TaskOptionsWidget(
-                    child: MediaOptionButton(
-                      icon: Icons.camera_alt_outlined,
-                      onPressed: null,
-                    ),
-                    menuItems: [
-                      MenuItemModel(
-                        icon: Icons.image,
-                        iconColor: Colors.green,
-                        label: 'إلتقاط صورة',
-                        onTap: () {
-                          addCommentCubit.requestPermission(
-                              context: context,
-                              permissionType: PermissionType.camera,
-                              functionWhenGranted:
-                                  addCommentCubit.pickMediaFromCamera);
-                        },
-                      ),
-                      MenuItemModel(
-                        icon: Icons.video_camera_back,
-                        label: 'إلتقاط فيديو',
-                        iconColor: Colors.red,
-                        onTap: () {
-                          addCommentCubit.requestPermission(
-                              context: context,
-                              permissionType: PermissionType.camera,
-                              functionWhenGranted: () => addCommentCubit
-                                  .pickMediaFromCamera(isImage: false));
-                        },
-                      ),
-                    ],
-                  ),
-                  MediaOptionButton(
-                    icon: Icons.image_outlined,
-                    onPressed: () {
-                      addCommentCubit.requestPermission(
-                          context: context,
-                          permissionType: PermissionType.storage,
-                          functionWhenGranted:
-                              addCommentCubit.pickMultipleImagesFromGallery);
-                    },
-                  ),
-                  MediaOptionButton(
-                    icon: Icons.video_library_outlined,
-                    onPressed: () {
-                      addCommentCubit.requestPermission(
-                          context: context,
-                          permissionType: PermissionType.storage,
-                          functionWhenGranted:
-                              addCommentCubit.pickMultipleVideosFromGallery);
-                    },
-                  ),
-                  MediaOptionButton(
-                    icon: Icons.insert_drive_file_outlined,
-                    onPressed: () {
-                      addCommentCubit.requestPermission(
-                          context: context,
-                          permissionType: PermissionType.storage,
-                          functionWhenGranted: addCommentCubit.pickReportFile);
-                    },
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.send,
-                        color: addCommentCubit.commentController.text.isEmpty
-                            ? Colors.grey
-                            : ColorsConstants.primaryColor),
-                    onPressed: addCommentCubit.commentController.text.isEmpty
-                        ? null
-                        : () {
-                            addCommentCubit.addComment(
-                              taskId: taskId,
-                              taskSubmissionId: taskSubmissionId,
-                              parentId: -1,
-                              commentContent:
-                                  addCommentCubit.commentController.text,
-                            );
-                          },
-                  ),
-                ],
               ),
             ],
           );
