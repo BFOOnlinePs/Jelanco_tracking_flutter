@@ -10,6 +10,13 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
 
   static SubmissionCommentsCubit get(context) => BlocProvider.of(context);
 
+  int count = 0;
+
+  void toEmit(){
+    count++;
+    emit(OpenSheetState());
+  }
+
   ScrollController scrollController = ScrollController();
 
   GetSubmissionCommentsModel? getSubmissionCommentsModel;

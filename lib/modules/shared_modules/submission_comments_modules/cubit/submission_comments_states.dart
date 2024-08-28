@@ -10,3 +10,5 @@ class GetSubmissionCommentsErrorState extends SubmissionCommentsStates {
   final String error;
   GetSubmissionCommentsErrorState(this.error);
 }
+
+class OpenSheetState extends SubmissionCommentsStates {}

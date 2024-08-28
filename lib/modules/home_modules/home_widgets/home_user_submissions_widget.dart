@@ -119,51 +119,60 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         print('show bottom sheet');
-                        showModalBottomSheet(
-// This allows the bottom sheet to resize when the keyboard appears
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                bottom: MediaQuery.of(context)
-                                    .viewInsets
-                                    .bottom, // Adjust for keyboard
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.all(16.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    AddCommentWidget(
-                                      taskId: submission.tsTaskId!,
-                                      taskSubmissionId: submission.tsId!,
-                                      whenCommentAdded: (){
-                                        // call
-                                      },
-                                    ),
-// SizedBox(height: 20),
-// ElevatedButton(
-//   onPressed: () {
-//     Navigator.pop(context);
-//   },
-//   child: Text('Close'),
-// ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ).whenComplete(() {
-// .............................................................
-// // Unfocus when the bottom sheet is dismissed
-// taskDetailsCubit.whenCloseBottomSheet();
-                        });
 
-// ......................
-// Future.delayed(Duration(milliseconds: 100), () {
-//   taskDetailsCubit.focusNode.requestFocus();
-// });
+                        NavigationServices.navigateTo(
+                          context,
+                          SubmissionCommentsScreen(
+                            taskId: submission.tsTaskId!,
+                            submissionId: submission.tsId!,
+                          ),
+                        );
+
+                        // showModalBottomSheet(
+                        //   // This allows the bottom sheet to resize when the keyboard appears
+                        //   isScrollControlled: true,
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return Padding(
+                        //       padding: EdgeInsets.only(
+                        //         bottom: MediaQuery.of(context)
+                        //             .viewInsets
+                        //             .bottom, // Adjust for keyboard
+                        //       ),
+                        //       child: Container(
+                        //         padding: EdgeInsets.all(16.0),
+                        //         child: Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           children: [
+                        //             AddCommentWidget(
+                        //               taskId: submission.tsTaskId!,
+                        //               taskSubmissionId: submission.tsId!,
+                        //               whenCommentAdded: () {
+                        //                 // call
+                        //               },
+                        //             ),
+                        //             // SizedBox(height: 20),
+                        //             // ElevatedButton(
+                        //             //   onPressed: () {
+                        //             //     Navigator.pop(context);
+                        //             //   },
+                        //             //   child: Text('Close'),
+                        //             // ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        // ).whenComplete(() {
+                        //   // .............................................................
+                        //   // // Unfocus when the bottom sheet is dismissed
+                        //   // taskDetailsCubit.whenCloseBottomSheet();
+                        // });
+
+                        // ......................
+                        // Future.delayed(Duration(milliseconds: 100), () {
+                        //   taskDetailsCubit.focusNode.requestFocus();
+                        // });
                       },
                       child: const TextField(
                         enabled: false,
