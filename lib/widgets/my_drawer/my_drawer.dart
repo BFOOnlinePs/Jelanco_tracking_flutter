@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/comments_page.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
@@ -93,7 +94,17 @@ class MyDrawer extends StatelessWidget {
                         child: ListView(
                           padding: EdgeInsets.zero,
                           children: [
+
                             DrawerItem(
+                              icon: Icons.h_mobiledata,
+                              text: 'socket io',
+                              onTap: () {
+                                NavigationServices.navigateTo(
+                                  context,
+                                  CommentsPage(),
+                                );
+                              },
+                            ),   DrawerItem(
                               icon: Icons.add_task,
                               text: 'drawer_add_task_title'.tr(),
                               onTap: () {

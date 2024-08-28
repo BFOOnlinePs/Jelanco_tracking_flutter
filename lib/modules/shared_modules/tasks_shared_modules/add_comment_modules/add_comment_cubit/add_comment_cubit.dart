@@ -4,11 +4,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jelanco_tracking_system/comment_service.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -16,6 +18,7 @@ import 'package:mime/mime.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/add_task_submission_comment_model.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class AddCommentCubit extends Cubit<AddCommentStates>
     with
@@ -25,6 +28,8 @@ class AddCommentCubit extends Cubit<AddCommentStates>
   AddCommentCubit() : super(AddCommentInitialState());
 
   static AddCommentCubit get(context) => BlocProvider.of(context);
+
+  // final CommentService commentService = CommentService();
 
   final FocusNode focusNode = FocusNode();
   TextEditingController commentController = TextEditingController();
@@ -195,8 +200,6 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     emit(DeletePickedFilesFromListState());
   }
 
-
-
   AddTaskSubmissionCommentModel? addTaskSubmissionCommentModel;
 
   Future<void> addComment({
@@ -204,6 +207,7 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     required int taskSubmissionId,
     required int parentId,
     required String commentContent,
+    CommentService? commentService,
   }) async {
     emit(AddCommentLoadingState());
 
@@ -261,6 +265,18 @@ class AddCommentCubit extends Cubit<AddCommentStates>
           AddTaskSubmissionCommentModel.fromMap(value?.data);
       emit(AddCommentSuccessState(
           addTaskSubmissionCommentModel: addTaskSubmissionCommentModel!));
+
+      if (commentService != null) {
+        commentService.addComment(TaskSubmissionCommentModel(
+          tscTaskId: taskId,
+          tscTaskSubmissionId: taskSubmissionId,
+          tscParentId: parentId,
+          tscContent: commentContent,
+        ));
+        print('commentService is not null');
+      } else {
+        print('commentService is null');
+      }
       // ...................................................................................
       // // add to the model so it will be shown in the list immediately
       // // make the object (add the name and image from backend)
@@ -292,6 +308,8 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     pickedVideosList.clear();
     videoControllers.clear();
   }
+
+  // socket
 
   @override
   Future<void> close() {

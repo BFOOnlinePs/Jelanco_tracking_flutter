@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/comment_service.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_states.dart';
@@ -9,6 +10,48 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+// // Define your CommentService here
+// class CommentService {
+//   late IO.Socket socket;
+//
+//   CommentService() {
+//     print('Socket.IO inside CommentService');
+//     socket = IO.io('http://192.168.1.9:3000', <String, dynamic>{
+//       'transports': ['websocket'],
+//       'autoConnect': false,
+//     });
+//
+//     socket.connect();
+//
+//     socket.onConnect((_) {
+//       print('Connected to Socket.IO server ..');
+//     });
+//
+//     socket.on('connect_error', (data) {
+//       print('Connection Error: $data');
+//     });
+//
+//     socket.on('new-comment', (data) {
+//       print('Socket.IO New comment received: $data');
+//       // Handle the incoming comment (e.g., update UI)
+//     });
+//
+//     socket.on('connect', (_) {
+//       print('Connected to Socket.IO server');
+//     });
+//
+//     socket.on('disconnect', (_) {
+//       print('Disconnected from Socket.IO server');
+//     });
+//   }
+//
+//   void addComment(String comment) {
+//     print('Socket.IO New comment received: $comment');
+//     socket.emit('new-comment', {'comment': comment});
+//   }
+// }
 
 class SubmissionCommentsScreen extends StatelessWidget {
   final int taskId;
@@ -22,6 +65,9 @@ class SubmissionCommentsScreen extends StatelessWidget {
 
   late SubmissionCommentsCubit submissionCommentsCubit;
 
+  final CommentService commentService =
+      CommentService(); // Initialize CommentService
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +75,10 @@ class SubmissionCommentsScreen extends StatelessWidget {
         title: 'التعليقات',
       ),
       body: BlocProvider(
-        create: (context) => SubmissionCommentsCubit()
-          ..getSubmissionComments(submissionId: submissionId),
+        create: (context) =>
+            SubmissionCommentsCubit(commentService: commentService)
+              ..getSubmissionComments(submissionId: submissionId)
+              ..listenToNewComments(),
         child: BlocConsumer<SubmissionCommentsCubit, SubmissionCommentsStates>(
           listener: (context, state) {
             print('state is: $state');
@@ -120,6 +168,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AddCommentWidget(
+                  commentService: commentService,
                   taskId: taskId,
                   taskSubmissionId: submissionId,
                   whenCommentAdded: () async {
@@ -136,6 +185,28 @@ class SubmissionCommentsScreen extends StatelessWidget {
                         offset: submissionCommentsCubit
                             .scrollController.position.maxScrollExtent);
                   },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    final comment = {
+                      'comment_id': '123',
+                      'task_id': '456',
+                      'task_submission_id': '789',
+                      'parent_id': '0',
+                      'comment_content': 'This is a comment',
+                      'commented_by_user': {'id': '1', 'name': 'John Doe'},
+                      'comment_attachments_categories': [],
+                    };
+
+                    // commentService.addComment(comment); // Emit the entire comment object
+
+                    // final content = 'hiiiiiiiii';
+                    // if (content.isNotEmpty) {
+                    //   commentService.addComment(content); // Emit comment
+                    //   Navigator.pop(context); // Close bottom sheet
+                    // }
+                  },
+                  child: Text('Send Comment'),
                 ),
                 // SizedBox(height: 20),
                 // ElevatedButton(
