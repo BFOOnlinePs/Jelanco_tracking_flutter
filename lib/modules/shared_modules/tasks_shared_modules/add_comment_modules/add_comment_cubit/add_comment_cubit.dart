@@ -267,16 +267,15 @@ class AddCommentCubit extends Cubit<AddCommentStates>
           addTaskSubmissionCommentModel: addTaskSubmissionCommentModel!));
 
       if (commentService != null) {
-        commentService.addComment(TaskSubmissionCommentModel(
-          tscTaskId: taskId,
-          tscTaskSubmissionId: taskSubmissionId,
-          tscParentId: parentId,
-          tscContent: commentContent,
-        ));
+        commentService.addComment(addTaskSubmissionCommentModel!.comment!);
         print('commentService is not null');
       } else {
         print('commentService is null');
       }
+
+
+
+
       // ...................................................................................
       // // add to the model so it will be shown in the list immediately
       // // make the object (add the name and image from backend)

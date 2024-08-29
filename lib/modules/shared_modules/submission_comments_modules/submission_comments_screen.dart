@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/comment_service.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_widget.dart';
@@ -81,11 +82,9 @@ class SubmissionCommentsScreen extends StatelessWidget {
               ..listenToNewComments(),
         child: BlocConsumer<SubmissionCommentsCubit, SubmissionCommentsStates>(
           listener: (context, state) {
-            print('state is: $state');
           },
           builder: (context, state) {
-            print('state is: in builder $state');
-
+            // print('state is: in builder $state');
             submissionCommentsCubit = SubmissionCommentsCubit.get(context);
             if (submissionCommentsCubit.count == 0) {
               // Defer the UI update until after the build phase
@@ -186,28 +185,28 @@ class SubmissionCommentsScreen extends StatelessWidget {
                             .scrollController.position.maxScrollExtent);
                   },
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    final comment = {
-                      'comment_id': '123',
-                      'task_id': '456',
-                      'task_submission_id': '789',
-                      'parent_id': '0',
-                      'comment_content': 'This is a comment',
-                      'commented_by_user': {'id': '1', 'name': 'John Doe'},
-                      'comment_attachments_categories': [],
-                    };
-
-                    // commentService.addComment(comment); // Emit the entire comment object
-
-                    // final content = 'hiiiiiiiii';
-                    // if (content.isNotEmpty) {
-                    //   commentService.addComment(content); // Emit comment
-                    //   Navigator.pop(context); // Close bottom sheet
-                    // }
-                  },
-                  child: Text('Send Comment'),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     final comment = {
+                //       'comment_id': '123',
+                //       'task_id': '456',
+                //       'task_submission_id': '789',
+                //       'parent_id': '0',
+                //       'comment_content': 'This is a comment',
+                //       'commented_by_user': {'id': '1', 'name': 'John Doe'},
+                //       'comment_attachments_categories': [],
+                //     };
+                //
+                //     // commentService.addComment(comment); // Emit the entire comment object
+                //
+                //     // final content = 'hiiiiiiiii';
+                //     // if (content.isNotEmpty) {
+                //     //   commentService.addComment(content); // Emit comment
+                //     //   Navigator.pop(context); // Close bottom sheet
+                //     // }
+                //   },
+                //   child: Text('Send Comment'),
+                // ),
                 // SizedBox(height: 20),
                 // ElevatedButton(
                 //   onPressed: () {

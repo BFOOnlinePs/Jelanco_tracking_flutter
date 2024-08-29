@@ -16,17 +16,35 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
   final CommentService? commentService;
 
   void listenToNewComments() {
+    print('listenToNewComments');
     commentService?.socket.on('new-comment', (data) {
-      if (data != null && data['comment'] != null) {
-
-        // TaskSubmissionCommentModel newComment = data['comment'];
-        Map<String, dynamic> commentData = data['comment'];
-        TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(commentData);
-
-        getSubmissionCommentsModel?.submissionComments?.add(newComment); // Add new comment to the list
-        emit(GetSubmissionCommentsSuccessState()); // Emit updated list
-      }
+      print('from screen Socket.IO New comment received:: $data');
+      // Update the state with the new comment
+      TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(data);
+      print(newComment.tscId);
+      getSubmissionCommentsModel?.submissionComments?.add(newComment);
+      emit(ListenToNewCommentsState());
     });
+
+    // SubmissionCommentsCubit.get(context).addNewComment(newComment);
+    // commentService?.socket.on('new-comment', (data) {
+    //   print('Socket.IO in listenToNewComments New comment received: $data');
+    //   // Handle the incoming comment by updating the UI
+    //   // Convert the data to a TaskSubmissionCommentModel object
+    //   TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(data);
+    //   // Add the new comment to the existing list in your cubit or state
+    //   getSubmissionCommentsModel?.submissionComments?.add(newComment);
+    //
+    //   // if (data != null && data['comment'] != null) {
+    //   //
+    //   //   // TaskSubmissionCommentModel newComment = data['comment'];
+    //   //   Map<String, dynamic> commentData = data['comment'];
+    //   //   TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(commentData);
+    //   //
+    //   //   getSubmissionCommentsModel?.submissionComments?.add(newComment); // Add new comment to the list
+    //   //   emit(GetSubmissionCommentsSuccessState()); // Emit updated list
+    //   // }
+    // });
   }
 
   int count = 0;
