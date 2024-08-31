@@ -17,3 +17,5 @@ class LoginErrorState extends LoginStates {
 
   LoginErrorState({required this.error});
 }
+
+class ChangeSelectedActorState extends LoginStates {}

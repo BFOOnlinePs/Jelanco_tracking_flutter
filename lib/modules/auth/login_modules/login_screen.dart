@@ -102,7 +102,8 @@ class LoginScreen extends StatelessWidget {
                                 state.userLoginModel.user!.name;
                             UserDataConstants.email =
                                 state.userLoginModel.user!.email;
-                            UserDataConstants.jobTitle = state.userLoginModel.user!.jobTitle;
+                            UserDataConstants.jobTitle =
+                                state.userLoginModel.user!.jobTitle;
 
                             // to give it an FCM token and save it in the database
                             // await FirebaseApi().initNotification();
@@ -182,6 +183,21 @@ class LoginScreen extends StatelessWidget {
                                 child: Text('login_forgot_password'.tr(),
                                     style: TextStyle(
                                         color: ColorsConstants.primaryColor)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  loginCubit.selectActor(newId: 1);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black26,
+                                ),
+                                child: Text(
+                                  'مستخدم',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
                             const MyVerticalSpacer(),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/auth_models/user_login_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/login_test_model.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
 
 import '../../../../network/remote/dio_helper.dart';
@@ -32,5 +33,23 @@ class LoginCubit extends Cubit<LoginStates> {
       emit(LoginErrorState(error: error.toString()));
       print(error);
     });
+  }
+
+  List<LoginTestModel> loginTestModelsList = [
+    LoginTestModel(id: 1, email: 'aseel@gmail.com', password: '123456789'),
+  ];
+
+  int? selectedActorId;
+
+  void selectActor({required int newId}) {
+    selectedActorId = newId;
+    emailController.text = newId == 1
+        ? loginTestModelsList[0].email
+        : loginTestModelsList[0].email;
+
+    passwordController.text = newId == 1
+        ? loginTestModelsList[0].password
+        : loginTestModelsList[0].password;
+    emit(ChangeSelectedActorState());
   }
 }
