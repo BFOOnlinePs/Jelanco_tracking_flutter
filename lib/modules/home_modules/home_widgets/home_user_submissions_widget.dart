@@ -102,10 +102,15 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                             InkWell(
                                 onTap: () {
                                   NavigationServices.navigateTo(
-                                      context,
-                                      SubmissionCommentsScreen(
-                                          taskId: submission.tsTaskId ?? -1,
-                                          submissionId: submission.tsId!));
+                                    context,
+                                    SubmissionCommentsScreen(
+                                      taskId: submission.tsTaskId ?? -1,
+                                      submissionId: submission.tsId!,
+                                      onPopCallback: () =>
+                                          homeCubit.getCommentsCount(
+                                              submissionId: submission.tsId!),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                     '${submission.commentsCount} تعليقات')),
@@ -125,6 +130,8 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                           SubmissionCommentsScreen(
                             taskId: submission.tsTaskId!,
                             submissionId: submission.tsId!,
+                            onPopCallback: () => homeCubit.getCommentsCount(
+                                submissionId: submission.tsId!),
                           ),
                         );
 

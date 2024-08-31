@@ -4,9 +4,10 @@ import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
+  final Widget? leading;
   final List<Widget>? actions;
 
-  const MyAppBar({this.title, this.actions});
+  const MyAppBar({this.title, this.leading, this.actions});
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
@@ -18,6 +19,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         title ?? '',
         style: TextStyle(color: Colors.white),
       ),
+      leading: leading,
       iconTheme: IconThemeData(color: Colors.white),
       centerTitle: true,
       actions: actions,

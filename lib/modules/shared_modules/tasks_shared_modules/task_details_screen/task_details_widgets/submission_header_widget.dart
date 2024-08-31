@@ -9,14 +9,20 @@ import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dar
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final HomeCubit? homeCubit;
+  final TaskDetailsCubit? taskDetailsCubit;
 
-  SubmissionHeaderWidget(
-      {super.key, required this.submissionModel, this.homeCubit});
+  SubmissionHeaderWidget({
+    super.key,
+    required this.submissionModel,
+    this.homeCubit,
+    this.taskDetailsCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +85,10 @@ class SubmissionHeaderWidget extends StatelessWidget {
                         // to edit the submission
                         if (homeCubit != null) {
                           homeCubit!.afterEditSubmission(
+                              oldSubmissionId: submissionModel.tsId!,
+                              newSubmissionModel: newSubmissionModel);
+                        } else if (taskDetailsCubit != null) {
+                          taskDetailsCubit!.afterEditSubmission(
                               oldSubmissionId: submissionModel.tsId!,
                               newSubmissionModel: newSubmissionModel);
                         }

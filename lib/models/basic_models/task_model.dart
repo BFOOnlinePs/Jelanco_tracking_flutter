@@ -18,7 +18,7 @@ class TaskModel {
   final List<UserModel>? assignedToUsers;
   final TaskCategoryModel? taskCategory;
   final UserModel? addedByUser;
-  final List<TaskSubmissionModel>? taskSubmissions;
+  List<TaskSubmissionModel>? taskSubmissions;
 
   TaskModel({
     this.tId,

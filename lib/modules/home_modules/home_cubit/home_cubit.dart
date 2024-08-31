@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_user_submissions_model.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
@@ -53,32 +54,67 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
     });
   }
 
+  GetSubmissionCommentCountModel? getSubmissionCommentCountModel;
+
+  // after pop from submission comments screen, update the number of comments
+  void getCommentsCount({required int submissionId}) async {
+    emit(GetCommentsCountLoadingState());
+    await DioHelper.getData(
+      url:
+          '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionComments}/${EndPointsConstants.taskSubmissionCommentsCount}',
+      // /task-submissions/185/comments/count
+    ).then((value) {
+      print(value?.data);
+      getSubmissionCommentCountModel =
+          GetSubmissionCommentCountModel.fromMap(value?.data);
+      // update the number of comments in the original submission model
+      userSubmissionsList
+          .firstWhere((submission) => submission.tsId == submissionId)
+          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+
+      emit(GetCommentsCountSuccessState());
+    }).catchError((error) {
+      emit(GetCommentsCountErrorState());
+      print(error.toString());
+    });
+  }
+
   void afterEditSubmission({
     required int oldSubmissionId,
     required final TaskSubmissionModel newSubmissionModel,
   }) {
-    // no need for action
-    // just edit the original model with the new data
-    // print('submissionModel: ${oldSubmissionModel.toMap()}');
-    print('editedSubmissionModel: ${newSubmissionModel.toMap()}');
-
-    // submissionModel.tsContent = editedSubmissionModel.tsContent;
-    // replace the old model with the new one
-
-// Replace the old submission with the new one
+    // Replace the old submission with the new one
+    // replace ts_id, ts_content, ts_actual_start_time, ts_actual_end_time, ts_start_latitude, ts_start_longitude, ts_status, created_at, updated_at, ts_parent_id
     userSubmissionsList = userSubmissionsList.map((submission) {
-      return submission.tsId == oldSubmissionId
-          ? newSubmissionModel
-          : submission;
+      if (submission.tsId == oldSubmissionId) {
+        return submission.copyWith(
+          tsId: newSubmissionModel.tsId,
+          tsContent: newSubmissionModel.tsContent,
+          tsActualStartTime: newSubmissionModel.tsActualStartTime,
+          tsActualEndTime: newSubmissionModel.tsActualEndTime,
+          tsStartLatitude: newSubmissionModel.tsStartLatitude,
+          tsStartLongitude: newSubmissionModel.tsStartLongitude,
+          tsStatus: newSubmissionModel.tsStatus,
+          createdAt: newSubmissionModel.createdAt,
+          updatedAt: newSubmissionModel.updatedAt,
+          tsParentId: newSubmissionModel.tsParentId,
+        );
+      }
+      return submission;
     }).toList();
 
-    // oldSubmissionModel = newSubmissionModel;
-    // emit
-
-    // print('submissionModel: ${oldSubmissionModel.toMap()}');
-    print('editedSubmissionModel: ${newSubmissionModel.toMap()}');
-    print('تعديل');
+    // userSubmissionsList = userSubmissionsList.map((submission) {
+    //   return submission.tsId == oldSubmissionId
+    //       ? newSubmissionModel
+    //       : submission;
+    // }).toList();
 
     emit(AfterEditSubmissionState());
+  }
+
+  @override
+  Future<void> close() {
+    scrollController.dispose();
+    return super.close();
   }
 }

@@ -14,13 +14,19 @@ class GetUserSubmissionsErrorState extends HomeStates {
 
 class AfterEditSubmissionState extends HomeStates {}
 
+class GetCommentsCountLoadingState extends HomeStates {}
+
+class GetCommentsCountSuccessState extends HomeStates {}
+
+class GetCommentsCountErrorState extends HomeStates {}
+
 // TasksToSubmitMixin
-class GetTasksToSubmitLoadingState extends HomeStates {}
+  class GetTasksToSubmitLoadingState extends HomeStates {}
 
-class GetTasksToSubmitSuccessState extends HomeStates {}
+  class GetTasksToSubmitSuccessState extends HomeStates {}
 
-class GetTasksToSubmitErrorState extends HomeStates {
+  class GetTasksToSubmitErrorState extends HomeStates {
   final String error;
 
   GetTasksToSubmitErrorState(this.error);
-}
+  }

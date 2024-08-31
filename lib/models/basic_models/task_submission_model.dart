@@ -21,7 +21,7 @@ class TaskSubmissionModel {
   final UserModel? submitterUser;
   final List<TaskSubmissionCommentModel>? submissionComments;
   final AttachmentsCategories? submissionAttachmentsCategories;
-  final int? commentsCount;
+  int? commentsCount;
   final TaskModel? taskDetails;
 
   TaskSubmissionModel({
@@ -46,50 +46,52 @@ class TaskSubmissionModel {
     this.taskDetails,
   });
 
-  // TaskSubmissionModel copyWith({
-  //   int? tsId,
-  //   int? tsTaskId,
-  //   int? tsSubmitter,
-  //   String? tsContent,
-  //   DateTime? tsActualStartTime,
-  //   DateTime? tsActualEndTime,
-  //   String? tsStartLatitude,
-  //   String? tsStartLongitude,
-  //   String? tsEndLatitude,
-  //   String? tsEndLongitude,
-  //   String? tsStatus,
-  //   int? tsParentId,
-  //   DateTime? createdAt,
-  //   DateTime? updatedAt,
-  //   UserModel? submitterUser,
-  //   List<TaskSubmissionCommentModel>? submissionComments,
-  //   AttachmentsCategories? submissionAttachmentsCategories,
-  //   int? commentsCount,
-  //   TaskModel? taskDetails,
-  // }) {
-  //   return TaskSubmissionModel(
-  //     tsId: tsId ?? this.tsId,
-  //     tsTaskId: tsTaskId ?? this.tsTaskId,
-  //     tsSubmitter: tsSubmitter ?? this.tsSubmitter,
-  //     tsContent: tsContent ?? this.tsContent,
-  //     tsActualStartTime: tsActualStartTime ?? this.tsActualStartTime,
-  //     tsActualEndTime: tsActualEndTime ?? this.tsActualEndTime,
-  //     tsStartLatitude: tsStartLatitude ?? this.tsStartLatitude,
-  //     tsStartLongitude: tsStartLongitude ?? this.tsStartLongitude,
-  //     tsEndLatitude: tsEndLatitude ?? this.tsEndLatitude,
-  //     tsEndLongitude: tsEndLongitude ?? this.tsEndLongitude,
-  //     tsStatus: tsStatus ?? this.tsStatus,
-  //     tsParentId: tsParentId ?? this.tsParentId,
-  //     createdAt: createdAt ?? this.createdAt,
-  //     updatedAt: updatedAt ?? this.updatedAt,
-  //     submitterUser: submitterUser ?? this.submitterUser,
-  //     submissionComments: submissionComments ?? this.submissionComments,
-  //     submissionAttachmentsCategories: submissionAttachmentsCategories ??
-  //         this.submissionAttachmentsCategories,
-  //     commentsCount: commentsCount ?? this.commentsCount,
-  //     taskDetails: taskDetails ?? this.taskDetails,
-  //   );
-  // }
+  TaskSubmissionModel copyWith({
+    int? tsId,
+    int? tsTaskId,
+    int? tsSubmitter,
+    String? tsContent,
+    DateTime? tsActualStartTime,
+    DateTime? tsActualEndTime,
+    String? tsStartLatitude,
+    String? tsStartLongitude,
+    String? tsEndLatitude,
+    String? tsEndLongitude,
+    String? tsStatus,
+    int? tsParentId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    UserModel? submitterUser,
+
+
+    List<TaskSubmissionCommentModel>? submissionComments,
+    AttachmentsCategories? submissionAttachmentsCategories,
+    int? commentsCount,
+    TaskModel? taskDetails,
+  }) {
+    return TaskSubmissionModel(
+      tsId: tsId ?? this.tsId,
+      tsTaskId: tsTaskId ?? this.tsTaskId,
+      tsSubmitter: tsSubmitter ?? this.tsSubmitter,
+      tsContent: tsContent ?? this.tsContent,
+      tsActualStartTime: tsActualStartTime ?? this.tsActualStartTime,
+      tsActualEndTime: tsActualEndTime ?? this.tsActualEndTime,
+      tsStartLatitude: tsStartLatitude ?? this.tsStartLatitude,
+      tsStartLongitude: tsStartLongitude ?? this.tsStartLongitude,
+      tsEndLatitude: tsEndLatitude ?? this.tsEndLatitude,
+      tsEndLongitude: tsEndLongitude ?? this.tsEndLongitude,
+      tsStatus: tsStatus ?? this.tsStatus,
+      tsParentId: tsParentId ?? this.tsParentId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      submitterUser: submitterUser ?? this.submitterUser,
+      submissionComments: submissionComments ?? this.submissionComments,
+      submissionAttachmentsCategories: submissionAttachmentsCategories ??
+          this.submissionAttachmentsCategories,
+      commentsCount: commentsCount ?? this.commentsCount,
+      taskDetails: taskDetails ?? this.taskDetails,
+    );
+  }
 
   factory TaskSubmissionModel.fromMap(Map<String, dynamic> json) =>
       TaskSubmissionModel(

@@ -8,8 +8,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/submission_commen
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
-  SubmissionCommentsCubit()
-      : super(SubmissionCommentsInitialState());
+  SubmissionCommentsCubit() : super(SubmissionCommentsInitialState());
 
   static SubmissionCommentsCubit get(context) => BlocProvider.of(context);
 
@@ -18,7 +17,7 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
   void listenToNewComments() {
     print('listenToNewComments');
     // the sender is: socket.emit('new-comment', data);
-    commentService?.socket.on('new-comment', (data) {
+    commentService.socket.on('new-comment', (data) {
       print('from screen Socket.IO New comment received:: $data');
       // Update the state with the new comment
       TaskSubmissionCommentModel newComment =

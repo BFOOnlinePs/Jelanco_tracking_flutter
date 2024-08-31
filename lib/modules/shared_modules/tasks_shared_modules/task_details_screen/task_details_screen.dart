@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
@@ -9,10 +8,8 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submissions_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/task_details_section_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
-import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
-import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 import '../../../../core/utils/navigation_services.dart';
 

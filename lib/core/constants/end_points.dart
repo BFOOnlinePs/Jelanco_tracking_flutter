@@ -31,6 +31,7 @@ class EndPointsConstants {
 
   // task submission comment
   static const String taskSubmissionComments = 'comments';
+  static const String taskSubmissionCommentsCount = 'count'; // /task-submissions/185/comments/count
 
   // categories
   static const String taskCategories = 'task-categories';

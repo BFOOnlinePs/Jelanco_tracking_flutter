@@ -14,22 +14,34 @@ import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_
 class SubmissionCommentsScreen extends StatelessWidget {
   final int taskId;
   final int submissionId;
+  final VoidCallback onPopCallback;
 
   SubmissionCommentsScreen({
     super.key,
     required this.taskId,
     required this.submissionId,
+    required this.onPopCallback,
   });
 
   late SubmissionCommentsCubit submissionCommentsCubit;
 
-  final SocketIO commentService = SocketIO(); // Initialize CommentService
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(
+      appBar: MyAppBar(
         title: 'التعليقات',
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Call the callback function before popping
+            onPopCallback();
+            // TODO: update the number only when changed
+            print("pop");
+            Navigator.pop(context);
+
+          },
+        ),
       ),
       body: BlocProvider(
         create: (context) => SubmissionCommentsCubit()

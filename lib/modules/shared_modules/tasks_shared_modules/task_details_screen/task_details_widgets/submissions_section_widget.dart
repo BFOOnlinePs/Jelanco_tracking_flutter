@@ -30,7 +30,10 @@ class SubmissionsSectionWidget extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SubmissionHeaderWidget(submissionModel: submission),
+                  SubmissionHeaderWidget(
+                    submissionModel: submission,
+                    taskDetailsCubit: taskDetailsCubit,
+                  ),
                   ContentWidget(
                     submission.tsContent ?? '',
                     isSubmission: true,
@@ -69,7 +72,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
                                   AddCommentWidget(
                                     taskId: submission.tsTaskId!,
                                     taskSubmissionId: submission.tsId!,
-                                    whenCommentAdded: (){
+                                    whenCommentAdded: () {
                                       // call
                                     },
                                   ),
