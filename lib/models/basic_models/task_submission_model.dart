@@ -8,6 +8,7 @@ class TaskSubmissionModel {
   final int? tsTaskId;
   final int? tsSubmitter;
   final String? tsContent;
+  final String? tsCategories;
   final DateTime? tsActualStartTime;
   final DateTime? tsActualEndTime;
   final String? tsStartLatitude;
@@ -29,6 +30,7 @@ class TaskSubmissionModel {
     this.tsTaskId,
     this.tsSubmitter,
     this.tsContent,
+    this.tsCategories,
     this.tsActualStartTime,
     this.tsActualEndTime,
     this.tsStartLatitude,
@@ -51,6 +53,7 @@ class TaskSubmissionModel {
     int? tsTaskId,
     int? tsSubmitter,
     String? tsContent,
+    String? tsCategories,
     DateTime? tsActualStartTime,
     DateTime? tsActualEndTime,
     String? tsStartLatitude,
@@ -62,8 +65,6 @@ class TaskSubmissionModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     UserModel? submitterUser,
-
-
     List<TaskSubmissionCommentModel>? submissionComments,
     AttachmentsCategories? submissionAttachmentsCategories,
     int? commentsCount,
@@ -74,6 +75,7 @@ class TaskSubmissionModel {
       tsTaskId: tsTaskId ?? this.tsTaskId,
       tsSubmitter: tsSubmitter ?? this.tsSubmitter,
       tsContent: tsContent ?? this.tsContent,
+      tsCategories: tsCategories ?? this.tsCategories,
       tsActualStartTime: tsActualStartTime ?? this.tsActualStartTime,
       tsActualEndTime: tsActualEndTime ?? this.tsActualEndTime,
       tsStartLatitude: tsStartLatitude ?? this.tsStartLatitude,
@@ -99,6 +101,7 @@ class TaskSubmissionModel {
         tsTaskId: json["ts_task_id"],
         tsSubmitter: json["ts_submitter"],
         tsContent: json["ts_content"],
+        tsCategories: json["ts_categories"],
         tsActualStartTime: json["ts_actual_start_time"] == null
             ? null
             : DateTime.parse(json["ts_actual_start_time"]),
@@ -140,6 +143,7 @@ class TaskSubmissionModel {
         "ts_task_id": tsTaskId,
         "ts_submitter": tsSubmitter,
         "ts_content": tsContent,
+        "ts_categories": tsCategories,
         "ts_actual_start_time": tsActualStartTime?.toIso8601String(),
         "ts_actual_end_time": tsActualEndTime?.toIso8601String(),
         // "ts_file": tsFile,

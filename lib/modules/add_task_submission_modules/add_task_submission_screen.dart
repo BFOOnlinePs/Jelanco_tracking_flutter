@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
@@ -26,7 +28,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
   final bool isEdit; // for edit
 
   final Function(TaskSubmissionModel)?
-  // final Function(TaskSubmissionModel)?
+      // final Function(TaskSubmissionModel)?
       getDataCallback; // to get the data after add new submission
 
   AddTaskSubmissionScreen({
@@ -43,7 +45,12 @@ class AddTaskSubmissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddTaskSubmissionCubit()
-        ..getOldData(isEdit: isEdit, taskSubmissionModel: taskSubmissionModel),
+        ..getOldData(isEdit: isEdit, taskSubmissionModel: taskSubmissionModel)
+        ..getTaskCategories(
+          loadingState: CategoriesLoadingState(),
+          successState: CategoriesSuccessState(),
+          errorState: (error) => CategoriesErrorState(error: error),
+        ),
       child: BlocConsumer<AddTaskSubmissionCubit, AddTaskSubmissionStates>(
         listener: (context, state) {
           print('state is $state');
@@ -246,6 +253,52 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     addTaskSubmissionCubit:
                                         addTaskSubmissionCubit,
                                     taskSubmissionModel: taskSubmissionModel),
+                                Text(
+                                  'إختيار الفئات',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                if (addTaskSubmissionCubit
+                                        .getTaskCategoriesModel !=
+                                    null)
+                                  ...addTaskSubmissionCubit
+                                      .getTaskCategoriesModel!.taskCategories!
+                                      .map((TaskCategoryModel category) {
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(vertical: 4),
+                                      child: CheckboxListTile(
+                                        title: Row(
+                                          children: [
+                                            // Icon(
+                                            //   Icons.category,
+                                            //   // color: ColorsConstants.primaryColor,
+                                            // ),
+                                            // SizedBox(width: 8),
+                                            Text(
+                                              category.cName ?? 'Category name',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        value: addTaskSubmissionCubit
+                                            .selectedTaskCategoriesList
+                                            .contains(category),
+                                        activeColor:
+                                            ColorsConstants.primaryColor,
+                                        checkColor: Colors.white,
+                                        tileColor: Colors.grey[200],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              8), // Rounded corners
+                                        ),
+                                        onChanged: (bool? value) {
+                                          addTaskSubmissionCubit
+                                              .checkBoxChanged(value, category);
+                                        },
+                                      ),
+                                    );
+                                  }),
                               ],
                             ),
                           ),

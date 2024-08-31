@@ -99,7 +99,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
           plannedStartTime?.toString(),
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
-      'assigned_to': FormatUtils.formatUsersList(selectedUsers),
+      'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
     };
     print(dataObject.values);
     DioHelper.postData(url: EndPointsConstants.tasks, data: dataObject)

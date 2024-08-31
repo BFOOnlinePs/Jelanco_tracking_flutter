@@ -119,7 +119,8 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       'start_time': plannedStartTime?.toString(),
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
-      'assigned_to': FormatUtils.formatUsersList(selectedUsers),
+      'assigned_to': FormatUtils.formatList<UserModel>(
+          selectedUsers, (user) => user?.id.toString()),
       'status': selectedTaskStatusEnum!.statusName,
     };
     DioHelper.postData(

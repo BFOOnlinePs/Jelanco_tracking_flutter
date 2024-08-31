@@ -8,9 +8,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categories_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
@@ -22,6 +25,7 @@ import 'package:video_player/video_player.dart';
 class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     with
         PermissionsMixin,
+        CategoriesMixin<AddTaskSubmissionStates>,
         CompressVideoMixin<AddTaskSubmissionStates>,
         CompressImagesMixin<AddTaskSubmissionStates> {
   AddTaskSubmissionCubit() : super(AddTaskSubmissionInitialState());
@@ -35,6 +39,9 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   int? contentMaxLines = 3;
   late int lineCount;
+
+  List<TaskCategoryModel> selectedTaskCategoriesList = [];
+
   final ImagePicker picker = ImagePicker();
 
   void changeContentMaxLines({required String text}) {
@@ -48,6 +55,17 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       contentMaxLines = 3;
     }
     emit(ChangeContentMaxLinesState());
+  }
+
+  void checkBoxChanged(bool? value, TaskCategoryModel category) {
+    if (value != null) {
+      if (value) {
+        selectedTaskCategoriesList.add(category);
+      } else {
+        selectedTaskCategoriesList.remove(category);
+      }
+    }
+    emit(CheckBoxChangedState());
   }
 
   // from camera
@@ -239,16 +257,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
         }
       }
     }
-
-    // if (result != null) {
-    //   // pickedFiles = result!.paths.map((path) => File(path!)).toList();
-    //
-    //   pickedFilesList.addAll(result!.paths.map((path) => File(path!)).toList());
-    //   emit(AddTaskSubmissionFileSelectSuccessState());
-    // } else {
-    //   emit(AddTaskSubmissionFileSelectErrorState());
-    //   print('User canceled the file selection');
-    // }
   }
 
   void deletedPickedFileFromList(
@@ -307,6 +315,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       'parent_id': taskSubmissionId, // -1 first submission
       'task_id': taskId,
       'content': contentController.text,
+      'categories': FormatUtils.formatList<TaskCategoryModel>(
+          selectedTaskCategoriesList, (category) => category?.cId.toString()),
       'start_latitude': position?.latitude,
       'start_longitude': position?.longitude,
       'old_attachments[]': oldAttachments
@@ -408,6 +418,9 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   @override
   Future<void> close() {
     for (var controller in videoControllers) {
+      controller?.dispose();
+    }
+    for (var controller in oldVideoControllers) {
       controller?.dispose();
     }
     contentController.dispose();

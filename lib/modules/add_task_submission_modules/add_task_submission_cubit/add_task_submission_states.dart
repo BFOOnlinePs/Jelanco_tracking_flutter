@@ -45,6 +45,14 @@ class AddTaskSubmissionErrorState extends AddTaskSubmissionStates {
   AddTaskSubmissionErrorState({required this.error});
 }
 
+class CheckBoxChangedState extends AddTaskSubmissionStates {}
+
+class SetOldAttachmentsState extends AddTaskSubmissionStates {}
+
+class ChangeContentMaxLinesState extends AddTaskSubmissionStates {}
+
+class PickMediaFromCameraState extends AddTaskSubmissionStates {}
+
 // compress images mixin
 
 class CompressAllImagesLoadingState extends AddTaskSubmissionStates {}
@@ -64,10 +72,15 @@ class CompressVideoErrorState extends AddTaskSubmissionStates {
 }
 
 class CompressAllVideosSuccessState extends AddTaskSubmissionStates {}
-//
 
-class SetOldAttachmentsState extends AddTaskSubmissionStates {}
+// Categories Mixin
 
-class ChangeContentMaxLinesState extends AddTaskSubmissionStates {}
+class CategoriesLoadingState extends AddTaskSubmissionStates {}
 
-class PickMediaFromCameraState extends AddTaskSubmissionStates {}
+class CategoriesSuccessState extends AddTaskSubmissionStates {}
+
+class CategoriesErrorState extends AddTaskSubmissionStates {
+  final String error;
+
+  CategoriesErrorState({required this.error});
+}
