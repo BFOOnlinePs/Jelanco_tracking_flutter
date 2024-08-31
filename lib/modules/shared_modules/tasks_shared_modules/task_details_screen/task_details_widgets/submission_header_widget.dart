@@ -7,13 +7,16 @@ import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
+  final HomeCubit? homeCubit;
 
-  SubmissionHeaderWidget(this.submissionModel, {super.key});
+  SubmissionHeaderWidget(
+      {super.key, required this.submissionModel, this.homeCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -71,23 +74,14 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       taskId: submissionModel.tsTaskId!,
                       taskSubmissionModel: submissionModel,
                       isEdit: true,
-                      getDataCallback: (editedSubmissionModel) {
-                        // shared with 2 screens (add task submission screen and home user submissions screen)
+                      getDataCallback: (newSubmissionModel) {
+                        // shared with 2 screens (task details screen and home user submissions screen)
                         // to edit the submission
-                          
-
-
-                        // no need for action
-                        // just edit the original model with the new data
-                        print('submissionModel: ${submissionModel.toMap()}');
-                        print(
-                            'editedSubmissionModel: ${editedSubmissionModel.toMap()}');
-                        // submissionModel.tsContent = editedSubmissionModel.tsContent;
-                        //
-                        print('submissionModel: ${submissionModel.toMap()}');
-                        print(
-                            'editedSubmissionModel: ${editedSubmissionModel.toMap()}');
-                        print('تعديل');
+                        if (homeCubit != null) {
+                          homeCubit!.afterEditSubmission(
+                              oldSubmissionId: submissionModel.tsId!,
+                              newSubmissionModel: newSubmissionModel);
+                        }
                       },
                     ),
                   );

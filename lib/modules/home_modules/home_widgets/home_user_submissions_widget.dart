@@ -33,11 +33,11 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SubmissionHeaderWidget(submission),
+              SubmissionHeaderWidget(
+                  submissionModel: submission, homeCubit: homeCubit),
               ContentWidget(submission.tsContent ?? '', isSubmission: true),
               SubmissionMediaWidget(
                 submission: submission,
-// cubit with mixin
               ),
               const MyVerticalSpacer(),
               submission.taskDetails != null

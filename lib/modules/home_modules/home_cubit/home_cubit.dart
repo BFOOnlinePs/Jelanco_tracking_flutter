@@ -52,4 +52,33 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       emit(GetUserSubmissionsErrorState(error.toString()));
     });
   }
+
+  void afterEditSubmission({
+    required int oldSubmissionId,
+    required final TaskSubmissionModel newSubmissionModel,
+  }) {
+    // no need for action
+    // just edit the original model with the new data
+    // print('submissionModel: ${oldSubmissionModel.toMap()}');
+    print('editedSubmissionModel: ${newSubmissionModel.toMap()}');
+
+    // submissionModel.tsContent = editedSubmissionModel.tsContent;
+    // replace the old model with the new one
+
+// Replace the old submission with the new one
+    userSubmissionsList = userSubmissionsList.map((submission) {
+      return submission.tsId == oldSubmissionId
+          ? newSubmissionModel
+          : submission;
+    }).toList();
+
+    // oldSubmissionModel = newSubmissionModel;
+    // emit
+
+    // print('submissionModel: ${oldSubmissionModel.toMap()}');
+    print('editedSubmissionModel: ${newSubmissionModel.toMap()}');
+    print('تعديل');
+
+    emit(AfterEditSubmissionState());
+  }
 }

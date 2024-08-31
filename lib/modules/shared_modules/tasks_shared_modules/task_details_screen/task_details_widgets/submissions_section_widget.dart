@@ -30,7 +30,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SubmissionHeaderWidget(submission),
+                  SubmissionHeaderWidget(submissionModel: submission),
                   ContentWidget(
                     submission.tsContent ?? '',
                     isSubmission: true,
