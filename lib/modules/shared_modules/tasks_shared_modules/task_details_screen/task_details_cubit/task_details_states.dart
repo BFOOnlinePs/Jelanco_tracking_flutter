@@ -16,3 +16,4 @@ class InitializeVideoControllerState extends TaskDetailsStates {}
 
 class ToggleVideoPlayPauseState extends TaskDetailsStates {}
 
+class ListenToNewCommentsState extends TaskDetailsStates {}

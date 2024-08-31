@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/comment_service.dart';
+import 'package:jelanco_tracking_system/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comments_model.dart';
@@ -8,48 +8,30 @@ import 'package:jelanco_tracking_system/modules/shared_modules/submission_commen
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
-  SubmissionCommentsCubit({required this.commentService}) : super(SubmissionCommentsInitialState());
+  SubmissionCommentsCubit()
+      : super(SubmissionCommentsInitialState());
 
   static SubmissionCommentsCubit get(context) => BlocProvider.of(context);
 
-
-  final CommentService? commentService;
+  final SocketIO commentService = SocketIO();
 
   void listenToNewComments() {
     print('listenToNewComments');
+    // the sender is: socket.emit('new-comment', data);
     commentService?.socket.on('new-comment', (data) {
       print('from screen Socket.IO New comment received:: $data');
       // Update the state with the new comment
-      TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(data);
-      print(newComment.tscId);
+      TaskSubmissionCommentModel newComment =
+          TaskSubmissionCommentModel.fromMap(data);
+      print('newComment.tscId: ${newComment.tscId}');
       getSubmissionCommentsModel?.submissionComments?.add(newComment);
       emit(ListenToNewCommentsState());
     });
-
-    // SubmissionCommentsCubit.get(context).addNewComment(newComment);
-    // commentService?.socket.on('new-comment', (data) {
-    //   print('Socket.IO in listenToNewComments New comment received: $data');
-    //   // Handle the incoming comment by updating the UI
-    //   // Convert the data to a TaskSubmissionCommentModel object
-    //   TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(data);
-    //   // Add the new comment to the existing list in your cubit or state
-    //   getSubmissionCommentsModel?.submissionComments?.add(newComment);
-    //
-    //   // if (data != null && data['comment'] != null) {
-    //   //
-    //   //   // TaskSubmissionCommentModel newComment = data['comment'];
-    //   //   Map<String, dynamic> commentData = data['comment'];
-    //   //   TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(commentData);
-    //   //
-    //   //   getSubmissionCommentsModel?.submissionComments?.add(newComment); // Add new comment to the list
-    //   //   emit(GetSubmissionCommentsSuccessState()); // Emit updated list
-    //   // }
-    // });
   }
 
   int count = 0;
 
-  void toEmit(){
+  void toEmit() {
     count++;
     emit(OpenSheetState());
   }
@@ -79,6 +61,8 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
   @override
   Future<void> close() {
     scrollController.dispose();
+    // Clean up the socket listener when the Cubit is closed
+    commentService?.socket.off('new-comment');
     return super.close();
   }
 }

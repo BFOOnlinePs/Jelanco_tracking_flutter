@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/comment_service.dart';
+import 'package:jelanco_tracking_system/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
@@ -17,7 +17,7 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 class AddCommentWidget extends StatelessWidget {
   final int taskId;
   final int taskSubmissionId;
-  final CommentService? commentService;
+  // final CommentService? commentService;
 
   // call the function when pop
   final Function() whenCommentAdded; // call get data of the previous screen
@@ -29,7 +29,7 @@ class AddCommentWidget extends StatelessWidget {
     required this.taskId,
     required this.taskSubmissionId,
     required this.whenCommentAdded,
-    this.commentService
+    // required this.commentService
   });
 
   @override
@@ -297,7 +297,7 @@ class AddCommentWidget extends StatelessWidget {
                               ? null
                               : () {
                                   addCommentCubit.addComment(
-                                    commentService: commentService,
+                                    // commentService: commentService,
 
                                     taskId: taskId,
                                     taskSubmissionId: taskSubmissionId,

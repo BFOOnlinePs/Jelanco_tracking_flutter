@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:jelanco_tracking_system/comment_service.dart';
+import 'package:jelanco_tracking_system/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
@@ -29,7 +29,7 @@ class AddCommentCubit extends Cubit<AddCommentStates>
 
   static AddCommentCubit get(context) => BlocProvider.of(context);
 
-  // final CommentService commentService = CommentService();
+  final SocketIO commentService = SocketIO();
 
   final FocusNode focusNode = FocusNode();
   TextEditingController commentController = TextEditingController();
@@ -207,7 +207,7 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     required int taskSubmissionId,
     required int parentId,
     required String commentContent,
-    CommentService? commentService,
+    // CommentService? commentService,
   }) async {
     emit(AddCommentLoadingState());
 
@@ -272,9 +272,6 @@ class AddCommentCubit extends Cubit<AddCommentStates>
       } else {
         print('commentService is null');
       }
-
-
-
 
       // ...................................................................................
       // // add to the model so it will be shown in the list immediately

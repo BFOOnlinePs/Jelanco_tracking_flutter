@@ -28,9 +28,10 @@ class TaskDetailsScreen extends StatelessWidget {
       appBar: MyAppBar(
         title: 'تفاصيل المهمة',
       ),
-      body: BlocProvider(
+      body: BlocProvider( 
         create: (context) => TaskDetailsCubit()
-          ..getTaskWithSubmissionsAndComments(taskId: taskId),
+          ..getTaskWithSubmissionsAndComments(taskId: taskId)
+          ..listenToNewComments(),
         child: BlocConsumer<TaskDetailsCubit, TaskDetailsStates>(
           listener: (context, state) {},
           builder: (context, state) {
