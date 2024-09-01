@@ -149,20 +149,25 @@ class AddTaskScreen extends StatelessWidget {
                                       ),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          addTaskCubit.selectedUsers.isEmpty
-                                              ? 'add_task_assign_to_field'.tr()
-                                              : addTaskCubit.selectedUsers
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                              addTaskCubit.selectedUsers.isEmpty
+                                                  ? 'add_task_assign_to_field'.tr()
+                                                  : addTaskCubit.selectedUsers
                                                   .map((user) => user.name)
                                                   .join(', '),
-                                          style: TextStyle(color: Colors.black54),
+                                              style: TextStyle(color: Colors.black54),
+                                            ),
+                                          ),
                                         ),
                                         Icon(Icons.arrow_forward),
                                       ],
-                                    ),
+                                    )
+
                                   ),
                                 ),
                                 // addTaskCubit.addTaskModel != null &&

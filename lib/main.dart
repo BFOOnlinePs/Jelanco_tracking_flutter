@@ -58,7 +58,6 @@ void main() async {
         startLocale: Constants.defaultLocal,
         child: MyApp(
           homeWidget: homeWidget,
-          // homeWidget: RestartWidget(child: homeWidget),
         ),
       ),
     ),
