@@ -137,7 +137,7 @@ class MyDrawer extends StatelessWidget {
                         icon: Icons.logout,
                         text: 'drawer_logout_title'.tr(),
                         onTap: () {
-                          drawerCubit.userLogout();
+                          drawerCubit.userLogout(context);
                         },
                       ),
                     ],

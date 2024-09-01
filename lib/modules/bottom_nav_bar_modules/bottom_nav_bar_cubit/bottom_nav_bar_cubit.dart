@@ -26,4 +26,10 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
     bottomNavBarIndex = index;
     emit(ChangeBottomNavBarIndexState());
   }
+
+  @override
+  Future<void> close() {
+    print('bottom nav bar closed');
+    return super.close();
+  }
 }

@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/models/auth_models/user_login_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/login_test_model.dart';
+import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_cubit/assigned_tasks_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
+import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
+import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 
 import '../../../../network/remote/dio_helper.dart';
 
@@ -19,7 +26,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   UserLoginModel? userLoginModel;
 
-  void userLogin() {
+  void userLogin(BuildContext context) {
     emit(LoginLoadingState());
     DioHelper.postData(url: EndPointsConstants.login, data: {
       'email': emailController.text,
@@ -27,8 +34,18 @@ class LoginCubit extends Cubit<LoginStates> {
     }).then((value) {
       print('userLogin method');
       print(value?.data);
+
       userLoginModel = UserLoginModel.fromMap(value?.data);
+
+
       emit(LoginSuccessState(userLoginModel: userLoginModel!));
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (context) => MyApp(
+      //       homeWidget: LoginScreen(),
+      //     ),
+      //   ),
+      // );
     }).catchError((error) {
       emit(LoginErrorState(error: error.toString()));
       print(error);

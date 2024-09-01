@@ -207,7 +207,7 @@ class LoginScreen extends StatelessWidget {
                                   : () {
                                       if (loginCubit.loginFormKey.currentState!
                                           .validate()) {
-                                        loginCubit.userLogin();
+                                        loginCubit.userLogin(context);
                                       }
                                     },
                               child: state is LoginLoadingState

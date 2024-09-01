@@ -11,7 +11,6 @@ mixin TasksToSubmitMixin<T> on Cubit<T> {
   bool isTasksAssignedToUserLoading = false;
   bool isTasksAssignedToUserLastPage = false;
 
-
   Future<void> getTasksToSubmit({
     int page = 1,
     int? perPage = 5,

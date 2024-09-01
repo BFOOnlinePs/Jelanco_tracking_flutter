@@ -43,7 +43,19 @@ class _HomeScreenState extends State<HomeScreen>
       listener: (context, state) {},
       builder: (context, state) {
         homeCubit = HomeCubit.get(context);
-
+        // if (homeCubit.getUserSubmissionsModel == null) {
+        //   homeCubit
+        //     ..getUserSubmissions()
+        //     ..getTasksToSubmit(
+        //       perPage: 3,
+        //       loadingState: GetTasksToSubmitLoadingState(),
+        //       successState: GetTasksToSubmitSuccessState(),
+        //       errorState: (error) => GetTasksToSubmitErrorState(error),
+        //     );
+        //
+        //   // TasksAddedByUserCubit.get(context).getTasksAddedByUser();
+        //   // AssignedTasksCubit.get(context).getAssignedTasks();
+        // }
         return MyRefreshIndicator(
           onRefresh: () async {
             await Future.wait([

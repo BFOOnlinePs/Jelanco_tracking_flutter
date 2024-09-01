@@ -50,16 +50,50 @@ void main() async {
   }
 
   runApp(
-    EasyLocalization(
-      supportedLocales: Constants.locals,
-      path: AssetsKeys.translations,
-      fallbackLocale: Constants.defaultLocal,
-      startLocale: Constants.defaultLocal,
-      child: MyApp(
-        homeWidget: homeWidget,
+    RestartWidget(
+      child: EasyLocalization(
+        supportedLocales: Constants.locals,
+        path: AssetsKeys.translations,
+        fallbackLocale: Constants.defaultLocal,
+        startLocale: Constants.defaultLocal,
+        child: MyApp(
+          homeWidget: homeWidget,
+          // homeWidget: RestartWidget(child: homeWidget),
+        ),
       ),
     ),
   );
+}
+
+class RestartWidget extends StatefulWidget {
+  RestartWidget({required this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -69,6 +103,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('homeWidget in MyApp: $homeWidget');
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => BottomNavBarCubit()),

@@ -114,7 +114,10 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
 
   @override
   Future<void> close() {
+    print('userSubmissionsList: ${userSubmissionsList.length}');
     scrollController.dispose();
+    getUserSubmissionsModel = null;
+
     return super.close();
   }
 }
