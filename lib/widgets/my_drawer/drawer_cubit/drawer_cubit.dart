@@ -106,6 +106,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
         CacheHelper.removeData(key: MyCacheKeys.name);
         CacheHelper.removeData(key: MyCacheKeys.email);
         CacheHelper.removeData(key: MyCacheKeys.jobTitle);
+        CacheHelper.removeData(key: MyCacheKeys.permissionsList);
       }).then((_) {
         // Clear static user data constants
         UserDataConstants.userId = null;
@@ -113,6 +114,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
         UserDataConstants.email = null;
         UserDataConstants.jobTitle = null;
         UserDataConstants.token = null;
+        UserDataConstants.permissionsList = [];
 
         // Restart the app to clear old state
         // Navigator.of(context).pushAndRemoveUntil(

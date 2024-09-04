@@ -94,6 +94,17 @@ class LoginScreen extends StatelessWidget {
                               key: MyCacheKeys.jobTitle,
                               value: state.userLoginModel.user?.jobTitle,
                             );
+                            List<String> permissionsList = state
+                                .userLoginModel.permissions!
+                                .map<String>((permission) {
+                              return permission.name ?? '';
+                            }).toList();
+
+                            print('permissionsList: ${permissionsList}');
+                            await CacheHelper.saveData(
+                                key: MyCacheKeys.permissionsList,
+                                value: permissionsList);
+
                             UserDataConstants.token =
                                 state.userLoginModel.token;
                             UserDataConstants.userId =
@@ -104,6 +115,7 @@ class LoginScreen extends StatelessWidget {
                                 state.userLoginModel.user!.email;
                             UserDataConstants.jobTitle =
                                 state.userLoginModel.user!.jobTitle;
+                            UserDataConstants.permissionsList = permissionsList;
 
                             // to give it an FCM token and save it in the database
                             // await FirebaseApi().initNotification();

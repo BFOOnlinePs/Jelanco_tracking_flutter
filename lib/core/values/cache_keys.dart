@@ -4,4 +4,5 @@ class MyCacheKeys{
   static const name = 'name';
   static const email = 'email';
   static const jobTitle = 'jobTitle';
+  static const permissionsList = 'permissionsList';
 }
