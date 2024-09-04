@@ -1,6 +1,6 @@
 class EndPointsConstants {
   static const String baseUrl = '$url/public/api/';
-  static const String url = 'http://192.168.1.16/BFO/jelanco_tracking';
+  static const String url = 'http://192.168.1.13/BFO/jelanco_tracking';
 
   // static const String url = 'https://we.jelanco.net';
 

@@ -25,7 +25,6 @@ class SubmissionCommentsScreen extends StatelessWidget {
 
   late SubmissionCommentsCubit submissionCommentsCubit;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +38,6 @@ class SubmissionCommentsScreen extends StatelessWidget {
             // TODO: update the number only when changed
             print("pop");
             Navigator.pop(context);
-
           },
         ),
       ),
@@ -71,6 +69,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                   },
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
+                    width: double.infinity,
                     child: SingleChildScrollView(
                       controller: submissionCommentsCubit.scrollController,
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -80,18 +79,30 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                   null
                               ? const Center(child: MyLoader())
                               : submissionCommentsCubit
-                                          .getSubmissionCommentsModel
-                                          ?.submissionComments !=
-                                      null
+                                      .getSubmissionCommentsModel!
+                                      .submissionComments!
+                                      .isEmpty
                                   ? Column(
+                                      children: [
+                                        Text('لا يوجد تعليقات حتى الان'),
+                                        Text('كن أول من يعلق'),
+                                      ],
+                                    )
+                                  :
+                                  // submissionCommentsCubit
+                                  //                 .getSubmissionCommentsModel
+                                  //                 ?.submissionComments !=
+                                  //             null
+                                  //         ?
+                                  Column(
                                       children: submissionCommentsCubit
                                           .getSubmissionCommentsModel!
                                           .submissionComments!
                                           .map((comment) {
                                         return CommentWidget(comment: comment);
                                       }).toList(),
-                                    )
-                                  : Container(),
+                                    ),
+                          // : Text('data'),
                           ElevatedButton(
                             onPressed: () {
                               openBottomSheet(context);

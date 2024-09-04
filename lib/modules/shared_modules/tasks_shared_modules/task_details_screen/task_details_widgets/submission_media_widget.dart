@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:jelanco_tracking_system/core/constants/card_size.dart';
-import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
-import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/files_list_view_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_and_video_view.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_video_view.dart';
 
 class SubmissionMediaWidget extends StatelessWidget {
   final TaskSubmissionModel submission;

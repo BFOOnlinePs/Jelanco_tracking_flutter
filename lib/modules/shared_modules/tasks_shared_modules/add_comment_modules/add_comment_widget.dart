@@ -17,6 +17,7 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 class AddCommentWidget extends StatelessWidget {
   final int taskId;
   final int taskSubmissionId;
+
   // final CommentService? commentService;
 
   // call the function when pop
@@ -136,8 +137,8 @@ class AddCommentWidget extends StatelessWidget {
                                         File(addCommentCubit
                                             .pickedImagesList[index].path),
                                       ),
-                                      margin: EdgeInsetsDirectional.only(
-                                          end: 10)),
+                                      margin:
+                                          EdgeInsetsDirectional.only(end: 10)),
                                   itemCount:
                                       addCommentCubit.pickedImagesList.length,
                                 ),
@@ -178,11 +179,13 @@ class AddCommentWidget extends StatelessWidget {
                   addCommentCubit.pickedFilesList.isEmpty
                       ? Container()
                       : Container(
-                          // height: 200,
+                          height: addCommentCubit.pickedFilesList.length > 3
+                              ? 200
+                              : null,
                           child: ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index)  {
+                            // physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
                               String fileName = addCommentCubit
                                   .pickedFilesList[index].path
                                   .split('/')
@@ -230,8 +233,8 @@ class AddCommentWidget extends StatelessWidget {
                         ),
                         menuItems: [
                           MenuItemModel(
-                            icon: Icons.image,
-                            iconColor: Colors.green,
+                            icon: Icons.image_outlined,
+                            iconColor: ColorsConstants.primaryColor,
                             label: 'إلتقاط صورة',
                             onTap: () {
                               addCommentCubit.requestPermission(
@@ -242,10 +245,10 @@ class AddCommentWidget extends StatelessWidget {
                             },
                           ),
                           MenuItemModel(
-                            icon: Icons.video_camera_back,
+                            icon: Icons.video_camera_back_outlined,
                             label: 'إلتقاط فيديو',
-                            iconColor: Colors.red,
-                            onTap: () {
+                            iconColor: ColorsConstants.primaryColor,
+                            onTap: () { 
                               addCommentCubit.requestPermission(
                                   context: context,
                                   permissionType: PermissionType.camera,

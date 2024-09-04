@@ -31,15 +31,20 @@ class SelectedImagesWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => MyImage(
-                        height: 100,
+                        height: 200,
                         showDeleteIcon: true,
                         onDeletePressed: () {
                           addTaskSubmissionCubit.deletedPickedImageFromList(
                               index: index);
                         },
-                        child: Image.file(
-                          File(addTaskSubmissionCubit
-                              .pickedImagesList[index].path),
+                        child: Container(
+                          // height: 200,
+                          // width: 132,
+                          child: Image.file(
+                            File(addTaskSubmissionCubit
+                                .pickedImagesList[index].path),
+                            // fit: BoxFit.cover,
+                          ),
                         ),
                         margin: EdgeInsetsDirectional.only(end: 10)),
                     itemCount: addTaskSubmissionCubit.pickedImagesList.length,
@@ -65,9 +70,13 @@ class SelectedImagesWidget extends StatelessWidget {
                               taskSubmissionModel: taskSubmissionModel!);
                         },
                         margin: EdgeInsetsDirectional.only(end: 10),
-                        child: Image(
-                          image: NetworkImage(
-                            '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}',
+                        child: Container(
+                          // height: 200,
+                          // width: 132,
+                          child: Image(
+                            image: NetworkImage(
+                                '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}'),
+                            // fit: BoxFit.cover,
                           ),
                         )),
                     itemCount: taskSubmissionModel!

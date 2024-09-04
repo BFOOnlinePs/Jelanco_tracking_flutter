@@ -174,16 +174,17 @@ class EditTaskScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8),
-                                          child: Text(
-                                            editTaskCubit.selectedUsers.isEmpty
-                                                ? 'الموظفين المكلفين'
-                                                : editTaskCubit.selectedUsers
-                                                    .map((user) => user.name)
-                                                    .join(', '),
-                                            style: TextStyle(color: Colors.black54),
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                              editTaskCubit.selectedUsers.isEmpty
+                                                  ? 'الموظفين المكلفين'
+                                                  : editTaskCubit.selectedUsers
+                                                      .map((user) => user.name)
+                                                      .join(', '),
+                                              style: TextStyle(color: Colors.black54),
+                                            ),
                                           ),
                                         ),
                                         Icon(Icons.arrow_forward),
@@ -212,7 +213,7 @@ class EditTaskScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText: 'موعد البدء المخطط له',
+                                        titleText: 'موعد البدء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
                                         onTap: () => editTaskCubit.selectDateTime(
@@ -235,7 +236,7 @@ class EditTaskScreen extends StatelessWidget {
                                     MyHorizontalSpacer(),
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText: 'موعد الإنتهاء المخطط له',
+                                        titleText: 'موعد الإنتهاء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
                                         onTap: () => editTaskCubit.selectDateTime(
