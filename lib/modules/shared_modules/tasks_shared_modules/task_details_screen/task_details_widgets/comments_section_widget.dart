@@ -23,11 +23,11 @@ class CommentsSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('التعليقات:',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: ColorsConstants.secondaryColor)),
+        // const Text('التعليقات:',
+        //     style: TextStyle(
+        //         fontWeight: FontWeight.bold,
+        //         fontSize: 18,
+        //         color: ColorsConstants.secondaryColor)),
         ...comments.map((comment) {
           return CommentWidget(comment: comment);
         }),

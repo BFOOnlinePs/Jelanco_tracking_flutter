@@ -25,34 +25,37 @@ class TaskDetailsSectionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AddedBySectionWidget(
-              '${taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.addedByUser?.name}',
-              status: TaskStatusEnum.getStatus(taskDetailsCubit
-                  .getTaskWithSubmissionsAndCommentsModel!.task!.tStatus!),
-              statusIcon: Icons.flag),
+            '${taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
+                .addedByUser?.name}',
+            status: TaskStatusEnum.getStatus(taskDetailsCubit
+                .getTaskWithSubmissionsAndCommentsModel!.task!.tStatus!),
+            statusIcon: Icons.flag,
+            addedOn: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.createdAt
+          ),
           ContentWidget(
             taskDetailsCubit
                 .getTaskWithSubmissionsAndCommentsModel!.task!.tContent!,
           ),
           taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
-                      ?.taskCategory !=
-                  null
+              ?.taskCategory !=
+              null
               ? CategoryRowWidget(
-                  'التصنيف',
-                  taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-                          .taskCategory!.cName ??
-                      '')
+              'التصنيف',
+              taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
+                  .taskCategory!.cName ??
+                  '')
               : Container(),
 
           taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-                  .assignedToUsers!.isNotEmpty
+              .assignedToUsers!.isNotEmpty
               ? AssignedToWidget(
-                  'الموظفين المكلفين',
-                  taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
-                          ?.assignedToUsers!
-                          .map((user) => user.name)
-                          .join('\n') ??
-                      '',
-                  Icons.person)
+              'الموظفين المكلفين',
+              taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
+                  ?.assignedToUsers!
+                  .map((user) => user.name)
+                  .join(', ') ??
+                  '',
+              Icons.person)
               : Container(),
           // MyVerticalSpacer(),
           // TaskPlanedTimeWidget(

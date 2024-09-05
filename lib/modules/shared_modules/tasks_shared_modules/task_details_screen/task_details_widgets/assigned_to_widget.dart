@@ -11,32 +11,38 @@ class AssignedToWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Icon(icon, color: ColorsConstants.primaryColor),
-            SizedBox(width: 10),
-            Text(
-              '$label: ',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: ColorsConstants.primaryColor),
+        // Icon(icon, color: ColorsConstants.primaryColor),
+        // SizedBox(width: 10),
+        Expanded( // Ensures text can expand and wrap within available space
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '$label: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: ColorsConstants.primaryColor,
+                  ),
+                ),
+                TextSpan(
+                  text: value,
+                  style: TextStyle(
+                    color: Colors.grey[800],
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        Row(
-          children: [
-            SizedBox(width: 34),
-            Text(
-              value,
-              style: TextStyle(color: Colors.grey[800], fontSize: 14),
-            ),
-          ],
+            overflow: TextOverflow.visible, // Ensures it wraps instead of overflowing
+          ),
         ),
       ],
     );
+    
+
   }
 }

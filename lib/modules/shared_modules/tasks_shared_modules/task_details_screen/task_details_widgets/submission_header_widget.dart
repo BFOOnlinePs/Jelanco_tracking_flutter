@@ -33,11 +33,18 @@ class SubmissionHeaderWidget extends StatelessWidget {
           child: Row(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(AssetsKeys.defaultProfileImage),
-                // backgroundColor: Colors.grey.shade200,
-                radius: 25,
+              Container(
+                // add border
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 0.5),
+                ),
+                padding: EdgeInsets.all(2),
+                child: Image(
+                  image: AssetImage(AssetsKeys.defaultProfileImage),
+                  height: 34,
+                ),
               ),
+
               const SizedBox(
                 width: 10,
               ),
@@ -49,7 +56,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       '${submissionModel.submitterUser?.name}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                     ),
                     Text(
@@ -58,7 +65,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       // MyDateUtils.formatDateTime2(submissionModel.createdAt),
                       // submissionModel.createdAt.toString() ?? '',
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                       ),
                     ),
                   ],

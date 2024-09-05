@@ -21,8 +21,8 @@ class _ContentWidgetState extends State<ContentWidget> {
           isExpanded = !isExpanded;
         });
       },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12, bottom: 10),
+      child: Container(
+        padding: const EdgeInsets.only(top: 6),
         child: Column(
           children: [
             Text(
@@ -32,7 +32,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                   isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.grey[800],
-                fontSize: 12,
+                fontSize: 20,
                 fontWeight: isSubmission ? FontWeight.normal : FontWeight.bold,
               ),
               textAlign: TextAlign.start,

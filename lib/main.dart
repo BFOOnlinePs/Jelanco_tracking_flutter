@@ -33,8 +33,10 @@ void main() async {
   UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
   UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
   UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);
-  print('CacheHelper.getData(key: MyCacheKeys.permissionsList): ${CacheHelper.getData(key: MyCacheKeys.permissionsList)}');
-  UserDataConstants.permissionsList = CacheHelper.getData(key: MyCacheKeys.permissionsList);
+  // print(
+  //     'CacheHelper.getData(key: MyCacheKeys.permissionsList): ${CacheHelper.getData(key: MyCacheKeys.permissionsList).toString()}');
+  // UserDataConstants.permissionsList =
+  //     CacheHelper.getData(key: MyCacheKeys.permissionsList) as List<String>;
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');

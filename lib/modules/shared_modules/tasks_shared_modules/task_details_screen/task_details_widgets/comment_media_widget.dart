@@ -26,7 +26,7 @@ class CommentMediaWidget extends StatelessWidget {
             comment.commentAttachmentsCategories!.videos!.isNotEmpty ||
             comment.commentAttachmentsCategories!.images!.isNotEmpty
         ? Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            // padding: EdgeInsets.symmetric(vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

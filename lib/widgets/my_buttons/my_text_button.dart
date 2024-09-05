@@ -17,7 +17,7 @@ class MyTextButton extends StatelessWidget {
           (Set<WidgetState> states) {
             return const BorderSide(
               color: ColorsConstants.primaryColor,
-              width: 1.2,
+              width: 1,
             );
           },
         ),

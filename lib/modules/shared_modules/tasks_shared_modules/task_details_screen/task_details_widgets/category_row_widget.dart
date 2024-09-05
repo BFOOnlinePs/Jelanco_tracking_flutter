@@ -13,19 +13,19 @@ class CategoryRowWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(Icons.category, color: ColorsConstants.primaryColor),
-          SizedBox(width: 10),
+          // Icon(Icons.category, color: ColorsConstants.primaryColor),
+          // SizedBox(width: 10),
           Text(
             '$label: ',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 12,
                 color: ColorsConstants.primaryColor),
           ),
           Expanded(
             child: Text(
               value,
-              style: TextStyle(color: Colors.grey[800], fontSize: 14),
+              style: TextStyle(color: Colors.grey[800], fontSize: 12),
             ),
           ),
         ],
