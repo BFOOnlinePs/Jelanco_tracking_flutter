@@ -60,12 +60,9 @@ class TaskDetailsScreen extends StatelessWidget {
                                       .task!
                                       .taskSubmissions!
                                       .isNotEmpty
-                                  ? Container(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: SubmissionsSectionWidget(
-                                        taskDetailsCubit: taskDetailsCubit,
-                                      ),
-                                    )
+                                  ? SubmissionsSectionWidget(
+                                    taskDetailsCubit: taskDetailsCubit,
+                                  )
                                   : Container(),
                               const SizedBox(
                                 height: 60,

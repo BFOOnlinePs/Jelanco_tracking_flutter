@@ -31,100 +31,103 @@ class SubmissionsSectionWidget extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SubmissionHeaderWidget(
-                    submissionModel: submission,
-                    taskDetailsCubit: taskDetailsCubit,
-                  ),
-                  ContentWidget(
-                    submission.tsContent ?? '',
-                    isSubmission: true,
-                  ),
-                  SubmissionMediaWidget(
-                    submission: submission,
-                    taskDetailsCubit: taskDetailsCubit,
-                  ),
-                  // const MyVerticalSpacer(),
-                  // SubmissionTimeWidget(submission: submission),
-                  // const MyVerticalSpacer(),
-                  submission.submissionComments!.isNotEmpty
-                      ? CommentsSectionWidget(
-                          comments: submission.submissionComments!,
-                          // taskDetailsCubit: taskDetailsCubit,
-                        )
-                      : Container(),
-                  SizedBox(
-                    height: 6,
-                  ),
                   Container(
-                    color: Colors.white,
-                    child: MyTextButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            // This allows the bottom sheet to resize when the keyboard appears
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context)
-                                      .viewInsets
-                                      .bottom, // Adjust for keyboard
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      AddCommentWidget(
-                                        taskId: submission.tsTaskId!,
-                                        taskSubmissionId: submission.tsId!,
-                                        whenCommentAdded: () {
-                                          // call
-                                        },
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubmissionHeaderWidget(
+                          submissionModel: submission,
+                          taskDetailsCubit: taskDetailsCubit,
+                        ),
+                        ContentWidget(
+                          submission.tsContent ?? '',
+                          isSubmission: true,
+                        ),
+                        SubmissionMediaWidget(
+                          submission: submission,
+                          taskDetailsCubit: taskDetailsCubit,
+                        ),
+                        // SubmissionTimeWidget(submission: submission),
+                        submission.submissionComments!.isNotEmpty
+                            ? CommentsSectionWidget(
+                                comments: submission.submissionComments!,
+                              )
+                            : Container(),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        MyTextButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                // This allows the bottom sheet to resize when the keyboard appears
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom, // Adjust for keyboard
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          AddCommentWidget(
+                                            taskId: submission.tsTaskId!,
+                                            taskSubmissionId:
+                                                submission.tsId!,
+                                            whenCommentAdded: () {
+                                              // call
+                                            },
+                                          ),
+                                          // SizedBox(height: 20),
+                                          // ElevatedButton(
+                                          //   onPressed: () {
+                                          //     Navigator.pop(context);
+                                          //   },
+                                          //   child: Text('Close'),
+                                          // ),
+                                        ],
                                       ),
-                                      // SizedBox(height: 20),
-                                      // ElevatedButton(
-                                      //   onPressed: () {
-                                      //     Navigator.pop(context);
-                                      //   },
-                                      //   child: Text('Close'),
-                                      // ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            const Expanded(
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(0),
+                            child: Row(
+                              children: [
+                                const Expanded(
+                                  child: TextField(
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(0),
 
-                                  hintText: "أضف تعليقاً ...",
-                                  // no border
-                                  border: InputBorder.none,
+                                      hintText: "أضف تعليقاً ...",
+                                      // no border
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Transform.rotate(
-                              angle: 3.14 * 1.25,
-                              child: Icon(FontAwesomeIcons.locationArrow),
+                                Transform.rotate(
+                                  angle: 3.14 * 1.25,
+                                  child: Icon(FontAwesomeIcons.locationArrow),
+                                )
+                              ],
                             )
-                          ],
-                        )
-                        // Text(
-                        //   'أكتب تعليق جديد',
-                        //   style: TextStyle(fontWeight: FontWeight.bold),
-                        // ),
+                            // Text(
+                            //   'أكتب تعليق جديد',
+                            //   style: TextStyle(fontWeight: FontWeight.bold),
+                            // ),
 
-                        ),
+                            ),
+                        MyVerticalSpacer(),
+                      ],
+                    ),
                   ),
-                  MyVerticalSpacer(),
                   Divider(
                     color: Colors.grey[300],
                     thickness: 5,

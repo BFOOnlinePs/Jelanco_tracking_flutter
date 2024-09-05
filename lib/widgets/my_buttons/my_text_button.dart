@@ -32,6 +32,8 @@ class MyTextButton extends StatelessWidget {
         //     return null; // No background color
         //   },
         // ),
+        backgroundColor: WidgetStateProperty.all<Color>(Colors.white), // Set white background within border
+
       ),
       child: child,
     );
