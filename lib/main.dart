@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/socket_io.dart';
+import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/my_bloc_observer.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
@@ -33,10 +33,8 @@ void main() async {
   UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
   UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
   UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);
-  // print(
-  //     'CacheHelper.getData(key: MyCacheKeys.permissionsList): ${CacheHelper.getData(key: MyCacheKeys.permissionsList).toString()}');
-  // UserDataConstants.permissionsList =
-  //     CacheHelper.getData(key: MyCacheKeys.permissionsList) as List<String>;
+  UserDataConstants.permissionsList =
+      CacheHelper.getData(key: MyCacheKeys.permissionsList);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');

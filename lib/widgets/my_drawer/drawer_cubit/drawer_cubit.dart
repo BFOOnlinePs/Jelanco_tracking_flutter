@@ -30,77 +30,7 @@ class DrawerCubit extends Cubit<DrawerStates> {
     ).then((value) {
       print(value);
       userLogoutModel = UserLogoutModel.fromMap(value?.data);
-      // CacheHelper.removeData(key: MyCacheKeys.token).then((value) async {
-      //   CacheHelper.removeData(key: MyCacheKeys.userId);
-      //   CacheHelper.removeData(key: MyCacheKeys.name);
-      //   CacheHelper.removeData(key: MyCacheKeys.email);
-      //   CacheHelper.removeData(key: MyCacheKeys.jobTitle);
-      //
-      //   UserDataConstants.userId =
-      //       null; // empty it so the data of previous user did not show
-      //   UserDataConstants.name =
-      //       null; // empty it so the data of previous user did not show
-      //   UserDataConstants.email =
-      //       null; // empty it so the data of previous user did not show
-      //   UserDataConstants.jobTitle =
-      //       null; // empty it so the data of previous user did not show
-      //   UserDataConstants.token =
-      //       null; // empty it so the data of previous user did not show
-      //
-      //   HomeCubit.get(context).close();
-      //
-      //   if (TasksAddedByUserCubit.get(context).getTasksAddedByUserModel !=
-      //       null) {
-      //     TasksAddedByUserCubit.get(context).close();
-      //   }
-      //   if (AssignedTasksCubit.get(context).getTasksAssignedToUserModel !=
-      //       null) {
-      //     AssignedTasksCubit.get(context).close();
-      //   }
-      //
-      //   BottomNavBarCubit.get(context).close();
-      //
-      //   // context.read<HomeCubit>().close();
-      //   // context.read<TasksAddedByUserCubit>().close();
-      //   // context.read<AssignedTasksCubit>().close();
-      //   // context.read<BottomNavBarCubit>().close();
-      //
-      //   // HomeCubit.get(context).getUserSubmissionsModel = null;
-      //   // HomeCubit.get(context).userSubmissionsList = [];
-      //   // HomeCubit.get(context).isUserSubmissionsLastPage = false;
-      //   //
-      //   // HomeCubit.get(context).getSubmissionCommentCountModel = null;
-      //   // HomeCubit.get(context).tasksAssignedToUserList = [];
-      //   // HomeCubit.get(context).isTasksAssignedToUserLastPage = false;
-      //   //
-      //   // HomeCubit.get(context).getTasksToSubmitModel = null;
-      //   //
-      //   // TasksAddedByUserCubit.get(context).getTasksAddedByUserModel = null;
-      //   // TasksAddedByUserCubit.get(context).tasksAddedByUserList = [];
-      //   // TasksAddedByUserCubit.get(context).isTasksAddedByUserLastPage = false;
-      //   //
-      //   // AssignedTasksCubit.get(context).getTasksAssignedToUserModel = null;
-      //   // AssignedTasksCubit.get(context).tasksAssignedToUserList = [];
-      //   // AssignedTasksCubit.get(context).isTasksAssignedToUserLoading = false;
-      //
-      //   // await FCMServices.deleteFCMTokenFromLocalAndServer(firebaseTokenVar!);
-      //
-      //   // runApp(
-      //   //   EasyLocalization(
-      //   //     supportedLocales: Constants.locals,
-      //   //     path: AssetsKeys.translations,
-      //   //     fallbackLocale: Constants.defaultLocal,
-      //   //     startLocale: Constants.defaultLocal,
-      //   //     child: MyApp(
-      //   //       homeWidget: LoginScreen(),
-      //   //     ),
-      //   //   ),
-      //   // );
-      //   // Simulate logout and clear the authenticated state
-      //   // context.read<AuthNotifier>().logout();
-      //   emit(LogoutSuccessState(userLogoutModel: userLogoutModel!));
-      // });
-      // Remove cached user data
+
       CacheHelper.removeData(key: MyCacheKeys.token).then((_) {
         CacheHelper.removeData(key: MyCacheKeys.userId);
         CacheHelper.removeData(key: MyCacheKeys.name);

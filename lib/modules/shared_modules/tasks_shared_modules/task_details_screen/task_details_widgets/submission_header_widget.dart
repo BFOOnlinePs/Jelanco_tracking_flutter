@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
@@ -10,6 +11,7 @@ import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_location_dialog.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
@@ -44,7 +46,6 @@ class SubmissionHeaderWidget extends StatelessWidget {
                   height: 34,
                 ),
               ),
-
               const SizedBox(
                 width: 10,
               ),
@@ -115,8 +116,21 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     ),
                   );
                 },
-              ),
+              ), //
             ]),
+            GestureDetector(onTap: () {
+              // NavigationServices.navigateTo(context, SubmissionLocationDialog(
+              //   taskSubmissionModel: submissionModel,
+              // ));
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return SubmissionLocationDialog(
+                  taskSubmissionModel: submissionModel,
+                  );
+                },
+              );
+            }, child: Icon(Icons.location_on))
           ],
         ),
       ],

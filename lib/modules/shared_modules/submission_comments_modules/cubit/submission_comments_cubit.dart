@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/socket_io.dart';
+import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comments_model.dart';

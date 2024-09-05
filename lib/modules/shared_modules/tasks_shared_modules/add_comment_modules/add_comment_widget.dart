@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/socket_io.dart';
+import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
