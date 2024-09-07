@@ -10,12 +10,10 @@ import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video
 
 class SubmissionMediaWidget extends StatelessWidget {
   final TaskSubmissionModel submission;
-  final TaskDetailsCubit? taskDetailsCubit;
 
   const SubmissionMediaWidget({
     super.key,
     required this.submission,
-    this.taskDetailsCubit,
   });
 
   @override

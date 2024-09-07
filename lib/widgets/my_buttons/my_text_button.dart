@@ -24,16 +24,10 @@ class MyTextButton extends StatelessWidget {
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
-                ButtonSizeConstants.borderRadius), // Border radius
+                ButtonSizeConstants.borderRadius),
           ),
         ),
-        // backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-        //       (Set<MaterialState> states) {
-        //     return null; // No background color
-        //   },
-        // ),
-        backgroundColor: WidgetStateProperty.all<Color>(Colors.white), // Set white background within border
-
+        backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
       ),
       child: child,
     );

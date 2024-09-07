@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen>
                         homeCubit.getUserSubmissions(
                           page: homeCubit.getUserSubmissionsModel!.pagination!
                                   .currentPage! +
-                              1,
+                              1, 
                         );
                       }
                       return const Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/added_by_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/assigned_to_widget.dart';
@@ -11,9 +12,12 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 class TaskDetailsSectionWidget extends StatelessWidget {
-  final TaskDetailsCubit taskDetailsCubit;
+  final TaskModel taskModel;
 
-  const TaskDetailsSectionWidget({super.key, required this.taskDetailsCubit});
+  const TaskDetailsSectionWidget({
+    super.key,
+    required this.taskModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,38 +28,26 @@ class TaskDetailsSectionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AddedBySectionWidget(
-            '${taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-                .addedByUser?.name}',
-            status: TaskStatusEnum.getStatus(taskDetailsCubit
-                .getTaskWithSubmissionsAndCommentsModel!.task!.tStatus!),
-            statusIcon: Icons.flag,
-            addedOn: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.createdAt
-          ),
+          AddedBySectionWidget('${taskModel.addedByUser?.name}',
+              status: TaskStatusEnum.getStatus(taskModel.tStatus!),
+              statusIcon: Icons.flag,
+              addedOn: taskModel.createdAt),
           ContentWidget(
-            taskDetailsCubit
-                .getTaskWithSubmissionsAndCommentsModel!.task!.tContent!,
+            taskModel.tContent!,
           ),
-          taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task
-              ?.taskCategory !=
-              null
+          taskModel.taskCategory != null
               ? CategoryRowWidget(
-              'التصنيف',
-              taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-                  .taskCategory!.cName ??
-                  '')
+                  'التصنيف', taskModel.taskCategory!.cName ?? '')
               : Container(),
 
-          taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!
-              .assignedToUsers!.isNotEmpty
+          taskModel.assignedToUsers!.isNotEmpty
               ? AssignedToWidget(
-              'الموظفين المكلفين',
-              taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task
-                  ?.assignedToUsers!
-                  .map((user) => user.name)
-                  .join(', ') ??
-                  '',
-              Icons.person)
+                  'الموظفين المكلفين',
+                  taskModel.assignedToUsers!
+                          .map((user) => user.name)
+                          .join(', ') ??
+                      '',
+                  Icons.person)
               : Container(),
           // MyVerticalSpacer(),
           // TaskPlanedTimeWidget(

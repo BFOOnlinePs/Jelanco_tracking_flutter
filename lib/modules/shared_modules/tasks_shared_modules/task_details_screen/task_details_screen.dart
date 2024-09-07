@@ -25,7 +25,7 @@ class TaskDetailsScreen extends StatelessWidget {
       appBar: MyAppBar(
         title: 'تفاصيل المهمة',
       ),
-      body: BlocProvider( 
+      body: BlocProvider(
         create: (context) => TaskDetailsCubit()
           ..getTaskWithSubmissionsAndComments(taskId: taskId)
           ..listenToNewComments(),
@@ -54,15 +54,18 @@ class TaskDetailsScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TaskDetailsSectionWidget(
-                                  taskDetailsCubit: taskDetailsCubit),
+                                taskModel: taskDetailsCubit
+                                    .getTaskWithSubmissionsAndCommentsModel!
+                                    .task!,
+                              ),
                               taskDetailsCubit
                                       .getTaskWithSubmissionsAndCommentsModel!
                                       .task!
                                       .taskSubmissions!
                                       .isNotEmpty
                                   ? SubmissionsSectionWidget(
-                                    taskDetailsCubit: taskDetailsCubit,
-                                  )
+                                      taskDetailsCubit: taskDetailsCubit,
+                                    )
                                   : Container(),
                               const SizedBox(
                                 height: 60,
