@@ -1,3 +1,4 @@
+import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
@@ -24,6 +25,7 @@ class TaskSubmissionModel {
   final AttachmentsCategories? submissionAttachmentsCategories;
   int? commentsCount;
   final TaskModel? taskDetails;
+  final List<TaskCategoryModel>? submissionCategories;
 
   TaskSubmissionModel({
     this.tsId,
@@ -46,6 +48,7 @@ class TaskSubmissionModel {
     this.submissionAttachmentsCategories,
     this.commentsCount,
     this.taskDetails,
+    this.submissionCategories,
   });
 
   TaskSubmissionModel copyWith({
@@ -69,6 +72,7 @@ class TaskSubmissionModel {
     AttachmentsCategories? submissionAttachmentsCategories,
     int? commentsCount,
     TaskModel? taskDetails,
+    List<TaskCategoryModel>? submissionCategories,
   }) {
     return TaskSubmissionModel(
       tsId: tsId ?? this.tsId,
@@ -92,6 +96,7 @@ class TaskSubmissionModel {
           this.submissionAttachmentsCategories,
       commentsCount: commentsCount ?? this.commentsCount,
       taskDetails: taskDetails ?? this.taskDetails,
+      submissionCategories: submissionCategories ?? this.submissionCategories,
     );
   }
 
@@ -136,6 +141,10 @@ class TaskSubmissionModel {
         taskDetails: json["task_details"] == null
             ? null
             : TaskModel.fromMap(json["task_details"]),
+        submissionCategories: json["submission_categories"] == null
+            ? []
+            : List<TaskCategoryModel>.from(json["submission_categories"]!
+                .map((x) => TaskCategoryModel.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -163,5 +172,8 @@ class TaskSubmissionModel {
             submissionAttachmentsCategories?.toMap(),
         "comments_count": commentsCount,
         "task_details": taskDetails?.toMap(),
+        "submission_categories": submissionCategories == null
+            ? []
+            : List<dynamic>.from(submissionCategories!.map((x) => x.toMap())),
       };
 }

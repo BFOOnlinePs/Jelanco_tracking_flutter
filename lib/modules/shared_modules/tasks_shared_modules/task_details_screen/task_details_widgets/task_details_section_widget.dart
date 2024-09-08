@@ -3,7 +3,7 @@ import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/added_by_section_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/assigned_to_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/wrapped_label_value_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/category_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
@@ -41,19 +41,17 @@ class TaskDetailsSectionWidget extends StatelessWidget {
               : Container(),
 
           taskModel.assignedToUsers!.isNotEmpty
-              ? AssignedToWidget(
+              ? WrappedLabelValueWidget(
                   'الموظفين المكلفين',
                   taskModel.assignedToUsers!
                           .map((user) => user.name)
                           .join(', ') ??
-                      '',
-                  Icons.person)
+                      '')
               : Container(),
-          // MyVerticalSpacer(),
-          // TaskPlanedTimeWidget(
-          //     taskModel: taskDetailsCubit
-          //         .getTaskWithSubmissionsAndCommentsModel!.task!),
-          // MyVerticalSpacer(),
+          const MyVerticalSpacer(),
+          TaskPlanedTimeWidget(
+              taskModel: taskModel),
+          const MyVerticalSpacer(),
 
           // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',
           //     Icons.calendar_today),

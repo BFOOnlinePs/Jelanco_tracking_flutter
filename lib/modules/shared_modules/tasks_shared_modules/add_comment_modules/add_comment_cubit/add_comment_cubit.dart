@@ -266,12 +266,7 @@ class AddCommentCubit extends Cubit<AddCommentStates>
       emit(AddCommentSuccessState(
           addTaskSubmissionCommentModel: addTaskSubmissionCommentModel!));
 
-      if (commentService != null) {
-        commentService.addComment(addTaskSubmissionCommentModel!.comment!);
-        print('commentService is not null');
-      } else {
-        print('commentService is null');
-      }
+      commentService.addComment(addTaskSubmissionCommentModel!.comment!);
 
       // ...................................................................................
       // // add to the model so it will be shown in the list immediately

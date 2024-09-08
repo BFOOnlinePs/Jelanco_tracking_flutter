@@ -12,26 +12,29 @@ class SubmissionTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        submission.tsActualStartTime != null
-            ? Expanded(
-                child: TimeWidget('وقت البدء الفعلي',
-                    submission.tsActualStartTime!, Icons.access_time),
-              )
-            : Container(),
-        submission.tsActualStartTime != null &&
-                submission.tsActualEndTime != null
-            ? SizedBox(width: 10)
-            : Container(),
-        submission.tsActualEndTime != null
-            ? Expanded(
-                child: TimeWidget('وقت الإنتهاء الفعلي',
-                    submission.tsActualEndTime!, Icons.access_time_outlined),
-              )
-            : Container(),
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: 10, top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          submission.tsActualStartTime != null
+              ? Expanded(
+                  child: TimeWidget('وقت البدء الفعلي',
+                      submission.tsActualStartTime!, Icons.access_time),
+                )
+              : Container(),
+          submission.tsActualStartTime != null &&
+                  submission.tsActualEndTime != null
+              ? SizedBox(width: 10)
+              : Container(),
+          submission.tsActualEndTime != null
+              ? Expanded(
+                  child: TimeWidget('وقت الإنتهاء الفعلي',
+                      submission.tsActualEndTime!, Icons.access_time_outlined),
+                )
+              : Container(),
+        ],
+      ),
     );
   }
 }

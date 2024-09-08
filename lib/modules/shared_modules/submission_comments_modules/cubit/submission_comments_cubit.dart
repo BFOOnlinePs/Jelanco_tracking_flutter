@@ -61,7 +61,7 @@ class SubmissionCommentsCubit extends Cubit<SubmissionCommentsStates> {
   Future<void> close() {
     scrollController.dispose();
     // Clean up the socket listener when the Cubit is closed
-    commentService?.socket.off('new-comment');
+    commentService.socket.off('new-comment');
     return super.close();
   }
 }
