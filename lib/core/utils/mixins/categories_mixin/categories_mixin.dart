@@ -9,13 +9,13 @@ mixin CategoriesMixin<T> on Cubit<T> {
   // loading on add task
   // error on add task
 
-  void getTaskCategories({
+  Future<void> getTaskCategories({
     required T loadingState,
     required T successState,
     required T Function(String error) errorState,
-  }) {
+  }) async {
     emit(loadingState);
-    DioHelper.getData(
+    await DioHelper.getData(
       url: EndPointsConstants.taskCategories,
     ).then((value) {
       print(value?.data);

@@ -45,12 +45,16 @@ class AddTaskSubmissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddTaskSubmissionCubit()
-        ..getOldData(isEdit: isEdit, taskSubmissionModel: taskSubmissionModel)
         ..getTaskCategories(
           loadingState: CategoriesLoadingState(),
           successState: CategoriesSuccessState(),
           errorState: (error) => CategoriesErrorState(error: error),
-        ),
+        ).then((_) {
+          addTaskSubmissionCubit.getOldData(
+            isEdit: isEdit,
+            taskSubmissionModel: taskSubmissionModel,
+          );
+        }),
       child: BlocConsumer<AddTaskSubmissionCubit, AddTaskSubmissionStates>(
         listener: (context, state) {
           print('state is $state');
@@ -268,11 +272,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       child: CheckboxListTile(
                                         title: Row(
                                           children: [
-                                            // Icon(
-                                            //   Icons.category,
-                                            //   // color: ColorsConstants.primaryColor,
-                                            // ),
-                                            // SizedBox(width: 8),
                                             Text(
                                               category.cName ?? 'Category name',
                                               style: const TextStyle(

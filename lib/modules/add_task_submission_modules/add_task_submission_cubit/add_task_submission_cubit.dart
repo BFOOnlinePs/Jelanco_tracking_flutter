@@ -374,11 +374,19 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   }
 
   // for the edit
-  void getOldData(
-      {required bool isEdit, TaskSubmissionModel? taskSubmissionModel}) async {
+  void getOldData({
+    required bool isEdit,
+    TaskSubmissionModel? taskSubmissionModel,
+  }) async {
     if (isEdit) {
       print('call the old data');
       contentController.text = taskSubmissionModel!.tsContent ?? '';
+
+      selectedTaskCategoriesList =
+          getTaskCategoriesModel!.taskCategories!.where((category) {
+        return taskSubmissionModel.tsCategories!
+            .contains(category.cId.toString());
+      }).toList();
       for (var vid
           in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
               []) {
