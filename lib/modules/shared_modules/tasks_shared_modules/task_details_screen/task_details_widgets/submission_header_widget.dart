@@ -12,18 +12,21 @@ import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cub
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_location_dialog.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final HomeCubit? homeCubit;
   final TaskDetailsCubit? taskDetailsCubit;
+  final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
 
   SubmissionHeaderWidget({
     super.key,
     required this.submissionModel,
     this.homeCubit,
     this.taskDetailsCubit,
+    this.taskSubmissionDetailsCubit,
   });
 
   @override
@@ -89,7 +92,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       taskSubmissionModel: submissionModel,
                       isEdit: true,
                       getDataCallback: (newSubmissionModel) {
-                        // shared with 2 screens (task details screen and home user submissions screen)
+                        // shared with 3 screens (task details screen, submission details screen and home user submissions screen)
                         // to edit the submission
                         if (homeCubit != null) {
                           homeCubit!.afterEditSubmission(
@@ -99,9 +102,10 @@ class SubmissionHeaderWidget extends StatelessWidget {
                           taskDetailsCubit!.afterEditSubmission(
                               oldSubmissionId: submissionModel.tsId!,
                               newSubmissionModel: newSubmissionModel);
+                        } else if (taskSubmissionDetailsCubit != null) {
+                          taskSubmissionDetailsCubit!.afterEditSubmission(
+                              newSubmissionModel: newSubmissionModel);
                         }
-
-                        // edit from submission details
                       },
                     ),
                   );
@@ -120,19 +124,21 @@ class SubmissionHeaderWidget extends StatelessWidget {
                 },
               ), //
             ]),
-            GestureDetector(onTap: () {
-              // NavigationServices.navigateTo(context, SubmissionLocationDialog(
-              //   taskSubmissionModel: submissionModel,
-              // ));
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return SubmissionLocationDialog(
-                  taskSubmissionModel: submissionModel,
+            GestureDetector(
+                onTap: () {
+                  // NavigationServices.navigateTo(context, SubmissionLocationDialog(
+                  //   taskSubmissionModel: submissionModel,
+                  // ));
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SubmissionLocationDialog(
+                        taskSubmissionModel: submissionModel,
+                      );
+                    },
                   );
                 },
-              );
-            }, child: Icon(Icons.location_on))
+                child: Icon(Icons.location_on))
           ],
         ),
       ],

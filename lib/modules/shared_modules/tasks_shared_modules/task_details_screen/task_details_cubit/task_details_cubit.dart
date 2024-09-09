@@ -64,29 +64,17 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
     required final TaskSubmissionModel newSubmissionModel,
   }) {
     // Replace the old submission with the new one
-    // replace ts_id, ts_content, ts_actual_start_time, ts_actual_end_time, ts_start_latitude, ts_start_longitude, ts_status, created_at, updated_at, ts_parent_id
-    getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions =
-        getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions
-            ?.map((submission) {
-      if (submission.tsId == oldSubmissionId) {
-        return submission.copyWith(
-          tsId: newSubmissionModel.tsId,
-          tsContent: newSubmissionModel.tsContent,
-          tsActualStartTime: newSubmissionModel.tsActualStartTime,
-          tsActualEndTime: newSubmissionModel.tsActualEndTime,
-          tsStartLatitude: newSubmissionModel.tsStartLatitude,
-          tsStartLongitude: newSubmissionModel.tsStartLongitude,
-          tsStatus: newSubmissionModel.tsStatus,
-          createdAt: newSubmissionModel.createdAt,
-          updatedAt: newSubmissionModel.updatedAt,
-          tsParentId: newSubmissionModel.tsParentId,
-        );
-      }
-      return submission;
-    }).toList();
+    // Find the index of the submission with the old ID
+    int? index = getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions!
+        .indexWhere((submission) => submission.tsId == oldSubmissionId);
 
-    emit(AfterEditSubmissionState());
-  }
+    if (index != -1) {
+      // Replace the old submission with the new one
+      getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!] = newSubmissionModel;
+
+      print(getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!].toMap());
+    }
+    emit(AfterEditSubmissionState());  }
 
   @override
   Future<void> close() {

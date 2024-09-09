@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_task_submission_with_task_and_comments_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -47,6 +48,22 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
       emit(GetTaskSubmissionWithTaskAndCommentsErrorState());
       print(error.toString());
     });
+  }
+
+
+  void afterEditSubmission({
+    required final TaskSubmissionModel newSubmissionModel,
+  }) {
+    // Replace the old submission with the new one
+    // Find the index of the submission with the old ID
+    // int? index = getTaskSubmissionWithTaskAndCommentsModel?.taskSubmissions
+    //     .indexWhere((submission) => submission.tsId == oldSubmissionId);
+
+      // Replace the old submission with the new one
+      getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = newSubmissionModel;
+      //
+      // print(getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission.toMap());
+    emit(AfterEditSubmissionState());
   }
 
   @override

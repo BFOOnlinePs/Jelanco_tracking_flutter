@@ -12,3 +12,5 @@ class GetTaskSubmissionWithTaskAndCommentsErrorState
     extends TaskSubmissionDetailsStates {}
 
 class ListenToNewCommentsState extends TaskSubmissionDetailsStates {}
+
+class AfterEditSubmissionState extends TaskSubmissionDetailsStates {}

@@ -64,6 +64,8 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
                                 submissionModel: taskSubmissionDetailsCubit
                                     .getTaskSubmissionWithTaskAndCommentsModel!
                                     .taskSubmission!,
+                                  taskSubmissionDetailsCubit: taskSubmissionDetailsCubit,
+
                               ),
                               ContentWidget(
                                 taskSubmissionDetailsCubit

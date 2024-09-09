@@ -2,7 +2,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_mode
 
 class GetTaskSubmissionWithTaskAndCommentsModel {
   final bool? status;
-  final TaskSubmissionModel? taskSubmission;
+  TaskSubmissionModel? taskSubmission;
 
   GetTaskSubmissionWithTaskAndCommentsModel({
     this.status,
