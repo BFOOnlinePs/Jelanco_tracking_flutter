@@ -31,7 +31,7 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+          margin: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 6, bottom: 0),
           child: InkWell(
             onTap: () {
               NavigationServices.navigateTo(context,
@@ -46,11 +46,12 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                 SubmissionMediaWidget(
                   submission: submission,
                 ),
-                const MyVerticalSpacer(),
                 submission.taskDetails != null
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const MyVerticalSpacer(),
+
                           // SectionTitleWidget('تفاصيل المهمة',
                           //     status: TaskStatusEnum.getStatus(
                           //         submission.taskDetails!.tStatus!),
@@ -92,131 +93,79 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                 // SubmissionTimeWidget(
                 //     submission: submission),
 
-                const MyVerticalSpacer(),
-                submission.submissionComments!.isNotEmpty
-                    ? CommentsSectionWidget(
-                        comments: submission.submissionComments!,
-                        // taskDetailsCubit: taskDetailsCubit,
-                      )
-                    : Container(),
-
+                // const MyVerticalSpacer(),
+                // submission.submissionComments!.isNotEmpty
+                //     ? CommentsSectionWidget(
+                //         comments: submission.submissionComments!,
+                //         // taskDetailsCubit: taskDetailsCubit,
+                //       )
+                //     : Container(),
                 if (SystemPermissions.hasPermission(
                     SystemPermissions.viewComments))
-                Row(
-                  children: [
-                    submission.commentsCount != null &&
-                            submission.commentsCount! > 0
-                        ? Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    NavigationServices.navigateTo(
-                                      context,
-                                      SubmissionCommentsScreen(
-                                        taskId: submission.tsTaskId ?? -1,
-                                        submissionId: submission.tsId!,
-                                        onPopCallback: () =>
-                                            homeCubit.getCommentsCount(
-                                                submissionId: submission.tsId!),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                      '${submission.commentsCount} تعليقات')),
-                              const SizedBox(
-                                width: 16,
+                  Row(
+                    children: [
+                      submission.commentsCount != null &&
+                              submission.commentsCount! > 0
+                          ? Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      NavigationServices.navigateTo(
+                                        context,
+                                        SubmissionCommentsScreen(
+                                          taskId: submission.tsTaskId ?? -1,
+                                          submissionId: submission.tsId!,
+                                          onPopCallback: () =>
+                                              homeCubit.getCommentsCount(
+                                                  submissionId:
+                                                      submission.tsId!),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                        '${submission.commentsCount} تعليقات')),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            NavigationServices.navigateTo(
+                              context,
+                              SubmissionCommentsScreen(
+                                taskId: submission.tsTaskId!,
+                                submissionId: submission.tsId!,
+                                onPopCallback: () => homeCubit.getCommentsCount(
+                                    submissionId: submission.tsId!),
                               ),
-                            ],
-                          )
-                        : Container(),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          NavigationServices.navigateTo(
-                            context,
-                            SubmissionCommentsScreen(
-                              taskId: submission.tsTaskId!,
-                              submissionId: submission.tsId!,
-                              onPopCallback: () => homeCubit.getCommentsCount(
-                                  submissionId: submission.tsId!),
-                            ),
-                          );
+                            );
+                          },
+                          child: TextField(
+                            enabled: false,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: const EdgeInsets.only(bottom: 0),
 
-                        },
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: const EdgeInsets.only(bottom: 0),
-
-                            /// may changed later
-                            hintText: SystemPermissions.hasPermission(
-                                    SystemPermissions.addComment)
-                                ? "أضف تعليق ..."
-                                : 'مشاهدة التعليقات',
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(width: 2.0),
+                              /// may changed later
+                              hintText: SystemPermissions.hasPermission(
+                                      SystemPermissions.addComment)
+                                  ? "أضف تعليق ..."
+                                  : 'مشاهدة التعليقات',
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(width: 2.0),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-
-                // Center(
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       showModalBottomSheet(
-                //         // This allows the bottom sheet to resize when the keyboard appears
-                //         isScrollControlled: true,
-                //         context: context,
-                //         builder: (BuildContext context) {
-                //           return BlocProvider.value(
-                //             value: taskDetailsCubit,
-                //             child: Padding(
-                //               padding: EdgeInsets.only(
-                //                 bottom: MediaQuery.of(context)
-                //                     .viewInsets
-                //                     .bottom, // Adjust for keyboard
-                //               ),
-                //               child: Container(
-                //                 padding: EdgeInsets.all(16.0),
-                //                 child: Column(
-                //                   mainAxisSize: MainAxisSize.min,
-                //                   children: [
-                //                     AddCommentWidget(
-                //                       taskId: submission.tsTaskId!,
-                //                       taskSubmissionId: submission.tsId!,
-                //                     ),
-                //                     // SizedBox(height: 20),
-                //                     // ElevatedButton(
-                //                     //   onPressed: () {
-                //                     //     Navigator.pop(context);
-                //                     //   },
-                //                     //   child: Text('Close'),
-                //                     // ),
-                //                   ],
-                //                 ),
-                //               ),
-                //             ),
-                //           );
-                //         },
-                //       ).whenComplete(() {
-                //         // Unfocus when the bottom sheet is dismissed
-                //         taskDetailsCubit.whenCloseBottomSheet();
-                //       });
-                //
-                //       Future.delayed(Duration(milliseconds: 100), () {
-                //         taskDetailsCubit.focusNode.requestFocus();
-                //       });
-                //     },
-                //     child: Text('أكتب تعليق'),
-                //   ),
-                // ),
+                    ],
+                  ),
               ],
             ),
           ),

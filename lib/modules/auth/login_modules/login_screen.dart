@@ -123,8 +123,8 @@ class LoginScreen extends StatelessWidget {
 
                             NavigationServices.navigateTo(
                               context,
-                              // HomeScreen(),
-                              BottomNavBarScreens(),
+                              HomeScreen(),
+                              // BottomNavBarScreens(),
                               removeAll: true,
                             );
                           });

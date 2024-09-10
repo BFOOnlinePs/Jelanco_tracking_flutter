@@ -9,12 +9,12 @@ class SystemPermissions {
   static const String viewUsers = 'عرض المستخدمين';
   static const String addTask = 'اضافة مهمة';
   static const String editTask = 'تعديل مهمة';
-  static const String deleteTask = 'حذف مهمة'; //
-  static const String viewTasks = 'عرض المهام'; // for who?
-  static const String assignTask = 'تعيين مهمة'; // same as addTask
+  static const String deleteTask = 'حذف مهمة'; // will not be used
+  static const String viewTasks = 'عرض المهام'; // will not be used
+  static const String assignTask = 'تعيين مهمة';
   static const String submitTask = 'تسليم مهمة';
-  static const String addTaskCategory = 'اضافة فئة لمهمة'; // included
-  static const String editTaskCategory = 'تعديل فئة لمهمة'; // included
+  static const String addTaskCategory = 'اضافة فئة لمهمة'; // since it is optional
+  static const String editTaskCategory = 'تعديل فئة لمهمة'; // since it is optional
   static const String viewTaskCategories = 'عرض فئات المهام';
   static const String addComment = 'اضافة تعليق';
   static const String addRole = 'اضافة دور';
@@ -23,6 +23,7 @@ class SystemPermissions {
   // not added in database yet
   static const String editSubmission = 'تعديل تسليم';
   static const String viewComments = 'عرض التعليقات';
+  static const String viewMyEmployeesSubmissions = 'عرض تسليمات موظفيني'; // all submissions of my employees (even tasks assigned by another manager)
 
 
   static bool hasPermission(String permission) {
