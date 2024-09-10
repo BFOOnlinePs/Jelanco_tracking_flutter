@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
@@ -81,36 +82,38 @@ class SubmissionHeaderWidget extends StatelessWidget {
         Row(
           children: [
             TaskOptionsWidget(menuItems: [
-              MenuItemModel(
-                icon: Icons.edit,
-                label: 'تعديل',
-                onTap: () {
-                  NavigationServices.navigateTo(
-                    context,
-                    AddTaskSubmissionScreen(
-                      taskId: submissionModel.tsTaskId!,
-                      taskSubmissionModel: submissionModel,
-                      isEdit: true,
-                      getDataCallback: (newSubmissionModel) {
-                        // shared with 3 screens (task details screen, submission details screen and home user submissions screen)
-                        // to edit the submission
-                        if (homeCubit != null) {
-                          homeCubit!.afterEditSubmission(
-                              oldSubmissionId: submissionModel.tsId!,
-                              newSubmissionModel: newSubmissionModel);
-                        } else if (taskDetailsCubit != null) {
-                          taskDetailsCubit!.afterEditSubmission(
-                              oldSubmissionId: submissionModel.tsId!,
-                              newSubmissionModel: newSubmissionModel);
-                        } else if (taskSubmissionDetailsCubit != null) {
-                          taskSubmissionDetailsCubit!.afterEditSubmission(
-                              newSubmissionModel: newSubmissionModel);
-                        }
-                      },
-                    ),
-                  );
-                },
-              ),
+              if (SystemPermissions.hasPermission(
+                  SystemPermissions.editSubmission))
+                MenuItemModel(
+                  icon: Icons.edit,
+                  label: 'تعديل',
+                  onTap: () {
+                    NavigationServices.navigateTo(
+                      context,
+                      AddTaskSubmissionScreen(
+                        taskId: submissionModel.tsTaskId!,
+                        taskSubmissionModel: submissionModel,
+                        isEdit: true,
+                        getDataCallback: (newSubmissionModel) {
+                          // shared with 3 screens (task details screen, submission details screen and home user submissions screen)
+                          // to edit the submission
+                          if (homeCubit != null) {
+                            homeCubit!.afterEditSubmission(
+                                oldSubmissionId: submissionModel.tsId!,
+                                newSubmissionModel: newSubmissionModel);
+                          } else if (taskDetailsCubit != null) {
+                            taskDetailsCubit!.afterEditSubmission(
+                                oldSubmissionId: submissionModel.tsId!,
+                                newSubmissionModel: newSubmissionModel);
+                          } else if (taskSubmissionDetailsCubit != null) {
+                            taskSubmissionDetailsCubit!.afterEditSubmission(
+                                newSubmissionModel: newSubmissionModel);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
               MenuItemModel(
                 icon: Icons.history,
                 label: 'عرض التعديلات',

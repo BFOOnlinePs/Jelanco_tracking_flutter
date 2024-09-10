@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
@@ -33,7 +34,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -54,14 +55,16 @@ class SubmissionsSectionWidget extends StatelessWidget {
                                 comments: submission.submissionComments!,
                               )
                             : Container(),
-                        SizedBox(
+                        const SizedBox(
                           height: 6,
                         ),
-                        ShowModalAddCommentButton(
-                          taskId: submission.tsTaskId!,
-                          submissionId: submission.tsId!,
-                        ),
-                        MyVerticalSpacer(),
+                        if (SystemPermissions.hasPermission(
+                            SystemPermissions.addComment))
+                          ShowModalAddCommentButton(
+                            taskId: submission.tsTaskId!,
+                            submissionId: submission.tsId!,
+                          ),
+                        const MyVerticalSpacer(),
                       ],
                     ),
                   ),

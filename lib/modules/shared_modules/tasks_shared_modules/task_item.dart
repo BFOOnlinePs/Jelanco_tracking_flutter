@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
@@ -42,7 +43,8 @@ class TaskItem extends StatelessWidget {
               },
               child: Text('task_item_options_dialog_view_details'.tr()),
             ),
-            MyTextButton(
+            if (SystemPermissions.hasPermission(SystemPermissions.editTask))
+              MyTextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 NavigationServices.navigateTo(

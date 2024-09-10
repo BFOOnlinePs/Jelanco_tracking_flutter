@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
@@ -99,6 +100,8 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                       )
                     : Container(),
 
+                if (SystemPermissions.hasPermission(
+                    SystemPermissions.viewComments))
                 Row(
                   children: [
                     submission.commentsCount != null &&
@@ -139,62 +142,22 @@ class HomeUserSubmissionsWidget extends StatelessWidget {
                             ),
                           );
 
-                          // showModalBottomSheet(
-                          //   // This allows the bottom sheet to resize when the keyboard appears
-                          //   isScrollControlled: true,
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return Padding(
-                          //       padding: EdgeInsets.only(
-                          //         bottom: MediaQuery.of(context)
-                          //             .viewInsets
-                          //             .bottom, // Adjust for keyboard
-                          //       ),
-                          //       child: Container(
-                          //         padding: EdgeInsets.all(16.0),
-                          //         child: Column(
-                          //           mainAxisSize: MainAxisSize.min,
-                          //           children: [
-                          //             AddCommentWidget(
-                          //               taskId: submission.tsTaskId!,
-                          //               taskSubmissionId: submission.tsId!,
-                          //               whenCommentAdded: () {
-                          //                 // call
-                          //               },
-                          //             ),
-                          //             // SizedBox(height: 20),
-                          //             // ElevatedButton(
-                          //             //   onPressed: () {
-                          //             //     Navigator.pop(context);
-                          //             //   },
-                          //             //   child: Text('Close'),
-                          //             // ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     );
-                          //   },
-                          // ).whenComplete(() {
-                          //   // .............................................................
-                          //   // // Unfocus when the bottom sheet is dismissed
-                          //   // taskDetailsCubit.whenCloseBottomSheet();
-                          // });
-
-                          // ......................
-                          // Future.delayed(Duration(milliseconds: 100), () {
-                          //   taskDetailsCubit.focusNode.requestFocus();
-                          // });
                         },
-                        child: const TextField(
+                        child: TextField(
                           enabled: false,
                           decoration: InputDecoration(
                             isDense: true,
-                            contentPadding: EdgeInsets.only(bottom: 0),
-                            hintText: "أضف تعليق ...",
-                            enabledBorder: UnderlineInputBorder(
+                            contentPadding: const EdgeInsets.only(bottom: 0),
+
+                            /// may changed later
+                            hintText: SystemPermissions.hasPermission(
+                                    SystemPermissions.addComment)
+                                ? "أضف تعليق ..."
+                                : 'مشاهدة التعليقات',
+                            enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey),
                             ),
-                            focusedBorder: UnderlineInputBorder(
+                            focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(width: 2.0),
                             ),
                           ),

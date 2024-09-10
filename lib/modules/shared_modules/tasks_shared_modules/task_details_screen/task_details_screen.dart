@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
@@ -81,33 +82,38 @@ class TaskDetailsScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          NavigationServices.navigateTo(
-              context,
-              AddTaskSubmissionScreen(
-                taskId: taskId,
-                getDataCallback: (taskSubmissionModel) {
-                  print('call the data');
-                  taskDetailsCubit.getTaskWithSubmissionsAndComments(
-                      taskId: taskId);
-                  // scroll to the beginning
-                  ScrollUtils.scrollPosition(
-                      scrollController: taskDetailsCubit.scrollController);
-                },
-              ));
-        },
+      floatingActionButton:
+          SystemPermissions.hasPermission(SystemPermissions.submitTask)
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    NavigationServices.navigateTo(
+                        context,
+                        AddTaskSubmissionScreen(
+                          taskId: taskId,
+                          getDataCallback: (taskSubmissionModel) {
+                            print('call the data');
+                            taskDetailsCubit.getTaskWithSubmissionsAndComments(
+                                taskId: taskId);
+                            // scroll to the beginning
+                            ScrollUtils.scrollPosition(
+                                scrollController:
+                                    taskDetailsCubit.scrollController);
+                          },
+                        ));
+                  },
 
-        label: Text(
-          'تسليم المهمة',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        // Add label text
-        icon: Icon(Icons.check_circle_outline, color: Colors.white),
-        // Add icon
+                  label: Text(
+                    'تسليم المهمة',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  // Add label text
+                  icon: Icon(Icons.check_circle_outline, color: Colors.white),
+                  // Add icon
 
-        backgroundColor: ColorsConstants.primaryColor,
-      ),
+                  backgroundColor: ColorsConstants.primaryColor,
+                )
+              : Container(),
     );
   }
 }

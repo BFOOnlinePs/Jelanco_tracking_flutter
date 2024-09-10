@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/wrapped_label_value_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
@@ -114,6 +115,8 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 6,
                               ),
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.addComment))
                               ShowModalAddCommentButton(
                                   taskId: taskSubmissionDetailsCubit
                                       .getTaskSubmissionWithTaskAndCommentsModel!

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_cubit.dart';
@@ -50,7 +51,8 @@ class SubmissionCommentsScreen extends StatelessWidget {
           builder: (context, state) {
             // print('state is: in builder $state');
             submissionCommentsCubit = SubmissionCommentsCubit.get(context);
-            if (submissionCommentsCubit.count == 0) {
+            if (submissionCommentsCubit.count == 0 &&
+                SystemPermissions.hasPermission(SystemPermissions.addComment)) {
               // Defer the UI update until after the build phase
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 submissionCommentsCubit.toEmit();
@@ -103,12 +105,14 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                       }).toList(),
                                     ),
                           // : Text('data'),
-                          ElevatedButton(
-                            onPressed: () {
-                              openBottomSheet(context);
-                            },
-                            child: Text('أكتب تعليق'),
-                          )
+                          if (SystemPermissions.hasPermission(
+                              SystemPermissions.addComment))
+                            ElevatedButton(
+                              onPressed: () {
+                                openBottomSheet(context);
+                              },
+                              child: Text('أكتب تعليق'),
+                            )
                         ],
                       ),
                     ),

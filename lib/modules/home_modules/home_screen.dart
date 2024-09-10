@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_add_submission_widget.dart';
@@ -72,12 +73,15 @@ class _HomeScreenState extends State<HomeScreen>
           child: CustomScrollView(
             controller: homeCubit.scrollController,
             slivers: [
-              SliverToBoxAdapter(
-                child: HomeAddSubmissionWidget(
-                  homeCubit: homeCubit,
+              // check if the user has a permission to add a submission
+              if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
+                SliverToBoxAdapter(
+                  child: HomeAddSubmissionWidget(
+                    homeCubit: homeCubit,
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
+              if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
+                SliverToBoxAdapter(
                 child: HomeTasksToSubmitWidget(
                   homeCubit: homeCubit,
                 ),
@@ -91,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen>
                         homeCubit.getUserSubmissions(
                           page: homeCubit.getUserSubmissionsModel!.pagination!
                                   .currentPage! +
-                              1, 
+                              1,
                         );
                       }
                       return const Padding(

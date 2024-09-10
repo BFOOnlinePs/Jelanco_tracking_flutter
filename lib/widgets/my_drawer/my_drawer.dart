@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
@@ -93,16 +94,18 @@ class MyDrawer extends StatelessWidget {
                         child: ListView(
                           padding: EdgeInsets.zero,
                           children: [
-                            DrawerItem(
-                              icon: Icons.add_task,
-                              text: 'drawer_add_task_title'.tr(),
-                              onTap: () {
-                                NavigationServices.navigateTo(
-                                  context,
-                                  AddTaskScreen(),
-                                );
-                              },
-                            ),
+                            if (SystemPermissions.hasPermission(
+                                SystemPermissions.addTask))
+                              DrawerItem(
+                                icon: Icons.add_task,
+                                text: 'drawer_add_task_title'.tr(),
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    AddTaskScreen(),
+                                  );
+                                },
+                              ),
                             DrawerItem(
                               icon: Icons.task_alt,
                               text: 'drawer_tasks_i_added_title'.tr(),
