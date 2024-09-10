@@ -43,15 +43,16 @@ class TasksAddedByUserScreen extends StatelessWidget {
                             physics: const AlwaysScrollableScrollPhysics(),
                             itemCount: tasksAddedByUserCubit
                                     .tasksAddedByUserList.length +
-                                (tasksAddedByUserCubit.isTasksAddedByUserLastPage
+                                (tasksAddedByUserCubit
+                                        .isTasksAddedByUserLastPage
                                     ? 0
                                     : 1),
-
                             itemBuilder: (context, index) {
                               if (index ==
                                       tasksAddedByUserCubit
                                           .tasksAddedByUserList.length &&
-                                  !tasksAddedByUserCubit.isTasksAddedByUserLastPage) {
+                                  !tasksAddedByUserCubit
+                                      .isTasksAddedByUserLastPage) {
                                 if (!tasksAddedByUserCubit
                                     .isTasksAddedByUserLoading) {
                                   tasksAddedByUserCubit.getTasksAddedByUser(
