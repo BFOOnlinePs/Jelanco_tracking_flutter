@@ -31,6 +31,7 @@ void main() async {
 
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
+
   UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
   UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
   UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);

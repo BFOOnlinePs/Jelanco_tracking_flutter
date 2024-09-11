@@ -6,7 +6,7 @@ import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cub
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_add_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_tasks_to_submit_widget.dart';
-import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_user_submissions_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/my_drawer.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
@@ -47,24 +47,12 @@ class _HomeScreenState extends State<HomeScreen>
       appBar: MyAppBar(
         title: 'home_page_title'.tr(),
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {},
         builder: (context, state) {
           homeCubit = HomeCubit.get(context);
-          // if (homeCubit.getUserSubmissionsModel == null) {
-          //   homeCubit
-          //     ..getUserSubmissions()
-          //     ..getTasksToSubmit(
-          //       perPage: 3,
-          //       loadingState: GetTasksToSubmitLoadingState(),
-          //       successState: GetTasksToSubmitSuccessState(),
-          //       errorState: (error) => GetTasksToSubmitErrorState(error),
-          //     );
-          //
-          //   // TasksAddedByUserCubit.get(context).getTasksAddedByUser();
-          //   // AssignedTasksCubit.get(context).getAssignedTasks();
-          // }
+
           return MyRefreshIndicator(
             onRefresh: () async {
               await Future.wait([
@@ -115,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen>
                       }
                       final submission = homeCubit.userSubmissionsList[index];
 
-                      return HomeUserSubmissionsWidget(
+                      return UserSubmissionWidget(
                           homeCubit: homeCubit, submission: submission);
                     },
                     childCount: homeCubit.userSubmissionsList.length +

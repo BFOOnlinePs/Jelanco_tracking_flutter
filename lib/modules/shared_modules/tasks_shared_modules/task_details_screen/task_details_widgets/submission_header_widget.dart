@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
@@ -15,12 +16,15 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_location_dialog.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
+import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
+import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final HomeCubit? homeCubit;
   final TaskDetailsCubit? taskDetailsCubit;
   final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
+  final UserProfileCubit? userProfileCubit;
 
   SubmissionHeaderWidget({
     super.key,
@@ -28,6 +32,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
     this.homeCubit,
     this.taskDetailsCubit,
     this.taskSubmissionDetailsCubit,
+    this.userProfileCubit,
   });
 
   @override
@@ -36,54 +41,61 @@ class SubmissionHeaderWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Row(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                // add border
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 0.5),
+          child: InkWell(
+            onTap: () {
+              NavigationServices.navigateTo(context,
+                  UserProfileScreen(userId: submissionModel.tsSubmitter!));
+            },
+            child: Row(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  // add border
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 0.5),
+                  ),
+                  padding: EdgeInsets.all(2),
+                  child: Image(
+                    image: AssetImage(AssetsKeys.defaultProfileImage),
+                    height: 34,
+                  ),
                 ),
-                padding: EdgeInsets.all(2),
-                child: Image(
-                  image: AssetImage(AssetsKeys.defaultProfileImage),
-                  height: 34,
+                const SizedBox(
+                  width: 10,
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${submissionModel.submitterUser?.name}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${submissionModel.submitterUser?.name}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    Text(
-                      MyDateUtils.formatDateTimeWithAmPm(
-                          submissionModel.createdAt),
-                      // MyDateUtils.formatDateTime2(submissionModel.createdAt),
-                      // submissionModel.createdAt.toString() ?? '',
-                      style: const TextStyle(
-                        fontSize: 10,
+                      Text(
+                        MyDateUtils.formatDateTimeWithAmPm(
+                            submissionModel.createdAt),
+                        // MyDateUtils.formatDateTime2(submissionModel.createdAt),
+                        // submissionModel.createdAt.toString() ?? '',
+                        style: const TextStyle(
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Row(
           children: [
             TaskOptionsWidget(menuItems: [
               if (SystemPermissions.hasPermission(
-                  SystemPermissions.editSubmission))
+                      SystemPermissions.editSubmission) &&
+                  submissionModel.tsSubmitter == UserDataConstants.userId)
                 MenuItemModel(
                   icon: Icons.edit,
                   label: 'تعديل',
@@ -108,6 +120,12 @@ class SubmissionHeaderWidget extends StatelessWidget {
                           } else if (taskSubmissionDetailsCubit != null) {
                             taskSubmissionDetailsCubit!.afterEditSubmission(
                                 newSubmissionModel: newSubmissionModel);
+                          } else if (userProfileCubit != null) {
+                            userProfileCubit!.afterEditSubmission(
+                                oldSubmissionId: submissionModel.tsId!,
+                                newSubmissionModel: newSubmissionModel);
+                          } else {
+                            print('no afterEditSubmission function provided');
                           }
                         },
                       ),

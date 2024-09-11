@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
+import 'package:jelanco_tracking_system/core/utils/user_data_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
@@ -74,60 +75,15 @@ class LoginScreen extends StatelessWidget {
                       if (state is LoginSuccessState) {
                         if (state.userLoginModel.status == true) {
                           print(state.userLoginModel.message);
-                          await CacheHelper.saveData(
-                            key: MyCacheKeys.token,
-                            value: state.userLoginModel.token,
-                          ).then((value) async {
-                            await CacheHelper.saveData(
-                              key: MyCacheKeys.userId,
-                              value: state.userLoginModel.user?.id,
-                            );
-                            await CacheHelper.saveData(
-                              key: MyCacheKeys.name,
-                              value: state.userLoginModel.user?.name,
-                            );
-                            await CacheHelper.saveData(
-                              key: MyCacheKeys.email,
-                              value: state.userLoginModel.user?.email,
-                            );
-                            await CacheHelper.saveData(
-                              key: MyCacheKeys.jobTitle,
-                              value: state.userLoginModel.user?.jobTitle,
-                            );
-                            List<String> permissionsList = state
-                                .userLoginModel.permissions!
-                                .map<String>((permission) {
-                              return permission.name ?? '';
-                            }).toList();
+                          await UserDataUtils.saveUserDataToLocalStorage(
+                              userLoginModel: state.userLoginModel);
 
-                            print('permissionsList: ${permissionsList}');
-                            await CacheHelper.saveData(
-                                key: MyCacheKeys.permissionsList,
-                                value: permissionsList);
-
-                            UserDataConstants.token =
-                                state.userLoginModel.token;
-                            UserDataConstants.userId =
-                                state.userLoginModel.user!.id;
-                            UserDataConstants.name =
-                                state.userLoginModel.user!.name;
-                            UserDataConstants.email =
-                                state.userLoginModel.user!.email;
-                            UserDataConstants.jobTitle =
-                                state.userLoginModel.user!.jobTitle;
-                            UserDataConstants.permissionsList = permissionsList;
-
-                            // to give it an FCM token and save it in the database
-                            // await FirebaseApi().initNotification();
-                            // firebaseTokenVar = CacheHelper.getData(key: 'firebaseToken');
-
-                            NavigationServices.navigateTo(
-                              context,
-                              HomeScreen(),
-                              // BottomNavBarScreens(),
-                              removeAll: true,
-                            );
-                          });
+                          NavigationServices.navigateTo(
+                            context,
+                            HomeScreen(),
+                            // BottomNavBarScreens(),
+                            removeAll: true,
+                          );
                         } else {
                           print(state.userLoginModel.message);
                           ScaffoldMessenger.of(context).showSnackBar(

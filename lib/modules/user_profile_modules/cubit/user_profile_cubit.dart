@@ -1,10 +1,99 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
+import 'package:jelanco_tracking_system/models/users_models/get_user_profile_by_id_model.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_states.dart';
+import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class UserProfileCubit extends Cubit<UserProfileStates> {
   UserProfileCubit() : super(UserProfileInitialState());
 
   static UserProfileCubit get(context) => BlocProvider.of(context);
 
+  ScrollController scrollController = ScrollController();
 
+  GetUserProfileByIdModel? getUserProfileByIdModel;
+  List<TaskSubmissionModel> userProfileSubmissionsList = [];
+
+  bool isProfileSubmissionsLoading = false;
+  bool isProfileSubmissionsLastPage = false;
+
+  Future<void> getUserProfileById({int page = 1, required int userId}) async {
+    emit(GetUserProfileLoadingState());
+    isProfileSubmissionsLoading = true;
+
+    await DioHelper.getData(
+      url: '${EndPointsConstants.userProfile}/$userId',
+      query: {'page': page},
+    ).then((value) {
+      print(value?.data);
+      // when refresh
+      if (page == 1) {
+        userProfileSubmissionsList.clear();
+      }
+      getUserProfileByIdModel = GetUserProfileByIdModel.fromMap(value?.data);
+
+      userProfileSubmissionsList.addAll(getUserProfileByIdModel
+          ?.userSubmissions?.submissions as Iterable<TaskSubmissionModel>);
+
+      isProfileSubmissionsLastPage =
+          getUserProfileByIdModel?.userSubmissions?.pagination?.lastPage ==
+              getUserProfileByIdModel?.userSubmissions?.pagination?.currentPage;
+
+      isProfileSubmissionsLoading = false;
+
+      emit(GetUserProfileSuccessState());
+    }).catchError((error) {
+      emit(GetUserProfileErrorState());
+      print(error.toString());
+    });
+  }
+
+  void afterEditSubmission({
+    required int oldSubmissionId,
+    required final TaskSubmissionModel newSubmissionModel,
+  }) {
+    // Replace the old submission with the new one
+    // Find the index of the submission with the old ID
+    int index = userProfileSubmissionsList
+        .indexWhere((submission) => submission.tsId == oldSubmissionId);
+
+    if (index != -1) {
+      // Replace the old submission with the new one
+      userProfileSubmissionsList[index] = newSubmissionModel;
+
+      print(userProfileSubmissionsList[index].toMap());
+      print(userProfileSubmissionsList[index].tsId);
+    }
+    emit(AfterEditSubmissionState());
+  }
+
+  GetSubmissionCommentCountModel? getSubmissionCommentCountModel;
+
+  // after pop from submission comments screen, update the number of comments
+  void getCommentsCount({required int submissionId}) async {
+    emit(GetCommentsCountLoadingState());
+    await DioHelper.getData(
+      url:
+          '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionComments}/${EndPointsConstants.taskSubmissionCommentsCount}',
+      // /task-submissions/185/comments/count
+    ).then((value) {
+      print(value?.data);
+      getSubmissionCommentCountModel =
+          GetSubmissionCommentCountModel.fromMap(value?.data);
+
+      // update the number of comments in the original submission model
+
+      userProfileSubmissionsList
+          .firstWhere((submission) => submission.tsId == submissionId)
+          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+
+      emit(GetCommentsCountSuccessState());
+    }).catchError((error) {
+      emit(GetCommentsCountErrorState());
+      print(error.toString());
+    });
+  }
 }

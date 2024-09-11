@@ -45,4 +45,5 @@ class EndPointsConstants {
 
   // users
   static const String users = 'users';
+  static const String userProfile = '$users/profile'; // /users/profile/1
 }
