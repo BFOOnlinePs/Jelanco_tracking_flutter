@@ -15,6 +15,7 @@ class EndPointsConstants {
   static const String taskSubmissionsCommentStorage =
       '$url/public/storage/comments_attachments/';
   static const String thumbnailStorage = '$url/public/storage/thumbnails/';
+  static const String profileStorage = '$url/public/storage/profile_images/';
 
   // auth
   static const String login = 'login';
@@ -46,4 +47,5 @@ class EndPointsConstants {
   // users
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1
+  static const String updateProfile = '$userProfile/image'; // /users/profile/image
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
@@ -22,9 +23,7 @@ class HomeAddSubmissionWidget extends StatelessWidget {
         NavigationServices.navigateTo(
             context,
             AddTaskSubmissionScreen(
-                getDataCallback: (
-                    taskSubmissionModel
-                    ) {
+                getDataCallback: (taskSubmissionModel) {
                   print('call the data');
                   homeCubit.getUserSubmissions();
                   homeCubit.getTasksToSubmit(
@@ -59,8 +58,11 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                     Container(
                       padding: EdgeInsetsDirectional.only(end: 12),
                       child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage(AssetsKeys.defaultProfileImage),
+                        backgroundImage: UserDataConstants.image != null
+                            ? NetworkImage(EndPointsConstants.profileStorage +
+                                UserDataConstants.image!)
+                            : const AssetImage(AssetsKeys.defaultProfileImage)
+                                as ImageProvider,
                       ),
                     ),
                     Expanded(

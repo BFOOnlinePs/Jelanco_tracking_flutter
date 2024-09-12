@@ -1,13 +1,22 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/users_models/get_user_profile_by_id_model.dart';
+import 'package:jelanco_tracking_system/models/users_models/update_profile_image_model.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
-class UserProfileCubit extends Cubit<UserProfileStates> {
+import '../../../core/utils/mixins/permission_mixin/permission_mixin.dart';
+
+class UserProfileCubit extends Cubit<UserProfileStates>
+    with PermissionsMixin, CompressImagesMixin {
   UserProfileCubit() : super(UserProfileInitialState());
 
   static UserProfileCubit get(context) => BlocProvider.of(context);
@@ -48,6 +57,60 @@ class UserProfileCubit extends Cubit<UserProfileStates> {
     }).catchError((error) {
       emit(GetUserProfileErrorState());
       print(error.toString());
+    });
+  }
+
+  final ImagePicker picker = ImagePicker();
+
+  XFile? pickedImage;
+  XFile? compressedImage;
+
+  Future<void> pickImageFromGallery() async {
+    pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    print("Image ${pickedImage?.name}");
+    // emit(PickImageFromGalleryState());
+
+    // call the update
+    if (pickedImage != null) {
+      updateProfileImage(profileImage: pickedImage!.path);
+    }
+  }
+
+  UpdateProfileImageModel? updateProfileImageModel;
+
+  void updateProfileImage({required String profileImage}) async {
+    emit(UpdateProfileImageLoadingState());
+
+    compressedImage = await compressImage(File(pickedImage!.path));
+
+    print('compressed image: ${compressedImage?.path}');
+    Map<String, dynamic> data = {};
+
+    FormData formData = FormData.fromMap(data);
+    formData.files.addAll([
+      MapEntry(
+        "profile_image",
+        await MultipartFile.fromFile(compressedImage!.path),
+      )
+    ]);
+
+    DioHelper.postData(url: EndPointsConstants.updateProfile, data: formData)
+        .then((value) {
+      print(value?.data);
+
+      updateProfileImageModel = UpdateProfileImageModel.fromMap(value?.data);
+
+      // update the image in the screen immediately
+      if (updateProfileImageModel?.status == true) {
+        getUserProfileByIdModel!.userInfo!.image =
+            updateProfileImageModel?.imageUrl;
+      }
+
+      emit(UpdateProfileImageSuccessState(
+          updateProfileImageModel: updateProfileImageModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(UpdateProfileImageErrorState());
     });
   }
 
@@ -95,5 +158,11 @@ class UserProfileCubit extends Cubit<UserProfileStates> {
       emit(GetCommentsCountErrorState());
       print(error.toString());
     });
+  }
+
+  @override
+  Future<void> close() {
+    scrollController.dispose();
+    return super.close();
   }
 }

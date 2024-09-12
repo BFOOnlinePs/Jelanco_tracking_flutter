@@ -28,7 +28,8 @@ class TaskDetailsSectionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AddedBySectionWidget('${taskModel.addedByUser?.name}',
+          AddedBySectionWidget(
+              '${taskModel.addedByUser?.name}', taskModel.addedByUser?.image,
               status: TaskStatusEnum.getStatus(taskModel.tStatus!),
               statusIcon: Icons.flag,
               addedOn: taskModel.createdAt),
@@ -49,8 +50,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
                       '')
               : Container(),
           const MyVerticalSpacer(),
-          TaskPlanedTimeWidget(
-              taskModel: taskModel),
+          TaskPlanedTimeWidget(taskModel: taskModel),
           const MyVerticalSpacer(),
 
           // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',

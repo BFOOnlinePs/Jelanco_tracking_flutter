@@ -2,7 +2,7 @@ class UserModel {
   final int? id;
   final String? name;
   final String? email;
-  final String? image;
+   String? image;
   final String? jobTitle;
   final dynamic emailVerifiedAt;
   final DateTime? createdAt;

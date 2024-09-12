@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
@@ -25,11 +26,17 @@ class CommentWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    radius: 18,
-                    backgroundImage: AssetImage(
-                      AssetsKeys.defaultProfileImage ?? '',
-                    ),
+                  CircleAvatar(
+                      radius: 18,
+                      backgroundImage: comment.commentedByUser?.image !=
+                          null
+                          ? NetworkImage(EndPointsConstants
+                          .profileStorage +
+                          comment.commentedByUser!.image!)
+                          : const AssetImage(AssetsKeys
+                          .defaultProfileImage)
+                      as ImageProvider,
+
                   ),
                   SizedBox(
                     width: 14,

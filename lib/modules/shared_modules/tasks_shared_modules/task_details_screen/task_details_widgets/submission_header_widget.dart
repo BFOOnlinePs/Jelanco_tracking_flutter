@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
@@ -54,10 +55,16 @@ class SubmissionHeaderWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey, width: 0.5),
                   ),
-                  padding: EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(2),
                   child: Image(
-                    image: AssetImage(AssetsKeys.defaultProfileImage),
+                    image: submissionModel.submitterUser?.image != null
+                        ? NetworkImage(EndPointsConstants.profileStorage +
+                            submissionModel.submitterUser!.image!)
+                        : const AssetImage(AssetsKeys.defaultProfileImage)
+                            as ImageProvider,
+                    width: 34,
                     height: 34,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(
@@ -159,7 +166,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     },
                   );
                 },
-                child: Icon(Icons.location_on))
+                child: const Icon(Icons.location_on))
           ],
         ),
       ],

@@ -268,20 +268,6 @@ class AddCommentCubit extends Cubit<AddCommentStates>
 
       commentService.addComment(addTaskSubmissionCommentModel!.comment!);
 
-      // ...................................................................................
-      // // add to the model so it will be shown in the list immediately
-      // // make the object (add the name and image from backend)
-      // if (addTaskSubmissionCommentModel!.status == true) {
-      //   TaskSubmissionCommentModel newComment =
-      //       addTaskSubmissionCommentModel!.comment!;
-      //
-      //   getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!
-      //       .where((submission) => submission.tsId == taskSubmissionId)
-      //       .first
-      //       .submissionComments
-      //       ?.add(newComment);
-      // }
-      // emit
     }).catchError((error) {
       emit(AddCommentErrorState(error: error.toString()));
       print(error.toString());

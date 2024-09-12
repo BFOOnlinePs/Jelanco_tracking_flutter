@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 
 class AddedBySectionWidget extends StatelessWidget {
   final String addedByName;
+  final String? image;
   final TaskStatusEnum? status;
   final IconData? statusIcon;
   final DateTime? addedOn;
 
-  const AddedBySectionWidget(this.addedByName,
+  const AddedBySectionWidget(this.addedByName, this.image,
       {super.key, this.status, this.statusIcon, this.addedOn});
 
   @override
@@ -33,11 +35,16 @@ class AddedBySectionWidget extends StatelessWidget {
                     ),
                     padding: EdgeInsets.all(2),
                     child: Image(
-                      image: AssetImage(AssetsKeys.defaultProfileImage),
+                      image: image != null
+                          ? NetworkImage(
+                              EndPointsConstants.profileStorage + image!)
+                          : const AssetImage(AssetsKeys.defaultProfileImage)
+                              as ImageProvider,
+                      width: 34,
                       height: 34,
+                      fit: BoxFit.cover,
                     ),
                   ),
-
                   const SizedBox(
                     width: 10,
                   ),
@@ -52,9 +59,7 @@ class AddedBySectionWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-
-                        MyDateUtils.formatDateTimeWithAmPm(
-                            addedOn),
+                        MyDateUtils.formatDateTimeWithAmPm(addedOn),
                         style: const TextStyle(
                           fontSize: 10,
                         ),
@@ -63,7 +68,6 @@ class AddedBySectionWidget extends StatelessWidget {
                   ),
                 ],
               ),
-
             ],
           ),
           // status != null
