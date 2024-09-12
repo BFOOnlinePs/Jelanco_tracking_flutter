@@ -5,7 +5,7 @@ class MyRefreshIndicator extends StatelessWidget {
   final Future<void> Function() onRefresh;
   final Widget child;
 
-  MyRefreshIndicator({
+  const MyRefreshIndicator({super.key, 
     required this.onRefresh,
     required this.child,
   });

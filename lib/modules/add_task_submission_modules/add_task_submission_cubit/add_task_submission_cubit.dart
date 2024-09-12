@@ -99,7 +99,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     if (pickedImages.isNotEmpty) {
       pickedImagesList.addAll(pickedImages);
     }
-    print("Image List Length:" + pickedImagesList.length.toString());
+    print("Image List Length:${pickedImagesList.length}");
     emit(PickMultipleImagesState());
   }
 

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -6,7 +5,7 @@ class MyTextButtonNoBorder extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
 
-  const MyTextButtonNoBorder({required this.onPressed, required this.child});
+  const MyTextButtonNoBorder({super.key, required this.onPressed, required this.child});
 
   @override
   Widget build(BuildContext context) {

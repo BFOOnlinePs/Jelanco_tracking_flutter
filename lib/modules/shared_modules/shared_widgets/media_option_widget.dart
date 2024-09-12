@@ -19,14 +19,14 @@ class MediaOptionWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(
           children: [
             Icon(icon, color: color, size: 28),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             Text(
               label,
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
             ),
           ],
         ),

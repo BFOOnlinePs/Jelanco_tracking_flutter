@@ -24,7 +24,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             physics:
-            NeverScrollableScrollPhysics(),
+            const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               String fileName =
                   addTaskSubmissionCubit
@@ -33,7 +33,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                       .split('/')
                       .last;
               return Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 16),
                 decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                   borderRadius:
                   BorderRadius.circular(
                       8),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       offset: Offset(0, 2),
@@ -51,7 +51,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                 ),
                 child: ListTile(
                   leading: IconButton(
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: () =>
                         addTaskSubmissionCubit
                             .deletedPickedFileFromList(
@@ -77,7 +77,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             physics:
-            NeverScrollableScrollPhysics(),
+            const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               String? fileName =
                   taskSubmissionModel!
@@ -90,7 +90,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
               //         .split('/')
               //         .last;
               return Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 16),
                 decoration: BoxDecoration(
@@ -108,7 +108,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                 ),
                 child: ListTile(
                   leading: IconButton(
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: () =>
                         addTaskSubmissionCubit
                             .deletedPickedFileFromList(

@@ -51,12 +51,12 @@ class HomeAddSubmissionWidget extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsetsDirectional.only(end: 12),
+                      padding: const EdgeInsetsDirectional.only(end: 12),
                       child: CircleAvatar(
                         backgroundImage: UserDataConstants.image != null
                             ? NetworkImage(EndPointsConstants.profileStorage +

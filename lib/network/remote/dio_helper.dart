@@ -48,6 +48,7 @@ class DioHelper {
         print(e.error);
       }
     }
+    return null;
   }
 
   static Future<Response?> postData({
@@ -82,6 +83,7 @@ class DioHelper {
         print(e.error);
       }
     }
+    return null;
     // add throw
   }
 
@@ -114,5 +116,6 @@ class DioHelper {
         print(e.error);
       }
     }
+    return null;
   }
 }

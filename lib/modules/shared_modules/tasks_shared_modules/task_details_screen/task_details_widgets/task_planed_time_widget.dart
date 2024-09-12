@@ -19,7 +19,7 @@ class TaskPlanedTimeWidget extends StatelessWidget {
               )
             : Container(),
         taskModel.tPlanedStartTime != null && taskModel.tPlanedEndTime != null
-            ? SizedBox(width: 10)
+            ? const SizedBox(width: 10)
             : Container(),
         taskModel.tPlanedEndTime != null
             ? Expanded(

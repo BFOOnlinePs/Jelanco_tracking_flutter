@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyRadioListTile<T> extends StatelessWidget {
@@ -7,7 +6,7 @@ class MyRadioListTile<T> extends StatelessWidget {
   final T? groupValue;
   final Function(T?)? onChanged;
 
-  const MyRadioListTile({
+  const MyRadioListTile({super.key, 
     required this.value,
     this.title,
     this.groupValue,
@@ -18,7 +17,7 @@ class MyRadioListTile<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        listTileTheme: ListTileThemeData(
+        listTileTheme: const ListTileThemeData(
           horizontalTitleGap: -4,
         ),
       ),
@@ -27,7 +26,7 @@ class MyRadioListTile<T> extends StatelessWidget {
           value: value,
           title: Text(
             title ?? '',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14.0,
               color: Colors.black87,
             ),

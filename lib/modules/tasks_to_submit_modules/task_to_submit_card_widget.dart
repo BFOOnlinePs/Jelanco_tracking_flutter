@@ -19,7 +19,7 @@ class TaskToSubmitCardWidget extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.only(bottom: 6),
+        margin: const EdgeInsets.only(bottom: 6),
         decoration: BoxDecoration(
           gradient: ColorsConstants.myLinearGradient,
           borderRadius: BorderRadius.circular(CardSizeConstants.cardRadius),
@@ -40,13 +40,13 @@ class TaskToSubmitCardWidget extends StatelessWidget {
               children: [
                 Text(
                   '> بواسطة: ${task.addedByUser?.name ?? ''}',
-                  style: TextStyle(color: Colors.orangeAccent),
+                  style: const TextStyle(color: Colors.orangeAccent),
                 ),
                 Text(
                   task.tContent ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
             ),

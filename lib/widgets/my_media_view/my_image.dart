@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 
@@ -38,7 +37,7 @@ class MyImage extends StatelessWidget {
           showDeleteIcon
               ? IconButton(
                   onPressed: onDeletePressed,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close,
                     color: Colors.red,
                     size: 30,

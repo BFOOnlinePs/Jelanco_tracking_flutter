@@ -13,7 +13,7 @@ class SubmissionTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10, top: 5),
+      margin: const EdgeInsets.only(bottom: 10, top: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -25,7 +25,7 @@ class SubmissionTimeWidget extends StatelessWidget {
               : Container(),
           submission.tsActualStartTime != null &&
                   submission.tsActualEndTime != null
-              ? SizedBox(width: 10)
+              ? const SizedBox(width: 10)
               : Container(),
           submission.tsActualEndTime != null
               ? Expanded(

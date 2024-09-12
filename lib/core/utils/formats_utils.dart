@@ -1,5 +1,4 @@
 
-import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 
 class FormatUtils {
   // this format: "["2000", "2020"]" || [الخليل, القدس, رام الله]

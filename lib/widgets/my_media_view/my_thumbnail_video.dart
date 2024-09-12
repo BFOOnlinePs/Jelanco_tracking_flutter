@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 class MyThumbnailVideo extends StatelessWidget {
   final int? index;
@@ -36,7 +35,7 @@ class MyThumbnailVideo extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
-            child: Container(
+            child: SizedBox(
               height: videoHeight,
               child: AspectRatio(
                 aspectRatio: 4 / 3,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 
@@ -19,7 +18,7 @@ class WrappedLabelValueWidget extends StatelessWidget {
               children: [
                 TextSpan(
                   text: '$label: ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                     color: ColorsConstants.primaryColor,

@@ -10,7 +10,6 @@ import 'package:jelanco_tracking_system/core/utils/files_extensions_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -18,7 +17,6 @@ import 'package:mime/mime.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/add_task_submission_comment_model.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class AddCommentCubit extends Cubit<AddCommentStates>
     with
@@ -69,7 +67,7 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     if (pickedImages.isNotEmpty) {
       pickedImagesList.addAll(pickedImages);
     }
-    print("Image List Length:" + pickedImagesList.length.toString());
+    print("Image List Length:${pickedImagesList.length}");
     emit(PickMultipleImagesState());
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
@@ -33,7 +32,7 @@ class AddedBySectionWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 0.5),
                     ),
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     child: Image(
                       image: image != null
                           ? NetworkImage(

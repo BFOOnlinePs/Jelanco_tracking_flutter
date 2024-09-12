@@ -9,14 +9,8 @@ import 'package:jelanco_tracking_system/core/utils/my_bloc_observer.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/core/values/constants.dart';
-import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_cubit/assigned_tasks_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
-import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
-import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_screens.dart';
 import 'package:jelanco_tracking_system/modules/splash_modules/splash_screen.dart';
-import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
-import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
-import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'core/constants/user_data.dart';
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
@@ -32,18 +26,8 @@ void main() async {
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
 
-  // UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
-  // UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
-  // UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);
-  // UserDataConstants.permissionsList =
-  //     CacheHelper.getData(key: MyCacheKeys.permissionsList);
-
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
-  // print('name: ${UserDataConstants.name.toString()}');
-  // print('email: ${UserDataConstants.email.toString()}');
-  // print('jobTitle: ${UserDataConstants.jobTitle.toString()}');
-  // print('permissionsList: ${UserDataConstants.permissionsList.toString()}');
 
   Widget homeWidget;
 
@@ -108,7 +92,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('homeWidget in MyApp: $homeWidget');
     return MaterialApp(
       title: 'جيلانكو - نظام التتبع',
       debugShowCheckedModeBanner: false,

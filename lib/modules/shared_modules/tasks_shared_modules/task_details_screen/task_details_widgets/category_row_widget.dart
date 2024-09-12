@@ -17,7 +17,7 @@ class CategoryRowWidget extends StatelessWidget {
           // SizedBox(width: 10),
           Text(
             '$label: ',
-            style: TextStyle(
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
                 color: ColorsConstants.primaryColor),

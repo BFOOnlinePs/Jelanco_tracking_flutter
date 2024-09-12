@@ -1,11 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyLoader extends StatelessWidget {
-  const MyLoader({Key? key}) : super(key: key);
+  final Color? color;
+
+  const MyLoader({super.key, this.color});
 
   @override
   Widget build(BuildContext context) {
-    return CircularProgressIndicator();
+    return CircularProgressIndicator(
+      color: color,
+    );
   }
 }

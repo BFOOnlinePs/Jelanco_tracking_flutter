@@ -65,10 +65,9 @@ class TasksAddedByUserScreen extends StatelessWidget {
                                           1,
                                     );
                                   }
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
+                                  return const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Center(child: MyLoader()),
                                   );
                                 }
                                 return TaskItem(

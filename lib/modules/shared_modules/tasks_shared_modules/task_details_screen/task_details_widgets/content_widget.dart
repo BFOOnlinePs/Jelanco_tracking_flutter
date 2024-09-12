@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ContentWidget extends StatefulWidget {
   final String value;
 
-  ContentWidget(this.value, {super.key, isSubmission});
+  const ContentWidget(this.value, {super.key, isSubmission});
 
   @override
   State<ContentWidget> createState() => _ContentWidgetState();

@@ -101,7 +101,7 @@ class EditTaskScreen extends StatelessWidget {
           editTaskCubit = EditTaskCubit.get(context);
 
           return Scaffold(
-            appBar: MyAppBar(
+            appBar: const MyAppBar(
               title: 'تعديل المهمة',
             ),
             body: Stack(
@@ -117,7 +117,7 @@ class EditTaskScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
+                                const Row(
                                   children: [
                                     Text('الموظفين المكلفين',
                                         style: TextStyle(
@@ -130,7 +130,7 @@ class EditTaskScreen extends StatelessWidget {
                                     SizedBox(height: 8.0),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: TextFormFieldSizeConstants.sizedBoxHeight,
                                 ),
                                 GestureDetector(
@@ -157,7 +157,7 @@ class EditTaskScreen extends StatelessWidget {
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       vertical: 15,
                                       horizontal: 10,
                                     ),
@@ -183,16 +183,16 @@ class EditTaskScreen extends StatelessWidget {
                                                   : editTaskCubit.selectedUsers
                                                       .map((user) => user.name)
                                                       .join(', '),
-                                              style: TextStyle(color: Colors.black54),
+                                              style: const TextStyle(color: Colors.black54),
                                             ),
                                           ),
                                         ),
-                                        Icon(Icons.arrow_forward),
+                                        const Icon(Icons.arrow_forward),
                                       ],
                                     ),
                                   ),
                                 ),
-                                MyVerticalSpacer(),
+                                const MyVerticalSpacer(),
                                 MyTextFormField(
                                     titleText: 'محتوى المهمة',
                                     labelText: 'أكتب محتوى المهمة',
@@ -228,12 +228,12 @@ class EditTaskScreen extends StatelessWidget {
                                                 ? MyDateUtils.formatDateTime(
                                                     editTaskCubit.plannedStartTime)
                                                 : ''),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
                                     ),
-                                    MyHorizontalSpacer(),
+                                    const MyHorizontalSpacer(),
                                     Expanded(
                                       child: MyTextFormField(
                                         titleText: 'موعد الإنتهاء',
@@ -250,7 +250,7 @@ class EditTaskScreen extends StatelessWidget {
                                                 ? MyDateUtils.formatDateTime(
                                                     editTaskCubit.plannedEndTime)
                                                 : ''),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
@@ -289,7 +289,7 @@ class EditTaskScreen extends StatelessWidget {
                                   items: TaskStatusEnum.getAllStatuses(),
                                 ),
 
-                                MyVerticalSpacer(),
+                                const MyVerticalSpacer(),
 
 
                               ],

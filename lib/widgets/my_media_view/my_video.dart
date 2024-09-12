@@ -49,7 +49,7 @@ class MyVideo extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(CardSizeConstants.mediaRadius)),
-                  child: Container(
+                  child: SizedBox(
                     height: videoHeight,
                     child: AspectRatio(
                       aspectRatio: videoPlayerController!.value.aspectRatio,
@@ -60,7 +60,7 @@ class MyVideo extends StatelessWidget {
                 showDeleteIcon
                     ? IconButton(
                         onPressed: onDeletePressed,
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.close,
                           color: Colors.red,
                           size: 30,
@@ -77,14 +77,14 @@ class MyVideo extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: Container(
-                        padding: EdgeInsets.all(CardSizeConstants.mediaRadius),
+                        padding: const EdgeInsets.all(CardSizeConstants.mediaRadius),
                         // Adjust the padding as needed
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.black
                               .withOpacity(0.5), // Semi-transparent background
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.videocam,
                           color: Colors.white,
                           // Change icon color to contrast with the background
@@ -123,7 +123,7 @@ class MyVideo extends StatelessWidget {
                                 }
                               : null,
                     )
-                  : Text('no contoller '),
+                  : const Text('no contoller '),
             ],
           ),
       ],

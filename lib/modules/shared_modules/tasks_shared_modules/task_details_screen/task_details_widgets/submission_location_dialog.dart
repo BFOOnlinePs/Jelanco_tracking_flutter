@@ -29,7 +29,7 @@ class _SubmissionLocationDialogState extends State<SubmissionLocationDialog> {
         : false;
 
     return AlertDialog(
-      content: Container(
+      content: SizedBox(
         width: double.maxFinite,
         child: Column(
           children: [
@@ -51,12 +51,12 @@ class _SubmissionLocationDialogState extends State<SubmissionLocationDialog> {
                           'check-in',
                           LatLng(
                               double.parse(widget.taskSubmissionModel
-                                  .tsStartLatitude!) as double,
+                                  .tsStartLatitude!),
                               double.parse(widget.taskSubmissionModel
-                                  .tsStartLongitude!) as double),
+                                  .tsStartLongitude!)),
                           widget.taskSubmissionModel.tsActualStartTime!,
                           _markers);
-                      if (widget.taskSubmissionModel.tsActualEndTime != null)
+                      if (widget.taskSubmissionModel.tsActualEndTime != null) {
                         addMarker(
                             'check-out',
                             LatLng(
@@ -67,6 +67,7 @@ class _SubmissionLocationDialogState extends State<SubmissionLocationDialog> {
                                     (isSameLocation ? 0.00001 : 0)),
                             widget.taskSubmissionModel.tsActualEndTime!,
                             _markers);
+                      }
                     },
                     markers: _markers.values.toSet(),
                   ),
@@ -79,25 +80,25 @@ class _SubmissionLocationDialogState extends State<SubmissionLocationDialog> {
                       children: [
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_pin,
                               color: Colors.green,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text('موقع البدء'.tr(args: [
                               // intl.DateFormat('H:mm').format(
                               //     DateTime.parse(widget.taskSubmissionModel.tsActualStartTime.toString()))
                             ])),
                           ],
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_pin,
                               color: Colors.red,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text('موقع الإنتهاء'.tr(args: [
                               // widget.taskSubmissionModel.tsActualEndTime != null
                               //     ? intl.DateFormat('H:mm').format(
@@ -106,7 +107,7 @@ class _SubmissionLocationDialogState extends State<SubmissionLocationDialog> {
                             ])),
                           ],
                         ),
-                        SizedBox(height: 14),
+                        const SizedBox(height: 14),
                       ],
                     ),
                   ),

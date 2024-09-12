@@ -27,7 +27,7 @@ class MyTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final TextStyle? style;
 
-  MyTextFormField({
+  const MyTextFormField({super.key, 
     this.controller,
     this.initialValue,
     this.labelText,
@@ -71,7 +71,7 @@ class MyTextFormField extends StatelessWidget {
                               fontSize: SharedSize.textFiledTitleSize),
                         ),
                         isFieldRequired
-                            ? Text(
+                            ? const Text(
                                 ' *',
                                 style:
                                     TextStyle(fontSize: 16, color: Colors.red),
@@ -79,7 +79,7 @@ class MyTextFormField extends StatelessWidget {
                             : Container(),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: TextFormFieldSizeConstants.sizedBoxHeight,
                     ),
                   ],

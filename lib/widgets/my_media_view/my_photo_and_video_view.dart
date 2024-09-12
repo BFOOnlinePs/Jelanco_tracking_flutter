@@ -11,8 +11,8 @@ class MediaViewer extends StatefulWidget {
     required this.storagePath,
     required this.mediaList,
     required this.startIndex,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _MediaViewerState createState() => _MediaViewerState();

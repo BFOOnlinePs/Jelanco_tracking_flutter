@@ -25,7 +25,7 @@ class SelectedImagesWidget extends StatelessWidget {
           addTaskSubmissionCubit
                   .pickedImagesList.isEmpty // new picked (from file)
               ? Container()
-              : Container(
+              : SizedBox(
                   height: 200,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -37,6 +37,7 @@ class SelectedImagesWidget extends StatelessWidget {
                           addTaskSubmissionCubit.deletedPickedImageFromList(
                               index: index);
                         },
+                        margin: const EdgeInsetsDirectional.only(end: 10),
                         child: Container(
                           // height: 200,
                           // width: 132,
@@ -45,8 +46,7 @@ class SelectedImagesWidget extends StatelessWidget {
                                 .pickedImagesList[index].path),
                             // fit: BoxFit.cover,
                           ),
-                        ),
-                        margin: EdgeInsetsDirectional.only(end: 10)),
+                        )),
                     itemCount: addTaskSubmissionCubit.pickedImagesList.length,
                   ),
                 ),
@@ -56,7 +56,7 @@ class SelectedImagesWidget extends StatelessWidget {
                   taskSubmissionModel!
                       .submissionAttachmentsCategories!.images!.isEmpty
               ? Container()
-              : Container(
+              : SizedBox(
                   height: 200,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -69,7 +69,7 @@ class SelectedImagesWidget extends StatelessWidget {
                               index: index,
                               taskSubmissionModel: taskSubmissionModel!);
                         },
-                        margin: EdgeInsetsDirectional.only(end: 10),
+                        margin: const EdgeInsetsDirectional.only(end: 10),
                         child: Container(
                           // height: 200,
                           // width: 132,

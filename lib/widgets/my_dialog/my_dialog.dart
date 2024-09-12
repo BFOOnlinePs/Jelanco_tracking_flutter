@@ -6,7 +6,7 @@ void myDialog(BuildContext context, {required String title, required Widget cont
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),
-        content: Container(
+        content: SizedBox(
           width: double.maxFinite,
           child: content,
         ),

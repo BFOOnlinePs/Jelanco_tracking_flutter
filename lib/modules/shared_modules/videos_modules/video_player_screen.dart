@@ -1,11 +1,12 @@
 import 'dart:async'; // Add this for Timer
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
 
-  VideoPlayerScreen({required this.videoUrl});
+  const VideoPlayerScreen({super.key, required this.videoUrl});
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -60,7 +61,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       // Hide icon after 1 second if the video is playing
       if (_isPlaying) {
         _hideIconTimer?.cancel(); // Cancel any previous timers
-        _hideIconTimer = Timer(Duration(seconds: 1), () {
+        _hideIconTimer = Timer(const Duration(seconds: 1), () {
           setState(() {
             _showPlayPauseIcon = false; // Hide icon after delay
           });
@@ -78,7 +79,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       // Hide icon after 1 second if the video is playing
       if (_isPlaying) {
         _hideIconTimer?.cancel(); // Cancel any previous timers
-        _hideIconTimer = Timer(Duration(seconds: 1), () {
+        _hideIconTimer = Timer(const Duration(seconds: 1), () {
           setState(() {
             _showPlayPauseIcon = false; // Hide icon after delay
           });
@@ -91,7 +92,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: MyLoader())
           : Center(
               child: GestureDetector(
                 onTap: _showIconTemporarily, // Show icon when video is tapped
@@ -104,7 +105,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     ),
                     AnimatedOpacity(
                       opacity: _showPlayPauseIcon ? 1.0 : 0.0,
-                      duration: Duration(milliseconds: 300), // Smooth animation
+                      duration: const Duration(milliseconds: 300), // Smooth animation
                       child: GestureDetector(
                         onTap: _togglePlayPause,
                         // Toggle play/pause when icon is tapped

@@ -8,7 +8,7 @@ class MyElevatedButton extends StatelessWidget {
   final bool isWidthFull;
   final String buttonText;
 
-  const MyElevatedButton({
+  const MyElevatedButton({super.key, 
     required this.onPressed,
     // required this.child,
     this.isWidthFull = false,
@@ -17,32 +17,13 @@ class MyElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: isWidthFull ? double.infinity : null,
       // decoration: BoxDecoration(
       //   gradient: ColorsConstants.myLinearGradient
       // ),
       child: ElevatedButton(
         onPressed: onPressed,
-        child: Padding(
-          // padding: EdgeInsets.symmetric(vertical: 8.0),
-          padding: const EdgeInsets.all(0.0),
-
-          child: Ink(
-            decoration: BoxDecoration(
-              // gradient: ColorsConstants.myLinearGradient,
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            ),
-            child: Container(
-                padding: EdgeInsets.symmetric(vertical: 0),
-                // constraints:
-                //     const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
-                child: Text(
-                  buttonText,
-                  style: TextStyle(color: Colors.white),
-                )),
-          ),
-        ),
         // style: ElevatedButton.styleFrom(
         //   minimumSize: Size(0, 0),
         //     backgroundColor: Colors.transparent,
@@ -62,6 +43,25 @@ class MyElevatedButton extends StatelessWidget {
               borderRadius:
                   BorderRadius.circular(ButtonSizeConstants.borderRadius),
             ),
+          ),
+        ),
+        child: Padding(
+          // padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.all(0.0),
+
+          child: Ink(
+            decoration: const BoxDecoration(
+              // gradient: ColorsConstants.myLinearGradient,
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            ),
+            child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 0),
+                // constraints:
+                //     const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
+                child: Text(
+                  buttonText,
+                  style: const TextStyle(color: Colors.white),
+                )),
           ),
         ),
       ),

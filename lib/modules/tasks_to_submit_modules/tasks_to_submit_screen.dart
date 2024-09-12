@@ -4,6 +4,7 @@ import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/cubit/ta
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/cubit/tasks_to_submit_states.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/task_to_submit_card_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 
@@ -67,10 +68,10 @@ class TasksToSubmitScreen extends StatelessWidget {
                                       1,
                                 );
                               }
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              return const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child:
-                                    Center(child: CircularProgressIndicator()),
+                                    Center(child: MyLoader()),
                               );
                             }
                             return TaskToSubmitCardWidget(
@@ -78,22 +79,7 @@ class TasksToSubmitScreen extends StatelessWidget {
                                     .tasksAssignedToUserList[index]);
                           },
                         )
-                      : CircularProgressIndicator()
-
-                  // SingleChildScrollView(
-                  //   physics: const AlwaysScrollableScrollPhysics(),
-                  //   child: tasksToSubmitCubit.getTasksToSubmitModel != null
-                  //       ? Column(
-                  //           children: [
-                  //             ...tasksToSubmitCubit
-                  //                 .getTasksToSubmitModel!.tasks!
-                  //                 .map((task) {
-                  //               return TaskToSubmitCardWidget(task: task);
-                  //             })
-                  //           ],
-                  //         )
-                  //       : const LinearProgressIndicator(),
-                  // ),
+                      : const MyLoader()
                   ),
             );
           },

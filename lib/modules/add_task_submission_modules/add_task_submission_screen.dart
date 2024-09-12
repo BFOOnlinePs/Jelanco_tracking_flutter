@@ -128,10 +128,11 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       return 'add_task_submission_content_required_validation'
                                           .tr();
                                     }
+                                    return null;
                                   },
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(top: 14, bottom: 16),
+                                  margin: const EdgeInsets.only(top: 14, bottom: 16),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -139,12 +140,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       //from camera
 
                                       TaskOptionsWidget(
-                                          child: MediaOptionWidget(
-                                            icon: Icons.camera_alt,
-                                            label: 'كاميرا',
-                                            color: Colors.blue,
-                                            onTap: null,
-                                          ),
                                           menuItems: [
                                             MenuItemModel(
                                               icon: Icons.image,
@@ -180,7 +175,13 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                                                         false));
                                               },
                                             ),
-                                          ]),
+                                          ],
+                                          child: const MediaOptionWidget(
+                                            icon: Icons.camera_alt,
+                                            label: 'كاميرا',
+                                            color: Colors.blue,
+                                            onTap: null,
+                                          )),
 
                                       Container(
                                           width: 0.2,
@@ -246,7 +247,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     addTaskSubmissionCubit:
                                         addTaskSubmissionCubit,
                                     taskSubmissionModel: taskSubmissionModel),
-                                SizedBox(
+                                const SizedBox(
                                   height: 14,
                                 ),
                                 SelectedVideosWidget(
@@ -257,7 +258,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     addTaskSubmissionCubit:
                                         addTaskSubmissionCubit,
                                     taskSubmissionModel: taskSubmissionModel),
-                                Text(
+                                const Text(
                                   'إختيار الفئات',
                                   style: TextStyle(fontSize: 16),
                                 ),
@@ -268,7 +269,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       .getTaskCategoriesModel!.taskCategories!
                                       .map((TaskCategoryModel category) {
                                     return Container(
-                                      margin: EdgeInsets.symmetric(vertical: 4),
+                                      margin: const EdgeInsets.symmetric(vertical: 4),
                                       child: CheckboxListTile(
                                         title: Row(
                                           children: [

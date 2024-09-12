@@ -6,7 +6,7 @@ class TaskOptionsWidget extends StatelessWidget {
 
   final Widget? child;
 
-  TaskOptionsWidget({required this.menuItems, this.child});
+  const TaskOptionsWidget({super.key, required this.menuItems, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class TaskOptionsWidget extends StatelessWidget {
             child: Row(
               children: [
                 Icon(menuItems[index].icon, color: menuItems[index].iconColor,),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(menuItems[index].label),
               ],
             ),

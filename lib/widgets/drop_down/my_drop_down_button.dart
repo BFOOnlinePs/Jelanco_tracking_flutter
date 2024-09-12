@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
@@ -19,7 +18,7 @@ class MyDropdownButton<T> extends StatelessWidget {
   final double? menuMaxHeight;
   final bool isFieldRequired;
 
-  MyDropdownButton({
+  const MyDropdownButton({super.key, 
     this.label,
     this.hint,
     required this.value,
@@ -51,7 +50,7 @@ class MyDropdownButton<T> extends StatelessWidget {
                         fontSize: SharedSize.textFiledTitleSize),
                   ),
                   isFieldRequired
-                      ? Text(
+                      ? const Text(
                     ' *',
                     style:
                     TextStyle(fontSize: 16, color: Colors.red),
@@ -59,7 +58,7 @@ class MyDropdownButton<T> extends StatelessWidget {
                       : Container(),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: TextFormFieldSizeConstants.sizedBoxHeight,
               ),
             ],

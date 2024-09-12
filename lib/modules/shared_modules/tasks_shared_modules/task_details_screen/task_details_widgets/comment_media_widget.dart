@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
-import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/files_list_view_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_and_video_view.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
 
 class CommentMediaWidget extends StatelessWidget {
@@ -37,12 +32,12 @@ class CommentMediaWidget extends StatelessWidget {
                         files: comment.commentAttachmentsCategories!.files,
                       )
                     : Container(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 comment.commentAttachmentsCategories!.images!.isNotEmpty ||
                     comment.commentAttachmentsCategories!.videos!.isNotEmpty
-                    ? Container(
+                    ? SizedBox(
                   height: 220.0,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -58,7 +53,7 @@ class CommentMediaWidget extends StatelessWidget {
                         // This is an image
                         return MyImage(
                           height: 200,
-                          margin: EdgeInsetsDirectional.only(end: 8),
+                          margin: const EdgeInsetsDirectional.only(end: 8),
                           child: GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -85,7 +80,7 @@ class CommentMediaWidget extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Container(
+                            child: SizedBox(
                               height: 220,
                               width: 132,
                               child: Image(
@@ -130,7 +125,7 @@ class CommentMediaWidget extends StatelessWidget {
                           child: Container(
                             height: 220,
                             width: 132,
-                            margin: EdgeInsetsDirectional.only(end: 8),
+                            margin: const EdgeInsetsDirectional.only(end: 8),
                             child: Stack(
                               children: [
                                 MyThumbnailVideo(

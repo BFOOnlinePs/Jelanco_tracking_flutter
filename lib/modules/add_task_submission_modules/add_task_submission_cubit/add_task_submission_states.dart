@@ -1,4 +1,3 @@
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 
 abstract class AddTaskSubmissionStates {}

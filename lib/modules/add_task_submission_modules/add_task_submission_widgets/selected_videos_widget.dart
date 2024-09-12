@@ -20,7 +20,7 @@ class SelectedVideosWidget extends StatelessWidget {
         children: [
           addTaskSubmissionCubit.pickedVideosList.isEmpty
               ? Container()
-              : Container(
+              : SizedBox(
                   height: 280,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -38,7 +38,7 @@ class SelectedVideosWidget extends StatelessWidget {
                             addTaskSubmissionCubit.deletedPickedVideoFromList(
                                 index: index);
                           },
-                          margin: EdgeInsetsDirectional.only(end: 10));
+                          margin: const EdgeInsetsDirectional.only(end: 10));
                     },
                     itemCount: addTaskSubmissionCubit.pickedVideosList.length,
                   ),
@@ -52,7 +52,7 @@ class SelectedVideosWidget extends StatelessWidget {
                           .videos!
                           .length // to make sure that all the controllers initialized
               ? Container()
-              : Container(
+              : SizedBox(
                   height: 280,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -77,7 +77,7 @@ class SelectedVideosWidget extends StatelessWidget {
                                 index: index,
                                 taskSubmissionModel: taskSubmissionModel!);
                           },
-                          margin: EdgeInsetsDirectional.only(end: 10));
+                          margin: const EdgeInsetsDirectional.only(end: 10));
                     },
                     itemCount: taskSubmissionModel!
                         .submissionAttachmentsCategories!.videos!.length,

@@ -59,10 +59,10 @@ class AssignedTasksScreen extends StatelessWidget {
                                           1,
                                     );
                                   }
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                  return const Padding(
+                                    padding:  EdgeInsets.all(8.0),
                                     child: Center(
-                                        child: CircularProgressIndicator()),
+                                        child: MyLoader()),
                                   );
                                 }
                                 return TaskItem(

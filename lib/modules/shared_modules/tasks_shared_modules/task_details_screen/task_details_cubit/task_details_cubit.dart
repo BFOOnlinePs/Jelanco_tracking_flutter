@@ -29,7 +29,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
       getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions
           ?.firstWhere(
               (submission) => submission.tsId == newComment.tscTaskSubmissionId)
-          ?.submissionComments
+          .submissionComments
           ?.add(newComment);
 
       // getTaskWithSubmissionsAndCommentsModel?.task.taskSubmissions?.add(newComment);

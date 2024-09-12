@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
@@ -77,7 +76,7 @@ class AssignedToScreen extends StatelessWidget {
           onSelected(assignedToCubit.selectedUsers);
           Navigator.pop(context);
         },
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
     );
 

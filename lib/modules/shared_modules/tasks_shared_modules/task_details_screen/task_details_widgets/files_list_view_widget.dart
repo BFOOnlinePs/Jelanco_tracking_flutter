@@ -16,7 +16,7 @@ class FilesListViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      margin: EdgeInsetsDirectional.only(end: 14),
+      margin: const EdgeInsetsDirectional.only(end: 14),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: files!.length,
@@ -71,8 +71,8 @@ class FilesListViewWidget extends StatelessWidget {
                 //   ),
                 // ),
               ),
-              SizedBox(height: 10,),
-              Text('فتح الملف'),
+              const SizedBox(height: 10,),
+              const Text('فتح الملف'),
             ],
           ),
         ),

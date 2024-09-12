@@ -32,7 +32,7 @@ class MyDrawer extends StatelessWidget {
                 snackBarStates: SnackBarStates.success,
                 message: state.userLogoutModel.message,
               );
-              NavigationServices.navigateTo(context, LoginScreen());
+              NavigationServices.navigateTo(context, const LoginScreen());
             } else {
               SnackbarHelper.showSnackbar(
                 context: context,
@@ -67,23 +67,23 @@ class MyDrawer extends StatelessWidget {
                             //   radius: 40,
                             //   backgroundImage: NetworkImage('https://via.placeholder.com/150'),
                             // ),
-                            SizedBox(height: 26),
+                            const SizedBox(height: 26),
                             Text(
                               UserDataConstants.name ?? '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
                               ),
                             ),
                             Text(
                               UserDataConstants.jobTitle ?? '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white70,
                               ),
                             ),
                             Text(
                               UserDataConstants.email ?? '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white70,
                               ),
                             ),
@@ -122,7 +122,7 @@ class MyDrawer extends StatelessWidget {
                               onTap: () {
                                 NavigationServices.navigateTo(
                                   context,
-                                  TasksAddedByUserScreen(),
+                                  const TasksAddedByUserScreen(),
                                 );
                               },
                             ),

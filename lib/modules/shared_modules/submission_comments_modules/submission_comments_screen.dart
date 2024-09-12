@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
-import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_states.dart';
@@ -32,7 +31,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
       appBar: MyAppBar(
         title: 'التعليقات',
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             // Call the callback function before popping
             onPopCallback();
@@ -84,7 +83,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                       .getSubmissionCommentsModel!
                                       .submissionComments!
                                       .isEmpty
-                                  ? Column(
+                                  ? const Column(
                                       children: [
                                         Text('لا يوجد تعليقات حتى الان'),
                                         Text('كن أول من يعلق'),
@@ -111,7 +110,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                               onPressed: () {
                                 openBottomSheet(context);
                               },
-                              child: Text('أكتب تعليق'),
+                              child: const Text('أكتب تعليق'),
                             )
                         ],
                       ),
@@ -121,7 +120,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                 state is GetSubmissionCommentsLoadingState &&
                         submissionCommentsCubit.getSubmissionCommentsModel !=
                             null
-                    ? LoaderWithDisable()
+                    ? const LoaderWithDisable()
                     : Container(),
               ],
             );
@@ -143,7 +142,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                 MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
           ),
           child: Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

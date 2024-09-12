@@ -7,16 +7,13 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/user_data_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
-import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
-import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_screens.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_auth_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
-import '../../../core/constants/user_data.dart';
-import '../../../network/local/cache_helper.dart';
 import '../../home_modules/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -41,12 +38,12 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(flex: 2),
+              const Spacer(flex: 2),
               Image.asset(
                 AssetsKeys.appLogo,
                 height: SharedSize.logoImageHeight,
               ),
-              Spacer(),
+              const Spacer(),
               Text(
                 'login_title'.tr(),
                 style: const TextStyle(
@@ -62,7 +59,6 @@ class LoginScreen extends StatelessWidget {
                   color: ColorsConstants.primaryColor,
                 ),
               ),
-
               const MyVerticalSpacer(
                 height: 24,
               ),
@@ -134,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                             MyTextFormField(
                               labelText: 'login_password_field'.tr(),
                               controller: loginCubit.passwordController,
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: const Icon(Icons.lock),
                               obscureText: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -149,7 +145,7 @@ class LoginScreen extends StatelessWidget {
                               child: TextButton(
                                 onPressed: () {},
                                 child: Text('login_forgot_password'.tr(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: ColorsConstants.primaryColor)),
                               ),
                             ),
@@ -162,7 +158,7 @@ class LoginScreen extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black26,
                                 ),
-                                child: Text(
+                                child: const Text(
                                   'مستخدم',
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -179,12 +175,12 @@ class LoginScreen extends StatelessWidget {
                                       }
                                     },
                               child: state is LoginLoadingState
-                                  ? CircularProgressIndicator(
+                                  ? const MyLoader(
                                       color: Colors.white,
                                     )
                                   : Text(
                                       'login_login_button'.tr(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
@@ -196,7 +192,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Spacer(flex: 2),
+              const Spacer(flex: 2),
             ],
           ),
         ),

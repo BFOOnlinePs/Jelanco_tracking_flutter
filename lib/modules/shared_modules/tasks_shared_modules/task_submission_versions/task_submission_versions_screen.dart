@@ -19,7 +19,7 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
+      appBar: const MyAppBar(
         title: 'تعديلات التسليم',
       ),
       body: BlocProvider(

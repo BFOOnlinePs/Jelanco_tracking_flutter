@@ -107,7 +107,7 @@ class AddTaskScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                   ],
                                 ),
                                 GestureDetector(
@@ -135,7 +135,7 @@ class AddTaskScreen extends StatelessWidget {
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       vertical: 15,
                                       horizontal: 10,
                                     ),
@@ -160,11 +160,11 @@ class AddTaskScreen extends StatelessWidget {
                                                   : addTaskCubit.selectedUsers
                                                   .map((user) => user.name)
                                                   .join(', '),
-                                              style: TextStyle(color: Colors.black54),
+                                              style: const TextStyle(color: Colors.black54),
                                             ),
                                           ),
                                         ),
-                                        Icon(Icons.arrow_forward),
+                                        const Icon(Icons.arrow_forward),
                                       ],
                                     )
 
@@ -193,6 +193,7 @@ class AddTaskScreen extends StatelessWidget {
                                       return 'add_task_content_field_required_validation'
                                           .tr();
                                     }
+                                    return null;
                                   },
                                 ),
                                 const MyVerticalSpacer(),
@@ -216,12 +217,12 @@ class AddTaskScreen extends StatelessWidget {
                                                 ? MyDateUtils.formatDateTime(
                                                     addTaskCubit.plannedStartTime!)
                                                 : ''),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
                                     ),
-                                    MyHorizontalSpacer(),
+                                    const MyHorizontalSpacer(),
                                     Expanded(
                                       child: MyTextFormField(
                                         titleText: 'add_task_end_time_field'.tr(),
@@ -239,7 +240,7 @@ class AddTaskScreen extends StatelessWidget {
                                                 ? MyDateUtils.formatDateTime(
                                                     addTaskCubit.plannedEndTime!)
                                                 : ''),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),

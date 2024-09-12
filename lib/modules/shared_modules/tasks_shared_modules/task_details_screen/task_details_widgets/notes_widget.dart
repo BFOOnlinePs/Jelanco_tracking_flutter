@@ -11,13 +11,13 @@ class NotesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      padding: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.all(10.0),
       width: double.infinity,
       decoration: BoxDecoration(
         color: ColorsConstants.primaryColor.withOpacity(0.01),
         borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               color: Colors.black12, blurRadius: 2.0, offset: Offset(0, 2)),
         ],
@@ -27,12 +27,12 @@ class NotesWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 color: ColorsConstants.primaryColor),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(value, style: TextStyle(color: Colors.grey[800], fontSize: 14)),
         ],
       ),

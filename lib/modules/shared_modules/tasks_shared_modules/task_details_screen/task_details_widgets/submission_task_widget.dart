@@ -20,7 +20,7 @@ class SubmissionTaskWidget extends StatelessWidget {
         width: double.infinity,
         color: Colors.grey[300],
         margin: const EdgeInsets.only(top: 2),
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

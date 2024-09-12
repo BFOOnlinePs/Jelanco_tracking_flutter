@@ -19,7 +19,7 @@ class SectionTitleWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: ColorsConstants.primaryColor,
@@ -29,7 +29,7 @@ class SectionTitleWidget extends StatelessWidget {
               ? Row(
                   children: [
                     Icon(statusIcon, color: status?.statusColor, size: 18),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Text(
                       status?.statusAr ?? '',
                       style:

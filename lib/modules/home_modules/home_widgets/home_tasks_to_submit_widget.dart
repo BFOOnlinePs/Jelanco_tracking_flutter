@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/core/constants/card_size.dart';
-import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/task_to_submit_card_widget.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/tasks_to_submit_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button_no_border.dart';
@@ -16,8 +13,8 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      margin: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,7 +26,7 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
               Text('مهام بانتظار التسليم'),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           homeCubit.getTasksToSubmitModel == null
@@ -42,13 +39,13 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
                         }),
                         Row(
                           children: [
-                            Spacer(),
+                            const Spacer(),
                             MyTextButtonNoBorder(
                                 onPressed: () {
                                   NavigationServices.navigateTo(
                                       context, TasksToSubmitScreen());
                                 },
-                                child: Text('عرض الكل')),
+                                child: const Text('عرض الكل')),
                           ],
                         ),
                       ],

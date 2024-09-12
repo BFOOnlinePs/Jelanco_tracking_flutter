@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 
 class LoaderWithDisable extends StatelessWidget {
   const LoaderWithDisable({super.key});
@@ -13,7 +14,7 @@ class LoaderWithDisable extends StatelessWidget {
           dismissible: false,
         ),
         const Center(
-          child: CircularProgressIndicator(),
+          child: MyLoader(),
         ),
       ],
     );

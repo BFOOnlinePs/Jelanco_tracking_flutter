@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyCheckBoxListTile extends StatelessWidget {
@@ -7,7 +6,7 @@ class MyCheckBoxListTile extends StatelessWidget {
   final Function(bool?)? onChanged;
   final Widget? subtitle;
 
-  const MyCheckBoxListTile({
+  const MyCheckBoxListTile({super.key, 
     required this.value,
     this.title,
     required this.onChanged,

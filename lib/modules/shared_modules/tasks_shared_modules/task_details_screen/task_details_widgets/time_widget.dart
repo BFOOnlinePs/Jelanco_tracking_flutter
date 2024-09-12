@@ -28,7 +28,7 @@ class TimeWidget extends StatelessWidget {
             children: [
               Text(
                 '$label:',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 10,
                   color: ColorsConstants.primaryColor,

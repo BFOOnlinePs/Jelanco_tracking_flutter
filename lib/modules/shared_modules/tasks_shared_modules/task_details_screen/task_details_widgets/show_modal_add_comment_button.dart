@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_widget.dart';
@@ -27,7 +26,7 @@ class ShowModalAddCommentButton extends StatelessWidget {
                       .bottom, // Adjust for keyboard
                 ),
                 child: Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -62,7 +61,7 @@ class ShowModalAddCommentButton extends StatelessWidget {
             ),
             Transform.rotate(
               angle: 3.14 * 1.25,
-              child: Icon(FontAwesomeIcons.locationArrow),
+              child: const Icon(FontAwesomeIcons.locationArrow),
             )
           ],
         ));

@@ -80,20 +80,20 @@ mixin PermissionsMixin<T> on Cubit<T> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("permission_needed").tr(),
+            const Text("permission_needed").tr(),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 openAppSettings();
               },
-              child: Text('permission_go_to_settings').tr(),
+              child: const Text('permission_go_to_settings').tr(),
             )
           ],
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text("permission_exit_button").tr(),
+            child: const Text("permission_exit_button").tr(),
           ),
         ],
       ),

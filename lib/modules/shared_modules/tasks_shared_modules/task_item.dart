@@ -5,7 +5,6 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
@@ -17,7 +16,7 @@ class TaskItem extends StatelessWidget {
 
   // final bool isAddedByUser;   // or use role and permissions as global
 
-  TaskItem({
+  const TaskItem({super.key, 
     required this.taskModel,
     // this.isAddedByUser = false,
   });
@@ -99,7 +98,7 @@ class TaskItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
                   Container(
@@ -129,7 +128,7 @@ class TaskItem extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text(
                           'تاريخ البدء:     ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
-                          style: TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ],
                     )
@@ -138,10 +137,10 @@ class TaskItem extends StatelessWidget {
                   ? Row(
                       children: [
                         const Icon(Icons.calendar_today, color: Colors.grey),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
                           'تاريخ الإنتهاء:  ${MyDateUtils.formatDateTime(taskModel.tPlanedEndTime)}',
-                          style: TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ],
                     )
@@ -149,18 +148,18 @@ class TaskItem extends StatelessWidget {
               taskModel.taskCategory != null
                   ? Column(
                       children: [
-                        MyVerticalSpacer(),
+                        const MyVerticalSpacer(),
                         Row(
                           children: [
-                            Icon(Icons.category, color: Colors.grey),
-                            SizedBox(width: 8),
+                            const Icon(Icons.category, color: Colors.grey),
+                            const SizedBox(width: 8),
                             Text('التصنيف: ${taskModel.taskCategory?.cName}'),
                           ],
                         ),
                       ],
                     )
                   : Container(),
-              MyVerticalSpacer(),
+              const MyVerticalSpacer(),
               Text(
                 'الموظفين المكلفين: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
                 style: const TextStyle(

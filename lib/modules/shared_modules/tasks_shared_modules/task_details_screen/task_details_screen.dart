@@ -18,12 +18,12 @@ class TaskDetailsScreen extends StatelessWidget {
   final int taskId;
   late TaskDetailsCubit taskDetailsCubit;
 
-  TaskDetailsScreen({required this.taskId});
+  TaskDetailsScreen({super.key, required this.taskId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
+      appBar: const MyAppBar(
         title: 'تفاصيل المهمة',
       ),
       body: BlocProvider(
@@ -36,7 +36,7 @@ class TaskDetailsScreen extends StatelessWidget {
             taskDetailsCubit = TaskDetailsCubit.get(context);
             return taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel ==
                     null
-                ? Center(
+                ? const Center(
                     child: MyLoader(),
                   )
                 : Stack(
@@ -102,13 +102,13 @@ class TaskDetailsScreen extends StatelessWidget {
                         ));
                   },
 
-                  label: Text(
+                  label: const Text(
                     'تسليم المهمة',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   // Add label text
-                  icon: Icon(Icons.check_circle_outline, color: Colors.white),
+                  icon: const Icon(Icons.check_circle_outline, color: Colors.white),
                   // Add icon
 
                   backgroundColor: ColorsConstants.primaryColor,
