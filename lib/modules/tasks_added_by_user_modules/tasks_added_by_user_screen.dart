@@ -22,61 +22,64 @@ class TasksAddedByUserScreen extends StatelessWidget {
               title: 'tasks_i_added_title'.tr(),
             )
           : null,
-      body: BlocConsumer<TasksAddedByUserCubit, TasksAddedByUserStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          TasksAddedByUserCubit tasksAddedByUserCubit =
-              TasksAddedByUserCubit.get(context);
-          return tasksAddedByUserCubit.getTasksAddedByUserModel == null
-              ? const Center(
-                  child: MyLoader(),
-                )
-              : Container(
-                  child: tasksAddedByUserCubit
-                          .getTasksAddedByUserModel!.tasks!.isEmpty
-                      ? Center(child: Text('tasks_i_added_no_tasks'.tr()))
-                      : MyRefreshIndicator(
-                          onRefresh: () async {
-                            await tasksAddedByUserCubit.getTasksAddedByUser();
-                          },
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: tasksAddedByUserCubit
-                                    .tasksAddedByUserList.length +
-                                (tasksAddedByUserCubit
-                                        .isTasksAddedByUserLastPage
-                                    ? 0
-                                    : 1),
-                            itemBuilder: (context, index) {
-                              if (index ==
-                                      tasksAddedByUserCubit
-                                          .tasksAddedByUserList.length &&
-                                  !tasksAddedByUserCubit
-                                      .isTasksAddedByUserLastPage) {
-                                if (!tasksAddedByUserCubit
-                                    .isTasksAddedByUserLoading) {
-                                  tasksAddedByUserCubit.getTasksAddedByUser(
-                                    page: tasksAddedByUserCubit
-                                            .getTasksAddedByUserModel!
-                                            .pagination!
-                                            .currentPage! +
-                                        1,
+      body: BlocProvider(
+        create: (context) => TasksAddedByUserCubit()..getTasksAddedByUser(),
+        child: BlocConsumer<TasksAddedByUserCubit, TasksAddedByUserStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            TasksAddedByUserCubit tasksAddedByUserCubit =
+                TasksAddedByUserCubit.get(context);
+            return tasksAddedByUserCubit.getTasksAddedByUserModel == null
+                ? const Center(
+                    child: MyLoader(),
+                  )
+                : Container(
+                    child: tasksAddedByUserCubit
+                            .getTasksAddedByUserModel!.tasks!.isEmpty
+                        ? Center(child: Text('tasks_i_added_no_tasks'.tr()))
+                        : MyRefreshIndicator(
+                            onRefresh: () async {
+                              await tasksAddedByUserCubit.getTasksAddedByUser();
+                            },
+                            child: ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: tasksAddedByUserCubit
+                                      .tasksAddedByUserList.length +
+                                  (tasksAddedByUserCubit
+                                          .isTasksAddedByUserLastPage
+                                      ? 0
+                                      : 1),
+                              itemBuilder: (context, index) {
+                                if (index ==
+                                        tasksAddedByUserCubit
+                                            .tasksAddedByUserList.length &&
+                                    !tasksAddedByUserCubit
+                                        .isTasksAddedByUserLastPage) {
+                                  if (!tasksAddedByUserCubit
+                                      .isTasksAddedByUserLoading) {
+                                    tasksAddedByUserCubit.getTasksAddedByUser(
+                                      page: tasksAddedByUserCubit
+                                              .getTasksAddedByUserModel!
+                                              .pagination!
+                                              .currentPage! +
+                                          1,
+                                    );
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
                                   );
                                 }
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
-                                );
-                              }
-                              return TaskItem(
-                                  taskModel: tasksAddedByUserCubit
-                                      .tasksAddedByUserList[index]);
-                            },
+                                return TaskItem(
+                                    taskModel: tasksAddedByUserCubit
+                                        .tasksAddedByUserList[index]);
+                              },
+                            ),
                           ),
-                        ),
-                );
-        },
+                  );
+          },
+        ),
       ),
     );
   }

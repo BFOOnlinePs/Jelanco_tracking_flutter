@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           // decoration: const BoxDecoration(
           //   gradient: LinearGradient(
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
               Spacer(),
               Text(
                 'login_title'.tr(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: ColorsConstants.primaryColor,
@@ -57,13 +57,13 @@ class LoginScreen extends StatelessWidget {
               ),
               Text(
                 'login_subtitle'.tr(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   color: ColorsConstants.primaryColor,
                 ),
               ),
-              // Spacer(),
-              MyVerticalSpacer(
+
+              const MyVerticalSpacer(
                 height: 24,
               ),
               Padding(

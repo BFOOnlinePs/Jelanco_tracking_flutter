@@ -19,57 +19,61 @@ class AssignedTasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: showAppBar ? MyAppBar(title: 'assigned_tasks_title'.tr()) : null,
-      body: BlocConsumer<AssignedTasksCubit, AssignedTasksStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          assignedTasksCubit = AssignedTasksCubit.get(context);
-          return assignedTasksCubit.getTasksAssignedToUserModel == null
-              ? const Center(child: MyLoader())
-              : Container(
-                  child: assignedTasksCubit
-                          .getTasksAssignedToUserModel!.tasks!.isEmpty
-                      ? Center(child: Text('assigned_tasks_no_tasks'.tr()))
-                      : MyRefreshIndicator(
-                          onRefresh: () async {
-                            await assignedTasksCubit.getAssignedTasks();
-                          },
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: assignedTasksCubit
-                                    .tasksAssignedToUserList.length +
-                                (assignedTasksCubit.isTasksAssignedToUserLastPage
-                                    ? 0
-                                    : 1),
-                            itemBuilder: (context, index) {
-                              if (index ==
-                                      assignedTasksCubit
-                                          .tasksAssignedToUserList.length &&
-                                  !assignedTasksCubit
-                                      .isTasksAssignedToUserLastPage) {
-                                if (!assignedTasksCubit
-                                    .isTasksAssignedToUserLoading) {
-                                  assignedTasksCubit.getAssignedTasks(
-                                    page: assignedTasksCubit
-                                            .getTasksAssignedToUserModel!
-                                            .pagination!
-                                            .currentPage! +
-                                        1,
+      body: BlocProvider(
+        create: (context) => AssignedTasksCubit()..getAssignedTasks(),
+        child: BlocConsumer<AssignedTasksCubit, AssignedTasksStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            assignedTasksCubit = AssignedTasksCubit.get(context);
+            return assignedTasksCubit.getTasksAssignedToUserModel == null
+                ? const Center(child: MyLoader())
+                : Container(
+                    child: assignedTasksCubit
+                            .getTasksAssignedToUserModel!.tasks!.isEmpty
+                        ? Center(child: Text('assigned_tasks_no_tasks'.tr()))
+                        : MyRefreshIndicator(
+                            onRefresh: () async {
+                              await assignedTasksCubit.getAssignedTasks();
+                            },
+                            child: ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: assignedTasksCubit
+                                      .tasksAssignedToUserList.length +
+                                  (assignedTasksCubit
+                                          .isTasksAssignedToUserLastPage
+                                      ? 0
+                                      : 1),
+                              itemBuilder: (context, index) {
+                                if (index ==
+                                        assignedTasksCubit
+                                            .tasksAssignedToUserList.length &&
+                                    !assignedTasksCubit
+                                        .isTasksAssignedToUserLastPage) {
+                                  if (!assignedTasksCubit
+                                      .isTasksAssignedToUserLoading) {
+                                    assignedTasksCubit.getAssignedTasks(
+                                      page: assignedTasksCubit
+                                              .getTasksAssignedToUserModel!
+                                              .pagination!
+                                              .currentPage! +
+                                          1,
+                                    );
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
                                   );
                                 }
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
-                                );
-                              }
-                              return TaskItem(
-                                  taskModel: assignedTasksCubit
-                                      .tasksAssignedToUserList[index]);
-                            },
+                                return TaskItem(
+                                    taskModel: assignedTasksCubit
+                                        .tasksAssignedToUserList[index]);
+                              },
+                            ),
                           ),
-                        ),
-                );
-        },
+                  );
+          },
+        ),
       ),
     );
   }

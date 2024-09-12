@@ -16,33 +16,33 @@ class UserDataUtils {
         key: MyCacheKeys.userId,
         value: userLoginModel.user?.id,
       );
-      await CacheHelper.saveData(
-        key: MyCacheKeys.name,
-        value: userLoginModel.user?.name,
-      );
-      await CacheHelper.saveData(
-        key: MyCacheKeys.email,
-        value: userLoginModel.user?.email,
-      );
-      await CacheHelper.saveData(
-        key: MyCacheKeys.jobTitle,
-        value: userLoginModel.user?.jobTitle,
-      );
-      List<String> permissionsList =
-          userLoginModel.permissions!.map<String>((permission) {
-        return permission.name ?? '';
-      }).toList();
-
-      print('permissionsList: $permissionsList');
-      await CacheHelper.saveData(
-          key: MyCacheKeys.permissionsList, value: permissionsList);
+      // await CacheHelper.saveData(
+      //   key: MyCacheKeys.name,
+      //   value: userLoginModel.user?.name,
+      // );
+      // await CacheHelper.saveData(
+      //   key: MyCacheKeys.email,
+      //   value: userLoginModel.user?.email,
+      // );
+      // await CacheHelper.saveData(
+      //   key: MyCacheKeys.jobTitle,
+      //   value: userLoginModel.user?.jobTitle,
+      // );
+      // List<String> permissionsList =
+      //     userLoginModel.permissions!.map<String>((permission) {
+      //   return permission.name ?? '';
+      // }).toList();
+      //
+      // print('permissionsList: $permissionsList');
+      // await CacheHelper.saveData(
+      //     key: MyCacheKeys.permissionsList, value: permissionsList);
 
       UserDataConstants.token = userLoginModel.token;
       UserDataConstants.userId = userLoginModel.user!.id;
-      UserDataConstants.name = userLoginModel.user!.name;
-      UserDataConstants.email = userLoginModel.user!.email;
-      UserDataConstants.jobTitle = userLoginModel.user!.jobTitle;
-      UserDataConstants.permissionsList = permissionsList;
+      // UserDataConstants.name = userLoginModel.user!.name;
+      // UserDataConstants.email = userLoginModel.user!.email;
+      // UserDataConstants.jobTitle = userLoginModel.user!.jobTitle;
+      // UserDataConstants.permissionsList = permissionsList;
 
       // to give it an FCM token and save it in the database
       // await FirebaseApi().initNotification();

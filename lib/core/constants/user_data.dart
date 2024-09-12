@@ -1,6 +1,9 @@
 
+import '../../models/basic_models/user_model.dart';
+
 class UserDataConstants {
   static String? token;
+  static UserModel? userModel;
   static int? userId;
   static String? name;
   static String? image;

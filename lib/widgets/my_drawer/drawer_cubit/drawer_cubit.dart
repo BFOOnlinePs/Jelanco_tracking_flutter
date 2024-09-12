@@ -33,17 +33,19 @@ class DrawerCubit extends Cubit<DrawerStates> {
 
       CacheHelper.removeData(key: MyCacheKeys.token).then((_) {
         CacheHelper.removeData(key: MyCacheKeys.userId);
-        CacheHelper.removeData(key: MyCacheKeys.name);
-        CacheHelper.removeData(key: MyCacheKeys.email);
-        CacheHelper.removeData(key: MyCacheKeys.jobTitle);
-        CacheHelper.removeData(key: MyCacheKeys.permissionsList);
+        // CacheHelper.removeData(key: MyCacheKeys.name);
+        // CacheHelper.removeData(key: MyCacheKeys.email);
+        // CacheHelper.removeData(key: MyCacheKeys.jobTitle);
+        // CacheHelper.removeData(key: MyCacheKeys.permissionsList);
       }).then((_) {
         // Clear static user data constants
         UserDataConstants.userId = null;
         UserDataConstants.name = null;
         UserDataConstants.email = null;
+        UserDataConstants.image = null;
         UserDataConstants.jobTitle = null;
         UserDataConstants.token = null;
+        UserDataConstants.userModel = null;
         UserDataConstants.permissionsList = [];
 
         // Restart the app to clear old state
@@ -51,8 +53,11 @@ class DrawerCubit extends Cubit<DrawerStates> {
         //   MaterialPageRoute(builder: (context) => LoginScreen()),
         //       (Route<dynamic> route) => false,
         // );
-        RestartWidget.restartApp(context);
-        // emit(LogoutSuccessState(userLogoutModel: userLogoutModel!));
+
+
+        // RestartWidget.restartApp(context);
+
+        emit(LogoutSuccessState(userLogoutModel: userLogoutModel!));
       });
     }).catchError((error) {
       emit(LogoutErrorState(error: error.toString()));

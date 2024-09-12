@@ -19,33 +19,33 @@ class HomeAddSubmissionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // task id = -1, since the submission has no task
         NavigationServices.navigateTo(
-            context,
-            AddTaskSubmissionScreen(
-                getDataCallback: (taskSubmissionModel) {
-                  print('call the data');
-                  homeCubit.getUserSubmissions();
-                  homeCubit.getTasksToSubmit(
-                    perPage: 3,
-                    loadingState: GetTasksToSubmitLoadingState(),
-                    successState: GetTasksToSubmitSuccessState(),
-                    errorState: (error) => GetTasksToSubmitErrorState(error),
-                  );
-                  ScrollUtils.scrollPosition(
-                      scrollController: homeCubit.scrollController);
-                },
-                taskId: -1));
+          context,
+          AddTaskSubmissionScreen(
+            getDataCallback: (taskSubmissionModel) {
+              print('call the data');
+              homeCubit.getUserSubmissions();
+              homeCubit.getTasksToSubmit(
+                perPage: 3,
+                loadingState: GetTasksToSubmitLoadingState(),
+                successState: GetTasksToSubmitSuccessState(),
+                errorState: (error) => GetTasksToSubmitErrorState(error),
+              );
+              ScrollUtils.scrollPosition(
+                  scrollController: homeCubit.scrollController);
+            },
+            taskId: -1, // task id = -1, since the submission has no task
+          ),
+        );
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
         color: Colors.grey.shade300,
         child: Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
           ),
           decoration: BoxDecoration(
-            // border: Border.all(),
             color: Theme.of(context).scaffoldBackgroundColor,
           ),
           child: Column(
@@ -74,14 +74,14 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                             children: [
                               Text(
                                 UserDataConstants.name ?? '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
                                 UserDataConstants.jobTitle ?? '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                 ),
                               ),
@@ -93,13 +93,7 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
               TextField(
-                // onTap: (){
-                //   // task id = -1, since the submission has no task
-                //   NavigationServices.navigateTo(
-                //       context, AddTaskSubmissionScreen(taskId: -1));
-                // },
                 enabled: false,
                 decoration: InputDecoration(
                   isDense: true,
@@ -108,43 +102,39 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         TextFormFieldSizeConstants.borderRadius),
                   ),
-                  // Reduces the overall height and padding
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   hintText: "ماذا فعلت اليوم؟",
                 ),
               ),
-
-              Divider(
+              const Divider(
                 thickness: 0.2,
               ),
-
-              // Media Options
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MediaOptionWidget(
+                  const MediaOptionWidget(
                     icon: Icons.camera_alt,
                     label: 'كاميرا',
                     color: Colors.blue,
                     onTap: null,
                   ),
                   Container(width: 0.2, height: 26, color: Colors.grey),
-                  MediaOptionWidget(
+                  const MediaOptionWidget(
                     icon: Icons.image,
                     label: 'صورة',
                     color: Colors.green,
                     onTap: null,
                   ),
                   Container(width: 0.2, height: 26, color: Colors.grey),
-                  MediaOptionWidget(
+                  const MediaOptionWidget(
                     icon: Icons.video_camera_back,
                     label: 'فيديو',
                     color: Colors.red,
                     onTap: null,
                   ),
                   Container(width: 0.2, height: 26, color: Colors.grey),
-                  MediaOptionWidget(
+                  const MediaOptionWidget(
                     icon: Icons.attach_file,
                     label: 'ملف',
                     color: Colors.blue,
@@ -152,7 +142,7 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 6,
               ),
             ],

@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
@@ -17,9 +20,6 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 class AddCommentWidget extends StatelessWidget {
   final int taskId;
   final int taskSubmissionId;
-
-  // final CommentService? commentService;
-
   // call the function when pop
   final Function() whenCommentAdded; // call get data of the previous screen
 
@@ -30,7 +30,6 @@ class AddCommentWidget extends StatelessWidget {
     required this.taskId,
     required this.taskSubmissionId,
     required this.whenCommentAdded,
-    // required this.commentService
   });
 
   @override
@@ -40,13 +39,6 @@ class AddCommentWidget extends StatelessWidget {
       child: BlocConsumer<AddCommentCubit, AddCommentStates>(
         listener: (context, state) {
           if (state is AddCommentSuccessState) {
-            // SnackbarHelper.showSnackbar(
-            //   context: context,
-            //   snackBarStates: state.addTaskSubmissionCommentModel.status == true
-            //       ? SnackBarStates.success
-            //       : SnackBarStates.error,
-            //   message: state.addTaskSubmissionCommentModel.message!,
-            // );
             whenCommentAdded();
             Navigator.pop(context);
           }
@@ -76,10 +68,13 @@ class AddCommentWidget extends StatelessWidget {
                       CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.grey.withOpacity(0.12),
-                        // backgroundImage:
-                        //     NetworkImage('https://example.com/profile_pic.jpg'),
+                        backgroundImage: UserDataConstants.image != null
+                            ? NetworkImage(EndPointsConstants.profileStorage +
+                                UserDataConstants.image!)
+                            : const AssetImage(AssetsKeys.defaultProfileImage)
+                                as ImageProvider,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
 
                       // Comment Input Field
                       Expanded(
@@ -108,8 +103,8 @@ class AddCommentWidget extends StatelessWidget {
                   const SizedBox(height: 10),
                   state is AddCommentLoadingState
                       ? Container(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: LinearProgressIndicator(),
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: const LinearProgressIndicator(),
                         )
                       : Container(),
 
@@ -120,7 +115,7 @@ class AddCommentWidget extends StatelessWidget {
                       children: [
                         addCommentCubit.pickedImagesList.isEmpty
                             ? Container()
-                            : Container(
+                            : SizedBox(
                                 height: 150,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -133,19 +128,19 @@ class AddCommentWidget extends StatelessWidget {
                                             .deletedPickedImageFromList(
                                                 index: index);
                                       },
+                                      margin: const EdgeInsetsDirectional.only(
+                                          end: 10),
                                       child: Image.file(
                                         File(addCommentCubit
                                             .pickedImagesList[index].path),
-                                      ),
-                                      margin:
-                                          EdgeInsetsDirectional.only(end: 10)),
+                                      )),
                                   itemCount:
                                       addCommentCubit.pickedImagesList.length,
                                 ),
                               ),
                         addCommentCubit.pickedVideosList.isEmpty
                             ? Container()
-                            : Container(
+                            : SizedBox(
                                 height: 150,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -162,8 +157,8 @@ class AddCommentWidget extends StatelessWidget {
                                             .deletedPickedVideoFromList(
                                                 index: index);
                                       },
-                                      margin:
-                                          EdgeInsetsDirectional.only(end: 10),
+                                      margin: const EdgeInsetsDirectional.only(
+                                          end: 10),
                                       showTogglePlayPause: false,
                                       showVideoIcon: true,
                                     );
@@ -178,7 +173,7 @@ class AddCommentWidget extends StatelessWidget {
 
                   addCommentCubit.pickedFilesList.isEmpty
                       ? Container()
-                      : Container(
+                      : SizedBox(
                           height: addCommentCubit.pickedFilesList.length > 3
                               ? 200
                               : null,
@@ -191,12 +186,12 @@ class AddCommentWidget extends StatelessWidget {
                                   .split('/')
                                   .last;
                               return Container(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 16),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
                                   borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black12,
                                       offset: Offset(0, 2),
@@ -206,14 +201,14 @@ class AddCommentWidget extends StatelessWidget {
                                 ),
                                 child: ListTile(
                                   leading: IconButton(
-                                    icon: Icon(Icons.close),
+                                    icon: const Icon(Icons.close),
                                     onPressed: () => addCommentCubit
                                         .deletedPickedFileFromList(
                                             index: index),
                                   ),
                                   title: Text(
                                     fileName,
-                                    style: TextStyle(fontSize: 14),
+                                    style: const TextStyle(fontSize: 14),
                                   ),
                                   // subtitle: Text(pickedFiles[index].path),
                                 ),
@@ -227,10 +222,6 @@ class AddCommentWidget extends StatelessWidget {
                   Row(
                     children: [
                       TaskOptionsWidget(
-                        child: MediaOptionButton(
-                          icon: Icons.camera_alt_outlined,
-                          onPressed: null,
-                        ),
                         menuItems: [
                           MenuItemModel(
                             icon: Icons.image_outlined,
@@ -248,7 +239,7 @@ class AddCommentWidget extends StatelessWidget {
                             icon: Icons.video_camera_back_outlined,
                             label: 'إلتقاط فيديو',
                             iconColor: ColorsConstants.primaryColor,
-                            onTap: () { 
+                            onTap: () {
                               addCommentCubit.requestPermission(
                                   context: context,
                                   permissionType: PermissionType.camera,
@@ -257,6 +248,10 @@ class AddCommentWidget extends StatelessWidget {
                             },
                           ),
                         ],
+                        child: const MediaOptionButton(
+                          icon: Icons.camera_alt_outlined,
+                          onPressed: null,
+                        ),
                       ),
                       MediaOptionButton(
                         icon: Icons.image_outlined,
@@ -300,8 +295,6 @@ class AddCommentWidget extends StatelessWidget {
                             ? null
                             : () {
                                 addCommentCubit.addComment(
-                                  // commentService: commentService,
-
                                   taskId: taskId,
                                   taskSubmissionId: taskSubmissionId,
                                   parentId: -1,
@@ -326,7 +319,8 @@ class MediaOptionButton extends StatelessWidget {
   final IconData icon;
   final Function()? onPressed;
 
-  MediaOptionButton({required this.icon, required this.onPressed});
+  const MediaOptionButton(
+      {super.key, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -335,7 +329,7 @@ class MediaOptionButton extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: ColorsConstants.primaryColor),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           // Text(
           //   label,
           //   style: TextStyle(color: ColorsConstants.primaryColor),

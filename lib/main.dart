@@ -32,18 +32,18 @@ void main() async {
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
 
-  UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
-  UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
-  UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);
-  UserDataConstants.permissionsList =
-      CacheHelper.getData(key: MyCacheKeys.permissionsList);
+  // UserDataConstants.name = CacheHelper.getData(key: MyCacheKeys.name);
+  // UserDataConstants.email = CacheHelper.getData(key: MyCacheKeys.email);
+  // UserDataConstants.jobTitle = CacheHelper.getData(key: MyCacheKeys.jobTitle);
+  // UserDataConstants.permissionsList =
+  //     CacheHelper.getData(key: MyCacheKeys.permissionsList);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
-  print('name: ${UserDataConstants.name.toString()}');
-  print('email: ${UserDataConstants.email.toString()}');
-  print('jobTitle: ${UserDataConstants.jobTitle.toString()}');
-  print('permissionsList: ${UserDataConstants.permissionsList.toString()}');
+  // print('name: ${UserDataConstants.name.toString()}');
+  // print('email: ${UserDataConstants.email.toString()}');
+  // print('jobTitle: ${UserDataConstants.jobTitle.toString()}');
+  // print('permissionsList: ${UserDataConstants.permissionsList.toString()}');
 
   Widget homeWidget;
 
@@ -55,8 +55,9 @@ void main() async {
   }
 
   runApp(
-    RestartWidget(
-      child: EasyLocalization(
+    // RestartWidget(
+    //   child:
+      EasyLocalization(
         supportedLocales: Constants.locals,
         path: AssetsKeys.translations,
         fallbackLocale: Constants.defaultLocal,
@@ -65,40 +66,40 @@ void main() async {
           homeWidget: homeWidget,
         ),
       ),
-    ),
+    // ),
   );
 }
 
-class RestartWidget extends StatefulWidget {
-  RestartWidget({required this.child});
-
-  final Widget child;
-
-  static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
-  }
-
-  @override
-  _RestartWidgetState createState() => _RestartWidgetState();
-}
-
-class _RestartWidgetState extends State<RestartWidget> {
-  Key key = UniqueKey();
-
-  void restartApp() {
-    setState(() {
-      key = UniqueKey();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: key,
-      child: widget.child,
-    );
-  }
-}
+// class RestartWidget extends StatefulWidget {
+//   RestartWidget({required this.child});
+//
+//   final Widget child;
+//
+//   static void restartApp(BuildContext context) {
+//     context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+//   }
+//
+//   @override
+//   _RestartWidgetState createState() => _RestartWidgetState();
+// }
+//
+// class _RestartWidgetState extends State<RestartWidget> {
+//   Key key = UniqueKey();
+//
+//   void restartApp() {
+//     setState(() {
+//       key = UniqueKey();
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return KeyedSubtree(
+//       key: key,
+//       child: widget.child,
+//     );
+//   }
+// }
 
 class MyApp extends StatelessWidget {
   Widget homeWidget;
@@ -108,40 +109,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('homeWidget in MyApp: $homeWidget');
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => BottomNavBarCubit()),
-        BlocProvider(
-          create: (context) => HomeCubit()
-            ..getUserSubmissions()
-            ..getTasksToSubmit(
-              perPage: 3,
-              loadingState: GetTasksToSubmitLoadingState(),
-              successState: GetTasksToSubmitSuccessState(),
-              errorState: (error) => GetTasksToSubmitErrorState(error),
-            ),
-        ),
-        BlocProvider(
-            create: (context) =>
-                TasksAddedByUserCubit()..getTasksAddedByUser()),
-        BlocProvider(
-            create: (context) => AssignedTasksCubit()..getAssignedTasks()),
-      ],
-      child: MaterialApp(
-        title: 'جيلانكو - نظام التتبع',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
-          fontFamily: 'Tajawal',
-          useMaterial3: true,
-        ),
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        home: SplashScreen(
-          homeWidget: homeWidget,
-        ),
+    return MaterialApp(
+      title: 'جيلانكو - نظام التتبع',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
+        fontFamily: 'Tajawal',
+        useMaterial3: true,
+      ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      home: SplashScreen(
+        homeWidget: homeWidget,
       ),
     );
   }

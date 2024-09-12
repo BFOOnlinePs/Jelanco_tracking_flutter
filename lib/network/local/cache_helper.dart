@@ -12,7 +12,7 @@ class CacheHelper {
     required String key,
     required dynamic value,
   }) async {
-    print('value is List<String>: ${value is List<String>}');
+    // print('value is List<String>: ${value is List<String>}');
     if (value is String) return await sharedPreferences.setString(key, value);
     if (value is int) return await sharedPreferences.setInt(key, value);
     if (value is bool) return await sharedPreferences.setBool(key, value);
@@ -22,9 +22,9 @@ class CacheHelper {
   }
 
   static dynamic getData({required String key}) {
-    if(key == MyCacheKeys.permissionsList) {
-      return sharedPreferences.getStringList(key);
-    }
+    // if(key == MyCacheKeys.permissionsList) {
+    //   return sharedPreferences.getStringList(key);
+    // }
     return sharedPreferences.get(key);
   }
 

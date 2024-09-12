@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_user_submissions_model.dart';
+import 'package:jelanco_tracking_system/models/users_models/get_user_by_id_model.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
@@ -79,6 +81,23 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
     });
   }
 
+  Future<void> init({required int userId}) async {
+    try {
+      await getUserById(userId: userId);
+
+      // After getUserById is done, call the other functions
+      getUserSubmissions();
+      getTasksToSubmit(
+        perPage: 3,
+        loadingState: GetTasksToSubmitLoadingState(),
+        successState: GetTasksToSubmitSuccessState(),
+        errorState: (error) => GetTasksToSubmitErrorState(error),
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   void afterEditSubmission({
     required int oldSubmissionId,
     required final TaskSubmissionModel newSubmissionModel,
@@ -96,6 +115,36 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       print(userSubmissionsList[index].tsId);
     }
     emit(AfterEditSubmissionState());
+  }
+
+  GetUserByIdModel? getUserByIdModel;
+
+  Future<void> getUserById({required int userId}) async {
+    emit(GetUserByIdLoadingState());
+    await DioHelper.getData(
+      url: '${EndPointsConstants.users}/$userId',
+    ).then((value) {
+      print(value?.data);
+      getUserByIdModel = GetUserByIdModel.fromMap(value?.data);
+
+      UserDataConstants.userId = getUserByIdModel?.user?.id;
+      UserDataConstants.name = getUserByIdModel?.user?.name;
+      UserDataConstants.email = getUserByIdModel?.user?.email;
+      UserDataConstants.image = getUserByIdModel?.user?.image;
+      UserDataConstants.jobTitle = getUserByIdModel?.user?.jobTitle;
+
+      //
+      UserDataConstants.userModel = getUserByIdModel?.user;
+
+      UserDataConstants.permissionsList =
+          getUserByIdModel?.permissions?.map<String>((permission) {
+        return permission.name ?? '';
+      }).toList();
+
+      emit(GetUserByIdSuccessState());
+    }).catchError((error) {
+      emit(GetUserByIdErrorState());
+    });
   }
 
   @override
