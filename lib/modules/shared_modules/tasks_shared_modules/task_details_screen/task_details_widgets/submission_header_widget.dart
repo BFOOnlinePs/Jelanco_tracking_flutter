@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
@@ -50,22 +51,22 @@ class SubmissionHeaderWidget extends StatelessWidget {
                 Container(
                   // add border
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 0.5),
+                    border: Border.all(color: Colors.grey, width: 0.5.w),
                   ),
-                  padding: const EdgeInsets.all(2),
+                  padding: EdgeInsets.all(2.w),
                   child: Image(
                     image: submissionModel.submitterUser?.image != null
                         ? NetworkImage(EndPointsConstants.profileStorage +
                             submissionModel.submitterUser!.image!)
                         : const AssetImage(AssetsKeys.defaultProfileImage)
                             as ImageProvider,
-                    width: 34,
-                    height: 34,
+                    width: 34.w,
+                    height: 34.w,
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: 10.w,
                 ),
                 Expanded(
                   child: Column(
@@ -73,9 +74,9 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     children: [
                       Text(
                         '${submissionModel.submitterUser?.name}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                          fontSize: 12.sp,
                         ),
                       ),
                       Text(
@@ -83,8 +84,8 @@ class SubmissionHeaderWidget extends StatelessWidget {
                             submissionModel.createdAt),
                         // MyDateUtils.formatDateTime2(submissionModel.createdAt),
                         // submissionModel.createdAt.toString() ?? '',
-                        style: const TextStyle(
-                          fontSize: 10,
+                        style: TextStyle(
+                          fontSize: 10.sp,
                         ),
                       ),
                     ],

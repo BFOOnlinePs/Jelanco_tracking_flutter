@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
@@ -20,6 +21,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
+    print(MediaQuery.of(context).size.height);
+
     return Scaffold(
       appBar: MyAppBar(
         title: 'home_page_title'.tr(),
@@ -87,9 +91,9 @@ class HomeScreen extends StatelessWidget {
                                         1,
                                   );
                                 }
-                                return const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Center(
+                                return Padding(
+                                  padding: EdgeInsets.all(8.0.w),
+                                  child: const Center(
                                       child: MyLoader()),
                                 );
                               }

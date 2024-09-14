@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
@@ -17,15 +18,19 @@ class UserSubmissionWidget extends StatelessWidget {
   UserProfileCubit? userProfileCubit;
   TaskSubmissionModel submission;
 
-  UserSubmissionWidget({super.key, this.userProfileCubit, this.homeCubit, required this.submission});
+  UserSubmissionWidget(
+      {super.key,
+      this.userProfileCubit,
+      this.homeCubit,
+      required this.submission});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsetsDirectional.only(
-              start: 16, end: 16, top: 6, bottom: 0),
+          margin: EdgeInsetsDirectional.only(
+              start: 16.w, end: 16.w, top: 6.h, bottom: 0.h),
           child: InkWell(
             onTap: () {
               NavigationServices.navigateTo(context,
@@ -35,8 +40,10 @@ class UserSubmissionWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SubmissionHeaderWidget(
-                    submissionModel: submission, homeCubit: homeCubit, userProfileCubit: userProfileCubit,),
-
+                  submissionModel: submission,
+                  homeCubit: homeCubit,
+                  userProfileCubit: userProfileCubit,
+                ),
 
                 ContentWidget(submission.tsContent ?? '', isSubmission: true),
                 SubmissionMediaWidget(
@@ -96,7 +103,9 @@ class UserSubmissionWidget extends StatelessWidget {
                 //         // taskDetailsCubit: taskDetailsCubit,
                 //       )
                 //     : Container(),
-                const SizedBox(height: 8,),
+                const SizedBox(
+                  height: 8,
+                ),
                 if (SystemPermissions.hasPermission(
                     SystemPermissions.viewComments))
                   Row(

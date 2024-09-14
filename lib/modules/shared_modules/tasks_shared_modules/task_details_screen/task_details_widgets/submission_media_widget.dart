@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
@@ -22,7 +23,7 @@ class SubmissionMediaWidget extends StatelessWidget {
       children: [
         submission.submissionAttachmentsCategories!.files!.isNotEmpty
             ? Container(
-          margin: const EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.only(bottom: 10.h),
 
           child: FilesListViewWidget(
                   storagePath: EndPointsConstants.taskSubmissionsStorage,

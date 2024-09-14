@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 
@@ -30,7 +31,7 @@ class SubmissionTaskWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.grey[800],
-                fontSize: 12,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.start,

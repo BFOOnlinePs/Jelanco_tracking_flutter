@@ -77,7 +77,7 @@ class AddTaskScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: MyAppBar(
-             title: 'add_task_title'.tr(),
+              title: 'add_task_title'.tr(),
             ),
             body: Stack(
               children: [
@@ -97,13 +97,15 @@ class AddTaskScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text('add_task_assign_to_field'.tr(),
-                                            style: const TextStyle(
-                                                fontSize:
-                                                    SharedSize.textFiledTitleSize)),
-                                        const Text(
+                                            style: TextStyle(
+                                                fontSize: SharedSize
+                                                    .textFiledTitleSize)),
+                                        Text(
                                           ' *',
                                           style: TextStyle(
-                                              fontSize: 16, color: Colors.red),
+                                              fontSize:
+                                                  SharedSize.textFiledTitleSize,
+                                              color: Colors.red),
                                         ),
                                       ],
                                     ),
@@ -121,54 +123,58 @@ class AddTaskScreen extends StatelessWidget {
                                           return AssignedToScreen(
                                             isAddTask: true,
                                             onSelected: (selectedUsers) {
-                                              addTaskCubit
-                                                  .changeSelectedUsers(selectedUsers);
+                                              addTaskCubit.changeSelectedUsers(
+                                                  selectedUsers);
                                               // addTaskCubit.selectedUsers =
                                               //     selectedUsers;
                                             },
-                                            users:
-                                                addTaskCubit.getAllUsersModel!.users!,
-                                            selectedUsers: addTaskCubit.selectedUsers,
+                                            users: addTaskCubit
+                                                .getAllUsersModel!.users!,
+                                            selectedUsers:
+                                                addTaskCubit.selectedUsers,
                                           );
                                         },
                                       ),
                                     );
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15,
-                                      horizontal: 10,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(
-                                          ButtonSizeConstants.borderRadius),
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15,
+                                        horizontal: 10,
                                       ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Text(
-                                              addTaskCubit.selectedUsers.isEmpty
-                                                  ? 'add_task_assign_to_field'.tr()
-                                                  : addTaskCubit.selectedUsers
-                                                  .map((user) => user.name)
-                                                  .join(', '),
-                                              style: const TextStyle(color: Colors.black54),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(
+                                            ButtonSizeConstants.borderRadius),
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                addTaskCubit
+                                                        .selectedUsers.isEmpty
+                                                    ? 'add_task_assign_to_field'
+                                                        .tr()
+                                                    : addTaskCubit.selectedUsers
+                                                        .map(
+                                                            (user) => user.name)
+                                                        .join(', '),
+                                                style: const TextStyle(
+                                                    color: Colors.black54),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        const Icon(Icons.arrow_forward),
-                                      ],
-                                    )
-
-                                  ),
+                                          const Icon(Icons.arrow_forward),
+                                        ],
+                                      )),
                                 ),
                                 // addTaskCubit.addTaskModel != null &&
                                 addTaskCubit.isAddClicked &&
@@ -181,7 +187,8 @@ class AddTaskScreen extends StatelessWidget {
                                 const MyVerticalSpacer(),
                                 MyTextFormField(
                                   titleText: 'add_task_content_field'.tr(),
-                                  labelText: 'add_task_content_field_label'.tr(),
+                                  labelText:
+                                      'add_task_content_field_label'.tr(),
                                   controller: addTaskCubit.contentController,
                                   textInputAction: TextInputAction.newline,
                                   keyboardType: TextInputType.multiline,
@@ -201,21 +208,25 @@ class AddTaskScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText: 'add_task_start_time_field'.tr(),
+                                        titleText:
+                                            'add_task_start_time_field'.tr(),
                                         labelText:
-                                            'add_task_start_time_field_label'.tr(),
+                                            'add_task_start_time_field_label'
+                                                .tr(),
                                         readOnly: true,
-                                        onTap: () => addTaskCubit.selectDateTime(
-                                            context, true),
+                                        onTap: () => addTaskCubit
+                                            .selectDateTime(context, true),
                                         // validator: (value) =>
                                         //     addTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: addTaskCubit.plannedStartTime !=
+                                            text: addTaskCubit
+                                                        .plannedStartTime !=
                                                     null
                                                 ? MyDateUtils.formatDateTime(
-                                                    addTaskCubit.plannedStartTime!)
+                                                    addTaskCubit
+                                                        .plannedStartTime!)
                                                 : ''),
                                         style: const TextStyle(
                                           fontSize: 14,
@@ -225,20 +236,24 @@ class AddTaskScreen extends StatelessWidget {
                                     const MyHorizontalSpacer(),
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText: 'add_task_end_time_field'.tr(),
+                                        titleText:
+                                            'add_task_end_time_field'.tr(),
                                         labelText:
-                                            'add_task_end_time_field_label'.tr(),
+                                            'add_task_end_time_field_label'
+                                                .tr(),
                                         readOnly: true,
-                                        onTap: () => addTaskCubit.selectDateTime(
-                                            context, false),
+                                        onTap: () => addTaskCubit
+                                            .selectDateTime(context, false),
                                         // validator: (value) =>
                                         //     addTaskCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: addTaskCubit.plannedEndTime != null
+                                            text: addTaskCubit.plannedEndTime !=
+                                                    null
                                                 ? MyDateUtils.formatDateTime(
-                                                    addTaskCubit.plannedEndTime!)
+                                                    addTaskCubit
+                                                        .plannedEndTime!)
                                                 : ''),
                                         style: const TextStyle(
                                           fontSize: 14,
@@ -251,16 +266,17 @@ class AddTaskScreen extends StatelessWidget {
                                 MyDropdownButton<TaskCategoryModel>(
                                   label: 'add_task_category_field'.tr(),
                                   hint: 'add_task_category_field_hint'.tr(),
-                                  items: addTaskCubit
-                                          .getTaskCategoriesModel?.taskCategories ??
+                                  items: addTaskCubit.getTaskCategoriesModel
+                                          ?.taskCategories ??
                                       [],
                                   onChanged: (value) {
                                     addTaskCubit.changeSelectedCategory(
                                         newSelectedCategory: value);
                                   },
                                   value: addTaskCubit.selectedCategory,
-                                  displayText: (TaskCategoryModel taskCategory) =>
-                                      taskCategory.cName ?? '',
+                                  displayText:
+                                      (TaskCategoryModel taskCategory) =>
+                                          taskCategory.cName ?? '',
                                   // validator: (value) =>
                                   //     value == null ? 'Select a category' : null,
                                 ),
@@ -269,12 +285,10 @@ class AddTaskScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                  
                         MyElevatedButton(
                           onPressed: () {
                             addTaskCubit.changeIsAddClicked(true);
-                            if (addTaskCubit.formKey.currentState!
-                                .validate()) {
+                            if (addTaskCubit.formKey.currentState!.validate()) {
                               addTaskCubit.addTask();
                             }
                           },

@@ -46,7 +46,7 @@ class MyDropdownButton<T> extends StatelessWidget {
                 children: [
                   Text(
                     label!,
-                    style: const TextStyle(
+                    style:  TextStyle(
                         fontSize: SharedSize.textFiledTitleSize),
                   ),
                   isFieldRequired

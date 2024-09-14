@@ -3,6 +3,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
@@ -41,9 +42,12 @@ void main() async {
     // homeWidget = BottomNavBarScreens();
   }
 
-  runApp(
-    // RestartWidget(
-    //   child:
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((_){
+    runApp(
+      // RestartWidget(
+      //   child:
       EasyLocalization(
         supportedLocales: Constants.locals,
         path: AssetsKeys.translations,
@@ -52,16 +56,14 @@ void main() async {
         // to disable device preview, remove DevicePreview child
         child: DevicePreview(
           enabled: !kReleaseMode,
-          builder: (context) => ScreenUtilInit(
-            designSize: Size(360, 640),
-            builder: (context, child) => MyApp(
-              homeWidget: homeWidget,
-            ),
+          builder: (context) => MyApp(
+            homeWidget: homeWidget,
           ),
         ),
       ),
-    // ),
-  );
+      // ),
+    );
+  // });
 }
 
 // class RestartWidget extends StatefulWidget {
@@ -102,25 +104,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // to disable device preview, comment these 3 lines and uncomment the 'locale :context.locale' line
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
+    return ScreenUtilInit(
+      designSize: const Size(360, 750), // Xiaomi Redmi 13C ( 750 without status bar and bottom nav bar)
+      minTextAdapt: true,
+      builder: (context, child) =>  MaterialApp(
+        // to disable device preview, comment these 3 lines and uncomment the 'locale :context.locale' line
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
 
-      title: 'جيلانكو - نظام التتبع',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
-        fontFamily: 'Tajawal',
-        useMaterial3: true,
-      ),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      // locale: context.locale,
-      home: SplashScreen(
-        homeWidget: homeWidget,
+        title: 'جيلانكو - نظام التتبع',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
+          fontFamily: 'Tajawal',
+          useMaterial3: true,
+        ),
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        // locale: context.locale,
+        home: SplashScreen(
+          homeWidget: homeWidget,
+        ),
       ),
     );
   }

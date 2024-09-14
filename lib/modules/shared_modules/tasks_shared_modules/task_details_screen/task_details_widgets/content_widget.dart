@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ContentWidget extends StatefulWidget {
   final String value;
@@ -22,7 +23,7 @@ class _ContentWidgetState extends State<ContentWidget> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.only(top: 6),
+        padding:  EdgeInsets.only(top: 6.h),
         child: Column(
           children: [
             Text(
@@ -32,7 +33,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                   isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.grey[800],
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: isSubmission ? FontWeight.normal : FontWeight.bold,
               ),
               textAlign: TextAlign.start,

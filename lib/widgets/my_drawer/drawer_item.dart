@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final GestureTapCallback onTap;
 
-  const DrawerItem({super.key,
+  const DrawerItem({
+    super.key,
     required this.icon,
     required this.text,
     required this.onTap,
@@ -14,8 +16,14 @@ class DrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon),
-      title: Text(text),
+      leading: Icon(
+        icon,
+        size: 22.w,
+      ),
+      title: Text(
+        text,
+        style: TextStyle(fontSize: 14.sp),
+      ),
       onTap: onTap,
     );
   }

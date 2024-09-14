@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MediaOptionWidget extends StatelessWidget {
   final IconData icon;
@@ -19,11 +20,11 @@ class MediaOptionWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding:  EdgeInsets.symmetric(horizontal: 4.w),
         child: Row(
           children: [
-            Icon(icon, color: color, size: 28),
-            const SizedBox(width: 4),
+            Icon(icon, color: color, size: 24.sp),
+            SizedBox(width: 4.w),
             Text(
               label,
               style: const TextStyle(color: Colors.black),

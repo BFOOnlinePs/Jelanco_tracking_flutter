@@ -117,7 +117,7 @@ class EditTaskScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Row(
+                                 Row(
                                   children: [
                                     Text('الموظفين المكلفين',
                                         style: TextStyle(
@@ -125,7 +125,7 @@ class EditTaskScreen extends StatelessWidget {
                                     Text(
                                       ' *',
                                       style:
-                                          TextStyle(fontSize: 16, color: Colors.red),
+                                          TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
                                     ),
                                     SizedBox(height: 8.0),
                                   ],

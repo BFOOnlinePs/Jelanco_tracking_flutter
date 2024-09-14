@@ -68,14 +68,15 @@ class MyTextFormField extends StatelessWidget {
                       children: [
                         Text(
                           titleText!,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: SharedSize.textFiledTitleSize),
                         ),
                         isFieldRequired
                             ? Text(
                                 ' *',
                                 style: TextStyle(
-                                    fontSize: 16.sp, color: Colors.red),
+                                    fontSize: SharedSize.textFiledTitleSize,
+                                    color: Colors.red),
                               )
                             : Container(),
                       ],
@@ -93,6 +94,7 @@ class MyTextFormField extends StatelessWidget {
             decoration: InputDecoration(
               // labelText: labelText,
               hintText: labelText,
+              hintStyle: TextStyle(fontSize: 16.sp),
               filled: true,
               // fillColor: Colors.white,
               fillColor: Colors.white,
@@ -106,7 +108,7 @@ class MyTextFormField extends StatelessWidget {
               ),
 
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 12.0.h, horizontal: 20.0.w),
+                  EdgeInsets.symmetric(vertical: 10.0.w, horizontal: 20.0.w),
               suffixIcon: suffixIcon,
               prefix: prefix,
               prefixIcon: prefixIcon,

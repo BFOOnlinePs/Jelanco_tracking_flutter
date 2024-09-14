@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,10 +17,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title ?? '',
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white, fontSize: 20.sp),
       ),
       leading: leading,
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.white, size: 20.sp),
       centerTitle: true,
       actions: actions,
       // bottom: PreferredSize(

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
@@ -52,110 +53,118 @@ class MyDrawer extends StatelessWidget {
           DrawerCubit drawerCubit = DrawerCubit.get(context);
           return state is LogoutLoadingState
               ? const Center(child: MyLoader())
-              : Drawer(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: const BoxDecoration(
-                          gradient: ColorsConstants.myLinearGradient,
+              : SafeArea(
+                child: Drawer(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: const BoxDecoration(
+                            gradient: ColorsConstants.myLinearGradient,
+                          ),
+                          child: Column(
+                            children: [
+                              // CircleAvatar(
+                              //   radius: 40,
+                              //   backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                              // ),
+                              // const SizedBox(height: 26),
+                              Text(
+                                UserDataConstants.name ?? '',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                UserDataConstants.jobTitle ?? '',
+                                style:  TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12.sp,
+
+                                ),
+                              ),
+                              Text(
+                                UserDataConstants.email ?? '',
+                                style:  TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 10.sp,
+
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          children: [
-                            // CircleAvatar(
-                            //   radius: 40,
-                            //   backgroundImage: NetworkImage('https://via.placeholder.com/150'),
-                            // ),
-                            const SizedBox(height: 26),
-                            Text(
-                              UserDataConstants.name ?? '',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
+                        Expanded(
+                          child: ListView(
+                            padding: EdgeInsets.zero,
+                            children: [
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.addTask))
+                                // DrawerItem(
+                                //   icon: Icons.add_task,
+                                //   text: 'drawer_add_task_title'.tr(),
+                                //   onTap: () {
+                                //     NavigationServices.navigateTo(
+                                //       context,
+                                //       UserProfileScreen(),
+                                //     );
+                                //   },
+                                // ),
+                                DrawerItem(
+                                  icon: Icons.add_task,
+                                  text: 'drawer_add_task_title'.tr(),
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                      AddTaskScreen(),
+                                    );
+                                  },
+                                ),
+                              DrawerItem(
+                                icon: Icons.task_alt,
+                                text: 'drawer_tasks_i_added_title'.tr(),
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    const TasksAddedByUserScreen(),
+                                  );
+                                },
                               ),
-                            ),
-                            Text(
-                              UserDataConstants.jobTitle ?? '',
-                              style: const TextStyle(
-                                color: Colors.white70,
+                              DrawerItem(
+                                icon: Icons.task_alt,
+                                text: 'drawer_tasks_assigned_to_me_title'.tr(),
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    AssignedTasksScreen(),
+                                  );
+                                },
                               ),
-                            ),
-                            Text(
-                              UserDataConstants.email ?? '',
-                              style: const TextStyle(
-                                color: Colors.white70,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.zero,
-                          children: [
-                            if (SystemPermissions.hasPermission(
-                                SystemPermissions.addTask))
                               // DrawerItem(
-                              //   icon: Icons.add_task,
-                              //   text: 'drawer_add_task_title'.tr(),
+                              //   icon: Icons.logout,
+                              //   text: 'drawer_logout_title'.tr(),
                               //   onTap: () {
-                              //     NavigationServices.navigateTo(
-                              //       context,
-                              //       UserProfileScreen(),
-                              //     );
+                              //     drawerCubit.userLogout();
                               //   },
                               // ),
-                            DrawerItem(
-                              icon: Icons.add_task,
-                              text: 'drawer_add_task_title'.tr(),
-                              onTap: () {
-                                NavigationServices.navigateTo(
-                                  context,
-                                  AddTaskScreen(),
-                                );
-                              },
-                            ),
-                            DrawerItem(
-                              icon: Icons.task_alt,
-                              text: 'drawer_tasks_i_added_title'.tr(),
-                              onTap: () {
-                                NavigationServices.navigateTo(
-                                  context,
-                                  const TasksAddedByUserScreen(),
-                                );
-                              },
-                            ),
-                            DrawerItem(
-                              icon: Icons.task_alt,
-                              text: 'drawer_tasks_assigned_to_me_title'.tr(),
-                              onTap: () {
-                                NavigationServices.navigateTo(
-                                  context,
-                                  AssignedTasksScreen(),
-                                );
-                              },
-                            ),
-                            // DrawerItem(
-                            //   icon: Icons.logout,
-                            //   text: 'drawer_logout_title'.tr(),
-                            //   onTap: () {
-                            //     drawerCubit.userLogout();
-                            //   },
-                            // ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      DrawerItem(
-                        icon: Icons.logout,
-                        text: 'drawer_logout_title'.tr(),
-                        onTap: () {
-                          drawerCubit.userLogout(context);
-                        },
-                      ),
-                    ],
+                        DrawerItem(
+                          icon: Icons.logout,
+                          text: 'drawer_logout_title'.tr(),
+                          onTap: () {
+                            drawerCubit.userLogout(context);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                );
+              );
         },
       ),
     );

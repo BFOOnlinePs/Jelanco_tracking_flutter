@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/tasks_to_submit_modules/task_to_submit_card_widget.dart';
@@ -13,21 +14,24 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      margin: const EdgeInsets.only(top: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      margin: EdgeInsets.only(top: 10.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               SizedBox(
-                width: 6,
+                width: 6.w,
               ),
-              Text('مهام بانتظار التسليم'),
+              Text(
+                'مهام بانتظار التسليم',
+                style: TextStyle(fontSize: 14.sp),
+              ),
             ],
           ),
-          const SizedBox(
-            height: 6,
+          SizedBox(
+            height: 6.h,
           ),
           homeCubit.getTasksToSubmitModel == null
               ? const LinearProgressIndicator()
@@ -45,7 +49,10 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
                                   NavigationServices.navigateTo(
                                       context, TasksToSubmitScreen());
                                 },
-                                child: const Text('عرض الكل')),
+                                child: Text(
+                                  'عرض الكل',
+                                  style: TextStyle(fontSize: 14.sp),
+                                )),
                           ],
                         ),
                       ],

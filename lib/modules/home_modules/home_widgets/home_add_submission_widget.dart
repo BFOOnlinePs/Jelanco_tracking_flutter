@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
@@ -39,30 +40,33 @@ class HomeAddSubmissionWidget extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
         color: Colors.grey.shade300,
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.w,
           ),
           decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme
+                .of(context)
+                .scaffoldBackgroundColor,
           ),
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      padding: const EdgeInsetsDirectional.only(end: 12),
+                      padding: EdgeInsetsDirectional.only(end: 12.w),
                       child: CircleAvatar(
+                        radius: 24.w,
                         backgroundImage: UserDataConstants.image != null
                             ? NetworkImage(EndPointsConstants.profileStorage +
-                                UserDataConstants.image!)
+                            UserDataConstants.image!)
                             : const AssetImage(AssetsKeys.defaultProfileImage)
-                                as ImageProvider,
+                        as ImageProvider,
                       ),
                     ),
                     Expanded(
@@ -74,15 +78,15 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                             children: [
                               Text(
                                 UserDataConstants.name ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                 ),
                               ),
                               Text(
                                 UserDataConstants.jobTitle ?? '',
-                                style: const TextStyle(
-                                  fontSize: 12,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
                                 ),
                               ),
                             ],
@@ -103,12 +107,12 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                         TextFormFieldSizeConstants.borderRadius),
                   ),
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                   EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
                   hintText: "ماذا فعلت اليوم؟",
                 ),
               ),
-              const Divider(
-                thickness: 0.2,
+               Divider(
+                thickness: 0.2.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,21 +123,21 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                     color: Colors.blue,
                     onTap: null,
                   ),
-                  Container(width: 0.2, height: 26, color: Colors.grey),
+                  Container(width: 0.2.w, height: 26.h, color: Colors.grey),
                   const MediaOptionWidget(
                     icon: Icons.image,
                     label: 'صورة',
                     color: Colors.green,
                     onTap: null,
                   ),
-                  Container(width: 0.2, height: 26, color: Colors.grey),
+                  Container(width: 0.2.w, height: 26.h, color: Colors.grey),
                   const MediaOptionWidget(
                     icon: Icons.video_camera_back,
                     label: 'فيديو',
                     color: Colors.red,
                     onTap: null,
                   ),
-                  Container(width: 0.2, height: 26, color: Colors.grey),
+                  Container(width: 0.2.w, height: 26.h, color: Colors.grey),
                   const MediaOptionWidget(
                     icon: Icons.attach_file,
                     label: 'ملف',
@@ -142,8 +146,8 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 6,
+              SizedBox(
+                height: 6.h,
               ),
             ],
           ),
