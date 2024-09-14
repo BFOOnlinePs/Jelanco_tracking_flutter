@@ -59,7 +59,9 @@ dependencies:
   shared_preferences: ^2.3.2
   google_maps_flutter: ^2.5.3
 
+# added by dart fix --apply
   intl: any
+
 flutter_launcher_icons:
   android: true
   ios: true

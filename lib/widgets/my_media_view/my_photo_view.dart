@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-// not used
+// used when opining profile picture
 
 class MyPhotoView extends StatelessWidget {
   final String storagePath;
@@ -27,7 +27,7 @@ class MyPhotoView extends StatelessWidget {
       builder: (BuildContext context, int index) {
         return PhotoViewGalleryPageOptions(
           imageProvider: NetworkImage(storagePath + imagesUrls[index]),
-          initialScale: PhotoViewComputedScale.contained * 0.8,
+          initialScale: PhotoViewComputedScale.contained,
           heroAttributes: PhotoViewHeroAttributes(tag: imagesUrls[index]),
         );
       },

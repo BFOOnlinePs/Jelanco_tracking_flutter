@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 
@@ -55,7 +58,6 @@ class UserProfileScreen extends StatelessWidget {
                       slivers: [
                         SliverToBoxAdapter(
                           child: Container(
-                            // padding: const EdgeInsets.all(16.0),
                             margin: const EdgeInsetsDirectional.only(
                                 start: 10, end: 10, bottom: 10),
                             decoration: BoxDecoration(
@@ -79,55 +81,91 @@ class UserProfileScreen extends StatelessWidget {
                                     children: [
                                       Stack(
                                         children: [
-                                          CircleAvatar(
-                                            radius: 50,
-                                            backgroundColor: Colors.grey.shade300,
-                                            backgroundImage: userProfileCubit
-                                                        .getUserProfileByIdModel
-                                                        ?.userInfo
-                                                        ?.image !=
-                                                    null
-                                                ? NetworkImage(EndPointsConstants
-                                                        .profileStorage +
-                                                    userProfileCubit
-                                                        .getUserProfileByIdModel!
-                                                        .userInfo!
-                                                        .image!)
-                                                : const AssetImage(AssetsKeys
-                                                        .defaultProfileImage)
-                                                    as ImageProvider,
+                                          GestureDetector(
+                                            onTap: () {
+                                              userProfileCubit
+                                                          .getUserProfileByIdModel
+                                                          ?.userInfo
+                                                          ?.image !=
+                                                      null
+                                                  ? NavigationServices
+                                                      .navigateTo(
+                                                      context,
+                                                      MyPhotoView(
+                                                        imagesUrls: [
+                                                          userProfileCubit
+                                                                  .getUserProfileByIdModel
+                                                                  ?.userInfo
+                                                                  ?.image ??
+                                                              ''
+                                                        ],
+                                                        storagePath:
+                                                            EndPointsConstants
+                                                                .profileStorage,
+                                                        startedIndex: 0,
+                                                      ),
+                                                    )
+                                                  : null;
+                                            },
+                                            child: CircleAvatar(
+                                              radius: 50,
+                                              backgroundColor:
+                                                  Colors.grey.shade300,
+                                              backgroundImage: userProfileCubit
+                                                          .getUserProfileByIdModel
+                                                          ?.userInfo
+                                                          ?.image !=
+                                                      null
+                                                  ? NetworkImage(EndPointsConstants
+                                                          .profileStorage +
+                                                      userProfileCubit
+                                                          .getUserProfileByIdModel!
+                                                          .userInfo!
+                                                          .image!)
+                                                  : const AssetImage(AssetsKeys
+                                                          .defaultProfileImage)
+                                                      as ImageProvider,
+                                            ),
                                           ),
                                           Positioned(
                                             bottom: 0,
                                             right: 0,
-                                            child: Container(
-                                              decoration: const BoxDecoration(
-                                                color: ColorsConstants
-                                                    .primaryColor,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  userProfileCubit
-                                                      .requestPermission(
-                                                          context: context,
-                                                          permissionType:
-                                                              PermissionType
-                                                                  .storage,
-                                                          functionWhenGranted:
-                                                              userProfileCubit
-                                                                  .pickImageFromGallery);
-                                                },
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Icon(
-                                                    Icons.camera_alt_outlined,
-                                                    color: Colors.white,
-                                                    size: 20, // Icon size
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            child: UserDataConstants.userId ==
+                                                    userProfileCubit
+                                                        .getUserProfileByIdModel!
+                                                        .userInfo
+                                                        ?.id
+                                                ? Container(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: ColorsConstants
+                                                          .primaryColor,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        userProfileCubit.requestPermission(
+                                                            context: context,
+                                                            permissionType:
+                                                                PermissionType
+                                                                    .storage,
+                                                            functionWhenGranted:
+                                                                userProfileCubit
+                                                                    .pickImageFromGallery);
+                                                      },
+                                                      child: const Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8),
+                                                        child: Icon(
+                                                          Icons
+                                                              .camera_alt_outlined,
+                                                          color: Colors.white,
+                                                          size: 20, // Icon size
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(),
                                           ),
                                         ],
                                       ),
@@ -242,8 +280,7 @@ class UserProfileScreen extends StatelessWidget {
                                 }
                                 return const Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Center(
-                                      child: MyLoader()),
+                                  child: Center(child: MyLoader()),
                                 );
                               }
                               final submission = userProfileCubit
