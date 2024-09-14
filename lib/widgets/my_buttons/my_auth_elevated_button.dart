@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 
 class MyAuthElevatedButton extends StatelessWidget {
@@ -18,7 +19,7 @@ class MyAuthElevatedButton extends StatelessWidget {
           backgroundColor: WidgetStateProperty.all(ColorsConstants.primaryColor),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          padding:  EdgeInsets.symmetric(vertical: 12.0.h),
           child: child,
         ),
         // style: ButtonStyle(

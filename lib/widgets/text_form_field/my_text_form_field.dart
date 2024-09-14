@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 
@@ -27,30 +28,30 @@ class MyTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final TextStyle? style;
 
-  const MyTextFormField({super.key, 
-    this.controller,
-    this.initialValue,
-    this.labelText,
-    this.titleText,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.autofocus = false,
-    this.validator,
-    this.textInputAction,
-    this.focusNode,
-    this.onFieldSubmitted,
-    this.enabled = true,
-    this.maxLines = 1,
-    this.onChanged,
-    this.isFieldRequired = false,
-    this.suffixIcon,
-    this.onTap,
-    this.readOnly = false,
-    this.inputFormatters,
-    this.prefix,
-    this.prefixIcon,
-    this.style
-  });
+  const MyTextFormField(
+      {super.key,
+      this.controller,
+      this.initialValue,
+      this.labelText,
+      this.titleText,
+      this.obscureText = false,
+      this.keyboardType = TextInputType.text,
+      this.autofocus = false,
+      this.validator,
+      this.textInputAction,
+      this.focusNode,
+      this.onFieldSubmitted,
+      this.enabled = true,
+      this.maxLines = 1,
+      this.onChanged,
+      this.isFieldRequired = false,
+      this.suffixIcon,
+      this.onTap,
+      this.readOnly = false,
+      this.inputFormatters,
+      this.prefix,
+      this.prefixIcon,
+      this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +72,10 @@ class MyTextFormField extends StatelessWidget {
                               fontSize: SharedSize.textFiledTitleSize),
                         ),
                         isFieldRequired
-                            ? const Text(
+                            ? Text(
                                 ' *',
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.red),
+                                style: TextStyle(
+                                    fontSize: 16.sp, color: Colors.red),
                               )
                             : Container(),
                       ],
@@ -105,7 +106,7 @@ class MyTextFormField extends StatelessWidget {
               ),
 
               contentPadding:
-                  const EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
+                  EdgeInsets.symmetric(vertical: 12.0.h, horizontal: 20.0.w),
               suffixIcon: suffixIcon,
               prefix: prefix,
               prefixIcon: prefixIcon,
@@ -124,7 +125,6 @@ class MyTextFormField extends StatelessWidget {
             inputFormatters: inputFormatters,
             style: style,
           ),
-
         ],
       ),
     );

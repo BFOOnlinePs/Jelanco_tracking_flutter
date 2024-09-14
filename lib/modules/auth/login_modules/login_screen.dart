@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
@@ -46,24 +47,24 @@ class LoginScreen extends StatelessWidget {
               const Spacer(),
               Text(
                 'login_title'.tr(),
-                style: const TextStyle(
-                  fontSize: 32,
+                style:  TextStyle(
+                  fontSize: 32.sp,
                   fontWeight: FontWeight.bold,
                   color: ColorsConstants.primaryColor,
                 ),
               ),
               Text(
                 'login_subtitle'.tr(),
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: 18.sp,
                   color: ColorsConstants.primaryColor,
                 ),
               ),
-              const MyVerticalSpacer(
-                height: 24,
+              MyVerticalSpacer(
+                height: 24.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                padding:  EdgeInsets.symmetric(horizontal: 30.0.w),
                 child: BlocProvider(
                   create: (context) => LoginCubit(),
                   child: BlocConsumer<LoginCubit, LoginStates>(
@@ -126,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                                 return null;
                               },
                             ),
-                            const MyVerticalSpacer(),
+                            MyVerticalSpacer(height: 8.h,),
                             MyTextFormField(
                               labelText: 'login_password_field'.tr(),
                               controller: loginCubit.passwordController,
