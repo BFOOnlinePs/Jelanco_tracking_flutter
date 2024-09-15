@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -21,7 +22,10 @@ import '../../core/constants/button_size.dart';
 import 'add_task_widgets/assigned_to_screen.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({super.key});
+  // assigned users
+  List<UserModel>? assignedUsers = [];
+
+  AddTaskScreen({super.key, this.assignedUsers});
 
   late AddTaskCubit addTaskCubit;
 
