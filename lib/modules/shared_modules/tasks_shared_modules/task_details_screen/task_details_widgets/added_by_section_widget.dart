@@ -3,6 +3,7 @@ import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
 class AddedBySectionWidget extends StatelessWidget {
   final String addedByName;
@@ -25,24 +26,28 @@ class AddedBySectionWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    // add border
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 0.5),
                     ),
                     padding: const EdgeInsets.all(2),
-                    child: Image(
-                      image: image != null
-                          ? NetworkImage(
-                              EndPointsConstants.profileStorage + image!)
-                          : const AssetImage(AssetsKeys.defaultProfileImage)
-                              as ImageProvider,
-                      width: 34,
-                      height: 34,
-                      fit: BoxFit.cover,
-                    ),
+                    child: image != null
+                        ? MyCachedNetworkImage(
+                            imageUrl:
+                                EndPointsConstants.profileStorage + image!,
+                            width: 34,
+                            height: 34,
+                            fit: BoxFit.cover,
+                          )
+                        : Image(
+                            image:
+                                const AssetImage(AssetsKeys.defaultProfileImage)
+                                    as ImageProvider,
+                            width: 34,
+                            height: 34,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   const SizedBox(
                     width: 10,

@@ -12,6 +12,8 @@ import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
@@ -111,20 +113,29 @@ class UserProfileScreen extends StatelessWidget {
                                               radius: 50,
                                               backgroundColor:
                                                   Colors.grey.shade300,
-                                              backgroundImage: userProfileCubit
+                                              child: userProfileCubit
                                                           .getUserProfileByIdModel
                                                           ?.userInfo
                                                           ?.image !=
                                                       null
-                                                  ? NetworkImage(EndPointsConstants
-                                                          .profileStorage +
-                                                      userProfileCubit
-                                                          .getUserProfileByIdModel!
-                                                          .userInfo!
-                                                          .image!)
-                                                  : const AssetImage(AssetsKeys
-                                                          .defaultProfileImage)
-                                                      as ImageProvider,
+                                                  ? MyCachedNetworkImage(
+                                                      imageUrl: EndPointsConstants
+                                                              .profileStorage +
+                                                          userProfileCubit
+                                                              .getUserProfileByIdModel!
+                                                              .userInfo!
+                                                              .image!,
+                                                      imageBuilder: (context,
+                                                              imageProvider) =>
+                                                          MyCachedImageBuilder(
+                                                              imageProvider:
+                                                                  imageProvider),
+                                                      isCircle: true,
+                                                    )
+                                                  : Image.asset(
+                                                      AssetsKeys
+                                                          .defaultProfileImage,
+                                                    ),
                                             ),
                                           ),
                                           Positioned(

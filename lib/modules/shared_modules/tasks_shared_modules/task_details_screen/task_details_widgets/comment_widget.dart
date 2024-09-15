@@ -4,6 +4,8 @@ import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comment_media_widget.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
 class CommentWidget extends StatelessWidget {
   final TaskSubmissionCommentModel comment;
@@ -25,16 +27,19 @@ class CommentWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                      radius: 18,
-                      backgroundImage: comment.commentedByUser?.image !=
-                          null
-                          ? NetworkImage(EndPointsConstants
-                          .profileStorage +
-                          comment.commentedByUser!.image!)
-                          : const AssetImage(AssetsKeys
-                          .defaultProfileImage)
-                      as ImageProvider,
-
+                    radius: 18,
+                    child: comment.commentedByUser?.image != null
+                        ? MyCachedNetworkImage(
+                            imageUrl: EndPointsConstants.profileStorage +
+                                comment.commentedByUser!.image!,
+                            imageBuilder: (context, imageProvider) =>
+                                MyCachedImageBuilder(
+                                    imageProvider: imageProvider),
+                            isCircle: true,
+                          )
+                        : Image.asset(
+                            AssetsKeys.defaultProfileImage,
+                          ),
                   ),
                   const SizedBox(
                     width: 14,

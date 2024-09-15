@@ -63,7 +63,6 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 24.w,
                         backgroundColor: Colors.grey[300],
-                        // Optional, for better visibility if image is not loaded
                         child: UserDataConstants.image != null
                             ? MyCachedNetworkImage(
                                 imageUrl: EndPointsConstants.profileStorage +

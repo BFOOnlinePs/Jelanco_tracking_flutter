@@ -10,6 +10,8 @@ import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dar
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_states.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
@@ -17,6 +19,7 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 class AddCommentWidget extends StatelessWidget {
   final int taskId;
   final int taskSubmissionId;
+
   // call the function when pop
   final Function() whenCommentAdded; // call get data of the previous screen
 
@@ -65,11 +68,19 @@ class AddCommentWidget extends StatelessWidget {
                       CircleAvatar(
                         radius: 25,
                         backgroundColor: Colors.grey.withOpacity(0.12),
-                        backgroundImage: UserDataConstants.image != null
-                            ? NetworkImage(EndPointsConstants.profileStorage +
-                                UserDataConstants.image!)
-                            : const AssetImage(AssetsKeys.defaultProfileImage)
-                                as ImageProvider,
+                        child: UserDataConstants.image != null
+                            ? MyCachedNetworkImage(
+                                imageUrl: EndPointsConstants.profileStorage +
+                                    UserDataConstants.image!,
+                                imageBuilder: (context, imageProvider) =>
+                                    MyCachedImageBuilder(
+                                        imageProvider: imageProvider),
+                                isCircle: true,
+                              )
+                            : Image.asset(
+                                AssetsKeys.defaultProfileImage,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       const SizedBox(width: 10),
 
