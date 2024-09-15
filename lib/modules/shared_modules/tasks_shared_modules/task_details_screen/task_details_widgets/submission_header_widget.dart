@@ -17,6 +17,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
@@ -54,16 +55,22 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     border: Border.all(color: Colors.grey, width: 0.5.w),
                   ),
                   padding: EdgeInsets.all(2.w),
-                  child: Image(
-                    image: submissionModel.submitterUser?.image != null
-                        ? NetworkImage(EndPointsConstants.profileStorage +
-                            submissionModel.submitterUser!.image!)
-                        : const AssetImage(AssetsKeys.defaultProfileImage)
-                            as ImageProvider,
-                    width: 34.w,
-                    height: 34.w,
-                    fit: BoxFit.cover,
-                  ),
+                  child: submissionModel.submitterUser?.image != null
+                      ? MyCachedNetworkImage(
+                          imageUrl: EndPointsConstants.profileStorage +
+                              submissionModel.submitterUser!.image!,
+                          width: 34.w,
+                          height: 34.w,
+                          fit: BoxFit.cover,
+                        )
+                      : Image(
+                          image:
+                              const AssetImage(AssetsKeys.defaultProfileImage)
+                                  as ImageProvider,
+                          width: 34.w,
+                          height: 34.w,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 SizedBox(
                   width: 10.w,

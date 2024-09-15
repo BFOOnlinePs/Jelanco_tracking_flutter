@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 
 class SelectedImagesWidget extends StatelessWidget {
@@ -62,23 +63,27 @@ class SelectedImagesWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => MyImage(
-                        height: 100,
-                        showDeleteIcon: true,
-                        onDeletePressed: () {
-                          addTaskSubmissionCubit.deletedPickedImageFromList(
-                              index: index,
-                              taskSubmissionModel: taskSubmissionModel!);
-                        },
-                        margin: const EdgeInsetsDirectional.only(end: 10),
-                        child: Container(
-                          // height: 200,
-                          // width: 132,
-                          child: Image(
-                            image: NetworkImage(
-                                '${EndPointsConstants.taskSubmissionsStorage}${taskSubmissionModel!.submissionAttachmentsCategories!.images![index].aAttachment}'),
-                            // fit: BoxFit.cover,
-                          ),
-                        )),
+                      height: 100,
+                      showDeleteIcon: true,
+                      onDeletePressed: () {
+                        addTaskSubmissionCubit.deletedPickedImageFromList(
+                            index: index,
+                            taskSubmissionModel: taskSubmissionModel!);
+                      },
+                      margin: const EdgeInsetsDirectional.only(end: 10),
+                      child: Container(
+                        // height: 200,
+                        // width: 132,
+                        child: MyCachedNetworkImage(
+                          imageUrl: EndPointsConstants.taskSubmissionsStorage +
+                              taskSubmissionModel!
+                                  .submissionAttachmentsCategories!
+                                  .images![index]
+                                  .aAttachment!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     itemCount: taskSubmissionModel!
                         .submissionAttachmentsCategories!.images!.length,
                   ),

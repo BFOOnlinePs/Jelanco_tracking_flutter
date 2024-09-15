@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/files_list_view_widget.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_shimmer_image_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_and_video_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
@@ -23,13 +26,12 @@ class SubmissionMediaWidget extends StatelessWidget {
       children: [
         submission.submissionAttachmentsCategories!.files!.isNotEmpty
             ? Container(
-          margin: EdgeInsets.only(bottom: 10.h),
-
-          child: FilesListViewWidget(
+                margin: EdgeInsets.only(bottom: 10.h),
+                child: FilesListViewWidget(
                   storagePath: EndPointsConstants.taskSubmissionsStorage,
                   files: submission.submissionAttachmentsCategories!.files,
                 ),
-            )
+              )
             : Container(),
 
         submission.submissionAttachmentsCategories!.images!.isNotEmpty ||
@@ -80,10 +82,9 @@ class SubmissionMediaWidget extends StatelessWidget {
                           child: SizedBox(
                             height: 220,
                             width: 132,
-                            child: Image(
-                              image: NetworkImage(
-                                '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
-                              ),
+                            child: MyCachedNetworkImage(
+                              imageUrl:
+                                  '${EndPointsConstants.taskSubmissionsStorage}${submission.submissionAttachmentsCategories!.images![index].aAttachment}',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -134,8 +135,9 @@ class SubmissionMediaWidget extends StatelessWidget {
                                             .videos![videoIndex]
                                             .thumbnail !=
                                         null
-                                    ? Image.network(
-                                        EndPointsConstants.thumbnailStorage +
+                                    ? MyCachedNetworkImage(
+                                        imageUrl: EndPointsConstants
+                                                .thumbnailStorage +
                                             submission
                                                 .submissionAttachmentsCategories!
                                                 .videos![videoIndex]
@@ -157,7 +159,8 @@ class SubmissionMediaWidget extends StatelessWidget {
               )
             : Container(),
 
-        // separated image and video view
+        // separated image and video view (may i need later)
+
         // submission.submissionAttachmentsCategories!.images!.isNotEmpty
         //     ? Container(
         //         height: 220.0,

@@ -10,6 +10,8 @@ import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
 class HomeAddSubmissionWidget extends StatelessWidget {
   final HomeCubit homeCubit;
@@ -47,9 +49,7 @@ class HomeAddSubmissionWidget extends StatelessWidget {
             horizontal: 10.w,
           ),
           decoration: BoxDecoration(
-            color: Theme
-                .of(context)
-                .scaffoldBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           child: Column(
             children: [
@@ -62,11 +62,21 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                       padding: EdgeInsetsDirectional.only(end: 12.w),
                       child: CircleAvatar(
                         radius: 24.w,
-                        backgroundImage: UserDataConstants.image != null
-                            ? NetworkImage(EndPointsConstants.profileStorage +
-                            UserDataConstants.image!)
-                            : const AssetImage(AssetsKeys.defaultProfileImage)
-                        as ImageProvider,
+                        backgroundColor: Colors.grey[300],
+                        // Optional, for better visibility if image is not loaded
+                        child: UserDataConstants.image != null
+                            ? MyCachedNetworkImage(
+                                imageUrl: EndPointsConstants.profileStorage +
+                                    UserDataConstants.image!,
+                                imageBuilder: (context, imageProvider) =>
+                                    MyCachedImageBuilder(
+                                        imageProvider: imageProvider),
+                          isCircle: true,
+                              )
+                            : Image.asset(
+                                AssetsKeys.defaultProfileImage,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     Expanded(
@@ -107,11 +117,11 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                         TextFormFieldSizeConstants.borderRadius),
                   ),
                   contentPadding:
-                   EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+                      EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
                   hintText: "ماذا فعلت اليوم؟",
                 ),
               ),
-               Divider(
+              Divider(
                 thickness: 0.2.h,
               ),
               Row(

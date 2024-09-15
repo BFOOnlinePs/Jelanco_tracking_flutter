@@ -54,11 +54,14 @@ void main() async {
         fallbackLocale: Constants.defaultLocal,
         startLocale: Constants.defaultLocal,
         // to disable device preview, remove DevicePreview child
-        child: DevicePreview(
-          enabled: !kReleaseMode,
-          builder: (context) => MyApp(
-            homeWidget: homeWidget,
-          ),
+        // child: DevicePreview(
+        //   enabled: !kReleaseMode,
+        //   builder: (context) => MyApp(
+        //     homeWidget: homeWidget,
+        //   ),
+        // ),
+        child: MyApp(
+          homeWidget: homeWidget,
         ),
       ),
       // ),
@@ -66,36 +69,6 @@ void main() async {
   // });
 }
 
-// class RestartWidget extends StatefulWidget {
-//   RestartWidget({required this.child});
-//
-//   final Widget child;
-//
-//   static void restartApp(BuildContext context) {
-//     context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
-//   }
-//
-//   @override
-//   _RestartWidgetState createState() => _RestartWidgetState();
-// }
-//
-// class _RestartWidgetState extends State<RestartWidget> {
-//   Key key = UniqueKey();
-//
-//   void restartApp() {
-//     setState(() {
-//       key = UniqueKey();
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return KeyedSubtree(
-//       key: key,
-//       child: widget.child,
-//     );
-//   }
-// }
 
 class MyApp extends StatelessWidget {
   Widget homeWidget;
@@ -109,9 +82,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) =>  MaterialApp(
         // to disable device preview, comment these 3 lines and uncomment the 'locale :context.locale' line
-        useInheritedMediaQuery: true,
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
+        // useInheritedMediaQuery: true,
+        // locale: DevicePreview.locale(context),
+        // builder: DevicePreview.appBuilder,
 
         title: 'جيلانكو - نظام التتبع',
         debugShowCheckedModeBanner: false,
@@ -123,7 +96,7 @@ class MyApp extends StatelessWidget {
         ),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
-        // locale: context.locale,
+        locale: context.locale,
         home: SplashScreen(
           homeWidget: homeWidget,
         ),
