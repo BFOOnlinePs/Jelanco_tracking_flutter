@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categories_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
@@ -11,7 +12,7 @@ import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class AddTaskCubit extends Cubit<AddTaskStates>
-    with CategoriesMixin<AddTaskStates>, UsersMixin<AddTaskStates> {
+    with CategoriesMixin<AddTaskStates>, ManagerEmployeesMixin<AddTaskStates> {
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
@@ -70,13 +71,12 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   // initial user when add task to a specific user from profile screen
   void addInitialSelectedUser({required int userId}) {
     selectedUsers =
-        getAllUsersModel!.users!.where((user) => user.id == userId).toList();
+        getManagerEmployeesModel!.managerEmployees!.where((user) => user.id == userId).toList();
   }
 
   // after pop from AssignedToScreen
-  void changeSelectedUsers(List<UserModel> selectedUsersList) {
-    selectedUsers = selectedUsersList;
-    emit(ChangeSelectedUsersState());
+  void emitAfterReturn() {
+    emit(EmitAfterReturnState());
   }
 
   void changeSelectedCategory(

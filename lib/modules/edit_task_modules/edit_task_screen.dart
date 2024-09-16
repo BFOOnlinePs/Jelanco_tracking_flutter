@@ -44,10 +44,10 @@ class EditTaskScreen extends StatelessWidget {
           successState: CategoriesSuccessState(),
           errorState: (error) => CategoriesErrorState(error: error),
         )
-        ..getAllUsers(
-          loadingState: GetAllUsersLoadingState(),
-          successState: GetAllUsersSuccessState(),
-          errorState: (error) => GetAllUsersErrorState(error: error),
+        ..getManagerEmployees(
+          loadingState: GetManagerEmployeesLoadingState(),
+          successState: GetManagerEmployeesSuccessState(),
+          errorState: GetManagerEmployeesErrorState(),
         ),
       child: BlocConsumer<EditTaskCubit, EditTaskStates>(
         listener: (context, state) {
@@ -58,9 +58,10 @@ class EditTaskScreen extends StatelessWidget {
           //   // addTaskCubit.filteredUsers = addTaskCubit.users;
           // } else
 
-          if (state is GetAllUsersSuccessState) {
+          if (state is GetManagerEmployeesSuccessState) {
             // to display the old assigned to users
-            editTaskCubit.selectedUsers = editTaskCubit.getAllUsersModel!.users!
+            editTaskCubit.selectedUsers = editTaskCubit
+                .getManagerEmployeesModel!.managerEmployees!
                 .where((user) => taskModel.assignedToUsers!
                     .any((assignedUser) => assignedUser.id == user.id))
                 .toList();
@@ -89,11 +90,11 @@ class EditTaskScreen extends StatelessWidget {
               snackBarStates: SnackBarStates.error,
               message: state.error,
             );
-          } else if (state is GetAllUsersErrorState) {
+          } else if (state is GetManagerEmployeesErrorState) {
             SnackbarHelper.showSnackbar(
               context: context,
               snackBarStates: SnackBarStates.error,
-              message: state.error,
+              message: 'ERROR !',
             );
           }
         },
@@ -117,21 +118,25 @@ class EditTaskScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Row(
+                                Row(
                                   children: [
                                     Text('الموظفين المكلفين',
                                         style: TextStyle(
-                                            fontSize: SharedSize.textFiledTitleSize)),
+                                            fontSize:
+                                                SharedSize.textFiledTitleSize)),
                                     Text(
                                       ' *',
-                                      style:
-                                          TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                      style: TextStyle(
+                                          fontSize:
+                                              SharedSize.textFiledTitleSize,
+                                          color: Colors.red),
                                     ),
                                     SizedBox(height: 8.0),
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: TextFormFieldSizeConstants.sizedBoxHeight,
+                                  height:
+                                      TextFormFieldSizeConstants.sizedBoxHeight,
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -141,20 +146,17 @@ class EditTaskScreen extends StatelessWidget {
                                         builder: (context) {
                                           return AssignedToScreen(
                                             isAddTask: true,
-                                            onSelected: (selectedUsers) {
-                                              editTaskCubit
-                                                  .changeSelectedUsers(selectedUsers);
-                                              // editTaskCubit.selectedUsers =
-                                              //     selectedUsers;
-                                            },
                                             users: editTaskCubit
-                                                .getAllUsersModel!.users!,
+                                                .getManagerEmployeesModel!
+                                                .managerEmployees!,
                                             selectedUsers:
                                                 editTaskCubit.selectedUsers,
                                           );
                                         },
                                       ),
-                                    );
+                                    ).then((value) {
+                                      editTaskCubit.emitAfterReturn();
+                                    });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -178,12 +180,14 @@ class EditTaskScreen extends StatelessWidget {
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Text(
-                                              editTaskCubit.selectedUsers.isEmpty
+                                              editTaskCubit
+                                                      .selectedUsers.isEmpty
                                                   ? 'الموظفين المكلفين'
                                                   : editTaskCubit.selectedUsers
                                                       .map((user) => user.name)
                                                       .join(', '),
-                                              style: const TextStyle(color: Colors.black54),
+                                              style: const TextStyle(
+                                                  color: Colors.black54),
                                             ),
                                           ),
                                         ),
@@ -216,17 +220,20 @@ class EditTaskScreen extends StatelessWidget {
                                         titleText: 'موعد البدء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
-                                        onTap: () => editTaskCubit.selectDateTime(
-                                            context, true, taskModel),
+                                        onTap: () =>
+                                            editTaskCubit.selectDateTime(
+                                                context, true, taskModel),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: editTaskCubit.plannedStartTime !=
+                                            text: editTaskCubit
+                                                        .plannedStartTime !=
                                                     null
                                                 ? MyDateUtils.formatDateTime(
-                                                    editTaskCubit.plannedStartTime)
+                                                    editTaskCubit
+                                                        .plannedStartTime)
                                                 : ''),
                                         style: const TextStyle(
                                           fontSize: 14,
@@ -239,16 +246,20 @@ class EditTaskScreen extends StatelessWidget {
                                         titleText: 'موعد الإنتهاء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
-                                        onTap: () => editTaskCubit.selectDateTime(
-                                            context, false, taskModel),
+                                        onTap: () =>
+                                            editTaskCubit.selectDateTime(
+                                                context, false, taskModel),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: editTaskCubit.plannedEndTime != null
+                                            text: editTaskCubit
+                                                        .plannedEndTime !=
+                                                    null
                                                 ? MyDateUtils.formatDateTime(
-                                                    editTaskCubit.plannedEndTime)
+                                                    editTaskCubit
+                                                        .plannedEndTime)
                                                 : ''),
                                         style: const TextStyle(
                                           fontSize: 14,
@@ -257,26 +268,24 @@ class EditTaskScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-
                                 MyDropdownButton<TaskCategoryModel>(
                                   label: 'التصنيف',
                                   hint: 'إختر التصنيف',
-                                  items: editTaskCubit
-                                          .getTaskCategoriesModel?.taskCategories ??
+                                  items: editTaskCubit.getTaskCategoriesModel
+                                          ?.taskCategories ??
                                       [],
                                   onChanged: (value) {
                                     editTaskCubit.changeSelectedCategory(
                                         newSelectedCategory: value);
                                   },
                                   value: editTaskCubit.selectedCategory,
-                                  displayText: (TaskCategoryModel taskCategory) =>
-                                      taskCategory.cName ?? '',
+                                  displayText:
+                                      (TaskCategoryModel taskCategory) =>
+                                          taskCategory.cName ?? '',
                                   // validator: (value) =>
                                   //     value == null ? 'Select a category' : null,
                                 ),
-
                                 const MyVerticalSpacer(),
-
                                 MyDropdownButton<TaskStatusEnum>(
                                   label: 'الحالة',
                                   displayText: (status) => status.statusAr,
@@ -288,10 +297,7 @@ class EditTaskScreen extends StatelessWidget {
                                   },
                                   items: TaskStatusEnum.getAllStatuses(),
                                 ),
-
                                 const MyVerticalSpacer(),
-
-
                               ],
                             ),
                           ),
@@ -305,7 +311,6 @@ class EditTaskScreen extends StatelessWidget {
                           },
                           isWidthFull: true,
                           buttonText: 'تعديل المهمة',
-
                         ),
                       ],
                     ),
@@ -313,7 +318,7 @@ class EditTaskScreen extends StatelessWidget {
                 ),
                 state is EditTaskLoadingState ||
                         editTaskCubit.getTaskCategoriesModel == null ||
-                        editTaskCubit.getAllUsersModel == null
+                        editTaskCubit.getManagerEmployeesModel == null
                     ? const LoaderWithDisable()
                     : Container()
               ],

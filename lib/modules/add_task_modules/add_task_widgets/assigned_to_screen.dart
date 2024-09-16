@@ -7,7 +7,6 @@ import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widget
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_states.dart';
 
 class AssignedToScreen extends StatelessWidget {
-  final Function(List<UserModel>) onSelected;
   final bool isAddTask;
   final List<UserModel> users;
   final List<UserModel> selectedUsers;
@@ -15,7 +14,6 @@ class AssignedToScreen extends StatelessWidget {
   AssignedToScreen({
     super.key,
     required this.isAddTask,
-    required this.onSelected,
     required this.users,
     required this.selectedUsers,
   });
@@ -73,64 +71,11 @@ class AssignedToScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          onSelected(assignedToCubit.selectedUsers);
+          // onSelected(assignedToCubit.selectedUsers);
           Navigator.pop(context);
         },
         child: const Icon(Icons.check),
       ),
     );
-
-    //   BlocConsumer<AddTaskCubit, AddTaskStates>(
-    //   listener: (context, state) {},
-    //   builder: (context, state) {
-    //     if (isAddTask) {
-    //       cubit = AddTaskCubit.get(context);
-    //     } else {
-    //       cubit = EditTaskCubit.get(context);
-    //     }
-    //     return Scaffold(
-    //       appBar: AppBar(
-    //         title: Text('Assign To'),
-    //       ),
-    //       body: Column(
-    //         children: [
-    //           Padding(
-    //             padding: const EdgeInsets.all(8.0),
-    //             child: TextField(
-    //               decoration: InputDecoration(
-    //                 hintText: 'Search users...',
-    //                 border: OutlineInputBorder(
-    //                   borderRadius: BorderRadius.circular(
-    //                       ButtonSizeConstants.borderRadius),
-    //                 ),
-    //               ),
-    //               onChanged: cubit.filterUsers,
-    //             ),
-    //           ),
-    //           Expanded(
-    //             child: ListView(
-    //               children: cubit.filteredUsers.map((user) {
-    //                 return CheckboxListTile(
-    //                   title: Text(user.name ?? 'name'),
-    //                   value: cubit.selectedUsers.contains(user),
-    //                   onChanged: (bool? value) {
-    //                     cubit.checkBoxChanged(value, user );
-    //                   },
-    //                 );
-    //               }).toList(),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       floatingActionButton: FloatingActionButton(
-    //         onPressed: () {
-    //           // widget.onSelected(cubit.selectedUsers);
-    //           Navigator.pop(context);
-    //         },
-    //         child: Icon(Icons.check),
-    //       ),
-    //     );
-    //   },
-    // );
   }
 }

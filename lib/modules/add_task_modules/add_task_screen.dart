@@ -38,16 +38,16 @@ class AddTaskScreen extends StatelessWidget {
           successState: CategoriesSuccessState(),
           errorState: (error) => CategoriesErrorState(error: error),
         )
-        ..getAllUsers(
-          loadingState: GetAllUsersLoadingState(),
-          successState: GetAllUsersSuccessState(),
-          errorState: (error) => GetAllUsersErrorState(error: error),
+        ..getManagerEmployees(
+          loadingState: GetManagerEmployeesLoadingState(),
+          successState: GetManagerEmployeesSuccessState(),
+          errorState: GetManagerEmployeesErrorState(),
         ),
       child: BlocConsumer<AddTaskCubit, AddTaskStates>(
         listener: (context, state) {
           print('hi');
           print(state);
-          if (state is GetAllUsersSuccessState) {
+          if (state is GetManagerEmployeesSuccessState) {
             // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
             // addTaskCubit.filteredUsers = addTaskCubit.users;
             if (initialSelectedUserId != null) {
@@ -72,11 +72,11 @@ class AddTaskScreen extends StatelessWidget {
               snackBarStates: SnackBarStates.error,
               message: state.error,
             );
-          } else if (state is GetAllUsersErrorState) {
+          } else if (state is GetManagerEmployeesErrorState) {
             SnackbarHelper.showSnackbar(
               context: context,
               snackBarStates: SnackBarStates.error,
-              message: state.error,
+              message: 'ERROR !!'
             );
           }
         },
@@ -131,18 +131,20 @@ class AddTaskScreen extends StatelessWidget {
                                           // addTaskCubit.filteredUsers = addTaskCubit.users;
                                           return AssignedToScreen(
                                             isAddTask: true,
-                                            onSelected: (selectedUsers) {
-                                              addTaskCubit.changeSelectedUsers(
-                                                  selectedUsers);
-                                            },
+                                            // onSelected: (selectedUsers) {
+                                            //   addTaskCubit.emitAfterReturn();
+                                            // },
                                             users: addTaskCubit
-                                                .getAllUsersModel!.users!,
+                                                .getManagerEmployeesModel!.managerEmployees!,
                                             selectedUsers:
                                                 addTaskCubit.selectedUsers,
                                           );
                                         },
                                       ),
-                                    );
+                                    ).then((_) {
+                                      // This code will run when the AnotherScreen is popped off the stack
+                                      addTaskCubit.emitAfterReturn();
+                                    });
                                   },
                                   child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -309,7 +311,7 @@ class AddTaskScreen extends StatelessWidget {
                 ),
                 state is AddTaskLoadingState ||
                         addTaskCubit.getTaskCategoriesModel == null ||
-                        addTaskCubit.getAllUsersModel == null
+                        addTaskCubit.getManagerEmployeesModel == null
                     ? const LoaderWithDisable()
                     : Container()
               ],

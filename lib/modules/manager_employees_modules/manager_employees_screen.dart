@@ -21,7 +21,12 @@ class ManagerEmployeesScreen extends StatelessWidget {
         title: 'الموظفين',
       ),
       body: BlocProvider(
-        create: (context) => ManagerEmployeesCubit()..getManagerEmployees(),
+        create: (context) => ManagerEmployeesCubit()
+          ..getManagerEmployees(
+            loadingState: GetManagerEmployeesLoadingState(),
+            successState: GetManagerEmployeesSuccessState(),
+            errorState: GetManagerEmployeesErrorState(),
+          ),
         child: BlocConsumer<ManagerEmployeesCubit, ManagerEmployeesStates>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -38,8 +43,11 @@ class ManagerEmployeesScreen extends StatelessWidget {
                       : Expanded(
                           child: MyRefreshIndicator(
                             onRefresh: () {
-                              return managerEmployeesCubit
-                                  .getManagerEmployees();
+                              return managerEmployeesCubit.getManagerEmployees(
+                                loadingState: GetManagerEmployeesLoadingState(),
+                                successState: GetManagerEmployeesSuccessState(),
+                                errorState: GetManagerEmployeesErrorState(),
+                              );
                             },
                             child: ListView.builder(
                               itemBuilder: (context, index) {

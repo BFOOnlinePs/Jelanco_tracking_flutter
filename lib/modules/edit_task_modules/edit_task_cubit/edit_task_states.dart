@@ -16,7 +16,7 @@ class CheckBoxChangedState extends EditTaskStates {}
 
 class PlannedTimePickedState extends EditTaskStates {}
 
-class ChangeSelectedUsersState extends EditTaskStates {}
+class EmitAfterReturnState extends EditTaskStates {}
 
 class ChangeSelectedCategoryState extends EditTaskStates {}
 
@@ -48,14 +48,10 @@ class CategoriesErrorState extends EditTaskStates {
   CategoriesErrorState({required this.error});
 }
 
-// Users Mixin
+// Manager Employees Mixin
 
-class GetAllUsersLoadingState extends EditTaskStates {}
+class GetManagerEmployeesLoadingState extends EditTaskStates {}
 
-class GetAllUsersSuccessState extends EditTaskStates {}
+class GetManagerEmployeesSuccessState extends EditTaskStates {}
 
-class GetAllUsersErrorState extends EditTaskStates {
-  final String error;
-
-  GetAllUsersErrorState({required this.error});
-}
+class GetManagerEmployeesErrorState extends EditTaskStates {}

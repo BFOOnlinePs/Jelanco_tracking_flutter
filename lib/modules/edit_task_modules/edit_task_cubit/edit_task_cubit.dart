@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categories_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
@@ -13,7 +14,7 @@ import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubi
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class EditTaskCubit extends Cubit<EditTaskStates>
-    with CategoriesMixin<EditTaskStates>, UsersMixin<EditTaskStates> {
+    with CategoriesMixin<EditTaskStates>, ManagerEmployeesMixin<EditTaskStates> {
   EditTaskCubit() : super(EditTaskInitialState());
 
   static EditTaskCubit get(context) => BlocProvider.of(context);
@@ -91,9 +92,8 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   }
 
   // after pop from AssignedToScreen
-  void changeSelectedUsers(List<UserModel> selectedUsersList) {
-    selectedUsers = selectedUsersList;
-    emit(ChangeSelectedUsersState());
+  void emitAfterReturn() {
+    emit(EmitAfterReturnState());
   }
 
   void changeSelectedCategory(

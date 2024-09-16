@@ -10,7 +10,7 @@ class FilterUsersOnSearchState extends AddTaskStates {}
 
 class CheckBoxChangedState extends AddTaskStates {}
 
-class ChangeSelectedUsersState extends AddTaskStates {}
+class EmitAfterReturnState extends AddTaskStates {}
 
 class ChangeSelectedCategoryState extends AddTaskStates {}
 
@@ -42,17 +42,11 @@ class CategoriesErrorState extends AddTaskStates {
   CategoriesErrorState({required this.error});
 }
 
-// Users Mixin
+// Manager Employees Mixin
 
-class GetAllUsersLoadingState extends AddTaskStates {}
+class GetManagerEmployeesLoadingState extends AddTaskStates {}
 
-class GetAllUsersSuccessState extends AddTaskStates {}
+class GetManagerEmployeesSuccessState extends AddTaskStates {}
 
-class GetAllUsersErrorState extends AddTaskStates {
-  final String error;
-
-  GetAllUsersErrorState({required this.error});
-}
-
-// Assigned To Mixin
+class GetManagerEmployeesErrorState extends AddTaskStates {}
 
