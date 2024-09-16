@@ -11,6 +11,7 @@ import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
+import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_cubit.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_states.dart';
@@ -113,16 +114,27 @@ class MyDrawer extends StatelessWidget {
                                 //     );
                                 //   },
                                 // ),
+
                                 DrawerItem(
-                                  icon: Icons.people_alt_outlined,
-                                  text: 'المستخدمين',
+                                  icon: Icons.today_rounded,
+                                  text: 'تسليمات اليوم',
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,
-                                      const ManagerEmployeesScreen(),
+                                      const TodaySubmissionsScreen(),
                                     );
                                   },
                                 ),
+                              DrawerItem(
+                                icon: Icons.people_alt_outlined,
+                                text: 'المستخدمين',
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    const ManagerEmployeesScreen(),
+                                  );
+                                },
+                              ),
                               DrawerItem(
                                 icon: Icons.add_task,
                                 text: 'drawer_add_task_title'.tr(),

@@ -34,6 +34,7 @@ class EndPointsConstants {
   static const String taskSubmissionWithTaskAndComments = 'task-and-comments';
   static const String taskSubmissionVersions =
       'versions'; // /task-submissions/106/versions
+  static const String todaySubmissions = '$taskSubmissions/today';
 
   // task submission comment
   static const String taskSubmissionComments = 'comments';

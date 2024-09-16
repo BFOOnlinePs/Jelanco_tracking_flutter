@@ -93,8 +93,7 @@ class HomeScreen extends StatelessWidget {
                                 }
                                 return Padding(
                                   padding: EdgeInsets.all(8.0.w),
-                                  child: const Center(
-                                      child: MyLoader()),
+                                  child: const Center(child: MyLoader()),
                                 );
                               }
                               final submission =

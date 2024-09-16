@@ -35,7 +35,7 @@ class ManagerEmployeesScreen extends StatelessWidget {
             return MyScreen(
               child: Column(
                 children: [
-                  const MyTitleScreenWidget(
+                  const MyScreenTitleWidget(
                     title: 'الموظفين الذين  لدي صلاحيات علهيم',
                   ),
                   managerEmployeesCubit.getManagerEmployeesModel == null
