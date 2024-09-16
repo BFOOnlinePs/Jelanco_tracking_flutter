@@ -22,10 +22,10 @@ import '../../core/constants/button_size.dart';
 import 'add_task_widgets/assigned_to_screen.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  // assigned users
-  List<UserModel>? assignedUsers = [];
+  final int?
+      initialSelectedUserId; // when add task to a specific user from profile screen
 
-  AddTaskScreen({super.key, this.assignedUsers});
+  AddTaskScreen({super.key, this.initialSelectedUserId});
 
   late AddTaskCubit addTaskCubit;
 
@@ -50,6 +50,10 @@ class AddTaskScreen extends StatelessWidget {
           if (state is GetAllUsersSuccessState) {
             // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
             // addTaskCubit.filteredUsers = addTaskCubit.users;
+            if (initialSelectedUserId != null) {
+              addTaskCubit.addInitialSelectedUser(
+                  userId: initialSelectedUserId!);
+            }
           } else if (state is AddTaskSuccessState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -129,8 +133,6 @@ class AddTaskScreen extends StatelessWidget {
                                             onSelected: (selectedUsers) {
                                               addTaskCubit.changeSelectedUsers(
                                                   selectedUsers);
-                                              // addTaskCubit.selectedUsers =
-                                              //     selectedUsers;
                                             },
                                             users: addTaskCubit
                                                 .getAllUsersModel!.users!,

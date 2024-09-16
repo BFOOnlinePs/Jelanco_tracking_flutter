@@ -67,6 +67,12 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     }
   }
 
+  // initial user when add task to a specific user from profile screen
+  void addInitialSelectedUser({required int userId}) {
+    selectedUsers =
+        getAllUsersModel!.users!.where((user) => user.id == userId).toList();
+  }
+
   // after pop from AssignedToScreen
   void changeSelectedUsers(List<UserModel> selectedUsersList) {
     selectedUsers = selectedUsersList;
@@ -93,11 +99,11 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     emit(AddTaskLoadingState());
     Map<String, dynamic> dataObject = {
       'content': contentController.text,
-      'start_time':
-          plannedStartTime?.toString(),
+      'start_time': plannedStartTime?.toString(),
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
-      'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
+      'assigned_to': FormatUtils.formatList<UserModel>(
+          selectedUsers, (user) => user?.id.toString()),
     };
     print(dataObject.values);
     DioHelper.postData(url: EndPointsConstants.tasks, data: dataObject)

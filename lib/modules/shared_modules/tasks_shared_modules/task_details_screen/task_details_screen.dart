@@ -88,19 +88,20 @@ class TaskDetailsScreen extends StatelessWidget {
               ? MyFloatingActionButton(
                   onPressed: () {
                     NavigationServices.navigateTo(
-                        context,
-                        AddTaskSubmissionScreen(
-                          taskId: taskId,
-                          getDataCallback: (taskSubmissionModel) {
-                            print('call the data');
-                            taskDetailsCubit.getTaskWithSubmissionsAndComments(
-                                taskId: taskId);
-                            // scroll to the beginning
-                            ScrollUtils.scrollPosition(
-                                scrollController:
-                                    taskDetailsCubit.scrollController);
-                          },
-                        ));
+                      context,
+                      AddTaskSubmissionScreen(
+                        taskId: taskId,
+                        getDataCallback: (taskSubmissionModel) {
+                          print('call the data');
+                          taskDetailsCubit.getTaskWithSubmissionsAndComments(
+                              taskId: taskId);
+                          // scroll to the beginning
+                          ScrollUtils.scrollPosition(
+                              scrollController:
+                                  taskDetailsCubit.scrollController);
+                        },
+                      ),
+                    );
                   },
                   labelText: 'تسليم المهمة',
                   icon: Icons.check_circle_outline,
