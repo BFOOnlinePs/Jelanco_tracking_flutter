@@ -99,6 +99,7 @@ class AddTaskScreen extends StatelessWidget {
                         Expanded(
                           child: SingleChildScrollView(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Column(
                                   children: [

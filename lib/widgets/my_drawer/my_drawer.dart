@@ -9,6 +9,7 @@ import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_cubit.dart';
@@ -54,7 +55,7 @@ class MyDrawer extends StatelessWidget {
           return state is LogoutLoadingState
               ? const Center(child: MyLoader())
               : SafeArea(
-                child: Drawer(
+                  child: Drawer(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: Column(
                       children: [
@@ -81,18 +82,16 @@ class MyDrawer extends StatelessWidget {
                               ),
                               Text(
                                 UserDataConstants.jobTitle ?? '',
-                                style:  TextStyle(
+                                style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 12.sp,
-
                                 ),
                               ),
                               Text(
                                 UserDataConstants.email ?? '',
-                                style:  TextStyle(
+                                style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 10.sp,
-
                                 ),
                               ),
                             ],
@@ -115,15 +114,25 @@ class MyDrawer extends StatelessWidget {
                                 //   },
                                 // ),
                                 DrawerItem(
-                                  icon: Icons.add_task,
-                                  text: 'drawer_add_task_title'.tr(),
+                                  icon: Icons.people_alt_outlined,
+                                  text: 'المستخدمين',
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,
-                                      AddTaskScreen(),
+                                      const ManagerEmployeesScreen(),
                                     );
                                   },
                                 ),
+                              DrawerItem(
+                                icon: Icons.add_task,
+                                text: 'drawer_add_task_title'.tr(),
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    AddTaskScreen(),
+                                  );
+                                },
+                              ),
                               DrawerItem(
                                 icon: Icons.task_alt,
                                 text: 'drawer_tasks_i_added_title'.tr(),
@@ -164,7 +173,7 @@ class MyDrawer extends StatelessWidget {
                       ],
                     ),
                   ),
-              );
+                );
         },
       ),
     );

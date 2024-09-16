@@ -2,6 +2,7 @@ class EndPointsConstants {
   static const String baseUrl = '$url/public/api/';
 
   static const String url = 'http://192.168.1.21/BFO/jelanco_tracking';
+
   // static const String url = 'http://103.37.85.56/BFO/jelanco_tracking';
   // static const String url = 'http://83.244.35.169/BFO/jelanco_tracking';
 
@@ -45,5 +46,9 @@ class EndPointsConstants {
   // users
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1
-  static const String updateProfile = '$userProfile/image'; // /users/profile/image
+  static const String updateProfile =
+      '$userProfile/image'; // /users/profile/image
+
+  // manager employees
+  static const String managerEmployees = '$users/employees';
 }
