@@ -40,9 +40,9 @@ class AddedBySectionWidget extends StatelessWidget {
                             height: 34,
                             fit: BoxFit.cover,
                           )
-                        : Image(
+                        : const Image(
                             image:
-                                const AssetImage(AssetsKeys.defaultProfileImage)
+                                AssetImage(AssetsKeys.defaultProfileImage)
                                     as ImageProvider,
                             width: 34,
                             height: 34,

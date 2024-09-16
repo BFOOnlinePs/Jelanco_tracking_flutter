@@ -77,10 +77,12 @@ class AddCommentWidget extends StatelessWidget {
                                         imageProvider: imageProvider),
                                 isCircle: true,
                               )
-                            : Image.asset(
-                                AssetsKeys.defaultProfileImage,
-                                fit: BoxFit.cover,
-                              ),
+                            : ClipOval(
+                              child: Image.asset(
+                                  AssetsKeys.defaultProfileImage,
+                                  // fit: BoxFit.cover,
+                                ),
+                            ),
                       ),
                       const SizedBox(width: 10),
 

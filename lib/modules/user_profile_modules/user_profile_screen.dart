@@ -15,6 +15,7 @@ import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_widgets/profile_card_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
@@ -130,14 +131,15 @@ class UserProfileScreen extends StatelessWidget {
 
       // if the current user can assign task to this user
       floatingActionButton: userId != UserDataConstants.userId
-          ? FloatingActionButton.extended(
+          ? MyFloatingActionButton(
               onPressed: () {
                 NavigationServices.navigateTo(
                   context,
                   AddTaskScreen(),
                 );
               },
-              label: Text('إضافة تكليف'),
+              labelText: 'إضافة تكليف',
+              icon: Icons.add_task,
             )
           : Container(),
     );

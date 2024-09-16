@@ -37,9 +37,11 @@ class CommentWidget extends StatelessWidget {
                                     imageProvider: imageProvider),
                             isCircle: true,
                           )
-                        : Image.asset(
-                            AssetsKeys.defaultProfileImage,
-                          ),
+                        : ClipOval(
+                          child: Image.asset(
+                              AssetsKeys.defaultProfileImage,
+                            ),
+                        ),
                   ),
                   const SizedBox(
                     width: 14,
