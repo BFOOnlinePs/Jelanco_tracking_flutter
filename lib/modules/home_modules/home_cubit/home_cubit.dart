@@ -137,6 +137,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
           getUserByIdModel?.permissions?.map<String>((permission) {
         return permission.name ?? '';
       }).toList();
+      print('permissionsList: ${UserDataConstants.permissionsList}');
 
       emit(GetUserByIdSuccessState());
     }).catchError((error) {

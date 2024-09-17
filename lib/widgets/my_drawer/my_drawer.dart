@@ -102,19 +102,21 @@ class MyDrawer extends StatelessWidget {
                           child: ListView(
                             padding: EdgeInsets.zero,
                             children: [
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.addTask))
-                                // DrawerItem(
-                                //   icon: Icons.add_task,
-                                //   text: 'drawer_add_task_title'.tr(),
-                                //   onTap: () {
-                                //     NavigationServices.navigateTo(
-                                //       context,
-                                //       UserProfileScreen(),
-                                //     );
-                                //   },
-                                // ),
+                              // if (SystemPermissions.hasPermission(
+                              //     SystemPermissions.addTask))
+                              // DrawerItem(
+                              //   icon: Icons.add_task,
+                              //   text: 'drawer_add_task_title'.tr(),
+                              //   onTap: () {
+                              //     NavigationServices.navigateTo(
+                              //       context,
+                              //       UserProfileScreen(),
+                              //     );
+                              //   },
+                              // ),
 
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.submitTask))
                                 DrawerItem(
                                   icon: Icons.today_rounded,
                                   text: 'تسليمات اليوم',
@@ -125,16 +127,18 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              DrawerItem(
-                                icon: Icons.people_alt_outlined,
-                                text: 'المستخدمين',
-                                onTap: () {
-                                  NavigationServices.navigateTo(
-                                    context,
-                                    const ManagerEmployeesScreen(),
-                                  );
-                                },
-                              ),
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.viewManagerUsers))
+                                DrawerItem(
+                                  icon: Icons.people_alt_outlined,
+                                  text: 'المستخدمين',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                      const ManagerEmployeesScreen(),
+                                    );
+                                  },
+                                ),
                               DrawerItem(
                                 icon: Icons.add_task,
                                 text: 'drawer_add_task_title'.tr(),

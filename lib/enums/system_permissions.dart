@@ -20,11 +20,12 @@ class SystemPermissions {
   static const String addRole = 'اضافة دور';
   static const String editRole = 'تعديل دور';
   static const String viewRoles = 'عرض الادوار';
+
   // not added in database yet
   static const String editSubmission = 'تعديل تسليم';
   static const String viewComments = 'عرض التعليقات';
   static const String viewMyEmployeesSubmissions = 'عرض تسليمات موظفيني'; // all submissions of my employees (even tasks assigned by another manager)
-
+  static const String viewManagerUsers = 'عرض مستخدمين المدير';
 
   static bool hasPermission(String permission) {
     return UserDataConstants.permissionsList!.contains(permission);
