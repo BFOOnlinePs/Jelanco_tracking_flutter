@@ -5,7 +5,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_comm
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/files_list_view_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_and_video_view.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_media_viewer.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
 
 class CommentMediaWidget extends StatelessWidget {
@@ -61,7 +61,7 @@ class CommentMediaWidget extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => MediaViewer(
+                                        builder: (context) => MyMediaViewer(
                                           storagePath: EndPointsConstants
                                               .taskSubmissionsCommentStorage,
                                           mediaList: comment
@@ -106,7 +106,7 @@ class CommentMediaWidget extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => MediaViewer(
+                                      builder: (context) => MyMediaViewer(
                                         storagePath: EndPointsConstants
                                             .taskSubmissionsCommentStorage,
                                         mediaList: comment
@@ -144,8 +144,8 @@ class CommentMediaWidget extends StatelessWidget {
                                                     .videos![videoIndex]
                                                     .thumbnail !=
                                                 null
-                                            ? Image.network(
-                                                EndPointsConstants
+                                            ? MyCachedNetworkImage(
+                                                imageUrl: EndPointsConstants
                                                         .thumbnailStorage +
                                                     comment
                                                         .commentAttachmentsCategories!

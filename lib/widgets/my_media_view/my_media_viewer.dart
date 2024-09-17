@@ -1,13 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:photo_view/photo_view.dart';
 
-class MediaViewer extends StatefulWidget {
+// photos and videos viewer
+class MyMediaViewer extends StatefulWidget {
   final String storagePath;
   final List<MediaItem> mediaList;
   final int startIndex;
 
-  const MediaViewer({
+  const MyMediaViewer({
     required this.storagePath,
     required this.mediaList,
     required this.startIndex,
@@ -15,10 +18,10 @@ class MediaViewer extends StatefulWidget {
   });
 
   @override
-  _MediaViewerState createState() => _MediaViewerState();
+  MyMediaViewerState createState() => MyMediaViewerState();
 }
 
-class _MediaViewerState extends State<MediaViewer> {
+class MyMediaViewerState extends State<MyMediaViewer> {
   late PageController _pageController;
 
   @override
@@ -45,7 +48,9 @@ class _MediaViewerState extends State<MediaViewer> {
           final mediaItem = widget.mediaList[index];
           if (mediaItem.type == MediaType.image) {
             return PhotoView(
-              imageProvider: NetworkImage(widget.storagePath + mediaItem.url),
+              // imageProvider: NetworkImage(widget.storagePath + mediaItem.url),
+              imageProvider: CachedNetworkImageProvider(
+                  widget.storagePath + mediaItem.url),
               backgroundDecoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),

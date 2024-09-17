@@ -19,8 +19,8 @@ class SubmissionTimeWidget extends StatelessWidget {
         children: [
           submission.tsActualStartTime != null
               ? Expanded(
-                  child: TimeWidget('وقت البدء الفعلي',
-                      submission.tsActualStartTime!, Icons.access_time),
+                  child: TimeWidget('وقت البدء', submission.tsActualStartTime!,
+                      Icons.access_time),
                 )
               : Container(),
           submission.tsActualStartTime != null &&
@@ -29,8 +29,8 @@ class SubmissionTimeWidget extends StatelessWidget {
               : Container(),
           submission.tsActualEndTime != null
               ? Expanded(
-                  child: TimeWidget('وقت الإنتهاء الفعلي',
-                      submission.tsActualEndTime!, Icons.access_time_outlined),
+                  child: TimeWidget('وقت الإنتهاء', submission.tsActualEndTime!,
+                      Icons.access_time_outlined),
                 )
               : Container(),
         ],

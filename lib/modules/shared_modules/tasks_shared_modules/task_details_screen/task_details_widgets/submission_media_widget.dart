@@ -8,7 +8,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_shimmer_image_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_and_video_view.dart';
+import 'package:jelanco_tracking_system/widgets/my_media_view/my_media_viewer.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
 
 class SubmissionMediaWidget extends StatelessWidget {
@@ -58,7 +58,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MediaViewer(
+                                builder: (context) => MyMediaViewer(
                                   storagePath:
                                       EndPointsConstants.taskSubmissionsStorage,
                                   mediaList: submission
@@ -100,7 +100,7 @@ class SubmissionMediaWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MediaViewer(
+                              builder: (context) => MyMediaViewer(
                                 storagePath:
                                     EndPointsConstants.taskSubmissionsStorage,
                                 mediaList: submission

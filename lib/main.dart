@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:device_preview/device_preview.dart';
+
+// import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
@@ -45,30 +44,29 @@ void main() async {
   // SystemChrome.setPreferredOrientations([
   //   DeviceOrientation.portraitUp,
   // ]).then((_){
-    runApp(
-      // RestartWidget(
-      //   child:
-      EasyLocalization(
-        supportedLocales: Constants.locals,
-        path: AssetsKeys.translations,
-        fallbackLocale: Constants.defaultLocal,
-        startLocale: Constants.defaultLocal,
-        // to disable device preview, remove DevicePreview child
-        // child: DevicePreview(
-        //   enabled: !kReleaseMode,
-        //   builder: (context) => MyApp(
-        //     homeWidget: homeWidget,
-        //   ),
-        // ),
-        child: MyApp(
-          homeWidget: homeWidget,
-        ),
-      ),
+  runApp(
+    // RestartWidget(
+    //   child:
+    EasyLocalization(
+      supportedLocales: Constants.locals,
+      path: AssetsKeys.translations,
+      fallbackLocale: Constants.defaultLocal,
+      startLocale: Constants.defaultLocal,
+      // to disable device preview, remove DevicePreview child
+      // child: DevicePreview(
+      //   enabled: !kReleaseMode,
+      //   builder: (context) => MyApp(
+      //     homeWidget: homeWidget,
+      //   ),
       // ),
-    );
+      child: MyApp(
+        homeWidget: homeWidget,
+      ),
+    ),
+    // ),
+  );
   // });
 }
-
 
 class MyApp extends StatelessWidget {
   Widget homeWidget;
@@ -78,9 +76,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 750), // Xiaomi Redmi 13C ( 750 without status bar and bottom nav bar)
+      designSize: const Size(360, 750),
+      // Xiaomi Redmi 13C ( 750 without status bar and bottom nav bar)
       minTextAdapt: true,
-      builder: (context, child) =>  MaterialApp(
+      builder: (context, child) => MaterialApp(
         // to disable device preview, comment these 3 lines and uncomment the 'locale :context.locale' line
         // useInheritedMediaQuery: true,
         // locale: DevicePreview.locale(context),

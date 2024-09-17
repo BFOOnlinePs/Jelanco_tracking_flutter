@@ -52,6 +52,8 @@ class ChangeContentMaxLinesState extends AddTaskSubmissionStates {}
 
 class PickMediaFromCameraState extends AddTaskSubmissionStates {}
 
+class PlannedTimePickedState extends AddTaskSubmissionStates {}
+
 // compress images mixin
 
 class CompressAllImagesLoadingState extends AddTaskSubmissionStates {}

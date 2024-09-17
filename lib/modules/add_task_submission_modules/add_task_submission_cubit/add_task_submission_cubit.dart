@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -294,6 +295,49 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(EmitLoadingState());
   }
 
+  DateTime? startTime;
+  DateTime? endTime;
+
+  Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
+    DateTime initialDate = isStartTime
+        ? (startTime ?? DateTime.now()) // when reopen
+        : (endTime ?? DateTime.now());
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      // firstDate: DateTime.now(),
+      // lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(initialDate),
+        // initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null) {
+        final selectedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        if (isStartTime) {
+          startTime = selectedDateTime;
+        } else {
+          endTime = selectedDateTime;
+        }
+        emit(PlannedTimePickedState());
+      }
+    }
+  }
+
   // add
 
   AddTaskSubmissionModel? addTaskSubmissionModel;
@@ -315,6 +359,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       'parent_id': taskSubmissionId, // -1 first submission
       'task_id': taskId,
       'content': contentController.text,
+      'start_time': startTime?.toString(),
+      'end_time': endTime?.toString(),
       'categories': FormatUtils.formatList<TaskCategoryModel>(
           selectedTaskCategoriesList, (category) => category?.cId.toString()),
       'start_latitude': position?.latitude,
@@ -382,11 +428,15 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       print('call the old data');
       contentController.text = taskSubmissionModel!.tsContent ?? '';
 
+      startTime = taskSubmissionModel.tsActualStartTime;
+      endTime = taskSubmissionModel.tsActualEndTime;
+
       selectedTaskCategoriesList =
           getTaskCategoriesModel!.taskCategories!.where((category) {
         return taskSubmissionModel.tsCategories!
             .contains(category.cId.toString());
       }).toList();
+
       for (var vid
           in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
               []) {

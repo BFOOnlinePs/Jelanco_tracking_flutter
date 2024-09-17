@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
@@ -18,6 +20,8 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
+import 'package:jelanco_tracking_system/widgets/my_spacers/my_horizontal_spacer.dart';
+import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
@@ -131,8 +135,72 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                     return null;
                                   },
                                 ),
+                                // const MyVerticalSpacer(),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: MyTextFormField(
+                                        titleText:
+                                            'add_task_start_time_field'.tr(),
+                                        labelText:
+                                            'add_task_start_time_field_label'
+                                                .tr(),
+                                        readOnly: true,
+                                        onTap: () => addTaskSubmissionCubit
+                                            .selectDateTime(context, true),
+                                        // validator: (value) =>
+                                        //     addTaskCubit.plannedStartTime == null
+                                        //         ? 'Select a start time'
+                                        //         : null,
+                                        controller: TextEditingController(
+                                            text: addTaskSubmissionCubit
+                                                        .startTime !=
+                                                    null
+                                                ? MyDateUtils.formatDateTime(
+                                                    addTaskSubmissionCubit
+                                                        .startTime!)
+                                                : ''),
+                                        style: TextStyle(
+                                          fontSize:
+                                              SharedSize.textFiledTitleSize,
+                                        ),
+                                      ),
+                                    ),
+                                    const MyHorizontalSpacer(),
+                                    Expanded(
+                                      child: MyTextFormField(
+                                        titleText:
+                                            'add_task_end_time_field'.tr(),
+                                        labelText:
+                                            'add_task_end_time_field_label'
+                                                .tr(),
+                                        readOnly: true,
+                                        onTap: () => addTaskSubmissionCubit
+                                            .selectDateTime(context, false),
+                                        // validator: (value) =>
+                                        //     addTaskSubmissionCubit.plannedEndTime == null
+                                        //         ? 'Select an end time'
+                                        //         : null,
+                                        controller: TextEditingController(
+                                            text: addTaskSubmissionCubit
+                                                        .endTime !=
+                                                    null
+                                                ? MyDateUtils.formatDateTime(
+                                                    addTaskSubmissionCubit
+                                                        .endTime!)
+                                                : ''),
+                                        style: TextStyle(
+                                          fontSize:
+                                              SharedSize.textFiledTitleSize,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // const MyVerticalSpacer(),
                                 Container(
-                                  margin: const EdgeInsets.only(top: 14, bottom: 16),
+                                  margin: const EdgeInsets.only(
+                                      top: 14, bottom: 16),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -269,7 +337,8 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       .getTaskCategoriesModel!.taskCategories!
                                       .map((TaskCategoryModel category) {
                                     return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 4),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 4),
                                       child: CheckboxListTile(
                                         title: Row(
                                           children: [
