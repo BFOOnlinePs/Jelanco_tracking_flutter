@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_cubit.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_states.dart';
@@ -23,31 +24,63 @@ class TodaySubmissionsScreen extends StatelessWidget {
         children: [
           const MyScreenTitleWidget(title: 'ما تم تسليمه اليوم'),
           BlocProvider(
-            create: (context) =>
-                TodaySubmissionsCubit()..getTodaySubmissions(),
-            child:
-                BlocConsumer<TodaySubmissionsCubit, TodaySubmissionsStates>(
+            create: (context) => TodaySubmissionsCubit()..getTodaySubmissions(),
+            child: BlocConsumer<TodaySubmissionsCubit, TodaySubmissionsStates>(
               listener: (context, state) {},
               builder: (context, state) {
                 todaySubmissionsCubit = TodaySubmissionsCubit.get(context);
-                return todaySubmissionsCubit.getTodaySubmissionsModel == null
-                    ? const Center(child: MyLoader())
-                    : Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) =>
-                              UserSubmissionWidget(
-                                  submission: todaySubmissionsCubit
-                                      .getTodaySubmissionsModel!
-                                      .submissions![index],
+                return Expanded(
+                  child: todaySubmissionsCubit.getTodaySubmissionsModel == null
+                      ? const Center(child: MyLoader())
+                      : todaySubmissionsCubit
+                              .getTodaySubmissionsModel!.submissions!.isEmpty
+                          ? const Center(
+                              child: Text(
+                              'لا توجد تسليمات',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ))
+                          : ListView.builder(
+                              itemBuilder: (context, index) {
+                                if (index ==
+                                        todaySubmissionsCubit
+                                            .todaySubmissionsList.length &&
+                                    !todaySubmissionsCubit
+                                        .isTodaySubmissionsLastPage) {
+                                  if (!todaySubmissionsCubit
+                                      .isTodaySubmissionsLoading) {
+                                    todaySubmissionsCubit.getTodaySubmissions(
+                                      page: todaySubmissionsCubit
+                                              .getTodaySubmissionsModel!
+                                              .pagination!
+                                              .currentPage! +
+                                          1,
+                                    );
+                                  }
+                                  return Padding(
+                                    padding: EdgeInsets.all(8.0.w),
+                                    child: const Center(child: MyLoader()),
+                                  );
+                                }
+                                final submission = todaySubmissionsCubit
+                                    .todaySubmissionsList[index];
 
-                              /// send the cubbiiit
-                                /// or find something for : edit task + comments count
-                                ///
-                              ),
-                          itemCount: todaySubmissionsCubit
-                              .getTodaySubmissionsModel!.submissions!.length,
-                        ),
-                      );
+                                return UserSubmissionWidget(
+                                  submission: submission,
+                                  todaySubmissionsCubit: todaySubmissionsCubit,
+
+                                  /// send the cubbiiit
+                                  /// or find something for : edit task + comments count
+                                  ///
+                                );
+                              },
+                              itemCount: todaySubmissionsCubit
+                                      .todaySubmissionsList.length +
+                                  (todaySubmissionsCubit
+                                          .isTodaySubmissionsLastPage
+                                      ? 0
+                                      : 1),
+                            ),
+                );
               },
             ),
           ),

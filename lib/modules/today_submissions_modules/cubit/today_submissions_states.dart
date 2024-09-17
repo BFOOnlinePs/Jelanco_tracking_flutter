@@ -7,3 +7,5 @@ class GetTodaySubmissionsLoadingState extends TodaySubmissionsStates {}
 class GetTodaySubmissionsSuccessState extends TodaySubmissionsStates {}
 
 class GetTodaySubmissionsErrorState extends TodaySubmissionsStates {}
+
+class AfterEditSubmissionState extends TodaySubmissionsStates {}

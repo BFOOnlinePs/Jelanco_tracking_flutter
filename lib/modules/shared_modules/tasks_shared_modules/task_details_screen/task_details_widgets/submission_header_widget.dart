@@ -15,25 +15,29 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_location_dialog.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_screen.dart';
+import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
+// the cubits are used for:
+// show the edited submission immediately (when back from edit submission screen)
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final HomeCubit? homeCubit;
   final TaskDetailsCubit? taskDetailsCubit;
   final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
   final UserProfileCubit? userProfileCubit;
+  final TodaySubmissionsCubit? todaySubmissionsCubit;
 
-  SubmissionHeaderWidget({
-    super.key,
-    required this.submissionModel,
-    this.homeCubit,
-    this.taskDetailsCubit,
-    this.taskSubmissionDetailsCubit,
-    this.userProfileCubit,
-  });
+  SubmissionHeaderWidget(
+      {super.key,
+      required this.submissionModel,
+      this.homeCubit,
+      this.taskDetailsCubit,
+      this.taskSubmissionDetailsCubit,
+      this.userProfileCubit,
+      this.todaySubmissionsCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +123,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                         taskSubmissionModel: submissionModel,
                         isEdit: true,
                         getDataCallback: (newSubmissionModel) {
-                          // shared with 3 screens (task details screen, submission details screen and home user submissions screen)
+                          // shared with 5 screens (task details screen, submission details screen and home user submissions screen)
                           // to edit the submission
                           if (homeCubit != null) {
                             homeCubit!.afterEditSubmission(
@@ -134,6 +138,10 @@ class SubmissionHeaderWidget extends StatelessWidget {
                                 newSubmissionModel: newSubmissionModel);
                           } else if (userProfileCubit != null) {
                             userProfileCubit!.afterEditSubmission(
+                                oldSubmissionId: submissionModel.tsId!,
+                                newSubmissionModel: newSubmissionModel);
+                          } else if (todaySubmissionsCubit != null) {
+                            todaySubmissionsCubit!.afterEditSubmission(
                                 oldSubmissionId: submissionModel.tsId!,
                                 newSubmissionModel: newSubmissionModel);
                           } else {

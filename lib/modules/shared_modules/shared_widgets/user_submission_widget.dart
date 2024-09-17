@@ -10,18 +10,24 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_media_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_task_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
+import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 class UserSubmissionWidget extends StatelessWidget {
+  // the cubits are used for:
+  // show the edited submission immediately (when back from edit submission screen)
+  // show the updated number of comments (when back from comment screen)
   HomeCubit? homeCubit;
   UserProfileCubit? userProfileCubit;
+  TodaySubmissionsCubit? todaySubmissionsCubit;
   TaskSubmissionModel submission;
 
   UserSubmissionWidget(
       {super.key,
       this.userProfileCubit,
       this.homeCubit,
+      this.todaySubmissionsCubit,
       required this.submission});
 
   @override
@@ -43,6 +49,7 @@ class UserSubmissionWidget extends StatelessWidget {
                   submissionModel: submission,
                   homeCubit: homeCubit,
                   userProfileCubit: userProfileCubit,
+                  todaySubmissionsCubit: todaySubmissionsCubit,
                 ),
 
                 ContentWidget(submission.tsContent ?? '', isSubmission: true),
@@ -138,8 +145,11 @@ class UserSubmissionWidget extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    child: Text(
-                                        '${submission.commentsCount} تعليقات')),
+                                    child: submission.commentsCount == 1
+                                        ? Text(
+                                            '${submission.commentsCount} تعليق')
+                                        :  Text(
+                                            '${submission.commentsCount} تعليقات')),
                                 const SizedBox(
                                   width: 16,
                                 ),

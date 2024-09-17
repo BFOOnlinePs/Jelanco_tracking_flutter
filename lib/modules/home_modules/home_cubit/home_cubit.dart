@@ -24,6 +24,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   bool isUserSubmissionsLoading = false;
   bool isUserSubmissionsLastPage = false;
 
+  // his submissions + his employees submission if he has any
   Future<void> getUserSubmissions({int page = 1}) async {
     emit(GetUserSubmissionsLoadingState());
     isUserSubmissionsLoading = true;
