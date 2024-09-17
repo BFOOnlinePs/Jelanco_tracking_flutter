@@ -139,8 +139,15 @@ class UserSubmissionWidget extends StatelessWidget {
                                                             submissionId:
                                                                 submission
                                                                     .tsId!)
-                                                    : print(
-                                                        'no get comments count function provided');
+                                                    : todaySubmissionsCubit !=
+                                                            null
+                                                        ? todaySubmissionsCubit!
+                                                            .getCommentsCount(
+                                                                submissionId:
+                                                                    submission
+                                                                        .tsId!)
+                                                        : print(
+                                                            'no get comments count function provided');
                                           },
                                         ),
                                       );
@@ -148,7 +155,7 @@ class UserSubmissionWidget extends StatelessWidget {
                                     child: submission.commentsCount == 1
                                         ? Text(
                                             '${submission.commentsCount} تعليق')
-                                        :  Text(
+                                        : Text(
                                             '${submission.commentsCount} تعليقات')),
                                 const SizedBox(
                                   width: 16,
@@ -171,8 +178,13 @@ class UserSubmissionWidget extends StatelessWidget {
                                       : userProfileCubit != null
                                           ? userProfileCubit!.getCommentsCount(
                                               submissionId: submission.tsId!)
-                                          : print(
-                                              'no get comments count function provided');
+                                          : todaySubmissionsCubit != null
+                                              ? todaySubmissionsCubit!
+                                                  .getCommentsCount(
+                                                      submissionId:
+                                                          submission.tsId!)
+                                              : print(
+                                                  'no get comments count function provided');
                                 },
                               ),
                             );

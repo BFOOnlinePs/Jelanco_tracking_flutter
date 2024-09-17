@@ -9,3 +9,9 @@ class GetTodaySubmissionsSuccessState extends TodaySubmissionsStates {}
 class GetTodaySubmissionsErrorState extends TodaySubmissionsStates {}
 
 class AfterEditSubmissionState extends TodaySubmissionsStates {}
+
+class GetCommentsCountLoadingState extends TodaySubmissionsStates {}
+
+class GetCommentsCountSuccessState extends TodaySubmissionsStates {}
+
+class GetCommentsCountErrorState extends TodaySubmissionsStates {}

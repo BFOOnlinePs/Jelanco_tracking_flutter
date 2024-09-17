@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_today_submissions_model.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -58,5 +59,30 @@ class TodaySubmissionsCubit extends Cubit<TodaySubmissionsStates> {
       print(todaySubmissionsList[index].tsId);
     }
     emit(AfterEditSubmissionState());
+  }
+
+  GetSubmissionCommentCountModel? getSubmissionCommentCountModel;
+
+  // after pop from submission comments screen, update the number of comments
+  void getCommentsCount({required int submissionId}) async {
+    emit(GetCommentsCountLoadingState());
+    await DioHelper.getData(
+      url:
+          '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionComments}/${EndPointsConstants.taskSubmissionCommentsCount}',
+      // /task-submissions/185/comments/count
+    ).then((value) {
+      print(value?.data);
+      getSubmissionCommentCountModel =
+          GetSubmissionCommentCountModel.fromMap(value?.data);
+      // update the number of comments in the original submission model
+      todaySubmissionsList
+          .firstWhere((submission) => submission.tsId == submissionId)
+          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+
+      emit(GetCommentsCountSuccessState());
+    }).catchError((error) {
+      emit(GetCommentsCountErrorState());
+      print(error.toString());
+    });
   }
 }
