@@ -25,7 +25,7 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
                 width: 6.w,
               ),
               Text(
-                'مهام بانتظار التسليم',
+                'تكاليف بانتظار التسليم',
                 style: TextStyle(fontSize: 14.sp),
               ),
             ],

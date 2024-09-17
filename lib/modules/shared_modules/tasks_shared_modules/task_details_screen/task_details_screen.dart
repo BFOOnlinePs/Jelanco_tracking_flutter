@@ -25,7 +25,7 @@ class TaskDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(
-        title: 'تفاصيل المهمة',
+        title: 'تفاصيل المهمة المكلف بها',
       ),
       body: BlocProvider(
         create: (context) => TaskDetailsCubit()
@@ -103,7 +103,7 @@ class TaskDetailsScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  labelText: 'تسليم المهمة',
+                  labelText: 'تسليم المهمة المكلف بها',
                   icon: Icons.check_circle_outline,
                 )
               : Container(),

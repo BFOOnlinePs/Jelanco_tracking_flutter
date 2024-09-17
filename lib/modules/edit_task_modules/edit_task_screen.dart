@@ -103,7 +103,7 @@ class EditTaskScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: const MyAppBar(
-              title: 'تعديل المهمة',
+              title: 'تعديل التكليف',
             ),
             body: Stack(
               children: [
@@ -198,8 +198,8 @@ class EditTaskScreen extends StatelessWidget {
                                 ),
                                 const MyVerticalSpacer(),
                                 MyTextFormField(
-                                    titleText: 'محتوى المهمة',
-                                    labelText: 'أكتب محتوى المهمة',
+                                    titleText: 'محتوى التكليف',
+                                    labelText: 'أكتب محتوى التكليف',
                                     controller: editTaskCubit.contentController,
                                     textInputAction: TextInputAction.newline,
                                     keyboardType: TextInputType.multiline,
@@ -208,7 +208,7 @@ class EditTaskScreen extends StatelessWidget {
                                     // onChanged: (value) => addTaskCubit.content = value,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'يجب كتابة محتوى المهمة';
+                                        return 'يجب كتابة محتوى التكليف';
                                       }
                                       return null;
                                     }),
@@ -310,7 +310,7 @@ class EditTaskScreen extends StatelessWidget {
                             }
                           },
                           isWidthFull: true,
-                          buttonText: 'تعديل المهمة',
+                          buttonText: 'تعديل التكليف',
                         ),
                       ],
                     ),
