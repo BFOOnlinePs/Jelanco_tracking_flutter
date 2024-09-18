@@ -3,6 +3,7 @@ import '../../models/basic_models/user_model.dart';
 
 class UserDataConstants {
   static String? token;
+
   static UserModel? userModel;
   static int? userId;
   static String? name;
@@ -12,5 +13,5 @@ class UserDataConstants {
   static List<String>? permissionsList;
 
 
-  // static String? firebaseTokenVra;
+  static String? firebaseTokenVar;
 }

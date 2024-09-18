@@ -2,10 +2,13 @@ import 'package:bloc/bloc.dart';
 
 // import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jelanco_tracking_system/firebase_options.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
+import 'package:jelanco_tracking_system/network/remote/firebase_api.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/my_bloc_observer.dart';
@@ -27,12 +30,19 @@ void main() async {
   SocketIO(); // This will initialize the singleton instance
 
 
+  await Firebase.initializeApp(
+    name: 'jelanco-tracking',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // debugPaintSizeEnabled = true;
 
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
+  UserDataConstants.firebaseTokenVar = CacheHelper.getData(key: MyCacheKeys.firebaseToken);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
+  print('firebaseToken: ${UserDataConstants.firebaseTokenVar.toString()}');
 
   Widget homeWidget;
 
@@ -42,6 +52,9 @@ void main() async {
     homeWidget = HomeScreen();
     // homeWidget = BottomNavBarScreens();
   }
+
+  await FirebaseApi().initNotification();
+
 
   // SystemChrome.setPreferredOrientations([
   //   DeviceOrientation.portraitUp,
@@ -94,6 +107,7 @@ class MyApp extends StatelessWidget {
               ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
           fontFamily: 'Tajawal',
           useMaterial3: true,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,

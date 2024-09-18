@@ -1,21 +1,28 @@
 class EndPointsConstants {
-  // static const String baseUrl = '$url/public/api/';
-  static const String baseUrl = '$url/api/';
+  static const String baseUrl = '$url/public/api/';
+  // static const String baseUrl = '$url/api/';
 
-  static const String url = 'http://chic.ps';
+  // static const String url = 'http://chic.ps';
 
-  // static const String url = 'http://103.37.85.56/BFO/jelanco_tracking';
-  // static const String url = 'http://83.244.35.169/BFO/jelanco_tracking';
+  static const String url = 'http://192.168.1.21/BFO/jelanco_tracking';
 
   // static const String url = 'https://we.jelanco.net';
 
   static const String socketIoUrl = 'http://192.168.1.21:3000';
+  // static const String socketIoUrl = 'http://chic.ps:3000';
 
-  static const String taskSubmissionsStorage = '$url/storage/uploads/';
+  static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
   static const String taskSubmissionsCommentStorage =
-      '$url/storage/comments_attachments/';
-  static const String thumbnailStorage = '$url/storage/thumbnails/';
-  static const String profileStorage = '$url/storage/profile_images/';
+      '$url/public/storage/comments_attachments/';
+  static const String thumbnailStorage = '$url/public/storage/thumbnails/';
+  static const String profileStorage = '$url/public/storage/profile_images/';
+
+  // static const String taskSubmissionsStorage = '$url/storage/uploads/';
+  // static const String taskSubmissionsCommentStorage =
+  //     '$url/storage/comments_attachments/';
+  // static const String thumbnailStorage = '$url/storage/thumbnails/';
+  // static const String profileStorage = '$url/storage/profile_images/';
+
 
   // auth
   static const String login = 'login';
@@ -53,4 +60,11 @@ class EndPointsConstants {
 
   // manager employees
   static const String managerEmployees = '$users/employees';
+
+
+  // FCM
+  static const sendNotification = 'https://fcm.googleapis.com/fcm/send';
+  static const storeFcmUserTokenEndPoint = 'storeFcmUserToken';
+  static const deleteFcmUserTokenEndPoint = 'deleteFcmUserToken';
+  static const updateFcmUserTokenEndPoint = 'updateFcmUserToken';
 }
