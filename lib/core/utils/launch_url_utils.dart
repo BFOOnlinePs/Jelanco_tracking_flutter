@@ -23,7 +23,9 @@ class LaunchUrlUtils {
   }
 
   static Future<void> sendWhatsAppMessage(
-      String phoneNumber, String message) async {
+    String phoneNumber,
+    // String message,
+  ) async {
     final Uri launchUri = Uri(
       scheme: 'https',
       host: 'wa.me',

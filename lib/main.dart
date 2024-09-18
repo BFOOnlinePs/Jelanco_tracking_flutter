@@ -26,6 +26,8 @@ void main() async {
   await CacheHelper.init();
   SocketIO(); // This will initialize the singleton instance
 
+
+
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
 

@@ -144,7 +144,7 @@ class ProfileCardWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  userInfo?.email ?? '',
+                  userInfo.email ?? '',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.blueGrey[400],
@@ -153,58 +153,64 @@ class ProfileCardWidget extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 5),
-            InkWell(
-              onTap: () {
-                LaunchUrlUtils.makePhoneCall('+972599605694');
-              },
-              child: Row(
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Icon(
-                    FontAwesomeIcons.phone,
-                    color: Colors.blueGrey[400],
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    // userProfileCubit.getUserProfileByIdModel
-                    //     ?.userInfo?.email ??
-                    '059999999999',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.blueGrey[400],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 5),
-            InkWell(
-              onTap: () {
-                LaunchUrlUtils.sendWhatsAppMessage('+972599605694', 'test');
-              },
-              child: Row(
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Icon(
-                    FontAwesomeIcons.whatsapp,
-                    color: Colors.blueGrey[400],
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    // userProfileCubit.getUserProfileByIdModel
-                    //     ?.userInfo?.email ??
-                    '059999999999',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.blueGrey[400],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            userInfo.phoneNumber != null
+                ? Column(
+                    children: [
+                      const SizedBox(height: 5),
+                      InkWell(
+                        onTap: () {
+                          LaunchUrlUtils.makePhoneCall(userInfo.phoneNumber!);
+                        },
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.phone,
+                              color: Colors.blueGrey[400],
+                              size: 20,
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              userInfo.phoneNumber!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blueGrey[400],
+                              ),
+                              textDirection: TextDirection.ltr,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      InkWell(
+                        onTap: () {
+                          LaunchUrlUtils.sendWhatsAppMessage(
+                              userInfo.phoneNumber!);
+                        },
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.whatsapp,
+                              color: Colors.blueGrey[400],
+                              size: 20,
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              userInfo.phoneNumber!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blueGrey[400],
+                              ),
+                              textDirection: TextDirection.ltr,
+
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(),
             // Divider(height: 0.5, color: Colors.grey[300],)
           ],
         ),
