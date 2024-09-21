@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
 import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
 
 // Define the background message handler
@@ -52,17 +53,35 @@ class FirebaseApi {
 
     print('message.data: ${message.data}');
 
-    // Extract the 'type' and 'task_id', they could be null
+    // Extract the 'type' and 'type_id', they could be null
     String? type = message.data['type'];
     String? typeId = message.data['type_id'];
 
     // Navigate based on the type and pass the taskId if available
     if (type == 'task' && typeId != null) {
+      // type id is taskId
       print('navigate to task details screen');
       navigatorKey.currentState?.push(
         MaterialPageRoute(
+          builder: (context) => TaskDetailsScreen(taskId: int.parse(typeId)),
+        ),
+      );
+    } else if (type == 'submission' && typeId != null) {
+      // type id is submissionId
+      print('navigate to submission details screen');
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(
           builder: (context) =>
-              TaskDetailsScreen(taskId: int.parse(typeId)), // Safely parse taskId
+              TaskSubmissionDetailsScreen(submissionId: int.parse(typeId)),
+        ),
+      );
+    } else if (type == 'comment' && typeId != null) {
+      // type id is submissionId (where the comment belongs to)
+      print('navigate to submission details screen');
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(
+          builder: (context) =>
+              TaskSubmissionDetailsScreen(submissionId: int.parse(typeId)),
         ),
       );
     } else if (type == 'general_screen') {
@@ -83,6 +102,7 @@ class FirebaseApi {
     await _localNotification.initialize(settings,
         onDidReceiveNotificationResponse: (payload) {
       final message = RemoteMessage.fromMap(jsonDecode(payload as String));
+      print('call handleMessage method');
       handleMessage(message);
     });
 
