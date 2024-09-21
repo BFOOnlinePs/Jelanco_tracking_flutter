@@ -27,6 +27,9 @@ class FirebaseApi {
     description: 'this channel is used for important notifications',
     // importance: Importance.defaultImportance,
     importance: Importance.max, // shows everywhere, allowed to makes noise, peek, and use full screen intents.
+    playSound: true,
+    sound: RawResourceAndroidNotificationSound('notification_sound'),
+    enableVibration: true,
   );
 
   final _localNotification = FlutterLocalNotificationsPlugin();
@@ -103,6 +106,11 @@ class FirebaseApi {
               _androidChannel.name,
               channelDescription: _androidChannel.description,
               icon: '@drawable/jelanco_logo',
+              importance: Importance.max,
+              playSound: true,
+              sound: const RawResourceAndroidNotificationSound('notification_sound'),
+              // actions:
+
             ),
           ),
           // pass the data notification to local notification

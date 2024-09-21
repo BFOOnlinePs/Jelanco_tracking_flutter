@@ -61,8 +61,7 @@ class FCMServices {
     }
   }
 
-
-  //  token (update)refresh
+  // token (update) refresh
   static Future<void> updateFCMTokenInLocalAndServer(String oldToken, String newToken) async {
     try {
       final response = await _dio.post(
