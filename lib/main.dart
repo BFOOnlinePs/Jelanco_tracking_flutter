@@ -56,6 +56,7 @@ void main() async {
   await FirebaseApi().initNotification();
 
 
+
   // SystemChrome.setPreferredOrientations([
   //   DeviceOrientation.portraitUp,
   // ]).then((_){
@@ -83,6 +84,12 @@ void main() async {
   // });
 }
 
+
+
+// Define a global key
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+
 class MyApp extends StatelessWidget {
   Widget homeWidget;
 
@@ -100,6 +107,8 @@ class MyApp extends StatelessWidget {
         // locale: DevicePreview.locale(context),
         // builder: DevicePreview.appBuilder,
 
+
+        navigatorKey: navigatorKey,  // Assign the navigatorKey
         title: 'جيلانكو - نظام التتبع',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

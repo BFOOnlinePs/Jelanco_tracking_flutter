@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
+import 'package:jelanco_tracking_system/main.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
-
 
 // Define the background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -26,7 +29,8 @@ class FirebaseApi {
     'High Importance Notification',
     description: 'this channel is used for important notifications',
     // importance: Importance.defaultImportance,
-    importance: Importance.max, // shows everywhere, allowed to makes noise, peek, and use full screen intents.
+    importance: Importance.max,
+    // shows everywhere, allowed to makes noise, peek, and use full screen intents.
     playSound: true,
     sound: RawResourceAndroidNotificationSound('notification_sound'),
     enableVibration: true,
@@ -34,11 +38,10 @@ class FirebaseApi {
 
   final _localNotification = FlutterLocalNotificationsPlugin();
 
+  // navigate to screen when notification is clicked
   void handleMessage(RemoteMessage? message) {
     print('handleMessage method');
     if (message == null) return;
-
-    // ex: navigate with arguments
 
     if (kDebugMode) {
       print('Handling a message: ${message.messageId}');
@@ -46,6 +49,30 @@ class FirebaseApi {
       print('Message notification: ${message.notification?.title}');
       print('Message notification: ${message.notification?.body}');
     }
+
+    print('message.data: ${message.data}');
+
+    // Extract the 'type' and 'task_id', they could be null
+    String? type = message.data['type'];
+    String? typeId = message.data['type_id'];
+
+    // Navigate based on the type and pass the taskId if available
+    if (type == 'task' && typeId != null) {
+      print('navigate to task details screen');
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(
+          builder: (context) =>
+              TaskDetailsScreen(taskId: int.parse(typeId)), // Safely parse taskId
+        ),
+      );
+    } else if (type == 'general_screen') {
+      print('navigate to general screen');
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => GeneralScreen()),
+      // );
+    }
+    // Handle other cases or handle null types if needed
   }
 
   Future<void> initLocalNotification() async {
@@ -55,9 +82,9 @@ class FirebaseApi {
 
     await _localNotification.initialize(settings,
         onDidReceiveNotificationResponse: (payload) {
-          final message = RemoteMessage.fromMap(jsonDecode(payload as String));
-          handleMessage(message);
-        });
+      final message = RemoteMessage.fromMap(jsonDecode(payload as String));
+      handleMessage(message);
+    });
 
     // it different for IOS
     final platform = _localNotification.resolvePlatformSpecificImplementation<
@@ -67,7 +94,6 @@ class FirebaseApi {
   }
 
   Future<void> initPushNotification() async {
-
     // IOS
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -95,7 +121,8 @@ class FirebaseApi {
       final notification = message.notification;
       if (notification == null) return;
 
-      print('Message also contained a notification: ${message.notification}');
+      print(
+          'Message also contained a notification title: ${message.notification?.title}');
       _localNotification.show(
           notification.hashCode,
           notification.title,
@@ -108,9 +135,9 @@ class FirebaseApi {
               icon: '@drawable/jelanco_logo',
               importance: Importance.max,
               playSound: true,
-              sound: const RawResourceAndroidNotificationSound('notification_sound'),
+              sound: const RawResourceAndroidNotificationSound(
+                  'notification_sound'),
               // actions:
-
             ),
           ),
           // pass the data notification to local notification
@@ -144,9 +171,11 @@ class FirebaseApi {
 
     // firebaseTokenVar from local storage
     // firebaseToken from firebase
-    print('firebaseToken $firebaseToken,\n firebaseTokenVar ${UserDataConstants.firebaseTokenVar}');
+    print(
+        'firebaseToken $firebaseToken,\n firebaseTokenVar ${UserDataConstants.firebaseTokenVar}');
     if (firebaseToken != null && UserDataConstants.userId != null) {
-      if (UserDataConstants.firebaseTokenVar != null && UserDataConstants.firebaseTokenVar != firebaseToken) {
+      if (UserDataConstants.firebaseTokenVar != null &&
+          UserDataConstants.firebaseTokenVar != firebaseToken) {
         // update
         await FCMServices.updateFCMTokenInLocalAndServer(
             UserDataConstants.firebaseTokenVar!, firebaseToken);
