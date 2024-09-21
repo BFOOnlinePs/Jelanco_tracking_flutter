@@ -10,8 +10,6 @@ class UserDataUtils {
     required UserLoginModel userLoginModel,
   }) async {
 
-    // for firebase token
-    await FirebaseApi().initNotification();
 
 
     await CacheHelper.saveData(

@@ -25,7 +25,8 @@ class FirebaseApi {
     'high_importance_channel', // same in manifest
     'High Importance Notification',
     description: 'this channel is used for important notifications',
-    importance: Importance.defaultImportance,
+    // importance: Importance.defaultImportance,
+    importance: Importance.max, // shows everywhere, allowed to makes noise, peek, and use full screen intents.
   );
 
   final _localNotification = FlutterLocalNotificationsPlugin();
@@ -63,6 +64,8 @@ class FirebaseApi {
   }
 
   Future<void> initPushNotification() async {
+
+    // IOS
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true, // Display the notification message as an alert
@@ -83,9 +86,13 @@ class FirebaseApi {
 
     // Set up foreground message handler
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
       final notification = message.notification;
       if (notification == null) return;
 
+      print('Message also contained a notification: ${message.notification}');
       _localNotification.show(
           notification.hashCode,
           notification.title,
@@ -95,7 +102,7 @@ class FirebaseApi {
               _androidChannel.id,
               _androidChannel.name,
               channelDescription: _androidChannel.description,
-              icon: '@drawable/ic_launcher',
+              icon: '@drawable/jelanco_logo',
             ),
           ),
           // pass the data notification to local notification

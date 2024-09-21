@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_cubit.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
+import 'package:jelanco_tracking_system/network/remote/firebase_api.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_auth_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
@@ -71,6 +72,8 @@ class LoginScreen extends StatelessWidget {
                         await UserDataUtils.saveUserDataToLocalStorage(
                             userLoginModel: state.userLoginModel);
 
+                        // for firebase token
+                        await FirebaseApi().initNotification();
                         NavigationServices.navigateTo(
                           context,
                           HomeScreen(),
