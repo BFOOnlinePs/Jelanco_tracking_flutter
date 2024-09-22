@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
-import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
@@ -23,9 +22,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 class FirebaseApi {
-  final messaging = FirebaseMessaging.instance;
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotification =
+      FlutterLocalNotificationsPlugin();
 
-  final _androidChannel = const AndroidNotificationChannel(
+  final AndroidNotificationChannel _androidChannel =
+      const AndroidNotificationChannel(
     'high_importance_channel', // same in manifest
     'High Importance Notification',
     description: 'this channel is used for important notifications',
@@ -37,10 +39,8 @@ class FirebaseApi {
     enableVibration: true,
   );
 
-  final _localNotification = FlutterLocalNotificationsPlugin();
-
-  // navigate to screen when notification is clicked
-  void handleMessage(RemoteMessage? message) {
+  // Handles navigation based on message data.
+  void _navigateBasedOnMessage(RemoteMessage? message) {
     print('handleMessage method');
     if (message == null) return;
 
@@ -57,54 +57,49 @@ class FirebaseApi {
     String? type = message.data['type'];
     String? typeId = message.data['type_id'];
 
-    // Navigate based on the type and pass the taskId if available
-    if (type == 'task' && typeId != null) {
-      // type id is taskId
-      print('navigate to task details screen');
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) => TaskDetailsScreen(taskId: int.parse(typeId)),
-        ),
-      );
-    } else if (type == 'submission' && typeId != null) {
-      // type id is submissionId
-      print('navigate to submission details screen');
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) =>
-              TaskSubmissionDetailsScreen(submissionId: int.parse(typeId)),
-        ),
-      );
-    } else if (type == 'comment' && typeId != null) {
-      // type id is submissionId (where the comment belongs to)
-      print('navigate to submission details screen');
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) =>
-              TaskSubmissionDetailsScreen(submissionId: int.parse(typeId)),
-        ),
-      );
-    } else if (type == 'general_screen') {
-      print('navigate to general screen');
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => GeneralScreen()),
-      // );
+    if (type == null || typeId == null) return;
+
+    final int parsedId = int.tryParse(typeId) ?? 0;
+
+    // Navigate based on the type and pass the id if available
+    switch (type) {
+      case 'task':
+        _navigateToScreen(TaskDetailsScreen(taskId: parsedId));
+        break;
+      case 'submission':
+      case 'comment':
+        _navigateToScreen(TaskSubmissionDetailsScreen(submissionId: parsedId));
+        break;
+      case 'general_screen':
+        print('Navigate to general screen');
+        // Implement general screen navigation
+        break;
+      default:
+        print('Unknown notification type: $type');
     }
-    // Handle other cases or handle null types if needed
   }
 
-  Future<void> initLocalNotification() async {
-    const iOS = DarwinInitializationSettings();
-    const android = AndroidInitializationSettings('@drawable/jelanco_logo');
-    const settings = InitializationSettings(android: android, iOS: iOS);
+  void _navigateToScreen(Widget screen) {
+    navigatorKey.currentState
+        ?.push(MaterialPageRoute(builder: (context) => screen));
+  }
 
-    await _localNotification.initialize(settings,
-        onDidReceiveNotificationResponse: (payload) {
-      final message = RemoteMessage.fromMap(jsonDecode(payload as String));
-      print('call handleMessage method');
-      handleMessage(message);
-    });
+  // Initializes local notifications.
+  Future<void> _initLocalNotification() async {
+    const settings = InitializationSettings(
+      android: AndroidInitializationSettings('@drawable/jelanco_logo'),
+      iOS: DarwinInitializationSettings(),
+    );
+
+    await _localNotification.initialize(
+      settings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        final message = RemoteMessage.fromMap(jsonDecode(response.payload as String));
+        print('call handleMessage method');
+        print('Notification tapped, navigating...');
+        _navigateBasedOnMessage(message);  // Only navigate when the notification is tapped
+      },
+    );
 
     // it different for IOS
     final platform = _localNotification.resolvePlatformSpecificImplementation<
@@ -113,8 +108,9 @@ class FirebaseApi {
     await platform!.createNotificationChannel(_androidChannel);
   }
 
-  Future<void> initPushNotification() async {
-    // IOS
+  // Handles foreground and background push notifications.
+  Future<void> _initPushNotification() async {
+    // Set up iOS presentation options
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true, // Display the notification message as an alert
@@ -123,12 +119,11 @@ class FirebaseApi {
     );
 
     //  app is terminated and i opened it
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then(handleMessage); // handleMessage when opens from notification...
+    FirebaseMessaging.instance.getInitialMessage().then(
+        _navigateBasedOnMessage); // handleMessage when opens from notification...
 
     // app in background and i opened it
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(_navigateBasedOnMessage);
 
     // Set up background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -142,38 +137,40 @@ class FirebaseApi {
       if (notification == null) return;
 
       print(
-          'Message also contained a notification title: ${message.notification?.title}');
+          'Message (in foreground) also contained a notification title: ${message.notification?.title}');
+      // Show the notification, but do NOT navigate yet.
       _localNotification.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              _androidChannel.id,
-              _androidChannel.name,
-              channelDescription: _androidChannel.description,
-              icon: '@drawable/jelanco_logo',
-              importance: Importance.max,
-              playSound: true,
-              sound: const RawResourceAndroidNotificationSound(
-                  'notification_sound'),
-              // actions:
-            ),
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _androidChannel.id,
+            _androidChannel.name,
+            channelDescription: _androidChannel.description,
+            icon: '@drawable/jelanco_logo',
+            importance: Importance.max,
+            playSound: true,
+            sound:
+                const RawResourceAndroidNotificationSound('notification_sound'),
+            // actions:
           ),
-          // pass the data notification to local notification
-          payload: jsonEncode(message.toMap()));
+        ),
+        // pass the data notification to local notification
+        payload: jsonEncode(message.toMap()),
+      );
+
+      // Comment out or remove the immediate navigation:
+      // _navigateBasedOnMessage(message);
     });
   }
 
+  // Requests notification permissions and initializes notifications.
   Future<void> initNotification() async {
     // iOS app users need to grant permission to receive messages
     final settings = await messaging.requestPermission(
       alert: true,
-      announcement: false,
       badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
       sound: true,
     );
 
@@ -181,14 +178,29 @@ class FirebaseApi {
       print('Permission granted: ${settings.authorizationStatus}');
     }
 
-    // getToken(): It requests a registration token for sending messages to users from your App server or other trusted server environment.
+    // Get FCM token and save/update as needed
     String? firebaseToken = await messaging.getToken();
-    //     .then((value) {
-    //   print('value in getToken() $value');
-    //   firebaseToken = firebaseToken;
-    //   FCMServices.saveFCMTokenLocallyAndInServer(value!);
+
+    _handleFCMToken(firebaseToken);
+
+    messaging.onTokenRefresh.listen(_handleFCMToken);
+
+    // // i handled the refresh in different way
+    // // it is called when the token refreshed
+    // messaging.onTokenRefresh.listen((String? token) {
+    //   print("FCM Token Refreshed: $token");
+    //   // Send the refreshed token to your server for storage.
     // });
 
+    if (kDebugMode) {
+      print('Registration Token= $firebaseToken');
+    }
+
+    await _initPushNotification();
+    await _initLocalNotification();
+  }
+
+  void _handleFCMToken(String? firebaseToken) async {
     // firebaseTokenVar from local storage
     // firebaseToken from firebase
     print(
@@ -212,18 +224,18 @@ class FirebaseApi {
           "this firebaseToken is already saved or the user did not logged in or Firebase token is null");
     }
 
-    // i handled the refresh in different way
-    // it is called when the token refreshed
-    messaging.onTokenRefresh.listen((String? token) {
-      print("FCM Token Refreshed: $token");
-      // Send the refreshed token to your server for storage.
-    });
-
-    if (kDebugMode) {
-      print('Registration Token= $firebaseToken');
-    }
-
-    initPushNotification();
-    initLocalNotification();
+    //   if (firebaseToken == null || UserDataConstants.userId == null) {
+    //     print(
+    //         "this firebaseToken is already saved or the user did not logged in or Firebase token is null");
+    //     return;
+    //   }
+    //
+    //   if (UserDataConstants.firebaseTokenVar != firebaseToken) {
+    //     await FCMServices.updateFCMTokenInLocalAndServer(
+    //         UserDataConstants.firebaseTokenVar ?? '', firebaseToken);
+    //     print('FCM token updated');
+    //   } else {
+    //     print('FCM token is already saved or user is not logged in');
+    //   }
   }
 }
