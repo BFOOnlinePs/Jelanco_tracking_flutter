@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
@@ -15,8 +16,11 @@ class ProfileCardWidget extends StatelessWidget {
   final UserModel userInfo;
   final Function onTapChangeProfilePic;
 
-  const ProfileCardWidget(
-      {super.key, required this.userInfo, required this.onTapChangeProfilePic});
+  const ProfileCardWidget({
+    super.key,
+    required this.userInfo,
+    required this.onTapChangeProfilePic,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +106,6 @@ class ProfileCardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-
             Text(
               userInfo.name ?? '',
               style: TextStyle(
@@ -114,8 +117,7 @@ class ProfileCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Row(
-              // mainAxisAlignment:
-              //     MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   FontAwesomeIcons.addressCard,
@@ -135,7 +137,7 @@ class ProfileCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Row(
-              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   FontAwesomeIcons.envelope,
@@ -152,60 +154,112 @@ class ProfileCardWidget extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 5),
+            userInfo.phoneNumber != null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.mobileScreen,
+                        color: Colors.blueGrey[400],
+                        size: 20,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        userInfo.phoneNumber!,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.blueGrey[400],
+                        ),
+                        textDirection: TextDirection.ltr,
+                      ),
+                    ],
+                  )
+                : Container(),
+            const SizedBox(height: 15),
 
             userInfo.phoneNumber != null
-                ? Column(
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 5),
-                      InkWell(
-                        onTap: () {
-                          LaunchUrlUtils.makePhoneCall(userInfo.phoneNumber!);
-                        },
-                        child: Row(
-                          // crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.phone,
-                              color: Colors.blueGrey[400],
-                              size: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              userInfo.phoneNumber!,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.blueGrey[400],
+                      Expanded(
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                  const Color(0xFF007BFF)),
+                              shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      ButtonSizeConstants.borderRadius),
+                                ),
                               ),
-                              textDirection: TextDirection.ltr,
                             ),
-                          ],
-                        ),
+                            onPressed: () {
+                              LaunchUrlUtils.makePhoneCall(
+                                  userInfo.phoneNumber!);
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.phoneFlip,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'اتصال',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                  textDirection: TextDirection.ltr,
+                                ),
+                              ],
+                            )),
                       ),
-                      const SizedBox(height: 5),
-                      InkWell(
-                        onTap: () {
-                          LaunchUrlUtils.sendWhatsAppMessage(
-                              userInfo.phoneNumber!);
-                        },
-                        child: Row(
-                          // crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.whatsapp,
-                              color: Colors.blueGrey[400],
-                              size: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              userInfo.phoneNumber!,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.blueGrey[400],
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(
+                                const Color(0xFF25D366)),
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    ButtonSizeConstants.borderRadius),
                               ),
-                              textDirection: TextDirection.ltr,
-
                             ),
-                          ],
+                          ),
+                          onPressed: () {
+                            LaunchUrlUtils.sendWhatsAppMessage(
+                                userInfo.phoneNumber!);
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.whatsapp,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                // userInfo.phoneNumber!,
+                                'واتساب',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                                textDirection: TextDirection.ltr,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

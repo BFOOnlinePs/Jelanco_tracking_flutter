@@ -1,5 +1,5 @@
 class ButtonSizeConstants {
-  static const double borderRadius = 12;
+  static const double borderRadius = 18;
 
 
 }

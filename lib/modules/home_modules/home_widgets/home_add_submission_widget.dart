@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
+import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
@@ -20,40 +21,24 @@ class HomeAddSubmissionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        NavigationServices.navigateTo(
-          context,
-          AddTaskSubmissionScreen(
-            getDataCallback: (taskSubmissionModel) {
-              print('call the data');
-              homeCubit.getUserSubmissions();
-              homeCubit.getTasksToSubmit(
-                perPage: 3,
-                loadingState: GetTasksToSubmitLoadingState(),
-                successState: GetTasksToSubmitSuccessState(),
-                errorState: (error) => GetTasksToSubmitErrorState(error),
-              );
-              ScrollUtils.scrollPosition(
-                  scrollController: homeCubit.scrollController);
-            },
-            taskId: -1, // task id = -1, since the submission has no task
-          ),
-        );
-      },
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
+      color: Colors.grey.shade300,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
-        color: Colors.grey.shade300,
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10.w,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          child: Column(
-            children: [
-              Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 10.w,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () {
+                NavigationServices.navigateTo(context,
+                    UserProfileScreen(userId: UserDataConstants.userId!));
+              },
+              child: Container(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,13 +55,13 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                                 imageBuilder: (context, imageProvider) =>
                                     MyCachedImageBuilder(
                                         imageProvider: imageProvider),
-                          isCircle: true,
+                                isCircle: true,
                               )
                             : ClipOval(
-                              child: Image.asset(
+                                child: Image.asset(
                                   AssetsKeys.defaultProfileImage,
                                 ),
-                            ),
+                              ),
                       ),
                     ),
                     Expanded(
@@ -107,60 +92,88 @@ class HomeAddSubmissionWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              TextField(
-                enabled: false,
-                decoration: InputDecoration(
-                  isDense: true,
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade400),
-                    borderRadius: BorderRadius.circular(
-                        TextFormFieldSizeConstants.borderRadius),
+            ),
+            InkWell(
+              onTap: () {
+                NavigationServices.navigateTo(
+                  context,
+                  AddTaskSubmissionScreen(
+                    getDataCallback: (taskSubmissionModel) {
+                      print('call the data');
+                      homeCubit.getUserSubmissions();
+                      homeCubit.getTasksToSubmit(
+                        perPage: 3,
+                        loadingState: GetTasksToSubmitLoadingState(),
+                        successState: GetTasksToSubmitSuccessState(),
+                        errorState: (error) =>
+                            GetTasksToSubmitErrorState(error),
+                      );
+                      ScrollUtils.scrollPosition(
+                          scrollController: homeCubit.scrollController);
+                    },
+                    taskId:
+                        -1, // task id = -1, since the submission has no task
                   ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
-                  hintText: "ماذا فعلت اليوم؟",
-                ),
-              ),
-              Divider(
-                thickness: 0.2.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                );
+              },
+              child: Column(
                 children: [
-                  const MediaOptionWidget(
-                    icon: Icons.camera_alt,
-                    label: 'كاميرا',
-                    color: Colors.blue,
-                    onTap: null,
+                  TextField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      disabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade400),
+                        borderRadius: BorderRadius.circular(
+                            TextFormFieldSizeConstants.borderRadius),
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
+                      hintText: "ماذا فعلت اليوم؟",
+                    ),
                   ),
-                  Container(width: 0.2.w, height: 26.h, color: Colors.grey),
-                  const MediaOptionWidget(
-                    icon: Icons.image,
-                    label: 'صورة',
-                    color: Colors.green,
-                    onTap: null,
+                  Divider(
+                    thickness: 0.2.h,
                   ),
-                  Container(width: 0.2.w, height: 26.h, color: Colors.grey),
-                  const MediaOptionWidget(
-                    icon: Icons.video_camera_back,
-                    label: 'فيديو',
-                    color: Colors.red,
-                    onTap: null,
-                  ),
-                  Container(width: 0.2.w, height: 26.h, color: Colors.grey),
-                  const MediaOptionWidget(
-                    icon: Icons.attach_file,
-                    label: 'ملف',
-                    color: Colors.blue,
-                    onTap: null,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const MediaOptionWidget(
+                        icon: Icons.camera_alt,
+                        label: 'كاميرا',
+                        color: Colors.blue,
+                        onTap: null,
+                      ),
+                      Container(width: 0.2.w, height: 26.h, color: Colors.grey),
+                      const MediaOptionWidget(
+                        icon: Icons.image,
+                        label: 'صورة',
+                        color: Colors.green,
+                        onTap: null,
+                      ),
+                      Container(width: 0.2.w, height: 26.h, color: Colors.grey),
+                      const MediaOptionWidget(
+                        icon: Icons.video_camera_back,
+                        label: 'فيديو',
+                        color: Colors.red,
+                        onTap: null,
+                      ),
+                      Container(width: 0.2.w, height: 26.h, color: Colors.grey),
+                      const MediaOptionWidget(
+                        icon: Icons.attach_file,
+                        label: 'ملف',
+                        color: Colors.blue,
+                        onTap: null,
+                      ),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(
-                height: 6.h,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 6.h,
+            ),
+          ],
         ),
       ),
     );
