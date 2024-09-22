@@ -11,4 +11,6 @@ class SharedSize {
   static const double sectionTitleSize = 22;
 
   static double textFiledTitleSize = 16.sp;
+
+  static const double alertDialogBorderRadius = 22;
 }

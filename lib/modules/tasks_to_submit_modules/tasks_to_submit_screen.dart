@@ -18,7 +18,7 @@ class TasksToSubmitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(
-        title: 'تكاليف بانتظار التسليم',
+        title: 'تكليفات بانتظار التسليم',
       ),
       body: BlocProvider(
         create: (context) => TasksToSubmitCubit()
