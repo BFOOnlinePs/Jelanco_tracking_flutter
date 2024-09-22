@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/models/auth_models/user_logout_model.dart';
 import 'package:jelanco_tracking_system/network/local/cache_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
+import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_states.dart';
 
 class DrawerCubit extends Cubit<DrawerStates> {
@@ -30,7 +31,11 @@ class DrawerCubit extends Cubit<DrawerStates> {
         // CacheHelper.removeData(key: MyCacheKeys.email);
         // CacheHelper.removeData(key: MyCacheKeys.jobTitle);
         // CacheHelper.removeData(key: MyCacheKeys.permissionsList);
-      }).then((_) {
+      }).then((_) async {
+        // i have to delete my fcm token from local and server before clear user data constants
+        await FCMServices.deleteFCMTokenFromLocalAndServer(
+            UserDataConstants.firebaseTokenVar ?? '');
+
         // Clear static user data constants
         UserDataConstants.userId = null;
         UserDataConstants.name = null;
@@ -46,7 +51,6 @@ class DrawerCubit extends Cubit<DrawerStates> {
         //   MaterialPageRoute(builder: (context) => LoginScreen()),
         //       (Route<dynamic> route) => false,
         // );
-
 
         // RestartWidget.restartApp(context);
 

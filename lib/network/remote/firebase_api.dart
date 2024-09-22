@@ -94,10 +94,12 @@ class FirebaseApi {
     await _localNotification.initialize(
       settings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
-        final message = RemoteMessage.fromMap(jsonDecode(response.payload as String));
+        final message =
+            RemoteMessage.fromMap(jsonDecode(response.payload as String));
         print('call handleMessage method');
         print('Notification tapped, navigating...');
-        _navigateBasedOnMessage(message);  // Only navigate when the notification is tapped
+        _navigateBasedOnMessage(
+            message); // Only navigate when the notification is tapped
       },
     );
 
@@ -119,8 +121,12 @@ class FirebaseApi {
     );
 
     //  app is terminated and i opened it
-    FirebaseMessaging.instance.getInitialMessage().then(
-        _navigateBasedOnMessage); // handleMessage when opens from notification...
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        _navigateBasedOnMessage(
+            message); // Navigate based on the message when app is opened from terminated state
+      }
+    });
 
     // app in background and i opened it
     FirebaseMessaging.onMessageOpenedApp.listen(_navigateBasedOnMessage);
@@ -183,14 +189,14 @@ class FirebaseApi {
 
     _handleFCMToken(firebaseToken);
 
-    messaging.onTokenRefresh.listen(_handleFCMToken);
+    // messaging.onTokenRefresh.listen(_handleFCMToken);
 
-    // // i handled the refresh in different way
-    // // it is called when the token refreshed
-    // messaging.onTokenRefresh.listen((String? token) {
-    //   print("FCM Token Refreshed: $token");
-    //   // Send the refreshed token to your server for storage.
-    // });
+    // i handled the refresh in different way
+    // it is called when the token refreshed
+    messaging.onTokenRefresh.listen((String? token) {
+      print("FCM Token Refreshed: $token");
+      // Send the refreshed token to your server for storage.
+    });
 
     if (kDebugMode) {
       print('Registration Token= $firebaseToken');
@@ -203,6 +209,7 @@ class FirebaseApi {
   void _handleFCMToken(String? firebaseToken) async {
     // firebaseTokenVar from local storage
     // firebaseToken from firebase
+    print('in _handleFCMToken');
     print(
         'firebaseToken $firebaseToken,\n firebaseTokenVar ${UserDataConstants.firebaseTokenVar}');
     if (firebaseToken != null && UserDataConstants.userId != null) {
