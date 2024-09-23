@@ -13,7 +13,7 @@ mixin TasksToSubmitMixin<T> on Cubit<T> {
 
   Future<void> getTasksToSubmit({
     int page = 1,
-    int? perPage = 5,
+    int? perPage = 12,
     required T loadingState,
     required T successState,
     required T Function(String error) errorState,

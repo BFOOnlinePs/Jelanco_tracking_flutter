@@ -79,7 +79,7 @@ class TasksToSubmitScreen extends StatelessWidget {
                                     .tasksAssignedToUserList[index]);
                           },
                         )
-                      : const MyLoader()
+                      : const Center(child: MyLoader())
                   ),
             );
           },

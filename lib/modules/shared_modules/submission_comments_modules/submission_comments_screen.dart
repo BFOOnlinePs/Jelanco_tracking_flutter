@@ -84,7 +84,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                       .getSubmissionCommentsModel!
                                       .submissionComments!
                                       .isEmpty
-                                  ? Column(
+                                  ? const Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Image(

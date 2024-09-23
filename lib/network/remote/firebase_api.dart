@@ -9,6 +9,7 @@ import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
 import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
+import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 
 // Define the background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -20,6 +21,21 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print('Message notification: ${message.notification?.body}');
   }
 }
+
+// @pragma('vm:entry-point')
+// onTapNotificationBackground(NotificationResponse notificationResponse) async {
+//   final String? payload = notificationResponse.payload;
+//   print('in onTapNotificationBackground payload: $payload');
+//   if (payload != null) {
+//     debugPrint('notification payload: $payload');
+//     print('navigate');
+//
+//     // await Utility.navigate(
+//     //   navigatorKey.currentState!.context,
+//     //   '/second-screen',
+//     // );
+//   }
+// }
 
 class FirebaseApi {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -101,6 +117,8 @@ class FirebaseApi {
         _navigateBasedOnMessage(
             message); // Only navigate when the notification is tapped
       },
+      // // new
+      // onDidReceiveBackgroundNotificationResponse: onTapNotificationBackground,
     );
 
     // it different for IOS
@@ -123,6 +141,7 @@ class FirebaseApi {
     //  app is terminated and i opened it
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
+        print('app os terminated and i opened it');
         _navigateBasedOnMessage(
             message); // Navigate based on the message when app is opened from terminated state
       }
@@ -212,6 +231,7 @@ class FirebaseApi {
     print('in _handleFCMToken');
     print(
         'firebaseToken $firebaseToken,\n firebaseTokenVar ${UserDataConstants.firebaseTokenVar}');
+    // userId != null means the user must logged in
     if (firebaseToken != null && UserDataConstants.userId != null) {
       if (UserDataConstants.firebaseTokenVar != null &&
           UserDataConstants.firebaseTokenVar != firebaseToken) {
