@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_cubit.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_states.dart';
@@ -35,10 +36,22 @@ class TodaySubmissionsScreen extends StatelessWidget {
                       : todaySubmissionsCubit
                               .getTodaySubmissionsModel!.submissions!.isEmpty
                           ? const Center(
-                              child: Text(
-                              'لا توجد تسليمات',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ))
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image(
+                                    image: AssetImage(
+                                        AssetsKeys.defaultNoSubmissionsImage2),
+                                    height: 250,
+                                  ),
+                                  Text(
+                                    'لا توجد تسليمات',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            )
                           : ListView.builder(
                               itemBuilder: (context, index) {
                                 if (index ==

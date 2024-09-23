@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/cubit/submission_comments_cubit.dart';
@@ -83,12 +84,20 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                       .getSubmissionCommentsModel!
                                       .submissionComments!
                                       .isEmpty
-                                  ? const Column(
-                                      children: [
-                                        Text('لا يوجد تعليقات حتى الان'),
-                                        Text('كن أول من يعلق'),
-                                      ],
-                                    )
+                                  ? Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image(
+                                        image: AssetImage(
+                                          AssetsKeys
+                                              .defaultNoCommentsImage2,
+                                        ),
+                                        height: 250,
+                                      ),
+                                      Text('لا يوجد تعليقات حتى الان'),
+                                      Text('كن أول من يعلق'),
+                                    ],
+                                  )
                                   :
                                   // submissionCommentsCubit
                                   //                 .getSubmissionCommentsModel

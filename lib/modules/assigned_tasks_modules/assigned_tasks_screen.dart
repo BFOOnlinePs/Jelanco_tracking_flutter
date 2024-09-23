@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_cubit/assigned_tasks_cubit.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_cubit/assigned_tasks_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_item.dart';
@@ -8,6 +9,7 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 
+// المهام الموكلة إلي
 class AssignedTasksScreen extends StatelessWidget {
   final bool showAppBar;
 
@@ -30,7 +32,16 @@ class AssignedTasksScreen extends StatelessWidget {
                 : Container(
                     child: assignedTasksCubit
                             .getTasksAssignedToUserModel!.tasks!.isEmpty
-                        ? Center(child: Text('assigned_tasks_no_tasks'.tr()))
+                        ? Center(
+                            child: Column(
+                            children: [
+                              Image.asset(
+                                AssetsKeys.defaultNoTasksImage,
+                                height: 250,
+                              ),
+                              Text('assigned_tasks_no_tasks'.tr()),
+                            ],
+                          ))
                         : MyRefreshIndicator(
                             onRefresh: () async {
                               await assignedTasksCubit.getAssignedTasks();
@@ -60,9 +71,8 @@ class AssignedTasksScreen extends StatelessWidget {
                                     );
                                   }
                                   return const Padding(
-                                    padding:  EdgeInsets.all(8.0),
-                                    child: Center(
-                                        child: MyLoader()),
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Center(child: MyLoader()),
                                   );
                                 }
                                 return TaskItem(

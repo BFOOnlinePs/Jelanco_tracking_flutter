@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/cubit/manager_employees_cubit.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/cubit/manager_employees_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_card_widget.dart';
@@ -36,12 +37,13 @@ class ManagerEmployeesScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const MyScreenTitleWidget(
-                    title: 'المستخدمين الذين  لدي صلاحيات علهيم',
+                    title: 'المستخدمين الذين لدي صلاحيات علهيم',
                   ),
-                  managerEmployeesCubit.getManagerEmployeesModel == null
-                      ? const Center(child: MyLoader())
-                      : Expanded(
-                          child: MyRefreshIndicator(
+                  Expanded(
+                          child: managerEmployeesCubit.getManagerEmployeesModel ==
+                            null
+                        ? const Center(child: MyLoader())
+                        : MyRefreshIndicator(
                             onRefresh: () {
                               return managerEmployeesCubit.getManagerEmployees(
                                 loadingState: GetManagerEmployeesLoadingState(),
@@ -49,18 +51,35 @@ class ManagerEmployeesScreen extends StatelessWidget {
                                 errorState: GetManagerEmployeesErrorState(),
                               );
                             },
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return UserCardWidget(
-                                    userModel: managerEmployeesCubit
+                            child: managerEmployeesCubit
+                                    .getManagerEmployeesModel!
+                                    .managerEmployees!
+                                    .isEmpty
+                                ? const Center(
+                                    child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image(
+                                        image: AssetImage(
+                                          AssetsKeys.defaultNoUsersImage,
+                                        ),
+                                        height: 250,
+                                      ),
+                                      Text('لا يوجد مستخدمين'),
+                                    ],
+                                  ))
+                                : ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return UserCardWidget(
+                                          userModel: managerEmployeesCubit
+                                              .getManagerEmployeesModel!
+                                              .managerEmployees![index]);
+                                    },
+                                    itemCount: managerEmployeesCubit
                                         .getManagerEmployeesModel!
-                                        .managerEmployees![index]);
-                              },
-                              itemCount: managerEmployeesCubit
-                                  .getManagerEmployeesModel!
-                                  .managerEmployees!
-                                  .length,
-                            ),
+                                        .managerEmployees!
+                                        .length,
+                                  ),
                           ),
                         ),
                 ],

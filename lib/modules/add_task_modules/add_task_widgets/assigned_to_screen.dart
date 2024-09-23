@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_states.dart';
@@ -52,17 +53,32 @@ class AssignedToScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    children: assignedToCubit.filteredUsers.map((user) {
-                      return CheckboxListTile(
-                        title: Text(user.name ?? 'name'),
-                        value: assignedToCubit.selectedUsers.contains(user),
-                        onChanged: (bool? value) {
-                          assignedToCubit.checkBoxChanged(value, user);
-                        },
-                      );
-                    }).toList(),
-                  ),
+                  child: assignedToCubit.filteredUsers.isEmpty
+                      ? const Center(
+                          child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                AssetsKeys.defaultNoUsersImage,
+                              ),
+                              height: 250,
+                            ),
+                            Text('لا يوجد مستخدمين'),
+                          ],
+                        ))
+                      : ListView(
+                          children: assignedToCubit.filteredUsers.map((user) {
+                            return CheckboxListTile(
+                              title: Text(user.name ?? 'name'),
+                              value:
+                                  assignedToCubit.selectedUsers.contains(user),
+                              onChanged: (bool? value) {
+                                assignedToCubit.checkBoxChanged(value, user);
+                              },
+                            );
+                          }).toList(),
+                        ),
                 ),
               ],
             );

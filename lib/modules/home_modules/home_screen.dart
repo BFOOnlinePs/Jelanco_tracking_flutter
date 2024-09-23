@@ -21,114 +21,114 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
+    // print(MediaQuery.of(context).size.width);
+    // print(MediaQuery.of(context).size.height);
 
-    return Scaffold(
-      appBar: MyAppBar(
-        title: 'home_page_title'.tr(),
-      ),
-      drawer: const MyDrawer(),
-      body: BlocProvider(
-        create: (context) =>
-            HomeCubit()..init(userId: UserDataConstants.userId!),
-        // ..getUserById(userId: UserDataConstants.userId!)
-        // ..getUserSubmissions()
-        // ..getTasksToSubmit(
-        //   perPage: 3,
-        //   loadingState: GetTasksToSubmitLoadingState(),
-        //   successState: GetTasksToSubmitSuccessState(),
-        //   errorState: (error) => GetTasksToSubmitErrorState(error),
-        // ),
-        child: BlocConsumer<HomeCubit, HomeStates>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            homeCubit = HomeCubit.get(context);
+    return BlocProvider(
+      create: (context) => HomeCubit()..init(userId: UserDataConstants.userId!),
+      // ..getUserById(userId: UserDataConstants.userId!)
+      // ..getUserSubmissions()
+      // ..getTasksToSubmit(
+      //   perPage: 3,
+      //   loadingState: GetTasksToSubmitLoadingState(),
+      //   successState: GetTasksToSubmitSuccessState(),
+      //   errorState: (error) => GetTasksToSubmitErrorState(error),
+      // ),
+      child: BlocConsumer<HomeCubit, HomeStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          homeCubit = HomeCubit.get(context);
 
-            return MyRefreshIndicator(
-              onRefresh: () async {
-                await Future.wait([
-                  homeCubit.getUserSubmissions(),
-                  homeCubit.getTasksToSubmit(
-                    perPage: 3,
-                    loadingState: GetTasksToSubmitLoadingState(),
-                    successState: GetTasksToSubmitSuccessState(),
-                    errorState: (error) => GetTasksToSubmitErrorState(error),
-                  ),
-                ]);
-              },
+          return Scaffold(
+              appBar: MyAppBar(
+                title: 'home_page_title'.tr(),
+              ),
+              drawer:
+                  UserDataConstants.userModel != null ? const MyDrawer() : null,
+              body: MyRefreshIndicator(
+                onRefresh: () async {
+                  await Future.wait([
+                    homeCubit.getUserSubmissions(),
+                    homeCubit.getTasksToSubmit(
+                      perPage: 3,
+                      loadingState: GetTasksToSubmitLoadingState(),
+                      successState: GetTasksToSubmitSuccessState(),
+                      errorState: (error) => GetTasksToSubmitErrorState(error),
+                    ),
+                  ]);
+                },
 
-              child: UserDataConstants.userModel == null
-                  ? const Center(child: MyLoader())
-                  : CustomScrollView(
-                      controller: homeCubit.scrollController,
-                      slivers: [
-                        // check if the user has a permission to add a submission
-                        if (SystemPermissions.hasPermission(
-                            SystemPermissions.submitTask))
-                          SliverToBoxAdapter(
-                            child: HomeAddSubmissionWidget(
-                              homeCubit: homeCubit,
+                child: UserDataConstants.userModel == null
+                    ? const Center(child: MyLoader())
+                    : CustomScrollView(
+                        controller: homeCubit.scrollController,
+                        slivers: [
+                          // check if the user has a permission to add a submission
+                          if (SystemPermissions.hasPermission(
+                              SystemPermissions.submitTask))
+                            SliverToBoxAdapter(
+                              child: HomeAddSubmissionWidget(
+                                homeCubit: homeCubit,
+                              ),
                             ),
-                          ),
-                        if (SystemPermissions.hasPermission(
-                            SystemPermissions.submitTask))
-                          SliverToBoxAdapter(
-                            child: HomeTasksToSubmitWidget(
-                              homeCubit: homeCubit,
+                          if (SystemPermissions.hasPermission(
+                              SystemPermissions.submitTask))
+                            SliverToBoxAdapter(
+                              child: HomeTasksToSubmitWidget(
+                                homeCubit: homeCubit,
+                              ),
                             ),
-                          ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              if (index ==
-                                      homeCubit.userSubmissionsList.length &&
-                                  !homeCubit.isUserSubmissionsLastPage) {
-                                if (!homeCubit.isUserSubmissionsLoading) {
-                                  homeCubit.getUserSubmissions(
-                                    page: homeCubit.getUserSubmissionsModel!
-                                            .pagination!.currentPage! +
-                                        1,
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                if (index ==
+                                        homeCubit.userSubmissionsList.length &&
+                                    !homeCubit.isUserSubmissionsLastPage) {
+                                  if (!homeCubit.isUserSubmissionsLoading) {
+                                    homeCubit.getUserSubmissions(
+                                      page: homeCubit.getUserSubmissionsModel!
+                                              .pagination!.currentPage! +
+                                          1,
+                                    );
+                                  }
+                                  return Padding(
+                                    padding: EdgeInsets.all(8.0.w),
+                                    child: const Center(child: MyLoader()),
                                   );
                                 }
-                                return Padding(
-                                  padding: EdgeInsets.all(8.0.w),
-                                  child: const Center(child: MyLoader()),
-                                );
-                              }
-                              final submission =
-                                  homeCubit.userSubmissionsList[index];
+                                final submission =
+                                    homeCubit.userSubmissionsList[index];
 
-                              return UserSubmissionWidget(
-                                  homeCubit: homeCubit, submission: submission);
-                            },
-                            childCount: homeCubit.userSubmissionsList.length +
-                                (homeCubit.isUserSubmissionsLastPage
-                                    ? 0
-                                    : 1), // Replace with your data length
+                                return UserSubmissionWidget(
+                                    homeCubit: homeCubit,
+                                    submission: submission);
+                              },
+                              childCount: homeCubit.userSubmissionsList.length +
+                                  (homeCubit.isUserSubmissionsLastPage
+                                      ? 0
+                                      : 1), // Replace with your data length
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-              // SingleChildScrollView(
-              //   // physics: AlwaysScrollableScrollPhysics(),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       const HomeAddSubmissionWidget(),
-              //       HomeTasksToSubmitWidget(
-              //         homeCubit: homeCubit,
-              //       ),
-              //       HomeUserSubmissionsWidget(
-              //         homeCubit: homeCubit,
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            );
-          },
-        ),
+                // SingleChildScrollView(
+                //   // physics: AlwaysScrollableScrollPhysics(),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       const HomeAddSubmissionWidget(),
+                //       HomeTasksToSubmitWidget(
+                //         homeCubit: homeCubit,
+                //       ),
+                //       HomeUserSubmissionsWidget(
+                //         homeCubit: homeCubit,
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              ));
+        },
       ),
     );
   }

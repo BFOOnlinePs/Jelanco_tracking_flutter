@@ -26,6 +26,7 @@ class SystemPermissions {
   static const String viewComments = 'عرض التعليقات';
   static const String viewMyEmployeesSubmissions = 'عرض تسليمات موظفيني'; // all submissions of my employees (even tasks assigned by another manager)
   static const String viewManagerUsers = 'عرض مستخدمين المدير';
+  static const String viewTasksAssignedToMe = 'عرض المهام الموكلة الي';
 
   static bool hasPermission(String permission) {
     return UserDataConstants.permissionsList!.contains(permission);

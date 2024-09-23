@@ -148,13 +148,13 @@ class _SubmissionLocationDialogState extends State<SubmissionLocationDialog> {
                         color: Colors.black.withOpacity(0.2),
                         spreadRadius: 1,
                         blurRadius: 3,
-                        offset: Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.close, color: Colors.red), // Close icon
+                    child: Icon(Icons.close, color: Colors.red),
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -9,6 +10,7 @@ import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_
 
 import '../shared_modules/tasks_shared_modules/task_item.dart';
 
+// المهام التي أضفتها
 class TasksAddedByUserScreen extends StatelessWidget {
   final bool showAppBar;
 
@@ -36,7 +38,16 @@ class TasksAddedByUserScreen extends StatelessWidget {
                 : Container(
                     child: tasksAddedByUserCubit
                             .getTasksAddedByUserModel!.tasks!.isEmpty
-                        ? Center(child: Text('tasks_i_added_no_tasks'.tr()))
+                        ? Center(
+                            child: Column(
+                            children: [
+                              Image.asset(
+                                AssetsKeys.defaultNoTasksImage,
+                                height: 250,
+                              ),
+                              Text('tasks_i_added_no_tasks'.tr()),
+                            ],
+                          ))
                         : MyRefreshIndicator(
                             onRefresh: () async {
                               await tasksAddedByUserCubit.getTasksAddedByUser();

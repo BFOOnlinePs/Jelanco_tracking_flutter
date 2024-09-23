@@ -139,36 +139,43 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              DrawerItem(
-                                icon: Icons.add_task,
-                                text: 'drawer_add_task_title'.tr(),
-                                onTap: () {
-                                  NavigationServices.navigateTo(
-                                    context,
-                                    AddTaskScreen(),
-                                  );
-                                },
-                              ),
-                              DrawerItem(
-                                icon: Icons.task_alt,
-                                text: 'drawer_tasks_i_added_title'.tr(),
-                                onTap: () {
-                                  NavigationServices.navigateTo(
-                                    context,
-                                    const TasksAddedByUserScreen(),
-                                  );
-                                },
-                              ),
-                              DrawerItem(
-                                icon: Icons.task_alt,
-                                text: 'drawer_tasks_assigned_to_me_title'.tr(),
-                                onTap: () {
-                                  NavigationServices.navigateTo(
-                                    context,
-                                    AssignedTasksScreen(),
-                                  );
-                                },
-                              ),
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.addTask))
+                                DrawerItem(
+                                  icon: Icons.add_task,
+                                  text: 'drawer_add_task_title'.tr(),
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                      AddTaskScreen(),
+                                    );
+                                  },
+                                ),
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.addTask))
+                                DrawerItem(
+                                  icon: Icons.task_alt,
+                                  text: 'drawer_tasks_i_added_title'.tr(),
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                      const TasksAddedByUserScreen(),
+                                    );
+                                  },
+                                ),
+                              if (SystemPermissions.hasPermission(
+                                  SystemPermissions.viewTasksAssignedToMe))
+                                DrawerItem(
+                                  icon: Icons.task_alt,
+                                  text:
+                                      'drawer_tasks_assigned_to_me_title'.tr(),
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                      AssignedTasksScreen(),
+                                    );
+                                  },
+                                ),
                               // DrawerItem(
                               //   icon: Icons.logout,
                               //   text: 'drawer_logout_title'.tr(),
