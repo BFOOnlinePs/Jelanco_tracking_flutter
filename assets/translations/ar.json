@@ -39,7 +39,7 @@
   "tasks_i_added_no_tasks": "لا يوجد تكليفات",
   "_comment": "assigned tasks screen",
   "assigned_tasks_title": "مهامي",
-  "assigned_tasks_no_tasks": "لا يوجد مهام",
+  "assigned_tasks_no_tasks": "لا يوجد مهام موكلة إلي حتى الان",
   "_comment": "task item",
   "task_item_options_dialog_title": "خيارات التكليف",
   "task_item_options_dialog_view_details": "عرض التفاصيل",

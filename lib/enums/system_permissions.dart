@@ -24,9 +24,9 @@ class SystemPermissions {
   // not added in database yet
   static const String editSubmission = 'تعديل تسليم';
   static const String viewComments = 'عرض التعليقات';
-  static const String viewMyEmployeesSubmissions = 'عرض تسليمات موظفيني'; // all submissions of my employees (even tasks assigned by another manager)
+  static const String viewMyEmployeesSubmissions = 'عرض تسليمات موظفيني'; //used in back-end // all submissions of my employees (even tasks assigned by another manager)
   static const String viewManagerUsers = 'عرض مستخدمين المدير';
-  static const String viewTasksAssignedToMe = 'عرض المهام الموكلة الي';
+  static const String viewTasksAssignedToMe = 'عرض المهام الموكلة الي'; // or submitTask
 
   static bool hasPermission(String permission) {
     return UserDataConstants.permissionsList!.contains(permission);

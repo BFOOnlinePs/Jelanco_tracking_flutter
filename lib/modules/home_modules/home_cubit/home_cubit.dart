@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_user_submissions_model.dart';
@@ -24,7 +25,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   bool isUserSubmissionsLoading = false;
   bool isUserSubmissionsLastPage = false;
 
-  // his submissions + his employees submission if he has any
+  // his submissions + his employees submission if he has any (check this permission in back-end)
   Future<void> getUserSubmissions({int page = 1}) async {
     emit(GetUserSubmissionsLoadingState());
     isUserSubmissionsLoading = true;
@@ -84,12 +85,14 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
 
       // After getUserById is done, call the other functions
       getUserSubmissions();
-      getTasksToSubmit(
-        perPage: 3,
-        loadingState: GetTasksToSubmitLoadingState(),
-        successState: GetTasksToSubmitSuccessState(),
-        errorState: (error) => GetTasksToSubmitErrorState(error),
-      );
+      if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) {
+        getTasksToSubmit(
+          perPage: 3,
+          loadingState: GetTasksToSubmitLoadingState(),
+          successState: GetTasksToSubmitSuccessState(),
+          errorState: (error) => GetTasksToSubmitErrorState(error),
+        );
+      }
     } catch (e) {
       print(e.toString());
     }

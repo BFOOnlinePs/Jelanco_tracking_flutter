@@ -16,7 +16,8 @@ class TaskItem extends StatelessWidget {
 
   // final bool isAddedByUser;   // or use role and permissions as global
 
-  const TaskItem({super.key, 
+  const TaskItem({
+    super.key,
     required this.taskModel,
     // this.isAddedByUser = false,
   });
@@ -44,17 +45,17 @@ class TaskItem extends StatelessWidget {
             ),
             if (SystemPermissions.hasPermission(SystemPermissions.editTask))
               MyTextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                NavigationServices.navigateTo(
-                  context,
-                  EditTaskScreen(
-                    taskModel: taskModel,
-                  ),
-                );
-              },
-              child: Text('task_item_options_dialog_edit'.tr()),
-            ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  NavigationServices.navigateTo(
+                    context,
+                    EditTaskScreen(
+                      taskModel: taskModel,
+                    ),
+                  );
+                },
+                child: Text('task_item_options_dialog_edit'.tr()),
+              ),
             // MyTextButton(
             //   onPressed: () {
             //     Navigator.of(context).pop();
@@ -127,7 +128,7 @@ class TaskItem extends StatelessWidget {
                         const Icon(Icons.calendar_today, color: Colors.grey),
                         const SizedBox(width: 8),
                         Text(
-                          'تاريخ البدء:     ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
+                          'تاريخ البدء:      ${MyDateUtils.formatDateTime(taskModel.tPlanedStartTime)}',
                           style: const TextStyle(color: Colors.grey),
                         ),
                       ],

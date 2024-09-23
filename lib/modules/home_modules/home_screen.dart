@@ -49,12 +49,15 @@ class HomeScreen extends StatelessWidget {
                 onRefresh: () async {
                   await Future.wait([
                     homeCubit.getUserSubmissions(),
-                    homeCubit.getTasksToSubmit(
-                      perPage: 3,
-                      loadingState: GetTasksToSubmitLoadingState(),
-                      successState: GetTasksToSubmitSuccessState(),
-                      errorState: (error) => GetTasksToSubmitErrorState(error),
-                    ),
+                    if (SystemPermissions.hasPermission(
+                        SystemPermissions.submitTask))
+                      homeCubit.getTasksToSubmit(
+                        perPage: 3,
+                        loadingState: GetTasksToSubmitLoadingState(),
+                        successState: GetTasksToSubmitSuccessState(),
+                        errorState: (error) =>
+                            GetTasksToSubmitErrorState(error),
+                      ),
                   ]);
                 },
 
@@ -93,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                                   }
                                   return Padding(
                                     padding: EdgeInsets.all(8.0.w),
-                                    child: const Center(child: MyLoader()),
+                                    child: const LinearProgressIndicator(),
                                   );
                                 }
                                 final submission =

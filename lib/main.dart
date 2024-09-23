@@ -38,7 +38,6 @@ void main() async {
   await CacheHelper.init();
   SocketIO(); // This will initialize the singleton instance
 
-
   await Firebase.initializeApp(
     name: 'jelanco-tracking',
     options: DefaultFirebaseOptions.currentPlatform,
@@ -47,7 +46,8 @@ void main() async {
 
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
-  UserDataConstants.firebaseTokenVar = CacheHelper.getData(key: MyCacheKeys.firebaseToken);
+  UserDataConstants.firebaseTokenVar =
+      CacheHelper.getData(key: MyCacheKeys.firebaseToken);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
@@ -58,15 +58,12 @@ void main() async {
   if (UserDataConstants.token == null || UserDataConstants.token == '') {
     homeWidget = const LoginScreen();
   } else {
+    // if the user logged in (to ensure that it did not initialize twice)
+    await FirebaseApi().initNotification();
+
     homeWidget = HomeScreen();
     // homeWidget = BottomNavBarScreens();
   }
-
-  // if the user logged in (to ensure that it did not initialize twice)
-  if (UserDataConstants.token != null && UserDataConstants.token != '') {
-    await FirebaseApi().initNotification();
-  }
-
 
 
   // SystemChrome.setPreferredOrientations([
@@ -96,11 +93,8 @@ void main() async {
   // });
 }
 
-
-
 // Define a global key
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 
 class MyApp extends StatelessWidget {
   Widget homeWidget;
@@ -119,8 +113,8 @@ class MyApp extends StatelessWidget {
         // locale: DevicePreview.locale(context),
         // builder: DevicePreview.appBuilder,
 
-
-        navigatorKey: navigatorKey,  // Assign the navigatorKey
+        navigatorKey: navigatorKey,
+        // Assign the navigatorKey
         title: 'جيلانكو - نظام التتبع',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -140,5 +134,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

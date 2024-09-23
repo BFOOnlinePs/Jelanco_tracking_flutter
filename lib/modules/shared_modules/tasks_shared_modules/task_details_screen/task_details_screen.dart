@@ -25,7 +25,7 @@ class TaskDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(
-        title: 'تفاصيل المهمة المكلف بها',
+        title: 'تفاصيل المهمة',
       ),
       body: BlocProvider(
         create: (context) => TaskDetailsCubit()

@@ -21,8 +21,7 @@ class CommentsSectionWidget extends StatelessWidget {
         // const Text('التعليقات:',
         //     style: TextStyle(
         //         fontWeight: FontWeight.bold,
-        //         fontSize: 18,
-        //         color: ColorsConstants.secondaryColor)),
+        //         fontSize: 18,)),
         ...comments.map((comment) {
           return CommentWidget(comment: comment);
         }),

@@ -34,6 +34,7 @@ class AssignedTasksScreen extends StatelessWidget {
                             .getTasksAssignedToUserModel!.tasks!.isEmpty
                         ? Center(
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
                                 AssetsKeys.defaultNoTasksImage,

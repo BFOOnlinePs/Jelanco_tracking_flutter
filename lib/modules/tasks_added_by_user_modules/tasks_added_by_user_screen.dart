@@ -40,6 +40,7 @@ class TasksAddedByUserScreen extends StatelessWidget {
                             .getTasksAddedByUserModel!.tasks!.isEmpty
                         ? Center(
                             child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
                                 AssetsKeys.defaultNoTasksImage,

@@ -19,25 +19,26 @@ class HomeTasksToSubmitWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 6.w,
-              ),
-              Text(
-                'تكليفات بانتظار التسليم',
-                style: TextStyle(fontSize: 14.sp),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 6.h,
-          ),
+
           homeCubit.getTasksToSubmitModel == null
               ? const LinearProgressIndicator()
               : homeCubit.getTasksToSubmitModel!.tasks!.isNotEmpty
                   ? Column(
                       children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 6.w,
+                            ),
+                            Text(
+                              'تكليفات بانتظار التسليم',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 6.h,
+                        ),
                         ...homeCubit.getTasksToSubmitModel!.tasks!.map((task) {
                           return TaskToSubmitCardWidget(task: task);
                         }),
