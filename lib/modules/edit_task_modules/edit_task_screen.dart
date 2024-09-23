@@ -131,7 +131,7 @@ class EditTaskScreen extends StatelessWidget {
                                               SharedSize.textFiledTitleSize,
                                           color: Colors.red),
                                     ),
-                                    SizedBox(height: 8.0),
+                                    const SizedBox(height: 8.0),
                                   ],
                                 ),
                                 const SizedBox(

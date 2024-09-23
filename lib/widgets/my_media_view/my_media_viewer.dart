@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/videos_modules/video_player_screen.dart';
-import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:photo_view/photo_view.dart';
 
 // photos and videos viewer

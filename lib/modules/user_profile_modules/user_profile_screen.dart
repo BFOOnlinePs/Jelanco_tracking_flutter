@@ -1,15 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
-import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
-import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
-import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
-import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
@@ -18,9 +11,6 @@ import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profil
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
-import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
-import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
-import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 

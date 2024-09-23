@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:intl/intl.dart' as intl;

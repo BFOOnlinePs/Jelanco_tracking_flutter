@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,6 @@ import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/today_submissions_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
-import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_title_screen/my_title_screen_widget.dart';
 
 class TodaySubmissionsScreen extends StatelessWidget {

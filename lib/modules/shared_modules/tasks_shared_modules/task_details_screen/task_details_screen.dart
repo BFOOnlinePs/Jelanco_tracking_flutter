@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';

@@ -9,7 +9,6 @@ import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
 import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
-import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 
 // Define the background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

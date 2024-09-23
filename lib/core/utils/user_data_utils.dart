@@ -2,7 +2,6 @@ import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/models/auth_models/user_login_model.dart';
 import 'package:jelanco_tracking_system/network/local/cache_helper.dart';
-import 'package:jelanco_tracking_system/network/remote/firebase_api.dart';
 
 class UserDataUtils {
   // only save token and userId to the local storage

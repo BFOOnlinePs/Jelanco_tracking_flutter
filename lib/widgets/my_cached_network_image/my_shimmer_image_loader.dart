@@ -7,11 +7,11 @@ class MyShimmerImageLoader extends StatelessWidget {
   final bool isCircle;
 
   const MyShimmerImageLoader({
-    Key? key,
+    super.key,
     // this.width = 100.0,
     // this.height = 100.0,
     this.isCircle = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
