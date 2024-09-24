@@ -176,94 +176,99 @@ class ProfileCardWidget extends StatelessWidget {
                     ],
                   )
                 : Container(),
-            const SizedBox(height: 15),
 
-            userInfo.phoneNumber != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                  const Color(0xFF007BFF)),
-                              shape: WidgetStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      ButtonSizeConstants.borderRadius),
-                                ),
-                              ),
-                            ),
-                            onPressed: () {
-                              LaunchUrlUtils.makePhoneCall(
-                                  userInfo.phoneNumber!);
-                            },
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.phoneFlip,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  'اتصال',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
+            userInfo.phoneNumber != null && userInfo.id != UserDataConstants.userId
+                ? Column(
+                  children: [
+                    const SizedBox(height: 15),
+
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all(
+                                      const Color(0xFF007BFF)),
+                                  shape: WidgetStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          ButtonSizeConstants.borderRadius),
+                                    ),
                                   ),
-                                  textDirection: TextDirection.ltr,
                                 ),
-                              ],
-                            )),
-                      ),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(
-                                const Color(0xFF25D366)),
-                            shape:
-                                WidgetStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    ButtonSizeConstants.borderRadius),
+                                onPressed: () {
+                                  LaunchUrlUtils.makePhoneCall(
+                                      userInfo.phoneNumber!);
+                                },
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.phoneFlip,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'اتصال',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                      textDirection: TextDirection.ltr,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          const SizedBox(width: 5),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                    const Color(0xFF25D366)),
+                                shape:
+                                    WidgetStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        ButtonSizeConstants.borderRadius),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                LaunchUrlUtils.sendWhatsAppMessage(
+                                    userInfo.phoneNumber!);
+                              },
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.whatsapp,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    // userInfo.phoneNumber!,
+                                    'واتساب',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                    textDirection: TextDirection.ltr,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          onPressed: () {
-                            LaunchUrlUtils.sendWhatsAppMessage(
-                                userInfo.phoneNumber!);
-                          },
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.whatsapp,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                // userInfo.phoneNumber!,
-                                'واتساب',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                                textDirection: TextDirection.ltr,
-                              ),
-                            ],
-                          ),
-                        ),
+                        ],
                       ),
-                    ],
-                  )
+                  ],
+                )
                 : Container(),
             // Divider(height: 0.5, color: Colors.grey[300],)
           ],

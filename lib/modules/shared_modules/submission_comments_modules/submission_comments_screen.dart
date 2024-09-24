@@ -85,19 +85,18 @@ class SubmissionCommentsScreen extends StatelessWidget {
                                       .submissionComments!
                                       .isEmpty
                                   ? const Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image(
-                                        image: AssetImage(
-                                          AssetsKeys
-                                              .defaultNoCommentsImage2,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image(
+                                          image: AssetImage(
+                                            AssetsKeys.defaultNoCommentsImage2,
+                                          ),
+                                          height: 250,
                                         ),
-                                        height: 250,
-                                      ),
-                                      Text('لا يوجد تعليقات حتى الان'),
-                                      Text('كن أول من يعلق'),
-                                    ],
-                                  )
+                                        Text('لا يوجد تعليقات حتى الان'),
+                                        // Text('كن أول من يعلق'),
+                                      ],
+                                    )
                                   :
                                   // submissionCommentsCubit
                                   //                 .getSubmissionCommentsModel

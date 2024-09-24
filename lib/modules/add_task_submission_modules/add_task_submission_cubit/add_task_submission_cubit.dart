@@ -430,11 +430,12 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       startTime = taskSubmissionModel.tsActualStartTime;
       endTime = taskSubmissionModel.tsActualEndTime;
 
-      selectedTaskCategoriesList =
-          getTaskCategoriesModel!.taskCategories!.where((category) {
-        return taskSubmissionModel.tsCategories!
-            .contains(category.cId.toString());
-      }).toList();
+      selectedTaskCategoriesList = taskSubmissionModel.tsCategories != null
+          ? getTaskCategoriesModel!.taskCategories!.where((category) {
+              return taskSubmissionModel.tsCategories!
+                  .contains(category.cId.toString());
+            }).toList()
+          : [];
 
       for (var vid
           in taskSubmissionModel.submissionAttachmentsCategories?.videos ??

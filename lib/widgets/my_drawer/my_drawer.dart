@@ -12,6 +12,7 @@ import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
+import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_cubit.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_states.dart';
@@ -102,18 +103,17 @@ class MyDrawer extends StatelessWidget {
                           child: ListView(
                             padding: EdgeInsets.zero,
                             children: [
-                              // if (SystemPermissions.hasPermission(
-                              //     SystemPermissions.addTask))
-                              // DrawerItem(
-                              //   icon: Icons.add_task,
-                              //   text: 'drawer_add_task_title'.tr(),
-                              //   onTap: () {
-                              //     NavigationServices.navigateTo(
-                              //       context,
-                              //       UserProfileScreen(),
-                              //     );
-                              //   },
-                              // ),
+                              DrawerItem(
+                                icon: Icons.person_outlined,
+                                text: 'الملف الشخصي'.tr(),
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    UserProfileScreen(
+                                        userId: UserDataConstants.userId!),
+                                  );
+                                },
+                              ),
 
                               if (SystemPermissions.hasPermission(
                                   SystemPermissions.submitTask))

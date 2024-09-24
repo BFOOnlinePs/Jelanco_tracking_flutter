@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/error_text/my_error_field_text.dart';
@@ -59,6 +61,11 @@ class AddTaskScreen extends StatelessWidget {
               snackBarStates: SnackBarStates.success,
               message: state.addTaskModel.message,
             );
+            NavigationServices.back(context);
+            NavigationServices.navigateTo(
+              context,
+              TaskDetailsScreen(taskId: state.addTaskModel.task!.tId!),
+            );
           } else if (state is AddTaskErrorState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -73,10 +80,9 @@ class AddTaskScreen extends StatelessWidget {
             );
           } else if (state is GetManagerEmployeesErrorState) {
             SnackbarHelper.showSnackbar(
-              context: context,
-              snackBarStates: SnackBarStates.error,
-              message: 'ERROR !!'
-            );
+                context: context,
+                snackBarStates: SnackBarStates.error,
+                message: 'ERROR !!');
           }
         },
         builder: (context, state) {
@@ -134,7 +140,8 @@ class AddTaskScreen extends StatelessWidget {
                                             //   addTaskCubit.emitAfterReturn();
                                             // },
                                             users: addTaskCubit
-                                                .getManagerEmployeesModel!.managerEmployees!,
+                                                .getManagerEmployeesModel!
+                                                .managerEmployees!,
                                             selectedUsers:
                                                 addTaskCubit.selectedUsers,
                                           );

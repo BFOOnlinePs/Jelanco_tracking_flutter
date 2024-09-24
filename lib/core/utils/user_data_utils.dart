@@ -19,6 +19,8 @@ class UserDataUtils {
       );
       UserDataConstants.token = userLoginModel.token;
       UserDataConstants.userId = userLoginModel.user!.id;
+      // UserDataConstants.firebaseTokenVar =
+      //     CacheHelper.getData(key: MyCacheKeys.firebaseToken);
 
       // to give it an FCM token and save it in the database
       // await FirebaseApi().initNotification();

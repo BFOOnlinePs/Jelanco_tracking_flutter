@@ -30,14 +30,13 @@ class SubmissionHeaderWidget extends StatelessWidget {
   final UserProfileCubit? userProfileCubit;
   final TodaySubmissionsCubit? todaySubmissionsCubit;
 
-  SubmissionHeaderWidget(
-      {super.key,
-      required this.submissionModel,
-      this.homeCubit,
-      this.taskDetailsCubit,
-      this.taskSubmissionDetailsCubit,
-      this.userProfileCubit,
-      this.todaySubmissionsCubit});
+  SubmissionHeaderWidget({super.key,
+    required this.submissionModel,
+    this.homeCubit,
+    this.taskDetailsCubit,
+    this.taskSubmissionDetailsCubit,
+    this.userProfileCubit,
+    this.todaySubmissionsCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -61,20 +60,20 @@ class SubmissionHeaderWidget extends StatelessWidget {
                   padding: EdgeInsets.all(2.w),
                   child: submissionModel.submitterUser?.image != null
                       ? MyCachedNetworkImage(
-                          imageUrl: EndPointsConstants.profileStorage +
-                              submissionModel.submitterUser!.image!,
-                          width: 34.w,
-                          height: 34.w,
-                          fit: BoxFit.cover,
-                        )
+                    imageUrl: EndPointsConstants.profileStorage +
+                        submissionModel.submitterUser!.image!,
+                    width: 34.w,
+                    height: 34.w,
+                    fit: BoxFit.cover,
+                  )
                       : Image(
-                          image:
-                              const AssetImage(AssetsKeys.defaultProfileImage)
-                                  as ImageProvider,
-                          width: 34.w,
-                          height: 34.w,
-                          fit: BoxFit.cover,
-                        ),
+                    image:
+                    const AssetImage(AssetsKeys.defaultProfileImage)
+                    as ImageProvider,
+                    width: 34.w,
+                    height: 34.w,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 SizedBox(
                   width: 10.w,
@@ -106,11 +105,16 @@ class SubmissionHeaderWidget extends StatelessWidget {
             ),
           ),
         ),
+
         Row(
           children: [
+            submissionModel.tsParentId !=
+                -1 || (SystemPermissions.hasPermission(
+                SystemPermissions.editSubmission) &&
+                submissionModel.tsSubmitter == UserDataConstants.userId) ?
             TaskOptionsWidget(menuItems: [
               if (SystemPermissions.hasPermission(
-                      SystemPermissions.editSubmission) &&
+                  SystemPermissions.editSubmission) &&
                   submissionModel.tsSubmitter == UserDataConstants.userId)
                 MenuItemModel(
                   icon: Icons.edit,
@@ -152,26 +156,27 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     );
                   },
                 ),
-              MenuItemModel(
-                icon: Icons.history,
-                label: 'عرض التعديلات',
-                onTap: () {
-                  NavigationServices.navigateTo(
-                    context,
-                    TaskSubmissionVersionsScreen(
-                      taskSubmissionId: submissionModel.tsId!,
-                    ),
-                  );
-                },
-              ), //
-            ]),
+              if(submissionModel.tsParentId !=
+                  -1) // if the submission is not the parent, then it has history
+                MenuItemModel(
+                  icon: Icons.history,
+                  label: 'عرض التعديلات',
+                  onTap: () {
+                    NavigationServices.navigateTo(
+                      context,
+                      TaskSubmissionVersionsScreen(
+                        taskSubmissionId: submissionModel.tsId!,
+                      ),
+                    );
+                  },
+                ), //
+            ]) : Container(),
             GestureDetector(
                 onTap: () {
                   // NavigationServices.navigateTo(context, SubmissionLocationDialog(
                   //   taskSubmissionModel: submissionModel,
                   // ));
                   showDialog(
-
                     context: context,
                     builder: (context) {
                       return SubmissionLocationDialog(
@@ -182,7 +187,8 @@ class SubmissionHeaderWidget extends StatelessWidget {
                 },
                 child: const Icon(Icons.location_on))
           ],
-        ),
+        ) ,
+
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
@@ -43,7 +44,8 @@ class TaskItem extends StatelessWidget {
               },
               child: Text('task_item_options_dialog_view_details'.tr()),
             ),
-            if (SystemPermissions.hasPermission(SystemPermissions.editTask))
+            if (SystemPermissions.hasPermission(SystemPermissions.editTask) &&
+                taskModel.tAddedBy == UserDataConstants.userId)
               MyTextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -161,20 +163,25 @@ class TaskItem extends StatelessWidget {
                     )
                   : Container(),
               const MyVerticalSpacer(),
-              Text(
-                'الموظفين المكلفين: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
-                style: const TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Colors.blueGrey,
-                ),
-              ),
-              Text(
-                'أُضيف بواسطة: ${taskModel.addedByUser?.name}',
-                style: const TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Colors.blueGrey,
-                ),
-              ),
+              taskModel.assignedToUsers != null &&
+                      taskModel.assignedToUsers!.isNotEmpty
+                  ? Text(
+                      'الموظفين المكلفين: ${taskModel.assignedToUsers?.map((user) => user.name).join(', ')}',
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.blueGrey,
+                      ),
+                    )
+                  : Container(),
+              taskModel.addedByUser != null
+                  ? Text(
+                      'أُضيف بواسطة: ${taskModel.addedByUser?.name}',
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.blueGrey,
+                      ),
+                    )
+                  : Container(),
               // MyVerticalSpacer(),
               // Divider(),
               // const Text(

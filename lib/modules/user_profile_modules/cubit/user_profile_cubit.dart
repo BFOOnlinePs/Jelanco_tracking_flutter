@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
@@ -100,10 +101,11 @@ class UserProfileCubit extends Cubit<UserProfileStates>
 
       updateProfileImageModel = UpdateProfileImageModel.fromMap(value?.data);
 
-      // update the image in the screen immediately
+      // update the image in the screen immediately, and in the user data constants
       if (updateProfileImageModel?.status == true) {
         getUserProfileByIdModel!.userInfo!.image =
             updateProfileImageModel?.imageUrl;
+        UserDataConstants.image = updateProfileImageModel?.imageUrl;
       }
 
       emit(UpdateProfileImageSuccessState(
@@ -113,7 +115,6 @@ class UserProfileCubit extends Cubit<UserProfileStates>
       emit(UpdateProfileImageErrorState());
     });
   }
-
 
   void afterEditSubmission({
     required int oldSubmissionId,

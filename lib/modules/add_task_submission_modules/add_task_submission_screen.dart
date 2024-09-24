@@ -24,9 +24,10 @@ import 'package:jelanco_tracking_system/widgets/my_spacers/my_horizontal_spacer.
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
-// to add submission, regardless if it is the original submission or edit submission / new version or submission without task
+// to add submission (in 3 states)
+// regardless if it is the original submission or edit submission / new version or submission without task
 class AddTaskSubmissionScreen extends StatelessWidget {
-  final int taskId;
+  final int taskId; // -1 when add submission without task
   final TaskSubmissionModel? taskSubmissionModel; // for edit
   final bool isEdit; // for edit
 
@@ -95,7 +96,13 @@ class AddTaskSubmissionScreen extends StatelessWidget {
         builder: (context, state) {
           addTaskSubmissionCubit = AddTaskSubmissionCubit.get(context);
           return Scaffold(
-            appBar: MyAppBar(title: 'add_task_submission_title'.tr()),
+            appBar: MyAppBar(
+              title: isEdit
+                  ? 'تعديل التسليم'
+                  : taskId == -1
+                      ? 'إضافة تسليم جديد'
+                      : 'تسليم المهمة المكلف بها',
+            ),
             body: Stack(
               children: [
                 MyScreen(
@@ -372,58 +379,61 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                           ),
                         ),
                         MyElevatedButton(
-                          onPressed: () {
-                            if (addTaskSubmissionCubit
-                                .addTaskSubmissionFormKey.currentState!
-                                .validate()) {
-                              addTaskSubmissionCubit
-                                  .isAddTaskSubmissionLoading = true;
-                              addTaskSubmissionCubit.emitLoading();
-                              addTaskSubmissionCubit
-                                  .requestPermission(
-                                context: context,
-                                permissionType: PermissionType.location,
-                                functionWhenGranted:
-                                    addTaskSubmissionCubit.getCurrentLocation,
-                              )
-                                  .then((value) {
-                                print('add task .then');
-                                addTaskSubmissionCubit.addNewTaskSubmission(
-                                  taskId: taskId,
-                                  isEdit: isEdit,
-                                  taskSubmissionId:
-                                      taskSubmissionModel?.tsId ?? -1,
-                                  oldAttachments: isEdit
-                                      ? [
-                                          ...taskSubmissionModel!
-                                              .submissionAttachmentsCategories!
-                                              .images!
-                                              .map((e) => e.aAttachment!),
-                                          ...taskSubmissionModel!
-                                              .submissionAttachmentsCategories!
-                                              .videos!
-                                              .map((e) => e.aAttachment!),
-                                          ...taskSubmissionModel!
-                                              .submissionAttachmentsCategories!
-                                              .files!
-                                              .map((e) => e.aAttachment!),
-                                        ]
-                                      : [],
-                                );
-                              }).catchError((error) {
-                                print('error with location !!');
-                              });
-                            } else {
-                              print('not valid');
-                              ScrollUtils.scrollPosition(
-                                  scrollController:
-                                      addTaskSubmissionCubit.scrollController);
-                            }
-                          },
-                          // child: Text('add_task_submission_button_submit'.tr()),
-                          isWidthFull: true,
-                          buttonText: 'add_task_submission_button_submit'.tr(),
-                        ),
+                            onPressed: () {
+                              if (addTaskSubmissionCubit
+                                  .addTaskSubmissionFormKey.currentState!
+                                  .validate()) {
+                                addTaskSubmissionCubit
+                                    .isAddTaskSubmissionLoading = true;
+                                addTaskSubmissionCubit.emitLoading();
+                                addTaskSubmissionCubit
+                                    .requestPermission(
+                                  context: context,
+                                  permissionType: PermissionType.location,
+                                  functionWhenGranted:
+                                      addTaskSubmissionCubit.getCurrentLocation,
+                                )
+                                    .then((value) {
+                                  print('add task .then');
+                                  addTaskSubmissionCubit.addNewTaskSubmission(
+                                    taskId: taskId,
+                                    isEdit: isEdit,
+                                    taskSubmissionId:
+                                        taskSubmissionModel?.tsId ?? -1,
+                                    oldAttachments: isEdit
+                                        ? [
+                                            ...taskSubmissionModel!
+                                                .submissionAttachmentsCategories!
+                                                .images!
+                                                .map((e) => e.aAttachment!),
+                                            ...taskSubmissionModel!
+                                                .submissionAttachmentsCategories!
+                                                .videos!
+                                                .map((e) => e.aAttachment!),
+                                            ...taskSubmissionModel!
+                                                .submissionAttachmentsCategories!
+                                                .files!
+                                                .map((e) => e.aAttachment!),
+                                          ]
+                                        : [],
+                                  );
+                                }).catchError((error) {
+                                  print('error with location !!');
+                                });
+                              } else {
+                                print('not valid');
+                                ScrollUtils.scrollPosition(
+                                    scrollController: addTaskSubmissionCubit
+                                        .scrollController);
+                              }
+                            },
+                            // child: Text('add_task_submission_button_submit'.tr()),
+                            isWidthFull: true,
+                            buttonText: isEdit
+                                ? 'تعديل التسليم'
+                                : taskId == -1
+                                    ? 'إضافة التسليم الجديد'
+                                    : 'تسليم المهمة المكلف بها'),
                       ],
                     ),
                   ),

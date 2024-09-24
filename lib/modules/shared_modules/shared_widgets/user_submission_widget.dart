@@ -189,13 +189,16 @@ class UserSubmissionWidget extends StatelessWidget {
                               ),
                             );
                           },
-                          child: TextField(
+                          child:
+                              // !SystemPermissions.hasPermission(
+                              //     SystemPermissions.addComment) && submission.commentsCount  ?
+                              TextField(
                             enabled: false,
                             decoration: InputDecoration(
                               isDense: true,
                               contentPadding: const EdgeInsets.only(bottom: 0),
 
-                              /// may changed later
+                              /// may change later
                               hintText: SystemPermissions.hasPermission(
                                       SystemPermissions.addComment)
                                   ? "أضف تعليق ..."

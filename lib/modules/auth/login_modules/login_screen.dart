@@ -74,6 +74,7 @@ class LoginScreen extends StatelessWidget {
 
                         // for firebase token
                         await FirebaseApi().initNotification();
+
                         NavigationServices.navigateTo(
                           context,
                           HomeScreen(),

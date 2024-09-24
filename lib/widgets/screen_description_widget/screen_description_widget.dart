@@ -7,7 +7,7 @@ class ScreenDescriptionWidget extends StatelessWidget {
   final String description;
 
   const ScreenDescriptionWidget(
-      {super.key, required this.title, required this.iconData, required this.description});
+      {super.key, required this.title, required this.iconData, required this.description,});
 
   @override
   Widget build(BuildContext context) {
