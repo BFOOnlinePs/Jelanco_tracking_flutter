@@ -7,13 +7,14 @@ class GetSubmissionCommentCountModel {
     this.commentsCount,
   });
 
-  factory GetSubmissionCommentCountModel.fromMap(Map<String, dynamic> json) => GetSubmissionCommentCountModel(
-    status: json["status"],
-    commentsCount: json["comments_count"],
-  );
+  factory GetSubmissionCommentCountModel.fromMap(Map<String, dynamic> json) =>
+      GetSubmissionCommentCountModel(
+        status: json["status"],
+        commentsCount: json["comments_count"],
+      );
 
   Map<String, dynamic> toMap() => {
-    "status": status,
-    "comments_count": commentsCount,
-  };
+        "status": status,
+        "comments_count": commentsCount,
+      };
 }

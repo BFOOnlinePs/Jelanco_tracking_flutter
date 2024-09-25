@@ -129,25 +129,31 @@ class UserSubmissionWidget extends StatelessWidget {
                                           taskId: submission.tsTaskId ?? -1,
                                           submissionId: submission.tsId!,
                                           onPopCallback: () {
-                                            return homeCubit != null
-                                                ? homeCubit!.getCommentsCount(
-                                                    submissionId:
-                                                        submission.tsId!)
-                                                : userProfileCubit != null
-                                                    ? userProfileCubit!
-                                                        .getCommentsCount(
-                                                            submissionId:
-                                                                submission
-                                                                    .tsId!)
-                                                    : todaySubmissionsCubit !=
-                                                            null
-                                                        ? todaySubmissionsCubit!
-                                                            .getCommentsCount(
-                                                                submissionId:
-                                                                    submission
-                                                                        .tsId!)
-                                                        : print(
-                                                            'no get comments count function provided');
+                                            if (SystemPermissions.hasPermission(
+                                                SystemPermissions
+                                                    .viewComments)) {
+                                              if (homeCubit != null) {
+                                                return homeCubit!
+                                                    .getCommentsCount(
+                                                        submissionId:
+                                                            submission.tsId!);
+                                              } else if (userProfileCubit !=
+                                                  null) {
+                                                return userProfileCubit!
+                                                    .getCommentsCount(
+                                                        submissionId:
+                                                            submission.tsId!);
+                                              } else if (todaySubmissionsCubit !=
+                                                  null) {
+                                                return todaySubmissionsCubit!
+                                                    .getCommentsCount(
+                                                        submissionId:
+                                                            submission.tsId!);
+                                              } else {
+                                                print(
+                                                    'no get comments count function provided');
+                                              }
+                                            }
                                           },
                                         ),
                                       );
@@ -172,19 +178,23 @@ class UserSubmissionWidget extends StatelessWidget {
                                 taskId: submission.tsTaskId!,
                                 submissionId: submission.tsId!,
                                 onPopCallback: () {
-                                  return homeCubit != null
-                                      ? homeCubit!.getCommentsCount(
-                                          submissionId: submission.tsId!)
-                                      : userProfileCubit != null
-                                          ? userProfileCubit!.getCommentsCount(
-                                              submissionId: submission.tsId!)
-                                          : todaySubmissionsCubit != null
-                                              ? todaySubmissionsCubit!
-                                                  .getCommentsCount(
-                                                      submissionId:
-                                                          submission.tsId!)
-                                              : print(
-                                                  'no get comments count function provided');
+                                  if (SystemPermissions.hasPermission(
+                                      SystemPermissions.viewComments)) {
+                                    if (homeCubit != null) {
+                                      return homeCubit!.getCommentsCount(
+                                          submissionId: submission.tsId!);
+                                    } else if (userProfileCubit != null) {
+                                      return userProfileCubit!.getCommentsCount(
+                                          submissionId: submission.tsId!);
+                                    } else if (todaySubmissionsCubit != null) {
+                                      return todaySubmissionsCubit!
+                                          .getCommentsCount(
+                                              submissionId: submission.tsId!);
+                                    } else {
+                                      print(
+                                          'no get comments count function provided');
+                                    }
+                                  }
                                 },
                               ),
                             );
