@@ -62,6 +62,7 @@ class EndPointsConstants {
 
   // manager employees
   static const String managerEmployees = '$users/employees';
+  static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
 
 
   // FCM

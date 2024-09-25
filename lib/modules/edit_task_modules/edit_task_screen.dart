@@ -44,7 +44,8 @@ class EditTaskScreen extends StatelessWidget {
           successState: CategoriesSuccessState(),
           errorState: (error) => CategoriesErrorState(error: error),
         )
-        ..getManagerEmployees(
+        ..getManagerEmployeesWithTaskAssignees(
+          taskId: taskModel.tId!,
           loadingState: GetManagerEmployeesLoadingState(),
           successState: GetManagerEmployeesSuccessState(),
           errorState: GetManagerEmployeesErrorState(),
@@ -61,7 +62,7 @@ class EditTaskScreen extends StatelessWidget {
           if (state is GetManagerEmployeesSuccessState) {
             // to display the old assigned to users
             editTaskCubit.selectedUsers = editTaskCubit
-                .getManagerEmployeesModel!.managerEmployees!
+                .getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!
                 .where((user) => taskModel.assignedToUsers!
                     .any((assignedUser) => assignedUser.id == user.id))
                 .toList();
@@ -147,7 +148,7 @@ class EditTaskScreen extends StatelessWidget {
                                           return AssignedToScreen(
                                             isAddTask: true,
                                             users: editTaskCubit
-                                                .getManagerEmployeesModel!
+                                                .getManagerEmployeesWithTaskAssigneesModel!
                                                 .managerEmployees!,
                                             selectedUsers:
                                                 editTaskCubit.selectedUsers,
@@ -318,7 +319,9 @@ class EditTaskScreen extends StatelessWidget {
                 ),
                 state is EditTaskLoadingState ||
                         editTaskCubit.getTaskCategoriesModel == null ||
-                        editTaskCubit.getManagerEmployeesModel == null
+                        editTaskCubit
+                                .getManagerEmployeesWithTaskAssigneesModel ==
+                            null
                     ? const LoaderWithDisable()
                     : Container()
               ],
