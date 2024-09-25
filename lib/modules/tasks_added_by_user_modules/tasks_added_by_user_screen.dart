@@ -1,12 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
+import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 import '../shared_modules/tasks_shared_modules/task_item.dart';
 
@@ -92,6 +97,19 @@ class TasksAddedByUserScreen extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton:
+          (SystemPermissions.hasPermission(SystemPermissions.addTask))
+              ? MyFloatingActionButton(
+                  icon: Icons.add_task,
+                  labelText: 'إضافة تكليف',
+                  onPressed: () {
+                    NavigationServices.navigateTo(
+                      context,
+                      AddTaskScreen(),
+                    );
+                  },
+                )
+              : Container(),
     );
   }
 }

@@ -119,12 +119,12 @@ class ProfileCardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  FontAwesomeIcons.addressCard,
-                  color: Colors.blueGrey[400],
-                  size: 20,
-                ),
-                const SizedBox(width: 5),
+                // Icon(
+                //   FontAwesomeIcons.addressCard,
+                //   color: Colors.blueGrey[400],
+                //   size: 20,
+                // ),
+                // const SizedBox(width: 5),
                 Text(
                   userInfo.jobTitle ?? '',
                   style: TextStyle(
@@ -136,51 +136,57 @@ class ProfileCardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
+
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(
-                  FontAwesomeIcons.envelope,
-                  color: Colors.blueGrey[400],
-                  size: 20,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Icon(
+                    //   FontAwesomeIcons.envelope,
+                    //   color: Colors.blueGrey[400],
+                    //   size: 20,
+                    // ),
+                    // const SizedBox(width: 5),
+                    Text(
+                      userInfo.email ?? '',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blueGrey[400],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 5),
-                Text(
-                  userInfo.email ?? '',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.blueGrey[400],
-                  ),
-                ),
+
+                userInfo.phoneNumber != null
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Icon(
+                          //   FontAwesomeIcons.mobileScreen,
+                          //   color: Colors.blueGrey[400],
+                          //   size: 20,
+                          // ),
+                          // const SizedBox(width: 5),
+                          Text(
+                            userInfo.phoneNumber!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.blueGrey[400],
+                            ),
+                            textDirection: TextDirection.ltr,
+                          ),
+                        ],
+                      )
+                    : Container(),
               ],
             ),
-            const SizedBox(height: 5),
-            userInfo.phoneNumber != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.mobileScreen,
-                        color: Colors.blueGrey[400],
-                        size: 20,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        userInfo.phoneNumber!,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.blueGrey[400],
-                        ),
-                        textDirection: TextDirection.ltr,
-                      ),
-                    ],
-                  )
-                : Container(),
 
             userInfo.phoneNumber != null && userInfo.id != UserDataConstants.userId
                 ? Column(
                   children: [
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 12),
 
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,

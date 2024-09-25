@@ -286,18 +286,18 @@ class EditTaskScreen extends StatelessWidget {
                                   //     value == null ? 'Select a category' : null,
                                 ),
                                 const MyVerticalSpacer(),
-                                MyDropdownButton<TaskStatusEnum>(
-                                  label: 'الحالة',
-                                  displayText: (status) => status.statusAr,
-                                  value: TaskStatusEnum.getStatus(
-                                      taskModel.tStatus ?? ''),
-                                  onChanged: (TaskStatusEnum? newStatus) {
-                                    editTaskCubit.changeSelectedTaskStatus(
-                                        taskStatusEnum: newStatus!);
-                                  },
-                                  items: TaskStatusEnum.getAllStatuses(),
-                                ),
-                                const MyVerticalSpacer(),
+                                // MyDropdownButton<TaskStatusEnum>(
+                                //   label: 'الحالة',
+                                //   displayText: (status) => status.statusAr,
+                                //   value: TaskStatusEnum.getStatus(
+                                //       taskModel.tStatus ?? ''),
+                                //   onChanged: (TaskStatusEnum? newStatus) {
+                                //     editTaskCubit.changeSelectedTaskStatus(
+                                //         taskStatusEnum: newStatus!);
+                                //   },
+                                //   items: TaskStatusEnum.getAllStatuses(),
+                                // ),
+                                // const MyVerticalSpacer(),
                               ],
                             ),
                           ),

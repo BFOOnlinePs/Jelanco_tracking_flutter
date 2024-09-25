@@ -42,46 +42,40 @@ class TaskDetailsScreen extends StatelessWidget {
                     ? const Center(
                         child: MyLoader(),
                       )
-                    : Stack(
-                        children: [
-                          MyRefreshIndicator(
-                            onRefresh: () async {
-                              await taskDetailsCubit
-                                  .getTaskWithSubmissionsAndComments(
-                                      taskId: taskId);
-                            },
-                            child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              controller: taskDetailsCubit.scrollController,
-                              // padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TaskDetailsSectionWidget(
-                                    taskModel: taskDetailsCubit
-                                        .getTaskWithSubmissionsAndCommentsModel!
-                                        .task!,
-                                  ),
-                                  taskDetailsCubit
-                                          .getTaskWithSubmissionsAndCommentsModel!
-                                          .task!
-                                          .taskSubmissions!
-                                          .isNotEmpty
-                                      ? SubmissionsSectionWidget(
-                                          taskDetailsCubit: taskDetailsCubit,
-                                        )
-                                      : Container(),
-                                  const SizedBox(
-                                    height: 60,
-                                  ),
-                                ],
-                              ),
+                    : MyRefreshIndicator(
+                      onRefresh: () async {
+                        await taskDetailsCubit
+                            .getTaskWithSubmissionsAndComments(
+                                taskId: taskId);
+                      },
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        controller: taskDetailsCubit.scrollController,
+                        // padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TaskDetailsSectionWidget(
+                              taskModel: taskDetailsCubit
+                                  .getTaskWithSubmissionsAndCommentsModel!
+                                  .task!,
                             ),
-                          ),
-                          // ..................................
-                          // state is AddCommentLoadingState ? LoaderWithDisable() : Container(),
-                        ],
+                            taskDetailsCubit
+                                    .getTaskWithSubmissionsAndCommentsModel!
+                                    .task!
+                                    .taskSubmissions!
+                                    .isNotEmpty
+                                ? SubmissionsSectionWidget(
+                                    taskDetailsCubit: taskDetailsCubit,
+                                  )
+                                : Container(),
+                            const SizedBox(
+                              height: 60,
+                            ),
+                          ],
+                        ),
                       ),
+                    ),
             floatingActionButton:
                 taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
                     ? Center(

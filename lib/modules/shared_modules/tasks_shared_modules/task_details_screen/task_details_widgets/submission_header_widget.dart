@@ -111,11 +111,11 @@ class SubmissionHeaderWidget extends StatelessWidget {
         Row(
           children: [
             showSubmissionOptions &&
-                    (submissionModel.tsParentId != -1 ||
-                        (SystemPermissions.hasPermission(
-                                SystemPermissions.editSubmission) &&
-                            submissionModel.tsSubmitter ==
-                                UserDataConstants.userId))
+            (submissionModel.tsParentId != -1 ||
+                    (SystemPermissions.hasPermission(
+                            SystemPermissions.editSubmission) &&
+                        submissionModel.tsSubmitter ==
+                            UserDataConstants.userId))
                 ? TaskOptionsWidget(menuItems: [
                     if (SystemPermissions.hasPermission(
                             SystemPermissions.editSubmission) &&

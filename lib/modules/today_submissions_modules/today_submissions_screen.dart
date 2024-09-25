@@ -9,6 +9,7 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_title_screen/my_title_screen_widget.dart';
 
+// تسليمات اليوم / سجلات اليوم
 class TodaySubmissionsScreen extends StatelessWidget {
   const TodaySubmissionsScreen({super.key});
 
@@ -17,7 +18,7 @@ class TodaySubmissionsScreen extends StatelessWidget {
     TodaySubmissionsCubit todaySubmissionsCubit;
     return Scaffold(
       appBar: const MyAppBar(
-        title: 'تسليمات اليوم',
+        title: 'سجلات اليوم',
       ),
       body: Column(
         children: [

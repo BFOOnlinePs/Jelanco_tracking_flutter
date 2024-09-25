@@ -119,7 +119,7 @@ class MyDrawer extends StatelessWidget {
                                   SystemPermissions.submitTask))
                                 DrawerItem(
                                   icon: Icons.today_rounded,
-                                  text: 'تسليمات اليوم',
+                                  text: 'سجلات اليوم',
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,
@@ -131,7 +131,7 @@ class MyDrawer extends StatelessWidget {
                                   SystemPermissions.viewManagerUsers))
                                 DrawerItem(
                                   icon: Icons.people_alt_outlined,
-                                  text: 'المستخدمين',
+                                  text: 'متابعة الموظفين',
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,
@@ -139,18 +139,7 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.addTask))
-                                DrawerItem(
-                                  icon: Icons.add_task,
-                                  text: 'drawer_add_task_title'.tr(),
-                                  onTap: () {
-                                    NavigationServices.navigateTo(
-                                      context,
-                                      AddTaskScreen(),
-                                    );
-                                  },
-                                ),
+
                               if (SystemPermissions.hasPermission(
                                   SystemPermissions.addTask))
                                 DrawerItem(

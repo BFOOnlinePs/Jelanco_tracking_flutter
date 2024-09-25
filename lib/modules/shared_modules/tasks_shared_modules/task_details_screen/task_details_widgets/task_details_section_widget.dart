@@ -20,16 +20,12 @@ class TaskDetailsSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsetsDirectional.only(
-          top: 10, start: 16, end: 16, bottom: 8),
+          top: 10, start: 16, end: 8, bottom: 8),
       color: Colors.grey[200],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AddedBySectionWidget(
-              '${taskModel.addedByUser?.name}', taskModel.addedByUser?.image,
-              status: TaskStatusEnum.getStatus(taskModel.tStatus!),
-              statusIcon: Icons.flag,
-              addedOn: taskModel.createdAt),
+          AddedBySectionWidget(taskModel),
           ContentWidget(
             taskModel.tContent!,
           ),

@@ -19,7 +19,7 @@ class ManagerEmployeesScreen extends StatelessWidget {
     ManagerEmployeesCubit managerEmployeesCubit;
     return Scaffold(
       appBar: const MyAppBar(
-        title: 'المستخدمين',
+        title: 'متابعة الموظفين',
       ),
       body: BlocProvider(
         create: (context) => ManagerEmployeesCubit()
@@ -37,7 +37,7 @@ class ManagerEmployeesScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const MyScreenTitleWidget(
-                    title: 'المستخدمين الذين لدي صلاحيات عليهم',
+                    title: 'موظفين أقوم بمتابعتهم',
                   ),
                   Expanded(
                           child: managerEmployeesCubit.getManagerEmployeesModel ==

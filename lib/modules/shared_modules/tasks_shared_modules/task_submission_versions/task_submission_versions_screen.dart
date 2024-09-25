@@ -36,6 +36,7 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
             return MyScreen(
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: taskSubmissionVersionsCubit
                               .getTaskSubmissionVersionsModel !=
                           null
@@ -47,7 +48,6 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
                               SubmissionHeaderWidget(
                                 submissionModel: submission,
                                 showSubmissionOptions: false,
-              
                               ),
                               ContentWidget(submission.tsContent ?? '',
                                   isSubmission: true),

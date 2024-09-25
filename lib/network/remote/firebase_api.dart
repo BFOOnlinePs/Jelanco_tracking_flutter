@@ -12,6 +12,14 @@ import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
 
 // Define the background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('in _firebaseMessagingBackgroundHandler');
+  // Handle background/terminated notification message
+  // Parse the data and navigate to the correct screen
+  if (message.data['type'] == 'task') {
+    // Navigate to the task details page
+    print('Navigating to task details');
+  }
+
   // await Firebase.initializeApp();
   if (kDebugMode) {
     print("Handling a background message: ${message.messageId}");
@@ -59,12 +67,12 @@ class FirebaseApi {
     print('handleMessage method');
     if (message == null) return;
 
-    if (kDebugMode) {
+    // if (kDebugMode) {
       print('Handling a message: ${message.messageId}');
       print('Message data: ${message.data}');
       print('Message notification: ${message.notification?.title}');
       print('Message notification: ${message.notification?.body}');
-    }
+    // }
 
     print('message.data: ${message.data}');
 
@@ -191,6 +199,9 @@ class FirebaseApi {
 
   // Requests notification permissions and initializes notifications.
   Future<void> initNotification() async {
+    // await _initPushNotification();
+    // await _initLocalNotification();
+
     // iOS app users need to grant permission to receive messages
     final settings = await messaging.requestPermission(
       alert: true,
