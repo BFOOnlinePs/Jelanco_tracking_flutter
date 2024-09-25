@@ -24,19 +24,22 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 // show the edited submission immediately (when back from edit submission screen)
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
+  final bool showSubmissionOptions;
   final HomeCubit? homeCubit;
   final TaskDetailsCubit? taskDetailsCubit;
   final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
   final UserProfileCubit? userProfileCubit;
   final TodaySubmissionsCubit? todaySubmissionsCubit;
 
-  SubmissionHeaderWidget({super.key,
-    required this.submissionModel,
-    this.homeCubit,
-    this.taskDetailsCubit,
-    this.taskSubmissionDetailsCubit,
-    this.userProfileCubit,
-    this.todaySubmissionsCubit});
+  SubmissionHeaderWidget(
+      {super.key,
+      required this.submissionModel,
+      this.showSubmissionOptions = true,
+      this.homeCubit,
+      this.taskDetailsCubit,
+      this.taskSubmissionDetailsCubit,
+      this.userProfileCubit,
+      this.todaySubmissionsCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +63,20 @@ class SubmissionHeaderWidget extends StatelessWidget {
                   padding: EdgeInsets.all(2.w),
                   child: submissionModel.submitterUser?.image != null
                       ? MyCachedNetworkImage(
-                    imageUrl: EndPointsConstants.profileStorage +
-                        submissionModel.submitterUser!.image!,
-                    width: 34.w,
-                    height: 34.w,
-                    fit: BoxFit.cover,
-                  )
+                          imageUrl: EndPointsConstants.profileStorage +
+                              submissionModel.submitterUser!.image!,
+                          width: 34.w,
+                          height: 34.w,
+                          fit: BoxFit.cover,
+                        )
                       : Image(
-                    image:
-                    const AssetImage(AssetsKeys.defaultProfileImage)
-                    as ImageProvider,
-                    width: 34.w,
-                    height: 34.w,
-                    fit: BoxFit.cover,
-                  ),
+                          image:
+                              const AssetImage(AssetsKeys.defaultProfileImage)
+                                  as ImageProvider,
+                          width: 34.w,
+                          height: 34.w,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 SizedBox(
                   width: 10.w,
@@ -105,72 +108,77 @@ class SubmissionHeaderWidget extends StatelessWidget {
             ),
           ),
         ),
-
         Row(
           children: [
-            submissionModel.tsParentId !=
-                -1 || (SystemPermissions.hasPermission(
-                SystemPermissions.editSubmission) &&
-                submissionModel.tsSubmitter == UserDataConstants.userId) ?
-            TaskOptionsWidget(menuItems: [
-              if (SystemPermissions.hasPermission(
-                  SystemPermissions.editSubmission) &&
-                  submissionModel.tsSubmitter == UserDataConstants.userId)
-                MenuItemModel(
-                  icon: Icons.edit,
-                  label: 'تعديل',
-                  onTap: () {
-                    NavigationServices.navigateTo(
-                      context,
-                      AddTaskSubmissionScreen(
-                        taskId: submissionModel.tsTaskId!,
-                        taskSubmissionModel: submissionModel,
-                        isEdit: true,
-                        getDataCallback: (newSubmissionModel) {
-                          // shared with 5 screens (task details screen, submission details screen and home user submissions screen)
-                          // to edit the submission
-                          if (homeCubit != null) {
-                            homeCubit!.afterEditSubmission(
-                                oldSubmissionId: submissionModel.tsId!,
-                                newSubmissionModel: newSubmissionModel);
-                          } else if (taskDetailsCubit != null) {
-                            taskDetailsCubit!.afterEditSubmission(
-                                oldSubmissionId: submissionModel.tsId!,
-                                newSubmissionModel: newSubmissionModel);
-                          } else if (taskSubmissionDetailsCubit != null) {
-                            taskSubmissionDetailsCubit!.afterEditSubmission(
-                                newSubmissionModel: newSubmissionModel);
-                          } else if (userProfileCubit != null) {
-                            userProfileCubit!.afterEditSubmission(
-                                oldSubmissionId: submissionModel.tsId!,
-                                newSubmissionModel: newSubmissionModel);
-                          } else if (todaySubmissionsCubit != null) {
-                            todaySubmissionsCubit!.afterEditSubmission(
-                                oldSubmissionId: submissionModel.tsId!,
-                                newSubmissionModel: newSubmissionModel);
-                          } else {
-                            print('no afterEditSubmission function provided');
-                          }
+            showSubmissionOptions &&
+                    (submissionModel.tsParentId != -1 ||
+                        (SystemPermissions.hasPermission(
+                                SystemPermissions.editSubmission) &&
+                            submissionModel.tsSubmitter ==
+                                UserDataConstants.userId))
+                ? TaskOptionsWidget(menuItems: [
+                    if (SystemPermissions.hasPermission(
+                            SystemPermissions.editSubmission) &&
+                        submissionModel.tsSubmitter == UserDataConstants.userId)
+                      MenuItemModel(
+                        icon: Icons.edit,
+                        label: 'تعديل',
+                        onTap: () {
+                          NavigationServices.navigateTo(
+                            context,
+                            AddTaskSubmissionScreen(
+                              taskId: submissionModel.tsTaskId!,
+                              taskSubmissionModel: submissionModel,
+                              isEdit: true,
+                              getDataCallback: (newSubmissionModel) {
+                                // shared with 5 screens (task details screen, submission details screen and home user submissions screen)
+                                // to edit the submission
+                                if (homeCubit != null) {
+                                  homeCubit!.afterEditSubmission(
+                                      oldSubmissionId: submissionModel.tsId!,
+                                      newSubmissionModel: newSubmissionModel);
+                                } else if (taskDetailsCubit != null) {
+                                  taskDetailsCubit!.afterEditSubmission(
+                                      oldSubmissionId: submissionModel.tsId!,
+                                      newSubmissionModel: newSubmissionModel);
+                                } else if (taskSubmissionDetailsCubit != null) {
+                                  taskSubmissionDetailsCubit!
+                                      .afterEditSubmission(
+                                          newSubmissionModel:
+                                              newSubmissionModel);
+                                } else if (userProfileCubit != null) {
+                                  userProfileCubit!.afterEditSubmission(
+                                      oldSubmissionId: submissionModel.tsId!,
+                                      newSubmissionModel: newSubmissionModel);
+                                } else if (todaySubmissionsCubit != null) {
+                                  todaySubmissionsCubit!.afterEditSubmission(
+                                      oldSubmissionId: submissionModel.tsId!,
+                                      newSubmissionModel: newSubmissionModel);
+                                } else {
+                                  print(
+                                      'no afterEditSubmission function provided');
+                                }
+                              },
+                            ),
+                          );
                         },
                       ),
-                    );
-                  },
-                ),
-              if(submissionModel.tsParentId !=
-                  -1) // if the submission is not the parent, then it has history
-                MenuItemModel(
-                  icon: Icons.history,
-                  label: 'عرض التعديلات',
-                  onTap: () {
-                    NavigationServices.navigateTo(
-                      context,
-                      TaskSubmissionVersionsScreen(
-                        taskSubmissionId: submissionModel.tsId!,
-                      ),
-                    );
-                  },
-                ), //
-            ]) : Container(),
+                    if (submissionModel.tsParentId !=
+                        -1) // if the submission is not the parent, then it has history
+                      MenuItemModel(
+                        icon: Icons.history,
+                        label: 'عرض التعديلات',
+                        onTap: () {
+                          NavigationServices.navigateTo(
+                            context,
+                            TaskSubmissionVersionsScreen(
+                              taskSubmissionId: submissionModel.tsId!,
+                            ),
+                          );
+                        },
+                      ), //
+                  ])
+                : Container(),
             GestureDetector(
                 onTap: () {
                   // NavigationServices.navigateTo(context, SubmissionLocationDialog(
@@ -187,8 +195,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                 },
                 child: const Icon(Icons.location_on))
           ],
-        ) ,
-
+        ),
       ],
     );
   }
