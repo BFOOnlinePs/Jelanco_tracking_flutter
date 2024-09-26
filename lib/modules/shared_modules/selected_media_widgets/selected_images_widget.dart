@@ -10,10 +10,6 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 
 class SelectedImagesWidget extends StatelessWidget {
-  // final AddTaskSubmissionCubit addTaskSubmissionCubit;
-  // final TaskSubmissionModel? taskSubmissionModel; // for old picked images
-
-  //
   final List<XFile> pickedImagesList;
   final Function({
     required int index,
@@ -26,11 +22,9 @@ class SelectedImagesWidget extends StatelessWidget {
 
   const SelectedImagesWidget({
     super.key,
-    // required this.addTaskSubmissionCubit,
-    // required this.taskSubmissionModel,
     required this.pickedImagesList,
     required this.deletedPickedImageFromList,
-     this.oldSubmissionAttachmentsCategories,
+    this.oldSubmissionAttachmentsCategories,
     required this.storagePath,
   });
 
@@ -40,8 +34,6 @@ class SelectedImagesWidget extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          // addTaskSubmissionCubit
-          //         .
           pickedImagesList.isEmpty // new picked (from file)
               ? Container()
               : SizedBox(
@@ -53,7 +45,6 @@ class SelectedImagesWidget extends StatelessWidget {
                         height: 200,
                         showDeleteIcon: true,
                         onDeletePressed: () {
-                          // addTaskSubmissionCubit.
                           deletedPickedImageFromList(index: index);
                         },
                         margin: const EdgeInsetsDirectional.only(end: 10),
@@ -61,10 +52,7 @@ class SelectedImagesWidget extends StatelessWidget {
                           // height: 200,
                           // width: 132,
                           child: Image.file(
-                            File(
-                                // addTaskSubmissionCubit
-                                // .
-                                pickedImagesList[index].path),
+                            File(pickedImagesList[index].path),
                             // fit: BoxFit.cover,
                           ),
                         )),
@@ -77,9 +65,6 @@ class SelectedImagesWidget extends StatelessWidget {
           // the old picked images list is empty (from network)
 
           oldSubmissionAttachmentsCategories == null ||
-                  // taskSubmissionModel == null ||
-                  //         taskSubmissionModel!
-                  //             .
                   oldSubmissionAttachmentsCategories!.images!.isEmpty
               ? Container()
               : SizedBox(
@@ -103,8 +88,6 @@ class SelectedImagesWidget extends StatelessWidget {
                         // width: 132,
                         child: MyCachedNetworkImage(
                           imageUrl: storagePath +
-                              // taskSubmissionModel!
-                              //     .
                               oldSubmissionAttachmentsCategories!
                                   .images![index].aAttachment!,
                           fit: BoxFit.cover,
@@ -112,8 +95,6 @@ class SelectedImagesWidget extends StatelessWidget {
                       ),
                     ),
                     itemCount:
-                        // taskSubmissionModel!
-                        //     .
                         oldSubmissionAttachmentsCategories!.images!.length,
                   ),
                 ),

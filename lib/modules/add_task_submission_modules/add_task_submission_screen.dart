@@ -338,9 +338,21 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   height: 14,
                                 ),
                                 SelectedVideosWidget(
-                                    addTaskSubmissionCubit:
-                                        addTaskSubmissionCubit,
-                                    taskSubmissionModel: taskSubmissionModel),
+                                  pickedVideosList:
+                                      addTaskSubmissionCubit.pickedVideosList,
+                                  deletePickedVideoFromList:
+                                      addTaskSubmissionCubit
+                                          .deletePickedVideoFromList,
+                                  oldSubmissionAttachmentsCategories:
+                                      taskSubmissionModel
+                                          ?.submissionAttachmentsCategories,
+                                  videosControllers:
+                                      addTaskSubmissionCubit.videosControllers,
+                                  oldVideoControllers: addTaskSubmissionCubit
+                                      .oldVideoControllers,
+                                  toggleVideoPlayPause: addTaskSubmissionCubit
+                                      .toggleVideoPlayPause,
+                                ),
                                 SelectedAttachmentsWidget(
                                   oldSubmissionAttachmentsCategories:
                                       taskSubmissionModel

@@ -12,6 +12,7 @@ import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_attachments_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
@@ -415,18 +416,26 @@ class AddTaskScreen extends StatelessWidget {
                                   pickedImagesList:
                                       addTaskCubit.pickedImagesList,
                                   deletedPickedImageFromList:
-                                      addTaskCubit.deletedPickedImageFromList,
+                                      addTaskCubit.deletePickedImageFromList,
                                 ),
                                 const SizedBox(
                                   height: 14,
                                 ),
-                                // SelectedVideosWidget(
-                                //     addTaskCubit:
-                                //     addTaskCubit,
-                                //     taskSubmissionModel: taskSubmissionModel),
+                                SelectedVideosWidget(
+                                  pickedVideosList:
+                                      addTaskCubit.pickedVideosList,
+                                  deletePickedVideoFromList:
+                                      addTaskCubit.deletePickedVideoFromList,
+                                  oldVideoControllers:
+                                      addTaskCubit.oldVideoControllers,
+                                  // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories,
+                                  videosControllers:
+                                      addTaskCubit.videosControllers,
+                                  toggleVideoPlayPause:
+                                      addTaskCubit.toggleVideoPlayPause,
+                                ),
                                 SelectedAttachmentsWidget(
-                                  pickedFilesList:
-                                      addTaskCubit.pickedFilesList,
+                                  pickedFilesList: addTaskCubit.pickedFilesList,
                                   // old not used yet since the task has no version
                                   deletedPickedFileFromList:
                                       addTaskCubit.deletedPickedFileFromList,
@@ -439,8 +448,7 @@ class AddTaskScreen extends StatelessWidget {
                           onPressed: () {
                             addTaskCubit.changeIsAddClicked(true);
                             if (addTaskCubit.formKey.currentState!.validate()) {
-                              addTaskCubit
-                                  .isAddTaskSubmissionLoading = true;
+                              addTaskCubit.isAddTaskSubmissionLoading = true;
                               addTaskCubit.emitLoading();
                               addTaskCubit.addTask();
                             }
@@ -453,8 +461,7 @@ class AddTaskScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                    addTaskCubit.isAddTaskSubmissionLoading ||
+                addTaskCubit.isAddTaskSubmissionLoading ||
                         addTaskCubit.getTaskCategoriesModel == null ||
                         addTaskCubit.getManagerEmployeesModel == null
                     ? const LoaderWithDisable()

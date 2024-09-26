@@ -1,14 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 
 class SelectedAttachmentsWidget extends StatelessWidget {
-  // final AddTaskSubmissionCubit addTaskSubmissionCubit;
-  // final TaskSubmissionModel? taskSubmissionModel;
-
   final List<File> pickedFilesList;
   final Function({
     required int index,
@@ -38,8 +32,6 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     String fileName =
-                        // addTaskSubmissionCubit
-                        //     .
                         pickedFilesList[index].path.split('/').last;
                     return Container(
                       margin: const EdgeInsets.symmetric(
@@ -59,8 +51,6 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                         leading: IconButton(
                           icon: const Icon(Icons.close),
                           onPressed: () =>
-                              // addTaskSubmissionCubit
-                              //     .
                               deletedPickedFileFromList(index: index),
                         ),
                         title: Text(fileName),
@@ -68,17 +58,12 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                       ),
                     );
                   },
-                  itemCount:
-                      // addTaskSubmissionCubit.
-                      pickedFilesList.length,
+                  itemCount: pickedFilesList.length,
                 ),
               ),
 
         // the old picked files list is empty (from network)
 
-        // taskSubmissionModel == null ||
-        //         taskSubmissionModel!
-        //             .submissionAttachmentsCategories!.files!.isEmpty
         oldSubmissionAttachmentsCategories == null ||
                 oldSubmissionAttachmentsCategories!.files!.isEmpty
             ? Container()
@@ -121,10 +106,7 @@ class SelectedAttachmentsWidget extends StatelessWidget {
                       ),
                     );
                   },
-                  itemCount:
-                      // taskSubmissionModel!
-                      //     .
-                      oldSubmissionAttachmentsCategories!.files!.length,
+                  itemCount: oldSubmissionAttachmentsCategories!.files!.length,
                 ),
               ),
       ],

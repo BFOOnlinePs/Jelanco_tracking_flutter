@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_video.dart';
+import 'package:video_player/video_player.dart';
 
 class SelectedVideosWidget extends StatelessWidget {
-  final AddTaskSubmissionCubit addTaskSubmissionCubit;
-  final TaskSubmissionModel? taskSubmissionModel;
+  final AttachmentsCategories? oldSubmissionAttachmentsCategories;
+  final Function({
+    required int index,
+    AttachmentsCategories? attachmentsCategories,
+  }) deletePickedVideoFromList;
+  final List<XFile> pickedVideosList;
+  final List<VideoPlayerController?> videosControllers;
+  final List<VideoPlayerController?> oldVideoControllers;
+  final Function(
+    int index, {
+    bool isOldVideos, // for edit
+  }) toggleVideoPlayPause;
 
-  const SelectedVideosWidget(
-      {super.key,
-      required this.addTaskSubmissionCubit,
-      required this.taskSubmissionModel});
+  const SelectedVideosWidget({
+    super.key,
+    this.oldSubmissionAttachmentsCategories,
+    required this.deletePickedVideoFromList,
+    required this.pickedVideosList,
+    required this.videosControllers,
+    required this.oldVideoControllers,
+    required this.toggleVideoPlayPause,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +34,7 @@ class SelectedVideosWidget extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          addTaskSubmissionCubit.pickedVideosList.isEmpty
+          pickedVideosList.isEmpty
               ? Container()
               : SizedBox(
                   height: 280,
@@ -28,28 +44,27 @@ class SelectedVideosWidget extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return MyVideo(
                           height: 200,
-                          videoPlayerController:
-                              addTaskSubmissionCubit.videoControllers[index],
+                          videoPlayerController: videosControllers[index],
                           index: index,
-                          onTogglePlayPauseWithIndex:
-                              addTaskSubmissionCubit.toggleVideoPlayPause,
+                          onTogglePlayPauseWithIndex: toggleVideoPlayPause,
                           showDeleteIcon: true,
                           onDeletePressed: () {
-                            addTaskSubmissionCubit.deletedPickedVideoFromList(
-                                index: index);
+                            deletePickedVideoFromList(index: index);
                           },
                           margin: const EdgeInsetsDirectional.only(end: 10));
                     },
-                    itemCount: addTaskSubmissionCubit.pickedVideosList.length,
+                    itemCount: pickedVideosList.length,
                   ),
                 ),
-          taskSubmissionModel == null ||
-                  taskSubmissionModel!
-                      .submissionAttachmentsCategories!.videos!.isEmpty ||
-                  addTaskSubmissionCubit.oldVideoControllers.length <
-                      taskSubmissionModel!
-                          .submissionAttachmentsCategories!
-                          .videos!
+
+          // the old picked videos list is empty (from network)
+
+          oldSubmissionAttachmentsCategories == null ||
+
+                  // taskSubmissionModel == null ||
+                  oldSubmissionAttachmentsCategories!.videos!.isEmpty ||
+                  oldVideoControllers.length <
+                      oldSubmissionAttachmentsCategories!.videos!
                           .length // to make sure that all the controllers initialized
               ? Container()
               : SizedBox(
@@ -61,26 +76,23 @@ class SelectedVideosWidget extends StatelessWidget {
                       return MyVideo(
                           // height: 200,
 
-                          videoPlayerController:
-                              addTaskSubmissionCubit.oldVideoControllers[index],
+                          videoPlayerController: oldVideoControllers[index],
                           index: index,
                           onTogglePlayPauseWithIndex: (index) {
-                            addTaskSubmissionCubit.toggleVideoPlayPause(index,
-                                isOldVideos: true);
+                            toggleVideoPlayPause(index, isOldVideos: true);
                           },
-                          // addTaskSubmissionCubit
-                          //     .toggleVideoPlayPause,
-
                           showDeleteIcon: true,
                           onDeletePressed: () {
-                            addTaskSubmissionCubit.deletedPickedVideoFromList(
-                                index: index,
-                                taskSubmissionModel: taskSubmissionModel!);
+                            deletePickedVideoFromList(
+                              index: index,
+                              attachmentsCategories:
+                                  oldSubmissionAttachmentsCategories,
+                            );
                           },
                           margin: const EdgeInsetsDirectional.only(end: 10));
                     },
-                    itemCount: taskSubmissionModel!
-                        .submissionAttachmentsCategories!.videos!.length,
+                    itemCount:
+                        oldSubmissionAttachmentsCategories!.videos!.length,
                   ),
                 ),
         ],

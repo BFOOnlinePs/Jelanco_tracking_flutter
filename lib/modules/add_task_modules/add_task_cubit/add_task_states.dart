@@ -18,6 +18,8 @@ class ChangeIsAddClickedState extends AddTaskStates {}
 
 class EmitLoadingState extends AddTaskStates {}
 
+class ToggleVideoPlayPauseState extends AddTaskStates {}
+
 class AddTaskLoadingState extends AddTaskStates {}
 
 class AddTaskSuccessState extends AddTaskStates {

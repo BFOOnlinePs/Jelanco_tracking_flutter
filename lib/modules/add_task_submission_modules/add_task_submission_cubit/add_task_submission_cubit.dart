@@ -133,7 +133,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   List<XFile> pickedVideosList = [];
   List<MediaInfo?> compressedVideoList = [];
-  List<VideoPlayerController?> videoControllers = [];
+  List<VideoPlayerController?> videosControllers = [];
 
   Future<void> pickVideoFromGallery() async {
     final XFile? video = await picker.pickVideo(source: ImageSource.gallery);
@@ -144,7 +144,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       await initializeVideoController(File(video.path));
       emit(PickVideoState());
       // print('videoControllers: ${videoControllers[0]?.value?.duration}');
-      print('videoControllers: ${videoControllers.length}');
+      print('videoControllers: ${videosControllers.length}');
     }
 
     // for (var video in pickedVideosList) {
@@ -158,34 +158,33 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
       try {
         await controller.initialize();
-        videoControllers.add(controller);
-        print('videoControllers:: ${videoControllers.length}');
+        videosControllers.add(controller);
+        print('videoControllers:: ${videosControllers.length}');
         emit(InitializeVideoControllerState());
       } catch (e) {
         print('Error initializing video controller: $e');
-        videoControllers.add(null);
+        videosControllers.add(null);
       }
     } else {
       // message = 'File is not a video';
-      videoControllers.add(null);
+      videosControllers.add(null);
     }
   }
 
-  void deletedPickedVideoFromList({
+  void deletePickedVideoFromList({
     required int index,
-    TaskSubmissionModel? taskSubmissionModel, // for edit
+    AttachmentsCategories? attachmentsCategories, // for edit
   }) {
-    if (taskSubmissionModel != null) {
+    if (attachmentsCategories != null) {
       // in edit, for the old data
-      taskSubmissionModel.submissionAttachmentsCategories!.videos
-          ?.removeAt(index);
+      attachmentsCategories.videos?.removeAt(index);
       oldVideoControllers[index]?.dispose();
       oldVideoControllers.removeAt(index);
     } else {
       // the picked
       pickedVideosList.removeAt(index);
-      videoControllers[index]?.dispose();
-      videoControllers.removeAt(index);
+      videosControllers[index]?.dispose();
+      videosControllers.removeAt(index);
     }
 
     emit(DeletePickedVideoFromListState());
@@ -202,11 +201,11 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
           ? oldVideoControllers[index]!.pause()
           : oldVideoControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
-    } else if (videoControllers[index] != null) {
+    } else if (videosControllers[index] != null) {
       print('new videos');
-      videoControllers[index]!.value.isPlaying
-          ? videoControllers[index]!.pause()
-          : videoControllers[index]!.play();
+      videosControllers[index]!.value.isPlaying
+          ? videosControllers[index]!.pause()
+          : videosControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     }
   }
@@ -474,7 +473,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   @override
   Future<void> close() {
-    for (var controller in videoControllers) {
+    for (var controller in videosControllers) {
       controller?.dispose();
     }
     for (var controller in oldVideoControllers) {
