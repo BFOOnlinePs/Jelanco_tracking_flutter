@@ -323,10 +323,16 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   // addTaskSubmissionCubit:
                                   //     addTaskSubmissionCubit,
                                   // taskSubmissionModel: taskSubmissionModel,
-                                  storagePath: EndPointsConstants.taskSubmissionsStorage,
-                                  oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
-                                  pickedImagesList: addTaskSubmissionCubit.pickedImagesList,
-                                  deletedPickedImageFromList: addTaskSubmissionCubit.deletedPickedImageFromList,
+                                  storagePath:
+                                      EndPointsConstants.taskSubmissionsStorage,
+                                  oldSubmissionAttachmentsCategories:
+                                      taskSubmissionModel
+                                          ?.submissionAttachmentsCategories,
+                                  pickedImagesList:
+                                      addTaskSubmissionCubit.pickedImagesList,
+                                  deletedPickedImageFromList:
+                                      addTaskSubmissionCubit
+                                          .deletedPickedImageFromList,
                                 ),
                                 const SizedBox(
                                   height: 14,
@@ -336,9 +342,15 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                         addTaskSubmissionCubit,
                                     taskSubmissionModel: taskSubmissionModel),
                                 SelectedAttachmentsWidget(
-                                    addTaskSubmissionCubit:
-                                        addTaskSubmissionCubit,
-                                    taskSubmissionModel: taskSubmissionModel),
+                                  oldSubmissionAttachmentsCategories:
+                                      taskSubmissionModel
+                                          ?.submissionAttachmentsCategories,
+                                  pickedFilesList:
+                                      addTaskSubmissionCubit.pickedFilesList,
+                                  deletedPickedFileFromList:
+                                      addTaskSubmissionCubit
+                                          .deletedPickedFileFromList,
+                                ),
                                 const Text(
                                   'إختيار الفئات',
                                   style: TextStyle(fontSize: 16),

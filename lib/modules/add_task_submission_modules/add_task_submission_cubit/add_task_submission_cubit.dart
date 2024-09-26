@@ -260,11 +260,10 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   }
 
   void deletedPickedFileFromList(
-      {required int index, TaskSubmissionModel? taskSubmissionModel}) {
-    if (taskSubmissionModel != null) {
+      {required int index, AttachmentsCategories? attachmentsCategories}) {
+    if (attachmentsCategories != null) {
       // in edit, for the old data
-      taskSubmissionModel.submissionAttachmentsCategories!.files
-          ?.removeAt(index);
+      attachmentsCategories.files?.removeAt(index);
     } else {
       // the picked
       pickedFilesList.removeAt(index);

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -144,8 +145,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       {required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
-      attachmentsCategories!.images
-          ?.removeAt(index);
+      attachmentsCategories!.images?.removeAt(index);
     } else {
       // the picked
       pickedImagesList.removeAt(index);
@@ -296,18 +296,17 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     }
   }
 
-  // void deletedPickedFileFromList(
-  //     {required int index, TaskSubmissionModel? taskSubmissionModel}) {
-  //   if (taskSubmissionModel != null) {
-  //     // in edit, for the old data
-  //     taskSubmissionModel.submissionAttachmentsCategories!.files
-  //         ?.removeAt(index);
-  //   } else {
-  //     // the picked
-  //     pickedFilesList.removeAt(index);
-  //   }
-  //   emit(DeletePickedFilesFromListState());
-  // }
+  void deletedPickedFileFromList(
+      {required int index, AttachmentsCategories? attachmentsCategories}) {
+    if (attachmentsCategories != null) {
+      // in edit, for the old data
+      attachmentsCategories.files?.removeAt(index);
+    } else {
+      // the picked
+      pickedFilesList.removeAt(index);
+    }
+    emit(DeletePickedFilesFromListState());
+  }
 
   // add
 
@@ -319,8 +318,17 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     emit(ChangeIsAddClickedState());
   }
 
-  void addTask() {
+  bool isAddTaskSubmissionLoading = false;
+
+  Future<void> addTask() async {
+    isAddTaskSubmissionLoading = true;
+
     emit(AddTaskLoadingState());
+
+    // compress images videos before send them to back-end
+    await compressAllImages();
+    await compressVideos();
+
     Map<String, dynamic> dataObject = {
       'content': contentController.text,
       'start_time': plannedStartTime?.toString(),
@@ -330,7 +338,40 @@ class AddTaskCubit extends Cubit<AddTaskStates>
           selectedUsers, (user) => user?.id.toString()),
     };
     print(dataObject.values);
-    DioHelper.postData(url: EndPointsConstants.tasks, data: dataObject)
+    FormData formData = FormData.fromMap(dataObject);
+
+    // compressedImagesList instead of pickedImagesList
+    for (int i = 0; i < compressedImagesList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "images[]",
+          await MultipartFile.fromFile(compressedImagesList[i]!.path),
+        ),
+      ]);
+    }
+
+    // compressedVideoList instead of pickedVideosList
+    for (int i = 0; i < compressedVideoList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "videos[]",
+          await MultipartFile.fromFile(compressedVideoList[i]!.path!),
+        ),
+      ]);
+    }
+
+    for (int i = 0; i < pickedFilesList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "documents[]",
+          await MultipartFile.fromFile(pickedFilesList[i].path),
+        ),
+      ]);
+    }
+
+    print('formData: ${formData.fields}');
+
+    await DioHelper.postData(url: EndPointsConstants.tasks, data: formData)
         .then((value) {
       print(value?.data);
       addTaskModel = AddTaskModel.fromMap(value?.data);
@@ -338,5 +379,11 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     }).catchError((error) {
       emit(AddTaskErrorState(error: error.toString()));
     });
+    isAddTaskSubmissionLoading = false;
+    emitLoading();
+  }
+
+  void emitLoading() {
+    emit(EmitLoadingState());
   }
 }
