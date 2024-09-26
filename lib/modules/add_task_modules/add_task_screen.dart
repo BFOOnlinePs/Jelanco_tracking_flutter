@@ -303,121 +303,121 @@ class AddTaskScreen extends StatelessWidget {
                                 ),
                                 const MyVerticalSpacer(),
 
-                                // Container(
-                                //   margin: const EdgeInsets.only(
-                                //       top: 14, bottom: 16),
-                                //   child: Row(
-                                //     mainAxisAlignment:
-                                //         MainAxisAlignment.spaceBetween,
-                                //     children: [
-                                //       //from camera
-                                //
-                                //       TaskOptionsWidget(
-                                //           menuItems: [
-                                //             MenuItemModel(
-                                //               icon: Icons.image,
-                                //               iconColor: Colors.green,
-                                //               label: 'إلتقاط صورة',
-                                //               onTap: () {
-                                //                 addTaskCubit.requestPermission(
-                                //                     context: context,
-                                //                     permissionType:
-                                //                         PermissionType.camera,
-                                //                     functionWhenGranted:
-                                //                         addTaskCubit
-                                //                             .pickMediaFromCamera);
-                                //               },
-                                //             ),
-                                //             MenuItemModel(
-                                //               icon: Icons.video_camera_back,
-                                //               label: 'إلتقاط فيديو',
-                                //               iconColor: Colors.red,
-                                //               onTap: () {
-                                //                 addTaskCubit.requestPermission(
-                                //                     context: context,
-                                //                     permissionType:
-                                //                         PermissionType.camera,
-                                //                     functionWhenGranted: () =>
-                                //                         addTaskCubit
-                                //                             .pickMediaFromCamera(
-                                //                                 isImage:
-                                //                                     false));
-                                //               },
-                                //             ),
-                                //           ],
-                                //           child: const MediaOptionWidget(
-                                //             icon: Icons.camera_alt,
-                                //             label: 'كاميرا',
-                                //             color: Colors.blue,
-                                //             onTap: null,
-                                //           )),
-                                //
-                                //       Container(
-                                //           width: 0.2,
-                                //           height: 26,
-                                //           color: Colors.grey),
-                                //
-                                //       MediaOptionWidget(
-                                //         icon: Icons.image,
-                                //         label: 'صورة',
-                                //         color: Colors.green,
-                                //         onTap: () {
-                                //           addTaskCubit.requestPermission(
-                                //               context: context,
-                                //               permissionType:
-                                //                   PermissionType.storage,
-                                //               functionWhenGranted: addTaskCubit
-                                //                   .pickMultipleImagesFromGallery);
-                                //         },
-                                //       ),
-                                //       Container(
-                                //           width: 0.2,
-                                //           height: 26,
-                                //           color: Colors.grey),
-                                //       MediaOptionWidget(
-                                //         icon: Icons.video_camera_back,
-                                //         label: 'فيديو',
-                                //         color: Colors.red,
-                                //         onTap: () {
-                                //           addTaskCubit.requestPermission(
-                                //               context: context,
-                                //               permissionType:
-                                //                   PermissionType.storage,
-                                //               functionWhenGranted: addTaskCubit
-                                //                   .pickVideoFromGallery);
-                                //         },
-                                //       ),
-                                //       Container(
-                                //           width: 0.2,
-                                //           height: 26,
-                                //           color: Colors.grey),
-                                //       MediaOptionWidget(
-                                //         icon: Icons.attach_file,
-                                //         label: 'ملف',
-                                //         color: Colors.blue,
-                                //         onTap: () {
-                                //           addTaskCubit.requestPermission(
-                                //               context: context,
-                                //               permissionType:
-                                //                   PermissionType.storage,
-                                //               functionWhenGranted:
-                                //                   addTaskCubit.pickReportFile);
-                                //         },
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                                // SelectedImagesWidget(
-                                //   storagePath: EndPointsConstants.taskStorage,
-                                //   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
-                                //   pickedImagesList:
-                                //       addTaskCubit.pickedImagesList,
-                                //   deletedPickedImageFromList:
-                                //       addTaskCubit.deletedPickedImageFromList,
-                                // ),
-                                // const SizedBox(
-                                //   height: 14,
-                                // ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      top: 14, bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      //from camera
+
+                                      TaskOptionsWidget(
+                                          menuItems: [
+                                            MenuItemModel(
+                                              icon: Icons.image,
+                                              iconColor: Colors.green,
+                                              label: 'إلتقاط صورة',
+                                              onTap: () {
+                                                addTaskCubit.requestPermission(
+                                                    context: context,
+                                                    permissionType:
+                                                        PermissionType.camera,
+                                                    functionWhenGranted:
+                                                        addTaskCubit
+                                                            .pickMediaFromCamera);
+                                              },
+                                            ),
+                                            MenuItemModel(
+                                              icon: Icons.video_camera_back,
+                                              label: 'إلتقاط فيديو',
+                                              iconColor: Colors.red,
+                                              onTap: () {
+                                                addTaskCubit.requestPermission(
+                                                    context: context,
+                                                    permissionType:
+                                                        PermissionType.camera,
+                                                    functionWhenGranted: () =>
+                                                        addTaskCubit
+                                                            .pickMediaFromCamera(
+                                                                isImage:
+                                                                    false));
+                                              },
+                                            ),
+                                          ],
+                                          child: const MediaOptionWidget(
+                                            icon: Icons.camera_alt,
+                                            label: 'كاميرا',
+                                            color: Colors.blue,
+                                            onTap: null,
+                                          )),
+
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+
+                                      MediaOptionWidget(
+                                        icon: Icons.image,
+                                        label: 'صورة',
+                                        color: Colors.green,
+                                        onTap: () {
+                                          addTaskCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted: addTaskCubit
+                                                  .pickMultipleImagesFromGallery);
+                                        },
+                                      ),
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+                                      MediaOptionWidget(
+                                        icon: Icons.video_camera_back,
+                                        label: 'فيديو',
+                                        color: Colors.red,
+                                        onTap: () {
+                                          addTaskCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted: addTaskCubit
+                                                  .pickVideoFromGallery);
+                                        },
+                                      ),
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+                                      MediaOptionWidget(
+                                        icon: Icons.attach_file,
+                                        label: 'ملف',
+                                        color: Colors.blue,
+                                        onTap: () {
+                                          addTaskCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted:
+                                                  addTaskCubit.pickReportFile);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SelectedImagesWidget(
+                                  storagePath: EndPointsConstants.taskStorage,
+                                  // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
+                                  pickedImagesList:
+                                      addTaskCubit.pickedImagesList,
+                                  deletedPickedImageFromList:
+                                      addTaskCubit.deletedPickedImageFromList,
+                                ),
+                                const SizedBox(
+                                  height: 14,
+                                ),
                                 // SelectedVideosWidget(
                                 //     addTaskCubit:
                                 //     addTaskCubit,

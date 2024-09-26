@@ -6,6 +6,8 @@ class SelectedAttachmentsWidget extends StatelessWidget {
   final AddTaskSubmissionCubit addTaskSubmissionCubit;
   final TaskSubmissionModel? taskSubmissionModel;
 
+  //
+
   const SelectedAttachmentsWidget({
     super.key,
     required this.addTaskSubmissionCubit,
