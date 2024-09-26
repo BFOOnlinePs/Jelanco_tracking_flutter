@@ -82,6 +82,8 @@ class CompressAllImagesLoadingState extends AddTaskStates {}
 
 class CompressAllImagesSuccessState extends AddTaskStates {}
 
+class CompressAllVideosSuccessState extends AddTaskStates {}
+
 // compress video mixin
 
 class CompressVideoLoadingState extends AddTaskStates {}
@@ -94,4 +96,3 @@ class CompressVideoErrorState extends AddTaskStates {
   CompressVideoErrorState({required this.error});
 }
 
-class CompressAllVideosSuccessState extends AddTaskStates {}

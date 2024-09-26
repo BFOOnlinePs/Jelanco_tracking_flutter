@@ -20,102 +20,98 @@ class AddedBySectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InkWell(
-                onTap: () {
-                  NavigationServices.navigateTo(context,
-                      UserProfileScreen(userId: taskModel.addedByUser!.id!));
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.5),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                NavigationServices.navigateTo(context,
+                    UserProfileScreen(userId: taskModel.addedByUser!.id!));
+              },
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 0.5),
+                    ),
+                    padding: const EdgeInsets.all(2),
+                    child: taskModel.addedByUser?.image != null
+                        ? MyCachedNetworkImage(
+                            imageUrl: EndPointsConstants.profileStorage +
+                                taskModel.addedByUser!.image!,
+                            width: 34,
+                            height: 34,
+                            fit: BoxFit.cover,
+                          )
+                        : const Image(
+                            image: AssetImage(AssetsKeys.defaultProfileImage)
+                                as ImageProvider,
+                            width: 34,
+                            height: 34,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        taskModel.addedByUser?.name ?? '',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
                       ),
-                      padding: const EdgeInsets.all(2),
-                      child: taskModel.addedByUser?.image != null
-                          ? MyCachedNetworkImage(
-                              imageUrl: EndPointsConstants.profileStorage +
-                                  taskModel.addedByUser!.image!,
-                              width: 34,
-                              height: 34,
-                              fit: BoxFit.cover,
-                            )
-                          : const Image(
-                              image: AssetImage(AssetsKeys.defaultProfileImage)
-                                  as ImageProvider,
-                              width: 34,
-                              height: 34,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          taskModel.addedByUser?.name ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
+                      Text(
+                        MyDateUtils.formatDateTimeWithAmPm(taskModel.createdAt),
+                        style: const TextStyle(
+                          fontSize: 10,
                         ),
-                        Text(
-                          MyDateUtils.formatDateTimeWithAmPm(
-                              taskModel.createdAt),
-                          style: const TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-          // edit task
-          if (SystemPermissions.hasPermission(SystemPermissions.editTask) &&
-              taskModel.addedByUser?.id == UserDataConstants.userId)
-            TaskOptionsWidget(menuItems: [
-              MenuItemModel(
-                icon: Icons.edit,
-                label: 'تعديل',
-                onTap: () {
-                  NavigationServices.navigateTo(
-                    context,
-                    EditTaskScreen(
-                      taskModel: taskModel,
-                    ),
-                  );
-                },
-              ),
-            ])
+            ),
+          ],
+        ),
+        // edit task
+        if (SystemPermissions.hasPermission(SystemPermissions.editTask) &&
+            taskModel.addedByUser?.id == UserDataConstants.userId)
+          TaskOptionsWidget(menuItems: [
+            MenuItemModel(
+              icon: Icons.edit,
+              label: 'تعديل',
+              onTap: () {
+                NavigationServices.navigateTo(
+                  context,
+                  EditTaskScreen(
+                    taskModel: taskModel,
+                  ),
+                );
+              },
+            ),
+          ])
 
-          // status != null
-          //     ? Row(
-          //         children: [
-          //           Icon(statusIcon, color: status?.statusColor, size: 18),
-          //           SizedBox(width: 6),
-          //           Text(
-          //             status?.statusAr ?? '',
-          //             style:
-          //                 TextStyle(color: status?.statusColor, fontSize: 16),
-          //           ),
-          //         ],
-          //       )
-          //     : Container(),
-        ],
-      ),
+        // status != null
+        //     ? Row(
+        //         children: [
+        //           Icon(statusIcon, color: status?.statusColor, size: 18),
+        //           SizedBox(width: 6),
+        //           Text(
+        //             status?.statusAr ?? '',
+        //             style:
+        //                 TextStyle(color: status?.statusColor, fontSize: 16),
+        //           ),
+        //         ],
+        //       )
+        //     : Container(),
+      ],
     );
   }
 }

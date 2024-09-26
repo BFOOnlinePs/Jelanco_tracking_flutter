@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/added_by_section_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/media_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/wrapped_label_value_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/category_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
@@ -29,6 +31,13 @@ class TaskDetailsSectionWidget extends StatelessWidget {
           ContentWidget(
             taskModel.tContent!,
           ),
+
+          // add the medias here
+          MediaWidget(
+            attachmentsCategories: taskModel.taskAttachmentsCategories,
+            storagePath: EndPointsConstants.tasksStorage,
+          ),
+
           taskModel.taskCategory != null
               ? CategoryRowWidget(
                   'التصنيف', taskModel.taskCategory!.cName ?? '')
@@ -45,11 +54,6 @@ class TaskDetailsSectionWidget extends StatelessWidget {
           const MyVerticalSpacer(),
           TaskPlanedTimeWidget(taskModel: taskModel),
           const MyVerticalSpacer(),
-
-          // _buildDateRow('Created At', task.createdAt?.toString() ?? 'N/A',
-          //     Icons.calendar_today),
-          // _buildDateRow(
-          //     'Updated At', task.updatedAt?.toString() ?? 'N/A', Icons.update),
         ],
       ),
     );

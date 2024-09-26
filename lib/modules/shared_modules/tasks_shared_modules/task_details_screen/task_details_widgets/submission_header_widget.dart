@@ -43,160 +43,163 @@ class SubmissionHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () {
-              NavigationServices.navigateTo(context,
-                  UserProfileScreen(userId: submissionModel.tsSubmitter!));
-            },
-            child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  // add border
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 0.5.w),
+    return Container(
+      // margin: EdgeInsets.only(bottom: 6.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                NavigationServices.navigateTo(context,
+                    UserProfileScreen(userId: submissionModel.tsSubmitter!));
+              },
+              child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    // add border
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 0.5.w),
+                    ),
+                    padding: EdgeInsets.all(2.w),
+                    child: submissionModel.submitterUser?.image != null
+                        ? MyCachedNetworkImage(
+                            imageUrl: EndPointsConstants.profileStorage +
+                                submissionModel.submitterUser!.image!,
+                            width: 34.w,
+                            height: 34.w,
+                            fit: BoxFit.cover,
+                          )
+                        : Image(
+                            image:
+                                const AssetImage(AssetsKeys.defaultProfileImage)
+                                    as ImageProvider,
+                            width: 34.w,
+                            height: 34.w,
+                            fit: BoxFit.cover,
+                          ),
                   ),
-                  padding: EdgeInsets.all(2.w),
-                  child: submissionModel.submitterUser?.image != null
-                      ? MyCachedNetworkImage(
-                          imageUrl: EndPointsConstants.profileStorage +
-                              submissionModel.submitterUser!.image!,
-                          width: 34.w,
-                          height: 34.w,
-                          fit: BoxFit.cover,
-                        )
-                      : Image(
-                          image:
-                              const AssetImage(AssetsKeys.defaultProfileImage)
-                                  as ImageProvider,
-                          width: 34.w,
-                          height: 34.w,
-                          fit: BoxFit.cover,
-                        ),
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${submissionModel.submitterUser?.name}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                      Text(
-                        MyDateUtils.formatDateTimeWithAmPm(
-                            submissionModel.createdAt),
-                        // MyDateUtils.formatDateTime2(submissionModel.createdAt),
-                        // submissionModel.createdAt.toString() ?? '',
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    width: 10.w,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${submissionModel.submitterUser?.name}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                        Text(
+                          MyDateUtils.formatDateTimeWithAmPm(
+                              submissionModel.createdAt),
+                          // MyDateUtils.formatDateTime2(submissionModel.createdAt),
+                          // submissionModel.createdAt.toString() ?? '',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        Row(
-          children: [
-            showSubmissionOptions &&
-            (submissionModel.tsParentId != -1 ||
-                    (SystemPermissions.hasPermission(
-                            SystemPermissions.editSubmission) &&
-                        submissionModel.tsSubmitter ==
-                            UserDataConstants.userId))
-                ? TaskOptionsWidget(menuItems: [
-                    if (SystemPermissions.hasPermission(
-                            SystemPermissions.editSubmission) &&
-                        submissionModel.tsSubmitter == UserDataConstants.userId)
-                      MenuItemModel(
-                        icon: Icons.edit,
-                        label: 'تعديل',
-                        onTap: () {
-                          NavigationServices.navigateTo(
-                            context,
-                            AddTaskSubmissionScreen(
-                              taskId: submissionModel.tsTaskId!,
-                              taskSubmissionModel: submissionModel,
-                              isEdit: true,
-                              getDataCallback: (newSubmissionModel) {
-                                // shared with 5 screens (task details screen, submission details screen and home user submissions screen)
-                                // to edit the submission
-                                if (homeCubit != null) {
-                                  homeCubit!.afterEditSubmission(
-                                      oldSubmissionId: submissionModel.tsId!,
-                                      newSubmissionModel: newSubmissionModel);
-                                } else if (taskDetailsCubit != null) {
-                                  taskDetailsCubit!.afterEditSubmission(
-                                      oldSubmissionId: submissionModel.tsId!,
-                                      newSubmissionModel: newSubmissionModel);
-                                } else if (taskSubmissionDetailsCubit != null) {
-                                  taskSubmissionDetailsCubit!
-                                      .afterEditSubmission(
-                                          newSubmissionModel:
-                                              newSubmissionModel);
-                                } else if (userProfileCubit != null) {
-                                  userProfileCubit!.afterEditSubmission(
-                                      oldSubmissionId: submissionModel.tsId!,
-                                      newSubmissionModel: newSubmissionModel);
-                                } else if (todaySubmissionsCubit != null) {
-                                  todaySubmissionsCubit!.afterEditSubmission(
-                                      oldSubmissionId: submissionModel.tsId!,
-                                      newSubmissionModel: newSubmissionModel);
-                                } else {
-                                  print(
-                                      'no afterEditSubmission function provided');
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    if (submissionModel.tsParentId !=
-                        -1) // if the submission is not the parent, then it has history
-                      MenuItemModel(
-                        icon: Icons.history,
-                        label: 'عرض التعديلات',
-                        onTap: () {
-                          NavigationServices.navigateTo(
-                            context,
-                            TaskSubmissionVersionsScreen(
-                              taskSubmissionId: submissionModel.tsId!,
-                            ),
-                          );
-                        },
-                      ), //
-                  ])
-                : Container(),
-            GestureDetector(
-                onTap: () {
-                  // NavigationServices.navigateTo(context, SubmissionLocationDialog(
-                  //   taskSubmissionModel: submissionModel,
-                  // ));
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SubmissionLocationDialog(
-                        taskSubmissionModel: submissionModel,
-                      );
-                    },
-                  );
-                },
-                child: const Icon(Icons.location_on))
-          ],
-        ),
-      ],
+          Row(
+            children: [
+              showSubmissionOptions &&
+              (submissionModel.tsParentId != -1 ||
+                      (SystemPermissions.hasPermission(
+                              SystemPermissions.editSubmission) &&
+                          submissionModel.tsSubmitter ==
+                              UserDataConstants.userId))
+                  ? TaskOptionsWidget(menuItems: [
+                      if (SystemPermissions.hasPermission(
+                              SystemPermissions.editSubmission) &&
+                          submissionModel.tsSubmitter == UserDataConstants.userId)
+                        MenuItemModel(
+                          icon: Icons.edit,
+                          label: 'تعديل',
+                          onTap: () {
+                            NavigationServices.navigateTo(
+                              context,
+                              AddTaskSubmissionScreen(
+                                taskId: submissionModel.tsTaskId!,
+                                taskSubmissionModel: submissionModel,
+                                isEdit: true,
+                                getDataCallback: (newSubmissionModel) {
+                                  // shared with 5 screens (task details screen, submission details screen and home user submissions screen)
+                                  // to edit the submission
+                                  if (homeCubit != null) {
+                                    homeCubit!.afterEditSubmission(
+                                        oldSubmissionId: submissionModel.tsId!,
+                                        newSubmissionModel: newSubmissionModel);
+                                  } else if (taskDetailsCubit != null) {
+                                    taskDetailsCubit!.afterEditSubmission(
+                                        oldSubmissionId: submissionModel.tsId!,
+                                        newSubmissionModel: newSubmissionModel);
+                                  } else if (taskSubmissionDetailsCubit != null) {
+                                    taskSubmissionDetailsCubit!
+                                        .afterEditSubmission(
+                                            newSubmissionModel:
+                                                newSubmissionModel);
+                                  } else if (userProfileCubit != null) {
+                                    userProfileCubit!.afterEditSubmission(
+                                        oldSubmissionId: submissionModel.tsId!,
+                                        newSubmissionModel: newSubmissionModel);
+                                  } else if (todaySubmissionsCubit != null) {
+                                    todaySubmissionsCubit!.afterEditSubmission(
+                                        oldSubmissionId: submissionModel.tsId!,
+                                        newSubmissionModel: newSubmissionModel);
+                                  } else {
+                                    print(
+                                        'no afterEditSubmission function provided');
+                                  }
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      if (submissionModel.tsParentId !=
+                          -1) // if the submission is not the parent, then it has history
+                        MenuItemModel(
+                          icon: Icons.history,
+                          label: 'عرض التعديلات',
+                          onTap: () {
+                            NavigationServices.navigateTo(
+                              context,
+                              TaskSubmissionVersionsScreen(
+                                taskSubmissionId: submissionModel.tsId!,
+                              ),
+                            );
+                          },
+                        ), //
+                    ])
+                  : Container(),
+              GestureDetector(
+                  onTap: () {
+                    // NavigationServices.navigateTo(context, SubmissionLocationDialog(
+                    //   taskSubmissionModel: submissionModel,
+                    // ));
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SubmissionLocationDialog(
+                          taskSubmissionModel: submissionModel,
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(Icons.location_on))
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

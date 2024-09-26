@@ -304,7 +304,6 @@ class AddTaskScreen extends StatelessWidget {
                                   //     value == null ? 'Select a category' : null,
                                 ),
                                 const MyVerticalSpacer(),
-
                                 Container(
                                   margin: const EdgeInsets.only(
                                       top: 14, bottom: 16),
@@ -410,7 +409,7 @@ class AddTaskScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SelectedImagesWidget(
-                                  storagePath: EndPointsConstants.taskStorage,
+                                  storagePath: EndPointsConstants.tasksStorage,
                                   // old not used yet since the task has no version
                                   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
                                   pickedImagesList:

@@ -1,6 +1,7 @@
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 
 class TaskModel {
   final int? tId;
@@ -18,6 +19,8 @@ class TaskModel {
   final List<UserModel>? assignedToUsers;
   final TaskCategoryModel? taskCategory;
   final UserModel? addedByUser;
+  final AttachmentsCategories? taskAttachmentsCategories;
+
   List<TaskSubmissionModel>? taskSubmissions;
 
   TaskModel({
@@ -36,6 +39,7 @@ class TaskModel {
     this.assignedToUsers,
     this.taskCategory,
     this.addedByUser,
+    this.taskAttachmentsCategories,
     this.taskSubmissions,
   });
 
@@ -70,6 +74,10 @@ class TaskModel {
         addedByUser: json["added_by_user"] == null
             ? null
             : UserModel.fromMap(json["added_by_user"]),
+        taskAttachmentsCategories: json["task_attachments_categories"] == null
+            ? null
+            : AttachmentsCategories.fromMap(
+                json["task_attachments_categories"]),
         taskSubmissions: json["task_submissions"] == null
             ? []
             : List<TaskSubmissionModel>.from(json["task_submissions"]!
@@ -94,6 +102,7 @@ class TaskModel {
             : List<dynamic>.from(assignedToUsers!.map((x) => x.toMap())),
         "task_category": taskCategory?.toMap(),
         "added_by_user": addedByUser?.toMap(),
+        "task_attachments_categories": taskAttachmentsCategories?.toMap(),
         "task_submissions": taskSubmissions == null
             ? []
             : List<dynamic>.from(taskSubmissions!.map((x) => x.toMap())),
