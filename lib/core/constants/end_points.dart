@@ -13,6 +13,7 @@ class EndPointsConstants {
   static const String socketIoUrl = 'http://192.168.1.21:3000';
   // static const String socketIoUrl = 'http://chic.ps:3000';
 
+  static const String taskStorage = '$url/public/storage/tasks_attachments/';
   static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
   static const String taskSubmissionsCommentStorage =
       '$url/public/storage/comments_attachments/';

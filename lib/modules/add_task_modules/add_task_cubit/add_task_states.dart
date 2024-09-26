@@ -30,6 +30,28 @@ class AddTaskErrorState extends AddTaskStates {
   AddTaskErrorState({required this.error});
 }
 
+class PickMediaFromCameraState extends AddTaskStates {}
+
+class PickMultipleImagesState extends AddTaskStates {}
+
+class PickVideoState extends AddTaskStates {}
+
+class InitializeVideoControllerState extends AddTaskStates {}
+
+class DeletePickedVideoFromListState extends AddTaskStates {}
+
+class AddTaskFileSelectSuccessState extends AddTaskStates {}
+
+class AddTaskFileSelectErrorState extends AddTaskStates {
+  final String error;
+
+  AddTaskFileSelectErrorState({required this.error});
+}
+
+class DeletePickedFilesFromListState extends AddTaskStates {}
+
+class DeletePickedImageFromListState extends AddTaskStates {}
+
 // Categories Mixin
 
 class CategoriesLoadingState extends AddTaskStates {}
@@ -50,3 +72,22 @@ class GetManagerEmployeesSuccessState extends AddTaskStates {}
 
 class GetManagerEmployeesErrorState extends AddTaskStates {}
 
+// compress images mixin
+
+class CompressAllImagesLoadingState extends AddTaskStates {}
+
+class CompressAllImagesSuccessState extends AddTaskStates {}
+
+// compress video mixin
+
+class CompressVideoLoadingState extends AddTaskStates {}
+
+class CompressVideoSuccessState extends AddTaskStates {}
+
+class CompressVideoErrorState extends AddTaskStates {
+  final String error;
+
+  CompressVideoErrorState({required this.error});
+}
+
+class CompressAllVideosSuccessState extends AddTaskStates {}

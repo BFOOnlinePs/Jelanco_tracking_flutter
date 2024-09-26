@@ -9,7 +9,7 @@ class SubmissionAttachmentModel {
   final int? aUserId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-
+ 
   late VideoPlayerController? videoController;
 
   SubmissionAttachmentModel({

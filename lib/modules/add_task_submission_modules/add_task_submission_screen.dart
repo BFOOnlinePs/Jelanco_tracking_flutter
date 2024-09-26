@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
@@ -11,9 +12,10 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_mode
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_attachments_widget.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_images_widget.dart';
-import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_widgets/selected_videos_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_attachments_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
+
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -318,9 +320,14 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SelectedImagesWidget(
-                                    addTaskSubmissionCubit:
-                                        addTaskSubmissionCubit,
-                                    taskSubmissionModel: taskSubmissionModel),
+                                  // addTaskSubmissionCubit:
+                                  //     addTaskSubmissionCubit,
+                                  // taskSubmissionModel: taskSubmissionModel,
+                                  storagePath: EndPointsConstants.taskSubmissionsStorage,
+                                  oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
+                                  pickedImagesList: addTaskSubmissionCubit.pickedImagesList,
+                                  deletedPickedImageFromList: addTaskSubmissionCubit.deletedPickedImageFromList,
+                                ),
                                 const SizedBox(
                                   height: 14,
                                 ),

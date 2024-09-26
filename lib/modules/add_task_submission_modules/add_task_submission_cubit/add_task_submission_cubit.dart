@@ -16,6 +16,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permi
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:mime/mime.dart';
@@ -104,11 +105,10 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   }
 
   void deletedPickedImageFromList(
-      {required int index, TaskSubmissionModel? taskSubmissionModel}) {
-    if (taskSubmissionModel != null) {
+      {required int index, AttachmentsCategories? attachmentsCategories}) {
+    if (attachmentsCategories != null) {
       // in edit, for the old data
-      taskSubmissionModel.submissionAttachmentsCategories!.images
-          ?.removeAt(index);
+      attachmentsCategories.images?.removeAt(index);
     } else {
       // the picked
       pickedImagesList.removeAt(index);

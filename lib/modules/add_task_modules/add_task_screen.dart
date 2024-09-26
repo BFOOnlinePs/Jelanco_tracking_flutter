@@ -1,12 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
+import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
@@ -296,6 +302,130 @@ class AddTaskScreen extends StatelessWidget {
                                   //     value == null ? 'Select a category' : null,
                                 ),
                                 const MyVerticalSpacer(),
+
+                                // Container(
+                                //   margin: const EdgeInsets.only(
+                                //       top: 14, bottom: 16),
+                                //   child: Row(
+                                //     mainAxisAlignment:
+                                //         MainAxisAlignment.spaceBetween,
+                                //     children: [
+                                //       //from camera
+                                //
+                                //       TaskOptionsWidget(
+                                //           menuItems: [
+                                //             MenuItemModel(
+                                //               icon: Icons.image,
+                                //               iconColor: Colors.green,
+                                //               label: 'إلتقاط صورة',
+                                //               onTap: () {
+                                //                 addTaskCubit.requestPermission(
+                                //                     context: context,
+                                //                     permissionType:
+                                //                         PermissionType.camera,
+                                //                     functionWhenGranted:
+                                //                         addTaskCubit
+                                //                             .pickMediaFromCamera);
+                                //               },
+                                //             ),
+                                //             MenuItemModel(
+                                //               icon: Icons.video_camera_back,
+                                //               label: 'إلتقاط فيديو',
+                                //               iconColor: Colors.red,
+                                //               onTap: () {
+                                //                 addTaskCubit.requestPermission(
+                                //                     context: context,
+                                //                     permissionType:
+                                //                         PermissionType.camera,
+                                //                     functionWhenGranted: () =>
+                                //                         addTaskCubit
+                                //                             .pickMediaFromCamera(
+                                //                                 isImage:
+                                //                                     false));
+                                //               },
+                                //             ),
+                                //           ],
+                                //           child: const MediaOptionWidget(
+                                //             icon: Icons.camera_alt,
+                                //             label: 'كاميرا',
+                                //             color: Colors.blue,
+                                //             onTap: null,
+                                //           )),
+                                //
+                                //       Container(
+                                //           width: 0.2,
+                                //           height: 26,
+                                //           color: Colors.grey),
+                                //
+                                //       MediaOptionWidget(
+                                //         icon: Icons.image,
+                                //         label: 'صورة',
+                                //         color: Colors.green,
+                                //         onTap: () {
+                                //           addTaskCubit.requestPermission(
+                                //               context: context,
+                                //               permissionType:
+                                //                   PermissionType.storage,
+                                //               functionWhenGranted: addTaskCubit
+                                //                   .pickMultipleImagesFromGallery);
+                                //         },
+                                //       ),
+                                //       Container(
+                                //           width: 0.2,
+                                //           height: 26,
+                                //           color: Colors.grey),
+                                //       MediaOptionWidget(
+                                //         icon: Icons.video_camera_back,
+                                //         label: 'فيديو',
+                                //         color: Colors.red,
+                                //         onTap: () {
+                                //           addTaskCubit.requestPermission(
+                                //               context: context,
+                                //               permissionType:
+                                //                   PermissionType.storage,
+                                //               functionWhenGranted: addTaskCubit
+                                //                   .pickVideoFromGallery);
+                                //         },
+                                //       ),
+                                //       Container(
+                                //           width: 0.2,
+                                //           height: 26,
+                                //           color: Colors.grey),
+                                //       MediaOptionWidget(
+                                //         icon: Icons.attach_file,
+                                //         label: 'ملف',
+                                //         color: Colors.blue,
+                                //         onTap: () {
+                                //           addTaskCubit.requestPermission(
+                                //               context: context,
+                                //               permissionType:
+                                //                   PermissionType.storage,
+                                //               functionWhenGranted:
+                                //                   addTaskCubit.pickReportFile);
+                                //         },
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                // SelectedImagesWidget(
+                                //   storagePath: EndPointsConstants.taskStorage,
+                                //   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
+                                //   pickedImagesList:
+                                //       addTaskCubit.pickedImagesList,
+                                //   deletedPickedImageFromList:
+                                //       addTaskCubit.deletedPickedImageFromList,
+                                // ),
+                                // const SizedBox(
+                                //   height: 14,
+                                // ),
+                                // SelectedVideosWidget(
+                                //     addTaskCubit:
+                                //     addTaskCubit,
+                                //     taskSubmissionModel: taskSubmissionModel),
+                                // SelectedAttachmentsWidget(
+                                //     addTaskCubit:
+                                //     addTaskCubit,
+                                //     taskSubmissionModel: taskSubmissionModel),
                               ],
                             ),
                           ),
