@@ -67,12 +67,44 @@ class AddedBySectionWidget extends StatelessWidget {
                           fontSize: 12,
                         ),
                       ),
-                      Text(
-                        MyDateUtils.formatDateTimeWithAmPm(taskModel.createdAt),
-                        style: const TextStyle(
-                          fontSize: 10,
-                        ),
+                      Row(
+                        children: [
+                          // taskModel.createdAt != taskModel.updatedAt
+                          //     ? Text(
+                          //         'تاريخ الاضافة: ',
+                          //         style: const TextStyle(
+                          //           fontSize: 10,
+                          //         ),
+                          //       )
+                          //     : Container(),
+                          Text(
+                            MyDateUtils.formatDateTimeWithAmPm(
+                                taskModel.createdAt),
+                            style: const TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
                       ),
+                      taskModel.createdAt != taskModel.updatedAt
+                          ? Row(
+                              children: [
+                                Text(
+                                  'اخر تعديل: ',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
+                                Text(
+                                  MyDateUtils.formatDateTimeWithAmPm(
+                                      taskModel.updatedAt),
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ],
                   ),
                 ],
