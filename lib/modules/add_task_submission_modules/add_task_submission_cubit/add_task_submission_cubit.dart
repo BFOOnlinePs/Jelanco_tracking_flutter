@@ -17,6 +17,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_category_model.
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_cubit/add_task_submission_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:mime/mime.dart';
@@ -416,33 +417,49 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emitLoading();
   }
 
+  // GetTaskSubmission
+  GetTaskSubmissionModel? GetOldTaskSubmissionModel; // when edit
+
   // for the edit
   void getOldData({
-    required bool isEdit,
-    TaskSubmissionModel? taskSubmissionModel,
+    required int submissionId,
   }) async {
-    if (isEdit) {
-      print('call the old data');
-      contentController.text = taskSubmissionModel!.tsContent ?? '';
+    print('call the old data');
 
-      startTime = taskSubmissionModel.tsActualStartTime;
-      endTime = taskSubmissionModel.tsActualEndTime;
+    emit(GetOldSubmissionDataLoadingState());
+    await DioHelper.getData(
+      url: '${EndPointsConstants.taskSubmissions}/$submissionId',
+    ).then((value) async {
+      print(value?.data);
+      GetOldTaskSubmissionModel = GetTaskSubmissionModel.fromMap(value?.data);
+      print('oldTaskSubmissionModel?.toMap(): ');
+      print(GetOldTaskSubmissionModel?.toMap());
 
-      selectedTaskCategoriesList = taskSubmissionModel.tsCategories != null
-          ? getTaskCategoriesModel!.taskCategories!.where((category) {
-              return taskSubmissionModel.tsCategories!
-                  .contains(category.cId.toString());
-            }).toList()
-          : [];
+      contentController.text =
+          GetOldTaskSubmissionModel!.taskSubmission!.tsContent ?? '';
 
-      for (var vid
-          in taskSubmissionModel.submissionAttachmentsCategories?.videos ??
-              []) {
+      startTime = GetOldTaskSubmissionModel!.taskSubmission!.tsActualStartTime;
+      endTime = GetOldTaskSubmissionModel!.taskSubmission!.tsActualEndTime;
+
+      selectedTaskCategoriesList =
+          GetOldTaskSubmissionModel!.taskSubmission!.tsCategories != null
+              ? getTaskCategoriesModel!.taskCategories!.where((category) {
+                  return GetOldTaskSubmissionModel!
+                      .taskSubmission!.tsCategories!
+                      .contains(category.cId.toString());
+                }).toList()
+              : [];
+
+      for (var vid in GetOldTaskSubmissionModel!
+              .taskSubmission!.submissionAttachmentsCategories?.videos ??
+          []) {
         await initializeOldVideoController(vid.aAttachment!);
       }
-    } else {
-      print('don\'t call the old data');
-    }
+      emit(GetOldSubmissionDataSuccessState());
+    }).catchError((error) {
+      emit(GetOldSubmissionDataErrorState(error: error.toString()));
+      print(error.toString());
+    });
   }
 
   List<VideoPlayerController?> oldVideoControllers = [];

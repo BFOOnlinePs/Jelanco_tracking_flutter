@@ -27,10 +27,14 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 // to add submission (in 3 states)
-// regardless if it is the original submission or edit submission / new version or submission without task
+// regardless if it is
+// 1. the original submission
+// 2. edit submission / new version
+// 3. add submission without task
 class AddTaskSubmissionScreen extends StatelessWidget {
   final int taskId; // -1 when add submission without task
-  final TaskSubmissionModel? taskSubmissionModel; // for edit
+  // final TaskSubmissionModel? taskSubmissionModel; // for edit
+  final int? taskSubmissionId; // for edit
   final bool isEdit; // for edit
 
   final Function(TaskSubmissionModel)?
@@ -40,7 +44,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
   AddTaskSubmissionScreen({
     super.key,
     required this.taskId,
-    this.taskSubmissionModel,
+    this.taskSubmissionId,
     this.isEdit = false,
     required this.getDataCallback,
   });
@@ -56,14 +60,17 @@ class AddTaskSubmissionScreen extends StatelessWidget {
           successState: CategoriesSuccessState(),
           errorState: (error) => CategoriesErrorState(error: error),
         ).then((_) {
-          addTaskSubmissionCubit.getOldData(
-            isEdit: isEdit,
-            taskSubmissionModel: taskSubmissionModel,
-          );
+          if (isEdit) {
+            addTaskSubmissionCubit.getOldData(
+              submissionId: taskSubmissionId!,
+            );
+          } else {
+            print('don\'t call the old data');
+          }
         }),
       child: BlocConsumer<AddTaskSubmissionCubit, AddTaskSubmissionStates>(
         listener: (context, state) {
-          print('state is $state');
+          // print('state is $state');
           if (state is AddTaskSubmissionInitialState) {
             print('this is the initial state');
           }
@@ -326,7 +333,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   storagePath:
                                       EndPointsConstants.taskSubmissionsStorage,
                                   oldSubmissionAttachmentsCategories:
-                                      taskSubmissionModel
+                                      addTaskSubmissionCubit
+                                          .GetOldTaskSubmissionModel
+                                          ?.taskSubmission
                                           ?.submissionAttachmentsCategories,
                                   pickedImagesList:
                                       addTaskSubmissionCubit.pickedImagesList,
@@ -344,7 +353,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       addTaskSubmissionCubit
                                           .deletePickedVideoFromList,
                                   oldSubmissionAttachmentsCategories:
-                                      taskSubmissionModel
+                                      addTaskSubmissionCubit
+                                          .GetOldTaskSubmissionModel
+                                          ?.taskSubmission
                                           ?.submissionAttachmentsCategories,
                                   videosControllers:
                                       addTaskSubmissionCubit.videosControllers,
@@ -355,7 +366,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                 ),
                                 SelectedAttachmentsWidget(
                                   oldSubmissionAttachmentsCategories:
-                                      taskSubmissionModel
+                                      addTaskSubmissionCubit
+                                          .GetOldTaskSubmissionModel
+                                          ?.taskSubmission
                                           ?.submissionAttachmentsCategories,
                                   pickedFilesList:
                                       addTaskSubmissionCubit.pickedFilesList,
@@ -429,19 +442,28 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   addTaskSubmissionCubit.addNewTaskSubmission(
                                     taskId: taskId,
                                     // isEdit: isEdit,
-                                    taskSubmissionId:
-                                        taskSubmissionModel?.tsId ?? -1,
+                                    taskSubmissionId: addTaskSubmissionCubit
+                                            .GetOldTaskSubmissionModel
+                                            ?.taskSubmission
+                                            ?.tsId ??
+                                        -1,
                                     oldAttachments: isEdit
                                         ? [
-                                            ...taskSubmissionModel!
+                                            ...addTaskSubmissionCubit
+                                                .GetOldTaskSubmissionModel!
+                                                .taskSubmission!
                                                 .submissionAttachmentsCategories!
                                                 .images!
                                                 .map((e) => e.aAttachment!),
-                                            ...taskSubmissionModel!
+                                            ...addTaskSubmissionCubit
+                                                .GetOldTaskSubmissionModel!
+                                                .taskSubmission!
                                                 .submissionAttachmentsCategories!
                                                 .videos!
                                                 .map((e) => e.aAttachment!),
-                                            ...taskSubmissionModel!
+                                            ...addTaskSubmissionCubit
+                                                .GetOldTaskSubmissionModel!
+                                                .taskSubmission!
                                                 .submissionAttachmentsCategories!
                                                 .files!
                                                 .map((e) => e.aAttachment!),
@@ -470,7 +492,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                   ),
                 ),
                 // addTaskSubmissionCubit.state is AddTaskSubmissionLoadingState
-                addTaskSubmissionCubit.isAddTaskSubmissionLoading
+                addTaskSubmissionCubit.isAddTaskSubmissionLoading ||
+                        state is CategoriesLoadingState ||
+                        state is GetOldSubmissionDataLoadingState
                     ? const LoaderWithDisable()
                     : Container(),
               ],

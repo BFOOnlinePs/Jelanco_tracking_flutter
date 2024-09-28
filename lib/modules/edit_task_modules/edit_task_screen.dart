@@ -6,12 +6,9 @@ import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_screen.dart';
-
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_attachments_widget.dart';
@@ -31,9 +28,9 @@ import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_fie
 import '../../widgets/my_buttons/my_elevated_button.dart';
 
 class EditTaskScreen extends StatelessWidget {
-  final TaskModel taskModel;
+  final int taskId;
 
-  EditTaskScreen({super.key, required this.taskModel});
+  EditTaskScreen({super.key, required this.taskId});
 
   late EditTaskCubit editTaskCubit;
 
@@ -41,23 +38,27 @@ class EditTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => EditTaskCubit()
-        ..initialValues(
-          taskModel: taskModel,
-        )
-        ..getTaskCategories(
-          loadingState: CategoriesLoadingState(),
-          successState: CategoriesSuccessState(),
-          errorState: (error) => CategoriesErrorState(error: error),
-        )
-        ..getManagerEmployeesWithTaskAssignees(
-          taskId: taskModel.tId!,
-          loadingState: GetManagerEmployeesLoadingState(),
-          successState: GetManagerEmployeesSuccessState(),
-          errorState: GetManagerEmployeesErrorState(),
-        ),
+        ..getOldTaskData(
+          taskId: taskId,
+        ).then((_) {
+          editTaskCubit.getTaskCategories(
+            loadingState: CategoriesLoadingState(),
+            successState: CategoriesSuccessState(),
+            errorState: (error) => CategoriesErrorState(error: error),
+          );
+          editTaskCubit.getManagerEmployeesWithTaskAssignees(
+            taskId: taskId,
+            loadingState: GetManagerEmployeesLoadingState(),
+            successState: GetManagerEmployeesSuccessState(),
+            errorState: GetManagerEmployeesErrorState(),
+          );
+        }),
       child: BlocConsumer<EditTaskCubit, EditTaskStates>(
         listener: (context, state) {
           print(state);
+          print(
+              'getOldTaskDataByIdModel: ${editTaskCubit.getOldTaskDataByIdModel?.toMap()}');
+
           // if (state is GetAllUsersSuccessState) {
           //   // editTaskCubit.users = editTaskCubit.getAllUsersModel!.users!;
           //   // editTaskCubit.filteredUsers = editTaskCubit.users;
@@ -67,16 +68,25 @@ class EditTaskScreen extends StatelessWidget {
             // to display the old assigned to users
             editTaskCubit.selectedUsers = editTaskCubit
                 .getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!
-                .where((user) => taskModel.assignedToUsers!
+                .where((user) => editTaskCubit
+                    .getOldTaskDataByIdModel!.task!.assignedToUsers!
                     .any((assignedUser) => assignedUser.id == user.id))
                 .toList();
           } else if (state is CategoriesSuccessState) {
+            print('state is CategoriesSuccessState');
+            print(editTaskCubit.getOldTaskDataByIdModel?.task?.tCategoryId);
+            print(
+                'getOldTaskDataByIdModel: ${editTaskCubit.getOldTaskDataByIdModel?.toMap()}');
+
             // to display the old category
-            editTaskCubit.selectedCategory = taskModel.tCategoryId == null
-                ? null
-                : editTaskCubit.getTaskCategoriesModel!.taskCategories!
-                    .firstWhere(
-                        (category) => category.cId == taskModel.tCategoryId);
+            editTaskCubit.selectedCategory =
+                editTaskCubit.getOldTaskDataByIdModel?.task?.tCategoryId == null
+                    ? null
+                    : editTaskCubit.getTaskCategoriesModel!.taskCategories!
+                        .firstWhere((category) =>
+                            category.cId ==
+                            editTaskCubit
+                                .getOldTaskDataByIdModel!.task!.tCategoryId);
           } else if (state is EditTaskSuccessState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -227,7 +237,12 @@ class EditTaskScreen extends StatelessWidget {
                                         readOnly: true,
                                         onTap: () =>
                                             editTaskCubit.selectDateTime(
-                                                context, true, taskModel),
+                                                context,
+                                                true,
+                                                editTaskCubit
+                                                    .getOldTaskDataByIdModel!
+                                                    .task!
+                                                    .createdAt),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
@@ -253,7 +268,12 @@ class EditTaskScreen extends StatelessWidget {
                                         readOnly: true,
                                         onTap: () =>
                                             editTaskCubit.selectDateTime(
-                                                context, false, taskModel),
+                                                context,
+                                                false,
+                                                editTaskCubit
+                                                    .getOldTaskDataByIdModel!
+                                                    .task!
+                                                    .createdAt),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
@@ -414,7 +434,8 @@ class EditTaskScreen extends StatelessWidget {
                                   storagePath: EndPointsConstants.tasksStorage,
                                   // old not used yet since the task has no version
                                   oldSubmissionAttachmentsCategories:
-                                      taskModel.taskAttachmentsCategories,
+                                      editTaskCubit.getOldTaskDataByIdModel
+                                          ?.task?.taskAttachmentsCategories,
                                   pickedImagesList:
                                       editTaskCubit.pickedImagesList,
                                   deletedPickedImageFromList:
@@ -431,20 +452,23 @@ class EditTaskScreen extends StatelessWidget {
                                   oldVideoControllers:
                                       editTaskCubit.oldVideoControllers,
                                   oldSubmissionAttachmentsCategories:
-                                      taskModel.taskAttachmentsCategories,
+                                      editTaskCubit.getOldTaskDataByIdModel
+                                          ?.task?.taskAttachmentsCategories,
                                   videosControllers:
                                       editTaskCubit.videosControllers,
                                   toggleVideoPlayPause:
                                       editTaskCubit.toggleVideoPlayPause,
                                 ),
                                 SelectedAttachmentsWidget(
-                                  pickedFilesList: editTaskCubit.pickedFilesList,
+                                  pickedFilesList:
+                                      editTaskCubit.pickedFilesList,
                                   // old not used yet since the task has no version
-                                  oldSubmissionAttachmentsCategories: taskModel.taskAttachmentsCategories,
+                                  oldSubmissionAttachmentsCategories:
+                                      editTaskCubit.getOldTaskDataByIdModel
+                                          ?.task?.taskAttachmentsCategories,
                                   deletedPickedFileFromList:
-                                  editTaskCubit.deletedPickedFileFromList,
+                                      editTaskCubit.deletedPickedFileFromList,
                                 ),
-
                               ],
                             ),
                           ),
@@ -454,15 +478,17 @@ class EditTaskScreen extends StatelessWidget {
                             if (editTaskCubit.editTaskFormKey.currentState!
                                 .validate()) {
                               editTaskCubit.editTask(
-                                taskId: taskModel.tId!,
+                                taskId: editTaskCubit
+                                    .getOldTaskDataByIdModel!.task!.tId!,
                                 oldAttachments: [
-                                  ...taskModel
-                                      .taskAttachmentsCategories!.images!
+                                  ...editTaskCubit.getOldTaskDataByIdModel!
+                                      .task!.taskAttachmentsCategories!.images!
                                       .map((e) => e.aAttachment!),
-                                  ...taskModel
-                                      .taskAttachmentsCategories!.videos!
+                                  ...editTaskCubit.getOldTaskDataByIdModel!
+                                      .task!.taskAttachmentsCategories!.videos!
                                       .map((e) => e.aAttachment!),
-                                  ...taskModel.taskAttachmentsCategories!.files!
+                                  ...editTaskCubit.getOldTaskDataByIdModel!
+                                      .task!.taskAttachmentsCategories!.files!
                                       .map((e) => e.aAttachment!),
                                 ],
                               );
@@ -476,6 +502,7 @@ class EditTaskScreen extends StatelessWidget {
                   ),
                 ),
                 state is EditTaskLoadingState ||
+                        state is GetOldTaskDataLoadingState ||
                         editTaskCubit.getTaskCategoriesModel == null ||
                         editTaskCubit
                                 .getManagerEmployeesWithTaskAssigneesModel ==

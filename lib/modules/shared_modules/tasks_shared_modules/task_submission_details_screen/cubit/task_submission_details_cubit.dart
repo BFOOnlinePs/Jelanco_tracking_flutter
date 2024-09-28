@@ -50,7 +50,6 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
     });
   }
 
-
   void afterEditSubmission({
     required final TaskSubmissionModel newSubmissionModel,
   }) {
@@ -59,10 +58,11 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
     // int? index = getTaskSubmissionWithTaskAndCommentsModel?.taskSubmissions
     //     .indexWhere((submission) => submission.tsId == oldSubmissionId);
 
-      // Replace the old submission with the new one
-      getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = newSubmissionModel;
-      //
-      // print(getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission.toMap());
+    // Replace the old submission with the new one
+    getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission =
+        newSubmissionModel;
+    //
+    // print(getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission.toMap());
     emit(AfterEditSubmissionState());
   }
 

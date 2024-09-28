@@ -68,6 +68,16 @@ class AddTaskFileSelectErrorState extends EditTaskStates {
   AddTaskFileSelectErrorState({required this.error});
 }
 
+class GetOldTaskDataLoadingState extends EditTaskStates {}
+
+class GetOldTaskDataSuccessState extends EditTaskStates {}
+
+class GetOldTaskDataErrorState extends EditTaskStates {
+  final String error;
+
+  GetOldTaskDataErrorState({required this.error});
+}
+
 // Categories Mixin
 
 class CategoriesLoadingState extends EditTaskStates {}

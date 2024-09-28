@@ -130,7 +130,8 @@ class SubmissionHeaderWidget extends StatelessWidget {
                               context,
                               AddTaskSubmissionScreen(
                                 taskId: submissionModel.tsTaskId!,
-                                taskSubmissionModel: submissionModel,
+                                // taskSubmissionModel: submissionModel,
+                                taskSubmissionId: submissionModel.tsId,
                                 isEdit: true,
                                 getDataCallback: (newSubmissionModel) {
                                   // shared with 5 screens (task details screen, submission details screen and home user submissions screen)

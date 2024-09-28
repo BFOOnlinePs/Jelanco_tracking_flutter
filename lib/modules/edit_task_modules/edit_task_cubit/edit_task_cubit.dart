@@ -18,6 +18,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_category_model.
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/edit_task_model.dart';
+import 'package:jelanco_tracking_system/models/tasks_models/get_task_by_id_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -48,22 +49,46 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   List<UserModel> selectedUsers = [];
   TaskStatusEnum? selectedTaskStatusEnum;
 
-  void initialValues({
-    required TaskModel taskModel,
-  }) async {
-    contentController.text = taskModel.tContent ?? '';
-    plannedStartTime = taskModel.tPlanedStartTime;
-    plannedEndTime = taskModel.tPlanedEndTime;
-    selectedTaskStatusEnum = TaskStatusEnum.getStatus(taskModel.tStatus!);
 
-    for (var vid in taskModel.taskAttachmentsCategories?.videos ?? []) {
-      await initializeOldVideoController(vid.aAttachment!);
-    }
-    emit(InitialValuesState());
+  GetTaskByIdModel? getOldTaskDataByIdModel;
+
+  // get old task data
+  Future<void> getOldTaskData({
+    required int taskId,
+    // required TaskModel taskModel,
+  }) async {
+    emit(GetOldTaskDataLoadingState());
+
+    await DioHelper.getData(
+      url: '${EndPointsConstants.tasks}/$taskId',
+    ).then((value) async {
+      print(value?.data);
+      getOldTaskDataByIdModel = GetTaskByIdModel.fromMap(value?.data);
+      print('getOldTaskDataByIdModel: ${getOldTaskDataByIdModel?.toMap()}');
+
+      if (getOldTaskDataByIdModel?.status == true) {
+        contentController.text = getOldTaskDataByIdModel!.task!.tContent ?? '';
+        plannedStartTime = getOldTaskDataByIdModel!.task!.tPlanedStartTime;
+        plannedEndTime = getOldTaskDataByIdModel!.task!.tPlanedEndTime;
+        selectedTaskStatusEnum =
+            TaskStatusEnum.getStatus(getOldTaskDataByIdModel!.task!.tStatus!);
+
+        for (var vid in getOldTaskDataByIdModel!
+                .task!.taskAttachmentsCategories?.videos ??
+            []) {
+          await initializeOldVideoController(vid.aAttachment!);
+        }
+      }
+
+      emit(GetOldTaskDataSuccessState());
+    }).catchError((error) {
+      emit(GetOldTaskDataErrorState(error: error.toString()));
+      print(error.toString());
+    });
   }
 
   Future<void> selectDateTime(
-      BuildContext context, bool isStartTime, TaskModel task) async {
+      BuildContext context, bool isStartTime, DateTime? createdAt ) async {
     DateTime initialDate = isStartTime // when reopen
         ? (plannedStartTime ?? DateTime.now())
         : (plannedEndTime ?? DateTime.now());
@@ -80,7 +105,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       initialDate: initialDate,
       // firstDate: DateTime(2000),
       // lastDate: DateTime(2101),
-      firstDate: task.createdAt ?? DateTime.now(),
+      firstDate: createdAt ?? DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
@@ -128,8 +153,6 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   final ImagePicker picker = ImagePicker();
 
   // from camera
-  // List<XFile> pickedFromCameraList = [];
-  // List<XFile?> compressedFromCameraList = [];
 
   Future<void> pickMediaFromCamera({bool isImage = true}) async {
     if (isImage) {
@@ -413,8 +436,6 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     }
 
     print('formData: ${formData.fields}');
-    print('formData: ${formData.files[0].value.filename}');
-
 
     await DioHelper.postData(
             url: '${EndPointsConstants.tasks}/$taskId', data: formData)

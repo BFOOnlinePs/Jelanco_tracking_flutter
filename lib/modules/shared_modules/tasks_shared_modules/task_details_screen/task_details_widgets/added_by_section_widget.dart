@@ -123,7 +123,8 @@ class AddedBySectionWidget extends StatelessWidget {
                 NavigationServices.navigateTo(
                   context,
                   EditTaskScreen(
-                    taskModel: taskModel,
+                    taskId: taskModel.tId!,
+
                   ),
                 );
               },
