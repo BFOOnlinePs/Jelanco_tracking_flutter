@@ -36,7 +36,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
           MediaWidget(
             attachmentsCategories: taskModel.taskAttachmentsCategories,
             storagePath: EndPointsConstants.tasksStorage,
-          ),
+          ), 
 
           taskModel.taskCategory != null
               ? CategoryRowWidget(

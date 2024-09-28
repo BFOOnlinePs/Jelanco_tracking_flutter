@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/button_size.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
+import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_screen.dart';
 
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_attachments_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
@@ -34,10 +42,7 @@ class EditTaskScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => EditTaskCubit()
         ..initialValues(
-          content: taskModel.tContent,
-          startTime: taskModel.tPlanedStartTime,
-          endTime: taskModel.tPlanedEndTime,
-          taskStatus: TaskStatusEnum.getStatus(taskModel.tStatus!),
+          taskModel: taskModel,
         )
         ..getTaskCategories(
           loadingState: CategoriesLoadingState(),
@@ -54,8 +59,8 @@ class EditTaskScreen extends StatelessWidget {
         listener: (context, state) {
           print(state);
           // if (state is GetAllUsersSuccessState) {
-          //   // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
-          //   // addTaskCubit.filteredUsers = addTaskCubit.users;
+          //   // editTaskCubit.users = editTaskCubit.getAllUsersModel!.users!;
+          //   // editTaskCubit.filteredUsers = editTaskCubit.users;
           // } else
 
           if (state is GetManagerEmployeesSuccessState) {
@@ -205,7 +210,7 @@ class EditTaskScreen extends StatelessWidget {
                                     keyboardType: TextInputType.multiline,
                                     isFieldRequired: true,
                                     maxLines: 3,
-                                    // onChanged: (value) => addTaskCubit.content = value,
+                                    // onChanged: (value) => editTaskCubit.content = value,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'يجب كتابة محتوى التكليف';
@@ -300,146 +305,145 @@ class EditTaskScreen extends StatelessWidget {
                                 // const MyVerticalSpacer(),
 
                                 const MyVerticalSpacer(),
-                                // Container(
-                                //   margin: const EdgeInsets.only(
-                                //       top: 14, bottom: 16),
-                                //   child: Row(
-                                //     mainAxisAlignment:
-                                //     MainAxisAlignment.spaceBetween,
-                                //     children: [
-                                //       //from camera
-                                //
-                                //       TaskOptionsWidget(
-                                //           menuItems: [
-                                //             MenuItemModel(
-                                //               icon: Icons.image,
-                                //               iconColor: Colors.green,
-                                //               label: 'إلتقاط صورة',
-                                //               onTap: () {
-                                //                 addTaskCubit.requestPermission(
-                                //                     context: context,
-                                //                     permissionType:
-                                //                     PermissionType.camera,
-                                //                     functionWhenGranted:
-                                //                     addTaskCubit
-                                //                         .pickMediaFromCamera);
-                                //               },
-                                //             ),
-                                //             MenuItemModel(
-                                //               icon: Icons.video_camera_back,
-                                //               label: 'إلتقاط فيديو',
-                                //               iconColor: Colors.red,
-                                //               onTap: () {
-                                //                 addTaskCubit.requestPermission(
-                                //                     context: context,
-                                //                     permissionType:
-                                //                     PermissionType.camera,
-                                //                     functionWhenGranted: () =>
-                                //                         addTaskCubit
-                                //                             .pickMediaFromCamera(
-                                //                             isImage:
-                                //                             false));
-                                //               },
-                                //             ),
-                                //           ],
-                                //           child: const MediaOptionWidget(
-                                //             icon: Icons.camera_alt,
-                                //             label: 'كاميرا',
-                                //             color: Colors.blue,
-                                //             onTap: null,
-                                //           )),
-                                //
-                                //       Container(
-                                //           width: 0.2,
-                                //           height: 26,
-                                //           color: Colors.grey),
-                                //
-                                //       MediaOptionWidget(
-                                //         icon: Icons.image,
-                                //         label: 'صورة',
-                                //         color: Colors.green,
-                                //         onTap: () {
-                                //           addTaskCubit.requestPermission(
-                                //               context: context,
-                                //               permissionType:
-                                //               PermissionType.storage,
-                                //               functionWhenGranted: addTaskCubit
-                                //                   .pickMultipleImagesFromGallery);
-                                //         },
-                                //       ),
-                                //       Container(
-                                //           width: 0.2,
-                                //           height: 26,
-                                //           color: Colors.grey),
-                                //       MediaOptionWidget(
-                                //         icon: Icons.video_camera_back,
-                                //         label: 'فيديو',
-                                //         color: Colors.red,
-                                //         onTap: () {
-                                //           addTaskCubit.requestPermission(
-                                //               context: context,
-                                //               permissionType:
-                                //               PermissionType.storage,
-                                //               functionWhenGranted: addTaskCubit
-                                //                   .pickVideoFromGallery);
-                                //         },
-                                //       ),
-                                //       Container(
-                                //           width: 0.2,
-                                //           height: 26,
-                                //           color: Colors.grey),
-                                //       MediaOptionWidget(
-                                //         icon: Icons.attach_file,
-                                //         label: 'ملف',
-                                //         color: Colors.blue,
-                                //         onTap: () {
-                                //           addTaskCubit.requestPermission(
-                                //               context: context,
-                                //               permissionType:
-                                //               PermissionType.storage,
-                                //               functionWhenGranted:
-                                //               addTaskCubit.pickReportFile);
-                                //         },
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      top: 14, bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      //from camera
 
+                                      TaskOptionsWidget(
+                                          menuItems: [
+                                            MenuItemModel(
+                                              icon: Icons.image,
+                                              iconColor: Colors.green,
+                                              label: 'إلتقاط صورة',
+                                              onTap: () {
+                                                editTaskCubit.requestPermission(
+                                                    context: context,
+                                                    permissionType:
+                                                        PermissionType.camera,
+                                                    functionWhenGranted:
+                                                        editTaskCubit
+                                                            .pickMediaFromCamera);
+                                              },
+                                            ),
+                                            MenuItemModel(
+                                              icon: Icons.video_camera_back,
+                                              label: 'إلتقاط فيديو',
+                                              iconColor: Colors.red,
+                                              onTap: () {
+                                                editTaskCubit.requestPermission(
+                                                    context: context,
+                                                    permissionType:
+                                                        PermissionType.camera,
+                                                    functionWhenGranted: () =>
+                                                        editTaskCubit
+                                                            .pickMediaFromCamera(
+                                                                isImage:
+                                                                    false));
+                                              },
+                                            ),
+                                          ],
+                                          child: const MediaOptionWidget(
+                                            icon: Icons.camera_alt,
+                                            label: 'كاميرا',
+                                            color: Colors.blue,
+                                            onTap: null,
+                                          )),
 
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
 
+                                      MediaOptionWidget(
+                                        icon: Icons.image,
+                                        label: 'صورة',
+                                        color: Colors.green,
+                                        onTap: () {
+                                          editTaskCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted: editTaskCubit
+                                                  .pickMultipleImagesFromGallery);
+                                        },
+                                      ),
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+                                      MediaOptionWidget(
+                                        icon: Icons.video_camera_back,
+                                        label: 'فيديو',
+                                        color: Colors.red,
+                                        onTap: () {
+                                          editTaskCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted: editTaskCubit
+                                                  .pickVideoFromGallery);
+                                        },
+                                      ),
+                                      Container(
+                                          width: 0.2,
+                                          height: 26,
+                                          color: Colors.grey),
+                                      MediaOptionWidget(
+                                        icon: Icons.attach_file,
+                                        label: 'ملف',
+                                        color: Colors.blue,
+                                        onTap: () {
+                                          editTaskCubit.requestPermission(
+                                              context: context,
+                                              permissionType:
+                                                  PermissionType.storage,
+                                              functionWhenGranted:
+                                                  editTaskCubit.pickReportFile);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
 
-                                // SelectedImagesWidget(
-                                //   storagePath: EndPointsConstants.tasksStorage,
-                                //   // old not used yet since the task has no version
-                                //   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
-                                //   pickedImagesList:
-                                //   addTaskCubit.pickedImagesList,
-                                //   deletedPickedImageFromList:
-                                //   addTaskCubit.deletePickedImageFromList,
-                                // ),
-                                // const SizedBox(
-                                //   height: 14,
-                                // ),
-                                // SelectedVideosWidget(
-                                //   pickedVideosList:
-                                //   addTaskCubit.pickedVideosList,
-                                //   deletePickedVideoFromList:
-                                //   addTaskCubit.deletePickedVideoFromList,
-                                //   oldVideoControllers:
-                                //   addTaskCubit.oldVideoControllers,
-                                //   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories,
-                                //   videosControllers:
-                                //   addTaskCubit.videosControllers,
-                                //   toggleVideoPlayPause:
-                                //   addTaskCubit.toggleVideoPlayPause,
-                                // ),
-                                // SelectedAttachmentsWidget(
-                                //   pickedFilesList: addTaskCubit.pickedFilesList,
-                                //   // old not used yet since the task has no version
-                                //   deletedPickedFileFromList:
-                                //   addTaskCubit.deletedPickedFileFromList,
-                                // ),
-                                //
+                                SelectedImagesWidget(
+                                  storagePath: EndPointsConstants.tasksStorage,
+                                  // old not used yet since the task has no version
+                                  oldSubmissionAttachmentsCategories:
+                                      taskModel.taskAttachmentsCategories,
+                                  pickedImagesList:
+                                      editTaskCubit.pickedImagesList,
+                                  deletedPickedImageFromList:
+                                      editTaskCubit.deletePickedImageFromList,
+                                ),
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                                SelectedVideosWidget(
+                                  pickedVideosList:
+                                      editTaskCubit.pickedVideosList,
+                                  deletePickedVideoFromList:
+                                      editTaskCubit.deletePickedVideoFromList,
+                                  oldVideoControllers:
+                                      editTaskCubit.oldVideoControllers,
+                                  oldSubmissionAttachmentsCategories:
+                                      taskModel.taskAttachmentsCategories,
+                                  videosControllers:
+                                      editTaskCubit.videosControllers,
+                                  toggleVideoPlayPause:
+                                      editTaskCubit.toggleVideoPlayPause,
+                                ),
+                                SelectedAttachmentsWidget(
+                                  pickedFilesList: editTaskCubit.pickedFilesList,
+                                  // old not used yet since the task has no version
+                                  oldSubmissionAttachmentsCategories: taskModel.taskAttachmentsCategories,
+                                  deletedPickedFileFromList:
+                                  editTaskCubit.deletedPickedFileFromList,
+                                ),
 
                               ],
                             ),
@@ -449,7 +453,19 @@ class EditTaskScreen extends StatelessWidget {
                           onPressed: () {
                             if (editTaskCubit.editTaskFormKey.currentState!
                                 .validate()) {
-                              editTaskCubit.editTask(taskId: taskModel.tId!);
+                              editTaskCubit.editTask(
+                                taskId: taskModel.tId!,
+                                oldAttachments: [
+                                  ...taskModel
+                                      .taskAttachmentsCategories!.images!
+                                      .map((e) => e.aAttachment!),
+                                  ...taskModel
+                                      .taskAttachmentsCategories!.videos!
+                                      .map((e) => e.aAttachment!),
+                                  ...taskModel.taskAttachmentsCategories!.files!
+                                      .map((e) => e.aAttachment!),
+                                ],
+                              );
                             }
                           },
                           isWidthFull: true,

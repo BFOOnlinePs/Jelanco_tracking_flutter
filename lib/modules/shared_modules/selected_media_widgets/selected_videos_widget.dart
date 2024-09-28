@@ -66,6 +66,7 @@ class SelectedVideosWidget extends StatelessWidget {
                   oldVideoControllers.length <
                       oldSubmissionAttachmentsCategories!.videos!
                           .length // to make sure that all the controllers initialized
+              // ? Container(child: Text('لا توجد فيديوات او مش معمول initialize'),)
               ? Container()
               : SizedBox(
                   height: 280,

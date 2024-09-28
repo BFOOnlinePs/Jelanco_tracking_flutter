@@ -32,7 +32,7 @@ class MediaWidget extends StatelessWidget {
                   ? Container(
                       margin: EdgeInsets.only(bottom: 10.h),
                       child: FilesListViewWidget(
-                        storagePath: EndPointsConstants.taskSubmissionsStorage,
+                        storagePath: storagePath,
                         files: attachmentsCategories!.files,
                       ),
                     )
@@ -59,8 +59,7 @@ class MediaWidget extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MyMediaViewer(
-                                        storagePath: EndPointsConstants
-                                            .taskSubmissionsStorage,
+                                        storagePath: storagePath,
                                         mediaList: attachmentsCategories!
                                             .images!
                                             .map((image) => MediaItem(
@@ -99,8 +98,7 @@ class MediaWidget extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MyMediaViewer(
-                                      storagePath: EndPointsConstants
-                                          .taskSubmissionsStorage,
+                                      storagePath: storagePath,
                                       mediaList: attachmentsCategories!.images!
                                           .map((image) => MediaItem(
                                               type: MediaType.image,

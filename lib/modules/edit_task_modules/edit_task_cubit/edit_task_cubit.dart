@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categ
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_with_task_assignees_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
@@ -26,6 +28,7 @@ import 'package:video_player/video_player.dart';
 class EditTaskCubit extends Cubit<EditTaskStates>
     with
         CategoriesMixin<EditTaskStates>,
+        PermissionsMixin,
         ManagerEmployeesWithTaskAssigneesMixin<EditTaskStates>,
         CompressImagesMixin<EditTaskStates>,
         CompressVideoMixin<EditTaskStates> {
@@ -46,15 +49,16 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   TaskStatusEnum? selectedTaskStatusEnum;
 
   void initialValues({
-    String? content,
-    DateTime? startTime,
-    DateTime? endTime,
-    TaskStatusEnum? taskStatus,
-  }) {
-    contentController.text = content ?? '';
-    plannedStartTime = startTime;
-    plannedEndTime = endTime;
-    selectedTaskStatusEnum = taskStatus;
+    required TaskModel taskModel,
+  }) async {
+    contentController.text = taskModel.tContent ?? '';
+    plannedStartTime = taskModel.tPlanedStartTime;
+    plannedEndTime = taskModel.tPlanedEndTime;
+    selectedTaskStatusEnum = TaskStatusEnum.getStatus(taskModel.tStatus!);
+
+    for (var vid in taskModel.taskAttachmentsCategories?.videos ?? []) {
+      await initializeOldVideoController(vid.aAttachment!);
+    }
     emit(InitialValuesState());
   }
 
@@ -289,7 +293,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       print('videoPath:: $videoPath');
 
       VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
+          Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);
@@ -351,9 +355,19 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   // edit
 
   EditTaskModel? editTaskModel;
+  bool isAddTaskSubmissionLoading = false; // aseel change name
 
-  void editTask({required int taskId}) {
+  void editTask({
+    required int taskId,
+    List<String> oldAttachments = const [],
+  }) async {
+    isAddTaskSubmissionLoading = true;
     emit(EditTaskLoadingState());
+
+    // compress images videos before send them to back-end
+    await compressAllImages();
+    await compressVideos();
+
     Map<String, dynamic> dataObject = {
       'content': contentController.text,
       'start_time': plannedStartTime?.toString(),
@@ -362,9 +376,48 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       'assigned_to': FormatUtils.formatList<UserModel>(
           selectedUsers, (user) => user?.id.toString()),
       'status': selectedTaskStatusEnum!.statusName,
+      'old_attachments[]': oldAttachments
     };
-    DioHelper.postData(
-            url: '${EndPointsConstants.tasks}/$taskId', data: dataObject)
+
+    print('old_attachments: ${oldAttachments.length}');
+
+    FormData formData = FormData.fromMap(dataObject);
+
+    // compressedImagesList instead of pickedImagesList
+    for (int i = 0; i < compressedImagesList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "images[]",
+          await MultipartFile.fromFile(compressedImagesList[i]!.path),
+        ),
+      ]);
+    }
+
+    // compressedVideoList instead of pickedVideosList
+    for (int i = 0; i < compressedVideoList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "videos[]",
+          await MultipartFile.fromFile(compressedVideoList[i]!.path!),
+        ),
+      ]);
+    }
+
+    for (int i = 0; i < pickedFilesList.length; i++) {
+      formData.files.addAll([
+        MapEntry(
+          "documents[]",
+          await MultipartFile.fromFile(pickedFilesList[i].path),
+        ),
+      ]);
+    }
+
+    print('formData: ${formData.fields}');
+    print('formData: ${formData.files[0].value.filename}');
+
+
+    await DioHelper.postData(
+            url: '${EndPointsConstants.tasks}/$taskId', data: formData)
         .then((value) {
       print(value?.data);
       editTaskModel = EditTaskModel.fromMap(value?.data);
@@ -373,5 +426,24 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       emit(EditTaskErrorState(error: error.toString()));
       print(error.toString());
     });
+
+    isAddTaskSubmissionLoading = false;
+    emitLoading();
+  }
+
+  void emitLoading() {
+    emit(EmitLoadingState());
+  }
+
+  @override
+  Future<void> close() {
+    for (var controller in videosControllers) {
+      controller?.dispose();
+    }
+    for (var controller in oldVideoControllers) {
+      controller?.dispose();
+    }
+    contentController.dispose();
+    return super.close();
   }
 }

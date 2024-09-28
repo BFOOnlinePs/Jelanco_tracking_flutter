@@ -342,7 +342,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
 
   Future<void> addNewTaskSubmission({
     required int taskId,
-    required bool isEdit,
+    // required bool isEdit,
     int? taskSubmissionId,
     List<String> oldAttachments = const [],
   }) async {
@@ -453,7 +453,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       print('videoPath:: $videoPath');
 
       VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
+          Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);

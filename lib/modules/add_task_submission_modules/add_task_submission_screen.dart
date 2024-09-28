@@ -428,7 +428,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   print('add task .then');
                                   addTaskSubmissionCubit.addNewTaskSubmission(
                                     taskId: taskId,
-                                    isEdit: isEdit,
+                                    // isEdit: isEdit,
                                     taskSubmissionId:
                                         taskSubmissionModel?.tsId ?? -1,
                                     oldAttachments: isEdit

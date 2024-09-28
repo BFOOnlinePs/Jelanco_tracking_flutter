@@ -273,7 +273,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       print('videoPath:: $videoPath');
 
       VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
+          Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);

@@ -36,18 +36,32 @@ class EditTaskErrorState extends EditTaskStates {
   EditTaskErrorState({required this.error});
 }
 
+class EmitLoadingState extends EditTaskStates {}
+
 class PickMediaFromCameraState extends EditTaskStates {}
+
 class PickMultipleImagesState extends EditTaskStates {}
+
 class DeletePickedImageFromListState extends EditTaskStates {}
+
 class CompressAllImagesLoadingState extends EditTaskStates {}
+
 class CompressAllImagesSuccessState extends EditTaskStates {}
+
 class PickVideoState extends EditTaskStates {}
+
 class InitializeVideoControllerState extends EditTaskStates {}
+
 class DeletePickedVideoFromListState extends EditTaskStates {}
+
 class ToggleVideoPlayPauseState extends EditTaskStates {}
+
 class CompressAllVideosSuccessState extends EditTaskStates {}
+
 class AddTaskFileSelectSuccessState extends EditTaskStates {}
+
 class DeletePickedFilesFromListState extends EditTaskStates {}
+
 class AddTaskFileSelectErrorState extends EditTaskStates {
   final String error;
 
@@ -85,4 +99,3 @@ class CompressVideoErrorState extends EditTaskStates {
 
   CompressVideoErrorState({required this.error});
 }
-
