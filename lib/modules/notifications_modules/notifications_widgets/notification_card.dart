@@ -34,7 +34,7 @@ class NotificationCard extends StatelessWidget {
             children: [
               Text(
                 notificationModel?.title ?? '',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -43,7 +43,7 @@ class NotificationCard extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 notificationModel?.body ?? '',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.black54,
                 ),
@@ -55,7 +55,7 @@ class NotificationCard extends StatelessWidget {
                   Text(
                     MyDateUtils.formatDateTimeWithAmPm(
                         notificationModel!.createdAt!),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 10,
                       color: Colors.grey,
                     ),
@@ -68,7 +68,7 @@ class NotificationCard extends StatelessWidget {
                         color: ColorsConstants.primaryColor,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(
+                      child: const Text(
                         'جديد',
                         style: TextStyle(
                           color: Colors.white,

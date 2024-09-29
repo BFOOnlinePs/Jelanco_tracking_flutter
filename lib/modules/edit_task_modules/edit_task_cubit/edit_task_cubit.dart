@@ -15,7 +15,6 @@ import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixi
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
-import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/edit_task_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/get_task_by_id_model.dart';

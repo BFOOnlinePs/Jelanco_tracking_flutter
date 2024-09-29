@@ -1,17 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:jelanco_tracking_system/core/constants/user_data.dart';
-import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
-import 'package:jelanco_tracking_system/enums/system_permissions.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
-import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/task_details_section_widget.dart';
-import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button.dart';
-import 'package:jelanco_tracking_system/widgets/my_dialog/my_dialog.dart';
-import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskModel taskModel;

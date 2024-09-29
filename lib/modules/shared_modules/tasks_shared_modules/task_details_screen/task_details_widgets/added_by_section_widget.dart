@@ -5,7 +5,6 @@ import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
@@ -89,9 +88,9 @@ class AddedBySectionWidget extends StatelessWidget {
                       taskModel.createdAt != taskModel.updatedAt
                           ? Row(
                               children: [
-                                Text(
+                                const Text(
                                   'اخر تعديل: ',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                   ),
                                 ),

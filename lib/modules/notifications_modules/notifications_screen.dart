@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_cubit.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_states.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_widgets/notification_card.dart';

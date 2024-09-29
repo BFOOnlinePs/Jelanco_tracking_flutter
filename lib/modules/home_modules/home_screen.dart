@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                         NavigationServices.navigateTo(
                             context, const NotificationsScreen());
                       },
-                      child: Badge(
+                      child: const Badge(
                         label: Text('4'),
                         largeSize: 18,
                         textStyle: TextStyle(fontSize: 14),
