@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_add_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_tasks_to_submit_widget.dart';
+import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
@@ -42,6 +44,26 @@ class HomeScreen extends StatelessWidget {
           return Scaffold(
               appBar: MyAppBar(
                 title: 'home_page_title'.tr(),
+                actions: [
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(end: 18),
+                    child: InkWell(
+                      onTap: () {
+                        NavigationServices.navigateTo(
+                            context, const NotificationsScreen());
+                      },
+                      child: Badge(
+                        label: Text('4'),
+                        largeSize: 18,
+                        textStyle: TextStyle(fontSize: 14),
+                        child: Icon(
+                          Icons.notifications,
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               drawer:
                   UserDataConstants.userModel != null ? const MyDrawer() : null,

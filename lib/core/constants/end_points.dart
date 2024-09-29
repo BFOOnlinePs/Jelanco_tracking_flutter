@@ -66,6 +66,8 @@ class EndPointsConstants {
   static const String managerEmployees = '$users/employees';
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
 
+  // notifications
+  static const String notifications = 'notifications';
 
   // FCM
   static const sendNotification = 'https://fcm.googleapis.com/fcm/send';

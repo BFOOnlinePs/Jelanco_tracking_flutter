@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
+import 'package:jelanco_tracking_system/core/utils/notifications_utils.dart';
 import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
@@ -28,21 +29,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print('Message notification: ${message.notification?.body}');
   }
 }
-
-// @pragma('vm:entry-point')
-// onTapNotificationBackground(NotificationResponse notificationResponse) async {
-//   final String? payload = notificationResponse.payload;
-//   print('in onTapNotificationBackground payload: $payload');
-//   if (payload != null) {
-//     debugPrint('notification payload: $payload');
-//     print('navigate');
-//
-//     // await Utility.navigate(
-//     //   navigatorKey.currentState!.context,
-//     //   '/second-screen',
-//     // );
-//   }
-// }
 
 class FirebaseApi {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -68,10 +54,10 @@ class FirebaseApi {
     if (message == null) return;
 
     // if (kDebugMode) {
-      print('Handling a message: ${message.messageId}');
-      print('Message data: ${message.data}');
-      print('Message notification: ${message.notification?.title}');
-      print('Message notification: ${message.notification?.body}');
+    print('Handling a message: ${message.messageId}');
+    print('Message data: ${message.data}');
+    print('Message notification: ${message.notification?.title}');
+    print('Message notification: ${message.notification?.body}');
     // }
 
     print('message.data: ${message.data}');
@@ -80,31 +66,7 @@ class FirebaseApi {
     String? type = message.data['type'];
     String? typeId = message.data['type_id'];
 
-    if (type == null || typeId == null) return;
-
-    final int parsedId = int.tryParse(typeId) ?? 0;
-
-    // Navigate based on the type and pass the id if available
-    switch (type) {
-      case 'task':
-        _navigateToScreen(TaskDetailsScreen(taskId: parsedId));
-        break;
-      case 'submission':
-      case 'comment':
-        _navigateToScreen(TaskSubmissionDetailsScreen(submissionId: parsedId));
-        break;
-      case 'general_screen':
-        print('Navigate to general screen');
-        // Implement general screen navigation
-        break;
-      default:
-        print('Unknown notification type: $type');
-    }
-  }
-
-  void _navigateToScreen(Widget screen) {
-    navigatorKey.currentState
-        ?.push(MaterialPageRoute(builder: (context) => screen));
+    NotificationsUtils.navigateFromNotification(type: type, typeId: typeId);
   }
 
   // Initializes local notifications.
