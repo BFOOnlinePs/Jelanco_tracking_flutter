@@ -37,6 +37,8 @@ class GetTasksToSubmitErrorState extends HomeStates {
   GetTasksToSubmitErrorState(this.error);
 }
 
+class ListenToNewNotificationsState extends HomeStates {}
+
 // Notifications badge Mixin
 class GetUnreadNotificationsCountSuccessState extends HomeStates {}
 

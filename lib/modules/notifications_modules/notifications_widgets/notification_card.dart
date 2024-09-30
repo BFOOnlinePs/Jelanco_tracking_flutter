@@ -18,7 +18,7 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        NotificationsCubit.get(context).notificationClicked(notificationModel: notificationModel);
+        NotificationsCubit.get(context).notificationClicked(context, notificationModel: notificationModel);
       },
       child: Card(
         elevation: 3,

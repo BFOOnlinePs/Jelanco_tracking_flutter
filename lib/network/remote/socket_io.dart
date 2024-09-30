@@ -1,4 +1,5 @@
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -11,7 +12,7 @@ class SocketIO {
   }
 
   SocketIO._internal() {
-    print('Socket.IO inside CommentService');
+    print('Socket.IO inside socket Service');
     socket = IO.io(EndPointsConstants.socketIoUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
@@ -38,6 +39,14 @@ class SocketIO {
     // the receiver is socket.on('new-comment', (data) { })
     socket.emit('new-comment', commentMap);
   }
+
+  // void newNotification({NotificationModel? notification}) {
+  //   final notificationMap = notification?.toMap(); // Convert the object to a map
+  //   print('Socket.IO New notification emitted: $notificationMap');
+  //   // the receiver is socket.on('new-notification', (data) { })
+  //   socket.emit('new-notification', 'notificationMap');
+  //   print('after emit');
+  // }
 
 // void emitNewComment(Map<String, dynamic> comment) {
 //   socket.emit('new-comment', comment);

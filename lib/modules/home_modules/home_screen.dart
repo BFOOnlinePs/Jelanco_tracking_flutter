@@ -10,6 +10,8 @@ import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_sta
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_add_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_tasks_to_submit_widget.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_screen.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
@@ -28,6 +30,8 @@ class HomeScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => HomeCubit()..init(userId: UserDataConstants.userId!),
+      // ..listenToNewNotifications(),
+
       // ..getUserById(userId: UserDataConstants.userId!)
       // ..getUserSubmissions()
       // ..getTasksToSubmit(
@@ -45,28 +49,36 @@ class HomeScreen extends StatelessWidget {
               appBar: MyAppBar(
                 title: 'home_page_title'.tr(),
                 actions: [
-                  homeCubit.unreadNotificationsCountModel == null
+                  UserDataConstants.userModel == null
                       ? Container()
-                      : Container(
-                          margin: const EdgeInsetsDirectional.only(end: 18),
-                          child: InkWell(
-                            onTap: () {
-                              NavigationServices.navigateTo(
-                                context,
-                                NotificationsScreen(),
-                              );
-                            },
-                            child: Badge(
-                              label: Text(
-                                  homeCubit.unreadNotificationsCountModel?.unreadNotificationsCount.toString() ?? ''),
-                              largeSize: 18,
-                              textStyle: TextStyle(fontSize: 14),
-                              child: Icon(
-                                Icons.notifications,
-                                size: 25,
+                      : BlocConsumer<NotificationsBadgeCubit, NotificationsBadgeStates>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            NotificationsBadgeCubit notificationsBadgeCubit = NotificationsBadgeCubit.get(context);
+                            return Container(
+                              margin: const EdgeInsetsDirectional.only(end: 18),
+                              child: InkWell(
+                                onTap: () {
+                                  NavigationServices.navigateTo(
+                                    context,
+                                    NotificationsScreen(),
+                                  );
+                                },
+                                child: Badge(
+                                  label: Text(notificationsBadgeCubit
+                                          .unreadNotificationsCountModel?.unreadNotificationsCount
+                                          .toString() ??
+                                      ''),
+                                  largeSize: 18,
+                                  textStyle: TextStyle(fontSize: 14),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    size: 25,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         )
                 ],
               ),
@@ -74,7 +86,7 @@ class HomeScreen extends StatelessWidget {
               body: MyRefreshIndicator(
                 onRefresh: () async {
                   await Future.wait([
-                    homeCubit.getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState()),
+                    NotificationsBadgeCubit.get(context).getUnreadNotificationsCount(),
                     homeCubit.getUserSubmissions(),
                     if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
                       homeCubit.getTasksToSubmit(

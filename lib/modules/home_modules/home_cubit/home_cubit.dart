@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
-import 'package:jelanco_tracking_system/core/utils/mixins/notifications_badge_mixin/notifications_badge_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
@@ -12,14 +11,35 @@ import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_mod
 import 'package:jelanco_tracking_system/models/users_models/get_user_by_id_model.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
+import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
-class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates>, NotificationsBadgeMixin<HomeStates> {
+class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
+{
   HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
   ScrollController scrollController = ScrollController();
 
+  // final SocketIO notificationsService = SocketIO();
+
+  // void listenToNewNotifications() {
+  //   print('Socket.IO listenToNewNotifications');
+  //   // the sender is: socket.emit('new-notification', data);
+  //   notificationsService.socket.on('new-notification', (data) {
+  //     print('from screen Socket.IO New notification received:: $data');
+  //     // Update the state with the new notification
+  //
+  //     // بدل استدعاء، ابعت الرقم مع الميثود
+  //     // getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState());
+  //     // TaskSubmissionCommentModel newComment =
+  //     // TaskSubmissionCommentModel.fromMap(data);
+  //     // print('newComment.tscId: ${newComment.tscId}');
+  //     // getSubmissionCommentsModel?.submissionComments?.add(newComment);
+  //     emit(ListenToNewNotificationsState());
+  //   });
+  // }
+  //
   GetUserSubmissionsModel? getUserSubmissionsModel;
   List<TaskSubmissionModel> userSubmissionsList = [];
 
@@ -81,7 +101,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates>, N
     try {
       await getUserById(userId: userId);
       // After getUserById is done, call the other functions
-      getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState());
+      // getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState());
       getUserSubmissions();
       if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) {
         getTasksToSubmit(

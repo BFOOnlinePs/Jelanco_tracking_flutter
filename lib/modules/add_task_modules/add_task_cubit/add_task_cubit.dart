@@ -19,6 +19,7 @@ import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart'
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
+import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:mime/mime.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
@@ -33,10 +34,6 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
-
-  // error
-  // success
-  // loading
 
   final formKey = GlobalKey<FormState>();
   TextEditingController contentController = TextEditingController();
@@ -87,9 +84,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
 
   // initial user when add task to a specific user from profile screen
   void addInitialSelectedUser({required int userId}) {
-    selectedUsers = getManagerEmployeesModel!.managerEmployees!
-        .where((user) => user.id == userId)
-        .toList();
+    selectedUsers = getManagerEmployeesModel!.managerEmployees!.where((user) => user.id == userId).toList();
   }
 
   // after pop from AssignedToScreen
@@ -97,8 +92,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     emit(EmitAfterReturnState());
   }
 
-  void changeSelectedCategory(
-      {required TaskCategoryModel? newSelectedCategory}) {
+  void changeSelectedCategory({required TaskCategoryModel? newSelectedCategory}) {
     selectedCategory = newSelectedCategory;
     emit(ChangeSelectedCategoryState());
   }
@@ -140,8 +134,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     emit(PickMultipleImagesState());
   }
 
-  void deletePickedImageFromList(
-      {required int index, AttachmentsCategories? attachmentsCategories}) {
+  void deletePickedImageFromList({required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
       attachmentsCategories.images?.removeAt(index);
@@ -209,12 +202,11 @@ class AddTaskCubit extends Cubit<AddTaskStates>
 
   void deletePickedVideoFromList({
     required int index,
-  AttachmentsCategories? attachmentsCategories, // for edit
+    AttachmentsCategories? attachmentsCategories, // for edit
   }) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
-      attachmentsCategories.videos
-          ?.removeAt(index);
+      attachmentsCategories.videos?.removeAt(index);
       oldVideoControllers[index]?.dispose();
       oldVideoControllers.removeAt(index);
     } else {
@@ -240,9 +232,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       emit(ToggleVideoPlayPauseState());
     } else if (videosControllers[index] != null) {
       print('new videos');
-      videosControllers[index]!.value.isPlaying
-          ? videosControllers[index]!.pause()
-          : videosControllers[index]!.play();
+      videosControllers[index]!.value.isPlaying ? videosControllers[index]!.pause() : videosControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     }
   }
@@ -271,8 +261,8 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     if (videoPath.endsWith('.mp4')) {
       print('videoPath:: $videoPath');
 
-      VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.tasksStorage + videoPath));
+      VideoPlayerController controller =
+          VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);
@@ -288,7 +278,6 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     }
   }
 
-
   // files
 
   FilePickerResult? result;
@@ -303,14 +292,11 @@ class AddTaskCubit extends Cubit<AddTaskStates>
         String? mimeType = lookupMimeType(file.path!);
         String extension = file.extension ?? '';
 
-        if (mimeType != null &&
-            FilesExtensionsUtils.isAcceptedFileType(extension)) {
+        if (mimeType != null && FilesExtensionsUtils.isAcceptedFileType(extension)) {
           pickedFilesList.add(selectedFile);
           emit(AddTaskFileSelectSuccessState());
         } else {
-          emit(AddTaskFileSelectErrorState(
-              error:
-                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+          emit(AddTaskFileSelectErrorState(error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
@@ -320,8 +306,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     }
   }
 
-  void deletedPickedFileFromList(
-      {required int index, AttachmentsCategories? attachmentsCategories}) {
+  void deletedPickedFileFromList({required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
       attachmentsCategories.files?.removeAt(index);
@@ -358,8 +343,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       'start_time': plannedStartTime?.toString(),
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
-      'assigned_to': FormatUtils.formatList<UserModel>(
-          selectedUsers, (user) => user?.id.toString()),
+      'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
     };
     print(dataObject.values);
     FormData formData = FormData.fromMap(dataObject);
@@ -395,10 +379,12 @@ class AddTaskCubit extends Cubit<AddTaskStates>
 
     print('formData: ${formData.fields}');
 
-    await DioHelper.postData(url: EndPointsConstants.tasks, data: formData)
-        .then((value) {
+    await DioHelper.postData(url: EndPointsConstants.tasks, data: formData).then((value) {
       print(value?.data);
       addTaskModel = AddTaskModel.fromMap(value?.data);
+
+      // notificationsService.newNotification();
+
       emit(AddTaskSuccessState(addTaskModel: addTaskModel!));
     }).catchError((error) {
       emit(AddTaskErrorState(error: error.toString()));
@@ -406,6 +392,8 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     isAddTaskSubmissionLoading = false;
     emitLoading();
   }
+
+  // final SocketIO notificationsService = SocketIO();
 
   void emitLoading() {
     emit(EmitLoadingState());

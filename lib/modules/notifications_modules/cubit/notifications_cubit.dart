@@ -6,11 +6,10 @@ import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/enums/notifications_filter_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
 import 'package:jelanco_tracking_system/models/notifications_models/get_user_notifications_model.dart';
-import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
-import '../../home_modules/home_cubit/home_states.dart';
 
 class NotificationsCubit extends Cubit<NotificationsStates> {
   NotificationsCubit() : super(NotificationsInitialState());
@@ -71,7 +70,7 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
     ScrollUtils.scrollPosition(scrollController: scrollController);
   }
 
-  Future<void> notificationClicked({required NotificationModel notificationModel}) async {
+  Future<void> notificationClicked(BuildContext context ,{required NotificationModel notificationModel}) async {
     NotificationsUtils.navigateFromNotification(
       notificationId: notificationModel.id!,
       type: notificationModel.type,
@@ -80,9 +79,11 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
 
     print('Notification clicked: ${notificationModel.id}');
 
-    // Communicate with HomeCubit to update the badge
-    // HomeCubit.get(context).changeNotificationsBadge(changeState: NotificationsBadgeChangedState());
-    
+    // change badge from notificationsBadgeCubit
+    if (notificationModel.isRead == 0) {
+      NotificationsBadgeCubit.get(context).changeNotificationsBadge();
+      emit(ChangeBadgeState());
+    }
     
     Future.delayed(const Duration(seconds: 1), () {
       notificationModel.isRead = 1;

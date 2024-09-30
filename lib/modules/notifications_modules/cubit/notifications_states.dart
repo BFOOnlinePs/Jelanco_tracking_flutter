@@ -12,4 +12,4 @@ class NotificationClickedState extends NotificationsStates {}
 
 class ChangeSelectedFilterState extends NotificationsStates {}
 
-
+class ChangeBadgeState extends NotificationsStates {}
