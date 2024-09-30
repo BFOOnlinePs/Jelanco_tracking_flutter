@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsFilterEnum {
@@ -6,8 +5,11 @@ class NotificationsFilterEnum {
   final String name;
   final IconData icon;
 
-  const NotificationsFilterEnum(
-      {required this.code, required this.name, required this.icon});
+  const NotificationsFilterEnum({
+    required this.code,
+    required this.name,
+    required this.icon,
+  });
 
   static const NotificationsFilterEnum all = NotificationsFilterEnum(
     code: 2,
@@ -25,6 +27,12 @@ class NotificationsFilterEnum {
     icon: Icons.mark_email_unread_outlined,
   );
 
+  static const NotificationsFilterEnum undefined = NotificationsFilterEnum(
+    code: 3,
+    name: 'غير معرف',
+    icon: Icons.mark_email_unread_outlined,
+  );
+
   static List<NotificationsFilterEnum> getAllStatuses() {
     return [all, read, unread];
   }
@@ -38,7 +46,7 @@ class NotificationsFilterEnum {
       case 0:
         return unread;
       default:
-        return all;
+        return undefined;
     }
   }
 }

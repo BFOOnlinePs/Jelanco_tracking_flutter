@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/notifications_utils.dart';
+import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/enums/notifications_filter_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
 import 'package:jelanco_tracking_system/models/notifications_models/get_user_notifications_model.dart';
@@ -13,17 +15,44 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
   static NotificationsCubit get(context) =>
       BlocProvider.of<NotificationsCubit>(context);
 
-  GetUserNotificationsModel? getUserNotificationsModel;
+  ScrollController scrollController = ScrollController();
 
-  Future<void> getUserNotifications({NotificationsFilterEnum? newSelectedFilter}) async {
+  GetUserNotificationsModel? getUserNotificationsModel;
+  List<NotificationModel> userNotificationsList = [];
+
+  bool isUserNotificationsLoading = false;
+  bool isUserNotificationsLastPage = false;
+
+  Future<void> getUserNotifications({
+    NotificationsFilterEnum? newSelectedFilter,
+    int page = 1,
+    // int? perPage = 12,
+  }) async {
     emit(GetUserNotificationsLoadingState());
+    isUserNotificationsLoading = true;
+
     print('is read: ${newSelectedFilter?.name}');
-    await DioHelper.getData(
-        url: EndPointsConstants.notifications,
-        query: {'is_read': newSelectedFilter?.code == 2 ? null : newSelectedFilter?.code}).then((value) {
+    await DioHelper.getData(url: EndPointsConstants.notifications, query: {
+      'per_page': 8,
+      'page': page,
+      'is_read': newSelectedFilter?.code == 2 ? null : newSelectedFilter?.code
+    }).then((value) {
       print(value?.data);
+      // when refresh
+      if (page == 1) {
+        userNotificationsList.clear();
+      }
       getUserNotificationsModel =
           GetUserNotificationsModel.fromMap(value?.data);
+      userNotificationsList.addAll(getUserNotificationsModel?.notifications
+          as Iterable<NotificationModel>);
+
+      isUserNotificationsLastPage =
+          getUserNotificationsModel?.pagination?.lastPage ==
+              getUserNotificationsModel?.pagination?.currentPage;
+
+      isUserNotificationsLoading = false;
+
       emit(GetUserNotificationsSuccessState());
     }).catchError((error) {
       emit(GetUserNotificationsErrorState());
@@ -31,15 +60,17 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
     });
   }
 
-  bool isRefresh = false;
+  bool isRefresh = false; // to show only one loader at a time
 
-  NotificationsFilterEnum selectedFilter = NotificationsFilterEnum.getStatus(2); // 2: All, 1: Read, 0: Unread
+  NotificationsFilterEnum selectedFilter = NotificationsFilterEnum.all;
 
   void changeSelectedFilter(NotificationsFilterEnum newSelectedFilter) {
     selectedFilter = newSelectedFilter;
     print('Selected filter: $selectedFilter');
     // emit(ChangeSelectedFilterState());
     getUserNotifications(newSelectedFilter: selectedFilter);
+    // scroll to beginning
+    ScrollUtils.scrollPosition(scrollController: scrollController);
   }
 
   // when click on notification

@@ -8,7 +8,6 @@ import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 
-// it needs pagination
 class TasksToSubmitScreen extends StatelessWidget {
   TasksToSubmitScreen({super.key});
 

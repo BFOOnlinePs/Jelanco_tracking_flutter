@@ -39,7 +39,7 @@ class NotificationsScreen extends StatelessWidget {
                         NotificationFilterWidget(
                             key: ValueKey(notificationsCubit.selectedFilter)),
                         notificationsCubit.getUserNotificationsModel == null
-                            ? const MyLoader()
+                            ? Container()
                             : notificationsCubit.getUserNotificationsModel!
                                     .notifications!.isEmpty
                                 ? const Text('لا يوجد اشعارات حتى الان')
@@ -56,18 +56,53 @@ class NotificationsScreen extends StatelessWidget {
                                         notificationsCubit.isRefresh = false;
                                       },
                                       child: ListView.builder(
+                                        controller:
+                                            notificationsCubit.scrollController,
                                         itemBuilder: (context, index) {
+                                          if (index ==
+                                                  notificationsCubit
+                                                      .userNotificationsList
+                                                      .length &&
+                                              !notificationsCubit
+                                                  .isUserNotificationsLastPage) {
+                                            if (!notificationsCubit
+                                                .isUserNotificationsLoading) {
+                                              notificationsCubit.isRefresh =
+                                                  true;
+                                              notificationsCubit
+                                                  .getUserNotifications(
+                                                newSelectedFilter:
+                                                    notificationsCubit
+                                                        .selectedFilter,
+                                                page: notificationsCubit
+                                                        .getUserNotificationsModel!
+                                                        .pagination!
+                                                        .currentPage! +
+                                                    1,
+                                              )
+                                                  .then((_) {
+                                                notificationsCubit.isRefresh =
+                                                    false;
+                                              });
+                                            }
+                                            return const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Center(child: MyLoader()),
+                                            );
+                                          }
                                           return NotificationCard(
                                             notificationModel:
                                                 notificationsCubit
-                                                    .getUserNotificationsModel!
-                                                    .notifications![index],
+                                                        .userNotificationsList[
+                                                    index],
                                           );
                                         },
                                         itemCount: notificationsCubit
-                                            .getUserNotificationsModel!
-                                            .notifications!
-                                            .length,
+                                                .userNotificationsList.length +
+                                            (notificationsCubit
+                                                    .isUserNotificationsLastPage
+                                                ? 0
+                                                : 1),
                                       ),
                                     ),
                                   ),
