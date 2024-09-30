@@ -45,40 +45,43 @@ class HomeScreen extends StatelessWidget {
               appBar: MyAppBar(
                 title: 'home_page_title'.tr(),
                 actions: [
-                  Container(
-                    margin: const EdgeInsetsDirectional.only(end: 18),
-                    child: InkWell(
-                      onTap: () {
-                        NavigationServices.navigateTo(
-                            context, const NotificationsScreen());
-                      },
-                      child: const Badge(
-                        label: Text('4'),
-                        largeSize: 18,
-                        textStyle: TextStyle(fontSize: 14),
-                        child: Icon(
-                          Icons.notifications,
-                          size: 25,
-                        ),
-                      ),
-                    ),
-                  )
+                  homeCubit.unreadNotificationsCountModel == null
+                      ? Container()
+                      : Container(
+                          margin: const EdgeInsetsDirectional.only(end: 18),
+                          child: InkWell(
+                            onTap: () {
+                              NavigationServices.navigateTo(
+                                context,
+                                NotificationsScreen(),
+                              );
+                            },
+                            child: Badge(
+                              label: Text(
+                                  homeCubit.unreadNotificationsCountModel?.unreadNotificationsCount.toString() ?? ''),
+                              largeSize: 18,
+                              textStyle: TextStyle(fontSize: 14),
+                              child: Icon(
+                                Icons.notifications,
+                                size: 25,
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
-              drawer:
-                  UserDataConstants.userModel != null ? const MyDrawer() : null,
+              drawer: UserDataConstants.userModel != null ? const MyDrawer() : null,
               body: MyRefreshIndicator(
                 onRefresh: () async {
                   await Future.wait([
+                    homeCubit.getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState()),
                     homeCubit.getUserSubmissions(),
-                    if (SystemPermissions.hasPermission(
-                        SystemPermissions.submitTask))
+                    if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
                       homeCubit.getTasksToSubmit(
                         perPage: 3,
                         loadingState: GetTasksToSubmitLoadingState(),
                         successState: GetTasksToSubmitSuccessState(),
-                        errorState: (error) =>
-                            GetTasksToSubmitErrorState(error),
+                        errorState: (error) => GetTasksToSubmitErrorState(error),
                       ),
                   ]);
                 },
@@ -89,15 +92,13 @@ class HomeScreen extends StatelessWidget {
                         controller: homeCubit.scrollController,
                         slivers: [
                           // check if the user has a permission to add a submission
-                          if (SystemPermissions.hasPermission(
-                              SystemPermissions.submitTask))
+                          if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
                             SliverToBoxAdapter(
                               child: HomeAddSubmissionWidget(
                                 homeCubit: homeCubit,
                               ),
                             ),
-                          if (SystemPermissions.hasPermission(
-                              SystemPermissions.submitTask))
+                          if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
                             SliverToBoxAdapter(
                               child: HomeTasksToSubmitWidget(
                                 homeCubit: homeCubit,
@@ -106,14 +107,11 @@ class HomeScreen extends StatelessWidget {
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                if (index ==
-                                        homeCubit.userSubmissionsList.length &&
+                                if (index == homeCubit.userSubmissionsList.length &&
                                     !homeCubit.isUserSubmissionsLastPage) {
                                   if (!homeCubit.isUserSubmissionsLoading) {
                                     homeCubit.getUserSubmissions(
-                                      page: homeCubit.getUserSubmissionsModel!
-                                              .pagination!.currentPage! +
-                                          1,
+                                      page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
                                     );
                                   }
                                   return Padding(
@@ -121,17 +119,12 @@ class HomeScreen extends StatelessWidget {
                                     child: const LinearProgressIndicator(),
                                   );
                                 }
-                                final submission =
-                                    homeCubit.userSubmissionsList[index];
+                                final submission = homeCubit.userSubmissionsList[index];
 
-                                return UserSubmissionWidget(
-                                    homeCubit: homeCubit,
-                                    submission: submission);
+                                return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
                               },
                               childCount: homeCubit.userSubmissionsList.length +
-                                  (homeCubit.isUserSubmissionsLastPage
-                                      ? 0
-                                      : 1), // Replace with your data length
+                                  (homeCubit.isUserSubmissionsLastPage ? 0 : 1), // Replace with your data length
                             ),
                           ),
                         ],

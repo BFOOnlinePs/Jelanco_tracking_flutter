@@ -21,13 +21,12 @@ class NotificationsScreen extends StatelessWidget {
       child: BlocConsumer<NotificationsCubit, NotificationsStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          NotificationsCubit notificationsCubit =
-              NotificationsCubit.get(context);
+          NotificationsCubit notificationsCubit = NotificationsCubit.get(context);
           return Scaffold(
             appBar: const MyAppBar(
               title: 'الإشعارات',
             ),
-            body: Stack(
+            body: Stack( 
               children: [
                 MyScreen(
                   child: Center(
@@ -36,53 +35,36 @@ class NotificationsScreen extends StatelessWidget {
                         const MyScreenTitleWidget(title: 'الإشعارات الخاصة بك'),
                         // The reason behind using ValueKey(notificationsCubit.selectedFilter) in NotificationFilter is
                         // to ensure that the widget can rebuild when the selectedFilter changes, so the UI will change.
-                        NotificationFilterWidget(
-                            key: ValueKey(notificationsCubit.selectedFilter)),
+                        NotificationFilterWidget(key: ValueKey(notificationsCubit.selectedFilter)),
                         notificationsCubit.getUserNotificationsModel == null
                             ? Container()
-                            : notificationsCubit.getUserNotificationsModel!
-                                    .notifications!.isEmpty
+                            : notificationsCubit.getUserNotificationsModel!.notifications!.isEmpty
                                 ? const Text('لا يوجد اشعارات حتى الان')
                                 : Expanded(
                                     child: MyRefreshIndicator(
                                       onRefresh: () async {
                                         notificationsCubit.isRefresh = true;
-                                        await notificationsCubit
-                                            .getUserNotifications(
-                                          newSelectedFilter:
-                                              notificationsCubit.selectedFilter,
+                                        await notificationsCubit.getUserNotifications(
+                                          newSelectedFilter: notificationsCubit.selectedFilter,
                                         );
-                                        // Set isRefresh to false after the function finishes
                                         notificationsCubit.isRefresh = false;
                                       },
                                       child: ListView.builder(
-                                        controller:
-                                            notificationsCubit.scrollController,
+                                        controller: notificationsCubit.scrollController,
                                         itemBuilder: (context, index) {
-                                          if (index ==
-                                                  notificationsCubit
-                                                      .userNotificationsList
-                                                      .length &&
-                                              !notificationsCubit
-                                                  .isUserNotificationsLastPage) {
-                                            if (!notificationsCubit
-                                                .isUserNotificationsLoading) {
-                                              notificationsCubit.isRefresh =
-                                                  true;
+                                          if (index == notificationsCubit.userNotificationsList.length &&
+                                              !notificationsCubit.isUserNotificationsLastPage) {
+                                            if (!notificationsCubit.isUserNotificationsLoading) {
+                                              notificationsCubit.isRefresh = true;
                                               notificationsCubit
                                                   .getUserNotifications(
-                                                newSelectedFilter:
-                                                    notificationsCubit
-                                                        .selectedFilter,
+                                                newSelectedFilter: notificationsCubit.selectedFilter,
                                                 page: notificationsCubit
-                                                        .getUserNotificationsModel!
-                                                        .pagination!
-                                                        .currentPage! +
+                                                        .getUserNotificationsModel!.pagination!.currentPage! +
                                                     1,
                                               )
                                                   .then((_) {
-                                                notificationsCubit.isRefresh =
-                                                    false;
+                                                notificationsCubit.isRefresh = false;
                                               });
                                             }
                                             return const Padding(
@@ -91,18 +73,11 @@ class NotificationsScreen extends StatelessWidget {
                                             );
                                           }
                                           return NotificationCard(
-                                            notificationModel:
-                                                notificationsCubit
-                                                        .userNotificationsList[
-                                                    index],
+                                            notificationModel: notificationsCubit.userNotificationsList[index],
                                           );
                                         },
-                                        itemCount: notificationsCubit
-                                                .userNotificationsList.length +
-                                            (notificationsCubit
-                                                    .isUserNotificationsLastPage
-                                                ? 0
-                                                : 1),
+                                        itemCount: notificationsCubit.userNotificationsList.length +
+                                            (notificationsCubit.isUserNotificationsLastPage ? 0 : 1),
                                       ),
                                     ),
                                   ),
@@ -110,8 +85,7 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                state is GetUserNotificationsLoadingState &&
-                        !notificationsCubit.isRefresh
+                state is GetUserNotificationsLoadingState && !notificationsCubit.isRefresh
                     ? const LoaderWithDisable()
                     : Container(),
               ],

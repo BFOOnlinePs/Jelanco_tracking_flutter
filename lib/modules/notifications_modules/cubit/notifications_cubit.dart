@@ -6,14 +6,16 @@ import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/enums/notifications_filter_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
 import 'package:jelanco_tracking_system/models/notifications_models/get_user_notifications_model.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
+
+import '../../home_modules/home_cubit/home_states.dart';
 
 class NotificationsCubit extends Cubit<NotificationsStates> {
   NotificationsCubit() : super(NotificationsInitialState());
 
-  static NotificationsCubit get(context) =>
-      BlocProvider.of<NotificationsCubit>(context);
+  static NotificationsCubit get(context) => BlocProvider.of<NotificationsCubit>(context);
 
   ScrollController scrollController = ScrollController();
 
@@ -26,7 +28,6 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
   Future<void> getUserNotifications({
     NotificationsFilterEnum? newSelectedFilter,
     int page = 1,
-    // int? perPage = 12,
   }) async {
     emit(GetUserNotificationsLoadingState());
     isUserNotificationsLoading = true;
@@ -35,21 +36,18 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
     await DioHelper.getData(url: EndPointsConstants.notifications, query: {
       'per_page': 8,
       'page': page,
-      'is_read': newSelectedFilter?.code == 2 ? null : newSelectedFilter?.code
+      'is_read': newSelectedFilter?.code == 2 ? null : newSelectedFilter?.code,
     }).then((value) {
       print(value?.data);
       // when refresh
       if (page == 1) {
         userNotificationsList.clear();
       }
-      getUserNotificationsModel =
-          GetUserNotificationsModel.fromMap(value?.data);
-      userNotificationsList.addAll(getUserNotificationsModel?.notifications
-          as Iterable<NotificationModel>);
+      getUserNotificationsModel = GetUserNotificationsModel.fromMap(value?.data);
+      userNotificationsList.addAll(getUserNotificationsModel?.notifications as Iterable<NotificationModel>);
 
       isUserNotificationsLastPage =
-          getUserNotificationsModel?.pagination?.lastPage ==
-              getUserNotificationsModel?.pagination?.currentPage;
+          getUserNotificationsModel?.pagination?.lastPage == getUserNotificationsModel?.pagination?.currentPage;
 
       isUserNotificationsLoading = false;
 
@@ -73,15 +71,19 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
     ScrollUtils.scrollPosition(scrollController: scrollController);
   }
 
-  // when click on notification
-  Future<void> notificationClicked(
-      {required NotificationModel notificationModel}) async {
+  Future<void> notificationClicked({required NotificationModel notificationModel}) async {
     NotificationsUtils.navigateFromNotification(
       notificationId: notificationModel.id!,
       type: notificationModel.type,
       typeId: notificationModel.typeId.toString(),
     );
-    // wait second
+
+    print('Notification clicked: ${notificationModel.id}');
+
+    // Communicate with HomeCubit to update the badge
+    // HomeCubit.get(context).changeNotificationsBadge(changeState: NotificationsBadgeChangedState());
+    
+    
     Future.delayed(const Duration(seconds: 1), () {
       notificationModel.isRead = 1;
       emit(NotificationClickedState());

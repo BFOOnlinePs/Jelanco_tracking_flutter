@@ -11,3 +11,5 @@ class GetUserNotificationsErrorState extends NotificationsStates {}
 class NotificationClickedState extends NotificationsStates {}
 
 class ChangeSelectedFilterState extends NotificationsStates {}
+
+

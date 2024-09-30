@@ -71,6 +71,7 @@ class EndPointsConstants {
   // notifications
   static const String notifications = 'notifications';
   static const String readNotifications = '$notifications/read';
+  static const String unreadNotificationsCount = '$notifications/unread-count';
 
   // FCM
   static const sendNotification = 'https://fcm.googleapis.com/fcm/send';

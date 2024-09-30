@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/notifications_badge_mixin/notifications_badge_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
@@ -12,7 +13,7 @@ import 'package:jelanco_tracking_system/models/users_models/get_user_by_id_model
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
-class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
+class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates>, NotificationsBadgeMixin<HomeStates> {
   HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -40,12 +41,10 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       }
       getUserSubmissionsModel = GetUserSubmissionsModel.fromMap(value?.data);
 
-      userSubmissionsList.addAll(getUserSubmissionsModel?.submissions
-          as Iterable<TaskSubmissionModel>);
+      userSubmissionsList.addAll(getUserSubmissionsModel?.submissions as Iterable<TaskSubmissionModel>);
 
       isUserSubmissionsLastPage =
-          getUserSubmissionsModel?.pagination?.lastPage ==
-              getUserSubmissionsModel?.pagination?.currentPage;
+          getUserSubmissionsModel?.pagination?.lastPage == getUserSubmissionsModel?.pagination?.currentPage;
 
       isUserSubmissionsLoading = false;
       emit(GetUserSubmissionsSuccessState());
@@ -60,17 +59,16 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   void getCommentsCount({required int submissionId}) async {
     emit(GetCommentsCountLoadingState());
     await DioHelper.getData(
-      url:
-          '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionComments}/${EndPointsConstants.taskSubmissionCommentsCount}',
+      url: '${EndPointsConstants.taskSubmissions}/$submissionId/'
+          '${EndPointsConstants.taskSubmissionComments}/'
+          '${EndPointsConstants.taskSubmissionCommentsCount}',
       // /task-submissions/185/comments/count
     ).then((value) {
       print(value?.data);
-      getSubmissionCommentCountModel =
-          GetSubmissionCommentCountModel.fromMap(value?.data);
+      getSubmissionCommentCountModel = GetSubmissionCommentCountModel.fromMap(value?.data);
       // update the number of comments in the original submission model
-      userSubmissionsList
-          .firstWhere((submission) => submission.tsId == submissionId)
-          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+      userSubmissionsList.firstWhere((submission) => submission.tsId == submissionId).commentsCount =
+          getSubmissionCommentCountModel?.commentsCount;
 
       emit(GetCommentsCountSuccessState());
     }).catchError((error) {
@@ -82,8 +80,8 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   Future<void> init({required int userId}) async {
     try {
       await getUserById(userId: userId);
-
       // After getUserById is done, call the other functions
+      getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState());
       getUserSubmissions();
       if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) {
         getTasksToSubmit(
@@ -104,8 +102,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   }) {
     // Replace the old submission with the new one
     // Find the index of the submission with the old ID
-    int index = userSubmissionsList
-        .indexWhere((submission) => submission.tsId == oldSubmissionId);
+    int index = userSubmissionsList.indexWhere((submission) => submission.tsId == oldSubmissionId);
 
     if (index != -1) {
       // Replace the old submission with the new one
@@ -136,8 +133,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       //
       UserDataConstants.userModel = getUserByIdModel?.user;
 
-      UserDataConstants.permissionsList =
-          getUserByIdModel?.permissions?.map<String>((permission) {
+      UserDataConstants.permissionsList = getUserByIdModel?.permissions?.map<String>((permission) {
         return permission.name ?? '';
       }).toList();
       print('permissionsList: ${UserDataConstants.permissionsList}');
@@ -150,7 +146,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
 
   @override
   Future<void> close() {
-    print('userSubmissionsList: ${userSubmissionsList.length}');
+    userSubmissionsList.clear();
     scrollController.dispose();
     getUserSubmissionsModel = null;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/main.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
@@ -39,9 +40,7 @@ class NotificationsUtils {
 
   static void markNotificationAsRead(int notificationId) {
     // Implement notification reading logic
-    DioHelper.getData(
-            url: '${EndPointsConstants.readNotifications}/$notificationId')
-        .then((value) {
+    DioHelper.getData(url: '${EndPointsConstants.readNotifications}/$notificationId').then((value) {
       print(value?.data);
     }).catchError((error) {
       print(error.toString());
@@ -49,7 +48,6 @@ class NotificationsUtils {
   }
 
   static void navigateToScreen(Widget screen) {
-    navigatorKey.currentState
-        ?.push(MaterialPageRoute(builder: (context) => screen));
+    navigatorKey.currentState?.push(MaterialPageRoute(builder: (context) => screen));
   }
 }

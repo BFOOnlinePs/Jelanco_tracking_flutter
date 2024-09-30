@@ -18,12 +18,12 @@ class NotificationsFilterEnum {
   );
   static const NotificationsFilterEnum read = NotificationsFilterEnum(
     code: 1,
-    name: 'المقروء',
+    name: 'المقروءة',
     icon: Icons.done_all,
   );
   static const NotificationsFilterEnum unread = NotificationsFilterEnum(
     code: 0,
-    name: 'غير المقروء',
+    name: 'غير المقروءة',
     icon: Icons.mark_email_unread_outlined,
   );
 
