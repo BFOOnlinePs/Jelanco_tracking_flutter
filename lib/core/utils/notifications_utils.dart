@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/main.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/task_submission_details_screen.dart';
+import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class NotificationsUtils {
   static void navigateFromNotification({
+    required int? notificationId,
     required String? type,
     required String? typeId,
   }) {
+    if (notificationId != null) {
+      markNotificationAsRead(notificationId);
+    }
+
     if (type == null || typeId == null) return;
 
     final int parsedId = int.tryParse(typeId) ?? 0;
@@ -15,11 +22,11 @@ class NotificationsUtils {
     // Navigate based on the type and pass the id if available
     switch (type) {
       case 'task':
-        _navigateToScreen(TaskDetailsScreen(taskId: parsedId));
+        navigateToScreen(TaskDetailsScreen(taskId: parsedId));
         break;
       case 'submission':
       case 'comment':
-        _navigateToScreen(TaskSubmissionDetailsScreen(submissionId: parsedId));
+        navigateToScreen(TaskSubmissionDetailsScreen(submissionId: parsedId));
         break;
       case 'general_screen':
         print('Navigate to general screen');
@@ -30,7 +37,18 @@ class NotificationsUtils {
     }
   }
 
-  static void _navigateToScreen(Widget screen) {
+  static void markNotificationAsRead(int notificationId) {
+    // Implement notification reading logic
+    DioHelper.getData(
+            url: '${EndPointsConstants.readNotifications}/$notificationId')
+        .then((value) {
+      print(value?.data);
+    }).catchError((error) {
+      print(error.toString());
+    });
+  }
+
+  static void navigateToScreen(Widget screen) {
     navigatorKey.currentState
         ?.push(MaterialPageRoute(builder: (context) => screen));
   }

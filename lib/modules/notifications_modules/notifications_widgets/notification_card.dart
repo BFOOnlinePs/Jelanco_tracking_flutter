@@ -2,30 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
-import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart'; // For formatting dates
+import 'package:jelanco_tracking_system/core/utils/notifications_utils.dart';
+import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
+import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_cubit.dart'; // For formatting dates
 
 class NotificationCard extends StatelessWidget {
-  final NotificationModel? notificationModel;
+  final NotificationModel notificationModel;
 
   const NotificationCard({
     super.key,
-    this.notificationModel,
+    required this.notificationModel,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
+        NotificationsCubit.get(context)
+            .notificationClicked(notificationModel: notificationModel);
       },
       child: Card(
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(CardSizeConstants.cardRadius),
         ),
-        color: notificationModel?.isRead == 1
-            ? Colors.white
-            : Colors.grey.shade200,
+        color:
+            notificationModel.isRead == 1 ? Colors.white : Colors.grey.shade200,
         margin: const EdgeInsets.only(bottom: 14),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -33,7 +35,7 @@ class NotificationCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                notificationModel?.title ?? '',
+                notificationModel.title ?? '',
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -42,7 +44,7 @@ class NotificationCard extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                notificationModel?.body ?? '',
+                notificationModel.body ?? '',
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.black54,
@@ -54,13 +56,13 @@ class NotificationCard extends StatelessWidget {
                 children: [
                   Text(
                     MyDateUtils.formatDateTimeWithAmPm(
-                        notificationModel!.createdAt!),
+                        notificationModel.createdAt!),
                     style: const TextStyle(
                       fontSize: 10,
                       color: Colors.grey,
                     ),
                   ),
-                  if (notificationModel?.isRead == 0)
+                  if (notificationModel.isRead == 0)
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),

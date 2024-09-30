@@ -7,3 +7,5 @@ class GetUserNotificationsLoadingState extends NotificationsStates {}
 class GetUserNotificationsSuccessState extends NotificationsStates {}
 
 class GetUserNotificationsErrorState extends NotificationsStates {}
+
+class NotificationClickedState extends NotificationsStates {}

@@ -62,7 +62,11 @@ class FirebaseApi {
     String? type = message.data['type'];
     String? typeId = message.data['type_id'];
 
-    NotificationsUtils.navigateFromNotification(type: type, typeId: typeId);
+    NotificationsUtils.navigateFromNotification(
+      notificationId: null,
+      type: type,
+      typeId: typeId,
+    );
   }
 
   // Initializes local notifications.
