@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/noti
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_widgets/notification_card.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_widgets/notification_filter_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
@@ -26,46 +27,59 @@ class NotificationsScreen extends StatelessWidget {
             appBar: const MyAppBar(
               title: 'الإشعارات',
             ),
-            body: MyScreen(
-              child: Center(
-                child: Column(
-                  children: [
-                    const MyScreenTitleWidget(title: 'الإشعارات الخاصة بك'),
-                    // The reason behind using ValueKey(notificationsCubit.selectedFilter) in NotificationFilter is
-                    // to ensure that the widget can rebuild when the selectedFilter changes, so the UI will change.
-                    NotificationFilterWidget(
-                        key: ValueKey(notificationsCubit.selectedFilter)),
-                    notificationsCubit.getUserNotificationsModel == null
-                        ? const MyLoader()
-                        : notificationsCubit.getUserNotificationsModel!
-                                .notifications!.isEmpty
-                            ? const Text('لا يوجد اشعارات حتى الان')
-                            : Expanded(
-                                child: MyRefreshIndicator(
-                                  onRefresh: () {
-                                    return notificationsCubit
-                                        .getUserNotifications(
-                                            isRead: notificationsCubit
-                                                .selectedFilter);
-                                  },
-                                  child: ListView.builder(
-                                    itemBuilder: (context, index) {
-                                      return NotificationCard(
-                                        notificationModel: notificationsCubit
+            body: Stack(
+              children: [
+                MyScreen(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const MyScreenTitleWidget(title: 'الإشعارات الخاصة بك'),
+                        // The reason behind using ValueKey(notificationsCubit.selectedFilter) in NotificationFilter is
+                        // to ensure that the widget can rebuild when the selectedFilter changes, so the UI will change.
+                        NotificationFilterWidget(
+                            key: ValueKey(notificationsCubit.selectedFilter)),
+                        notificationsCubit.getUserNotificationsModel == null
+                            ? const MyLoader()
+                            : notificationsCubit.getUserNotificationsModel!
+                                    .notifications!.isEmpty
+                                ? const Text('لا يوجد اشعارات حتى الان')
+                                : Expanded(
+                                    child: MyRefreshIndicator(
+                                      onRefresh: () async {
+                                        notificationsCubit.isRefresh = true;
+                                        await notificationsCubit
+                                            .getUserNotifications(
+                                          newSelectedFilter:
+                                              notificationsCubit.selectedFilter,
+                                        );
+                                        // Set isRefresh to false after the function finishes
+                                        notificationsCubit.isRefresh = false;
+                                      },
+                                      child: ListView.builder(
+                                        itemBuilder: (context, index) {
+                                          return NotificationCard(
+                                            notificationModel:
+                                                notificationsCubit
+                                                    .getUserNotificationsModel!
+                                                    .notifications![index],
+                                          );
+                                        },
+                                        itemCount: notificationsCubit
                                             .getUserNotificationsModel!
-                                            .notifications![index],
-                                      );
-                                    },
-                                    itemCount: notificationsCubit
-                                        .getUserNotificationsModel!
-                                        .notifications!
-                                        .length,
+                                            .notifications!
+                                            .length,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              )
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                state is GetUserNotificationsLoadingState &&
+                        !notificationsCubit.isRefresh
+                    ? const LoaderWithDisable()
+                    : Container(),
+              ],
             ),
           );
         },
