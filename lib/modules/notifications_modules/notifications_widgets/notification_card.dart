@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
-import 'package:jelanco_tracking_system/core/utils/notifications_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
-import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_cubit.dart'; // For formatting dates
+import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_cubit.dart';
 
 class NotificationCard extends StatelessWidget {
   final NotificationModel notificationModel;

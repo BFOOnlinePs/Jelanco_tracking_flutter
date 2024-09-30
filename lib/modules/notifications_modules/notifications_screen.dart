@@ -31,9 +31,10 @@ class NotificationsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const MyScreenTitleWidget(title: 'الإشعارات الخاصة بك'),
-
-                    NotificationFilter(),
-
+                    // The reason behind using ValueKey(notificationsCubit.selectedFilter) in NotificationFilter is
+                    // to ensure that the widget can rebuild when the selectedFilter changes, so the UI will change.
+                    NotificationFilterWidget(
+                        key: ValueKey(notificationsCubit.selectedFilter)),
                     notificationsCubit.getUserNotificationsModel == null
                         ? const MyLoader()
                         : notificationsCubit.getUserNotificationsModel!
@@ -43,7 +44,9 @@ class NotificationsScreen extends StatelessWidget {
                                 child: MyRefreshIndicator(
                                   onRefresh: () {
                                     return notificationsCubit
-                                        .getUserNotifications();
+                                        .getUserNotifications(
+                                            isRead: notificationsCubit
+                                                .selectedFilter);
                                   },
                                   child: ListView.builder(
                                     itemBuilder: (context, index) {

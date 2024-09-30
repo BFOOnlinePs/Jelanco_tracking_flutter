@@ -14,10 +14,13 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
 
   GetUserNotificationsModel? getUserNotificationsModel;
 
-  Future<void> getUserNotifications() async {
+  Future<void> getUserNotifications({int? isRead}) async {
     emit(GetUserNotificationsLoadingState());
-    await DioHelper.getData(url: EndPointsConstants.notifications)
-        .then((value) {
+    print('is read: $isRead');
+
+    await DioHelper.getData(
+        url: EndPointsConstants.notifications,
+        query: {'is_read': isRead == 2 ? null : isRead}).then((value) {
       print(value?.data);
       getUserNotificationsModel =
           GetUserNotificationsModel.fromMap(value?.data);
@@ -26,6 +29,15 @@ class NotificationsCubit extends Cubit<NotificationsStates> {
       emit(GetUserNotificationsErrorState());
       print(error.toString());
     });
+  }
+
+  int selectedFilter = 2; // 2: All, 1: Read, 0: Unread
+
+  void changeSelectedFilter(int index) {
+    selectedFilter = index;
+    print('Selected filter: $selectedFilter');
+    getUserNotifications(isRead: selectedFilter);
+    emit(ChangeSelectedFilterState());
   }
 
   // when click on notification
