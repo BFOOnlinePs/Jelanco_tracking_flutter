@@ -26,8 +26,7 @@ class UserProfileScreen extends StatelessWidget {
           // title: 'اسم صاحب الملف الشخصي',
           ),
       body: BlocProvider(
-        create: (context) =>
-            UserProfileCubit()..getUserProfileById(userId: userId),
+        create: (context) => UserProfileCubit()..getUserProfileById(userId: userId),
         child: BlocConsumer<UserProfileCubit, UserProfileStates>(
           listener: (context, state) {
             if (state is UpdateProfileImageSuccessState) {
@@ -48,8 +47,7 @@ class UserProfileScreen extends StatelessWidget {
                   )
                 : MyRefreshIndicator(
                     onRefresh: () {
-                      return userProfileCubit.getUserProfileById(
-                          userId: userId);
+                      return userProfileCubit.getUserProfileById(userId: userId);
                     },
                     child: CustomScrollView(
                       controller: userProfileCubit.scrollController,
@@ -65,34 +63,25 @@ class UserProfileScreen extends StatelessWidget {
                         ),
                         SliverToBoxAdapter(
                           child: ProfileCardWidget(
-                            userInfo: userProfileCubit
-                                .getUserProfileByIdModel!.userInfo!,
+                            userInfo: userProfileCubit.getUserProfileByIdModel!.userInfo!,
                             onTapChangeProfilePic: () {
                               userProfileCubit.requestPermission(
                                   context: context,
                                   permissionType: PermissionType.storage,
-                                  functionWhenGranted:
-                                      userProfileCubit.pickImageFromGallery);
+                                  functionWhenGranted: userProfileCubit.pickImageFromGallery);
                             },
                           ),
                         ),
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                              if (index ==
-                                      userProfileCubit
-                                          .userProfileSubmissionsList.length &&
-                                  !userProfileCubit
-                                      .isProfileSubmissionsLastPage) {
-                                if (!userProfileCubit
-                                    .isProfileSubmissionsLoading) {
+                              if (index == userProfileCubit.userProfileSubmissionsList.length &&
+                                  !userProfileCubit.isProfileSubmissionsLastPage) {
+                                if (!userProfileCubit.isProfileSubmissionsLoading) {
                                   userProfileCubit.getUserProfileById(
                                     userId: userId,
-                                    page: userProfileCubit
-                                            .getUserProfileByIdModel!
-                                            .userSubmissions!
-                                            .pagination!
-                                            .currentPage! +
+                                    page: userProfileCubit.getUserProfileByIdModel!.userSubmissions!
+                                            .pagination!.currentPage! +
                                         1,
                                   );
                                 }
@@ -101,17 +90,12 @@ class UserProfileScreen extends StatelessWidget {
                                   child: Center(child: MyLoader()),
                                 );
                               }
-                              final submission = userProfileCubit
-                                  .userProfileSubmissionsList[index];
+                              final submission = userProfileCubit.userProfileSubmissionsList[index];
                               return UserSubmissionWidget(
-                                  submission: submission,
-                                  userProfileCubit: userProfileCubit);
+                                  submission: submission, userProfileCubit: userProfileCubit);
                             },
-                            childCount: userProfileCubit
-                                    .userProfileSubmissionsList.length +
-                                (userProfileCubit.isProfileSubmissionsLastPage
-                                    ? 0
-                                    : 1),
+                            childCount: userProfileCubit.userProfileSubmissionsList.length +
+                                (userProfileCubit.isProfileSubmissionsLastPage ? 0 : 1),
                           ),
                         ),
                       ],

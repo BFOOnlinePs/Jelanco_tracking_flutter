@@ -1,13 +1,11 @@
 class ValidationUtils {
   static String? validateEmailOrPhone(String? value) {
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    final phoneRegex = RegExp(r'^\+97\d{8,13}$'); // Example: +97 followed by 8 to 13 digits
-
+    final phoneRegex = RegExp(r'^\d{10}$'); // Example:
     if (value == null || value.isEmpty) {
       return 'الرجاء إدخال البريد الإلكتروني أو رقم الجوال';
     } else if (!emailRegex.hasMatch(value) && !phoneRegex.hasMatch(value)) {
-      // Custom error message for phone number format
-      return 'صيغة البريد الإلكتروني / رقم الجوال غير صحيحة. \nرقم الجوال يجب أن يبدأ بمقدمة الواتساب.';
+      return 'صيغة البريد الإلكتروني / رقم الجوال غير صحيحة.';
     }
 
     return null; // Input is valid

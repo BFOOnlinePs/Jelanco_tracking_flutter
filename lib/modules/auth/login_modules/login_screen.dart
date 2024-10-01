@@ -111,8 +111,8 @@ class LoginScreen extends StatelessWidget {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             validator: ValidationUtils.validateEmailOrPhone,
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
+                            // textDirection: TextDirection.ltr,
+                            // textAlign: TextAlign.center,
                           ),
                           MyVerticalSpacer(
                             height: 8.h,
@@ -128,7 +128,7 @@ class LoginScreen extends StatelessWidget {
                               }
                               return null;
                             },
-                            textAlign: TextAlign.center,
+                            // textAlign: TextAlign.center,
 
                           ),
                           Align(

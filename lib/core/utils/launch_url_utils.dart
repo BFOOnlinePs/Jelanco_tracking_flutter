@@ -1,8 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
 class LaunchUrlUtils {
-  static void launchMyUrl(
-      {required storagePath, required String uriString}) async {
+  static void launchMyUrl({required storagePath, required String uriString}) async {
     final Uri uri = Uri.parse(storagePath + uriString);
     print('uri: $uri');
     if (!await launchUrl(uri)) {
@@ -26,6 +25,9 @@ class LaunchUrlUtils {
     String phoneNumber,
     // String message,
   ) async {
+    // add +972 to phone, and remove the 0 at the beginning
+    phoneNumber = '+972${phoneNumber.substring(1)}';
+    print('phoneNumber: $phoneNumber');
     final Uri launchUri = Uri(
       scheme: 'https',
       host: 'wa.me',

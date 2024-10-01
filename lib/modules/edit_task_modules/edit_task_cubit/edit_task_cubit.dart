@@ -48,7 +48,6 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   List<UserModel> selectedUsers = [];
   TaskStatusEnum? selectedTaskStatusEnum;
 
-
   GetTaskByIdModel? getOldTaskDataByIdModel;
 
   // get old task data
@@ -69,12 +68,9 @@ class EditTaskCubit extends Cubit<EditTaskStates>
         contentController.text = getOldTaskDataByIdModel!.task!.tContent ?? '';
         plannedStartTime = getOldTaskDataByIdModel!.task!.tPlanedStartTime;
         plannedEndTime = getOldTaskDataByIdModel!.task!.tPlanedEndTime;
-        selectedTaskStatusEnum =
-            TaskStatusEnum.getStatus(getOldTaskDataByIdModel!.task!.tStatus!);
+        selectedTaskStatusEnum = TaskStatusEnum.getStatus(getOldTaskDataByIdModel!.task!.tStatus!);
 
-        for (var vid in getOldTaskDataByIdModel!
-                .task!.taskAttachmentsCategories?.videos ??
-            []) {
+        for (var vid in getOldTaskDataByIdModel!.task!.taskAttachmentsCategories?.videos ?? []) {
           await initializeOldVideoController(vid.aAttachment!);
         }
       }
@@ -86,8 +82,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     });
   }
 
-  Future<void> selectDateTime(
-      BuildContext context, bool isStartTime, DateTime? createdAt ) async {
+  Future<void> selectDateTime(BuildContext context, bool isStartTime, DateTime? createdAt) async {
     DateTime initialDate = isStartTime // when reopen
         ? (plannedStartTime ?? DateTime.now())
         : (plannedEndTime ?? DateTime.now());
@@ -99,12 +94,18 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     //       : plannedEndTime;
     // }
 
+    // Ensure initialDate is not earlier than the firstDate (createdAt or current date)
+    DateTime firstDate = createdAt ?? DateTime.now();
+    if (initialDate.isBefore(firstDate)) {
+      firstDate = initialDate;
+    }
+
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
       // firstDate: DateTime(2000),
       // lastDate: DateTime(2101),
-      firstDate: createdAt ?? DateTime.now(),
+      firstDate: firstDate,
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
@@ -138,8 +139,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(EmitAfterReturnState());
   }
 
-  void changeSelectedCategory(
-      {required TaskCategoryModel? newSelectedCategory}) {
+  void changeSelectedCategory({required TaskCategoryModel? newSelectedCategory}) {
     selectedCategory = newSelectedCategory;
     emit(ChangeSelectedCategoryState());
   }
@@ -184,8 +184,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(PickMultipleImagesState());
   }
 
-  void deletePickedImageFromList(
-      {required int index, AttachmentsCategories? attachmentsCategories}) {
+  void deletePickedImageFromList({required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
       attachmentsCategories.images?.removeAt(index);
@@ -314,8 +313,8 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     if (videoPath.endsWith('.mp4')) {
       print('videoPath:: $videoPath');
 
-      VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.tasksStorage + videoPath));
+      VideoPlayerController controller =
+          VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);
@@ -345,14 +344,12 @@ class EditTaskCubit extends Cubit<EditTaskStates>
         String? mimeType = lookupMimeType(file.path!);
         String extension = file.extension ?? '';
 
-        if (mimeType != null &&
-            FilesExtensionsUtils.isAcceptedFileType(extension)) {
+        if (mimeType != null && FilesExtensionsUtils.isAcceptedFileType(extension)) {
           pickedFilesList.add(selectedFile);
           emit(AddTaskFileSelectSuccessState());
         } else {
           emit(AddTaskFileSelectErrorState(
-              error:
-                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+              error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
@@ -362,8 +359,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     }
   }
 
-  void deletedPickedFileFromList(
-      {required int index, AttachmentsCategories? attachmentsCategories}) {
+  void deletedPickedFileFromList({required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
       attachmentsCategories.files?.removeAt(index);
@@ -395,8 +391,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       'start_time': plannedStartTime?.toString(),
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
-      'assigned_to': FormatUtils.formatList<UserModel>(
-          selectedUsers, (user) => user?.id.toString()),
+      'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
       'status': selectedTaskStatusEnum!.statusName,
       'old_attachments[]': oldAttachments
     };
@@ -436,9 +431,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
 
     print('formData: ${formData.fields}');
 
-    await DioHelper.postData(
-            url: '${EndPointsConstants.tasks}/$taskId', data: formData)
-        .then((value) {
+    await DioHelper.postData(url: '${EndPointsConstants.tasks}/$taskId', data: formData).then((value) {
       print(value?.data);
       editTaskModel = EditTaskModel.fromMap(value?.data);
       emit(EditTaskSuccessState(editTaskModel: editTaskModel!));
