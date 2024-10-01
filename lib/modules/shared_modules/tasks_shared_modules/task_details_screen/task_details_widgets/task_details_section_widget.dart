@@ -20,8 +20,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsetsDirectional.only(
-          top: 10, start: 16, end: 16, bottom: 8),
+      padding: const EdgeInsetsDirectional.only(top: 10, start: 16, end: 16, bottom: 8),
       color: Colors.grey[200],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,25 +29,16 @@ class TaskDetailsSectionWidget extends StatelessWidget {
           ContentWidget(
             taskModel.tContent!,
           ),
-
-          // add the medias here
           MediaWidget(
             attachmentsCategories: taskModel.taskAttachmentsCategories,
             storagePath: EndPointsConstants.tasksStorage,
           ),
-
           taskModel.taskCategory != null
-              ? CategoryRowWidget(
-                  'التصنيف', taskModel.taskCategory!.cName ?? '')
+              ? CategoryRowWidget('التصنيف', taskModel.taskCategory!.cName ?? '')
               : Container(),
-
           taskModel.assignedToUsers!.isNotEmpty
               ? WrappedLabelValueWidget(
-                  'الموظفين المكلفين',
-                  taskModel.assignedToUsers!
-                          .map((user) => user.name)
-                          .join(', ') ??
-                      '')
+                  'الموظفين المكلفين', taskModel.assignedToUsers!.map((user) => user.name).join(', ') ?? '')
               : Container(),
           const MyVerticalSpacer(),
           TaskPlanedTimeWidget(taskModel: taskModel),

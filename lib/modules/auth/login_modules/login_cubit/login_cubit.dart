@@ -15,7 +15,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController emailPhoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   UserLoginModel? userLoginModel;
@@ -23,15 +23,12 @@ class LoginCubit extends Cubit<LoginStates> {
   void userLogin(BuildContext context) {
     emit(LoginLoadingState());
     DioHelper.postData(url: EndPointsConstants.login, data: {
-      'email': emailController.text,
+      'email_phone': emailPhoneController.text,
       'password': passwordController.text,
     }).then((value) {
       print('userLogin method');
       print(value?.data);
-
       userLoginModel = UserLoginModel.fromMap(value?.data);
-
-
       emit(LoginSuccessState(userLoginModel: userLoginModel!));
       // Navigator.of(context).pushReplacement(
       //   MaterialPageRoute(
@@ -54,7 +51,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   void selectActor({required int newId}) {
     selectedActorId = newId;
-    emailController.text = newId == 1
+    emailPhoneController.text = newId == 1
         ? loginTestModelsList[0].email
         : loginTestModelsList[0].email;
 
