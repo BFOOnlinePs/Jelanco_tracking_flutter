@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_compress/video_compress.dart';
 
-
 mixin CompressVideoMixin<T> on Cubit<T> {
   MediaInfo? mediaInfo;
 
-  Future<MediaInfo?> compressVideo(String filePath, {
+  Future<MediaInfo?> compressVideo(
+    String filePath, {
     required T loadingState,
     required T successState,
     required T Function(String error) errorState,

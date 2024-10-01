@@ -197,7 +197,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   }
 
   Future<void> compressAllImages() async {
-    emit(CompressAllImagesLoadingState());
+    // emit(CompressAllImagesLoadingState());
     compressedImagesList.clear();
     for (int i = 0; i < pickedImagesList.length; i++) {
       print('thePickedImagesList[i].path: ${pickedImagesList[i].path}');
@@ -206,7 +206,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       );
       compressedImagesList.add(compressed);
     }
-    emit(CompressAllImagesSuccessState());
+    // emit(CompressAllImagesSuccessState());
   }
 
   // videos
@@ -304,7 +304,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       compressedVideoList.add(compressed);
     }
 
-    emit(CompressAllVideosSuccessState());
+    // emit(CompressAllVideosSuccessState());
   }
 
   List<VideoPlayerController?> oldVideoControllers = [];

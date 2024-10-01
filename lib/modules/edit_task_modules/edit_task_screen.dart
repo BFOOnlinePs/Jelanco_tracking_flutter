@@ -31,15 +31,12 @@ import '../../widgets/my_buttons/my_elevated_button.dart';
 
 class EditTaskScreen extends StatelessWidget {
   final int taskId;
-
-  // final TaskDetailsCubit? taskDetailsCubit;
   final Function(TaskModel)? getDataCallback; // to get the data after edit task
 
   EditTaskScreen({
     super.key,
     required this.taskId,
     required this.getDataCallback,
-    // this.taskDetailsCubit,
   });
 
   late EditTaskCubit editTaskCubit;
@@ -75,7 +72,8 @@ class EditTaskScreen extends StatelessWidget {
 
           if (state is GetManagerEmployeesSuccessState) {
             // to display the old assigned to users
-            editTaskCubit.selectedUsers = editTaskCubit.getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!
+            editTaskCubit.selectedUsers = editTaskCubit
+                .getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!
                 .where((user) => editTaskCubit.getOldTaskDataByIdModel!.task!.assignedToUsers!
                     .any((assignedUser) => assignedUser.id == user.id))
                 .toList();
@@ -87,8 +85,8 @@ class EditTaskScreen extends StatelessWidget {
             // to display the old category
             editTaskCubit.selectedCategory = editTaskCubit.getOldTaskDataByIdModel?.task?.tCategoryId == null
                 ? null
-                : editTaskCubit.getTaskCategoriesModel!.taskCategories!
-                    .firstWhere((category) => category.cId == editTaskCubit.getOldTaskDataByIdModel!.task!.tCategoryId);
+                : editTaskCubit.getTaskCategoriesModel!.taskCategories!.firstWhere(
+                    (category) => category.cId == editTaskCubit.getOldTaskDataByIdModel!.task!.tCategoryId);
           } else if (state is EditTaskSuccessState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -148,7 +146,8 @@ class EditTaskScreen extends StatelessWidget {
                                         style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                                     Text(
                                       ' *',
-                                      style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                      style: TextStyle(
+                                          fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
                                     ),
                                     const SizedBox(height: 8.0),
                                   ],
@@ -196,7 +195,9 @@ class EditTaskScreen extends StatelessWidget {
                                             child: Text(
                                               editTaskCubit.selectedUsers.isEmpty
                                                   ? 'الموظفين المكلفين'
-                                                  : editTaskCubit.selectedUsers.map((user) => user.name).join(', '),
+                                                  : editTaskCubit.selectedUsers
+                                                      .map((user) => user.name)
+                                                      .join(', '),
                                               style: const TextStyle(color: Colors.black54),
                                             ),
                                           ),
@@ -230,8 +231,8 @@ class EditTaskScreen extends StatelessWidget {
                                         titleText: 'موعد البدء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
-                                        onTap: () => editTaskCubit.selectDateTime(
-                                            context, true, editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
+                                        onTap: () => editTaskCubit.selectDateTime(context, true,
+                                            editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
@@ -251,8 +252,8 @@ class EditTaskScreen extends StatelessWidget {
                                         titleText: 'موعد الإنتهاء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
-                                        onTap: () => editTaskCubit.selectDateTime(
-                                            context, false, editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
+                                        onTap: () => editTaskCubit.selectDateTime(context, false,
+                                            editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
@@ -345,7 +346,8 @@ class EditTaskScreen extends StatelessWidget {
                                           editTaskCubit.requestPermission(
                                               context: context,
                                               permissionType: PermissionType.storage,
-                                              functionWhenGranted: editTaskCubit.pickMultipleImagesFromGallery);
+                                              functionWhenGranted:
+                                                  editTaskCubit.pickMultipleImagesFromGallery);
                                         },
                                       ),
                                       Container(width: 0.2, height: 26, color: Colors.grey),
@@ -413,11 +415,14 @@ class EditTaskScreen extends StatelessWidget {
                               editTaskCubit.editTask(
                                 taskId: editTaskCubit.getOldTaskDataByIdModel!.task!.tId!,
                                 oldAttachments: [
-                                  ...editTaskCubit.getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.images!
+                                  ...editTaskCubit
+                                      .getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.images!
                                       .map((e) => e.aAttachment!),
-                                  ...editTaskCubit.getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.videos!
+                                  ...editTaskCubit
+                                      .getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.videos!
                                       .map((e) => e.aAttachment!),
-                                  ...editTaskCubit.getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.files!
+                                  ...editTaskCubit
+                                      .getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.files!
                                       .map((e) => e.aAttachment!),
                                 ],
                               );
