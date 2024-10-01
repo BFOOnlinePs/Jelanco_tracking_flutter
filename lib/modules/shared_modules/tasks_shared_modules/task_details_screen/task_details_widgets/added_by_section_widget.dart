@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dar
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
@@ -117,7 +118,14 @@ class AddedBySectionWidget extends StatelessWidget {
               label: 'تعديل',
               onTap: () {
                 TaskDetailsCubit? taskDetailsCubit;
+                TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
                 TasksAddedByUserCubit? tasksAddedByUserCubit;
+
+                try {
+                  taskSubmissionDetailsCubit = TaskSubmissionDetailsCubit.get(context);
+                } catch (e) {
+                  print('Error in my catch: $e');
+                }
 
                 try {
                   // to show the edited task immediately
@@ -137,9 +145,13 @@ class AddedBySectionWidget extends StatelessWidget {
                   EditTaskScreen(
                     taskId: taskModel.tId!,
                     getDataCallback: (editedTaskModel) {
+                      if (taskSubmissionDetailsCubit != null) {
+                        taskSubmissionDetailsCubit.afterEditTask();
+                      }
                       if (taskDetailsCubit != null) {
-                        taskDetailsCubit.afterEditTask(oldTaskId: taskModel.tId!, newTaskModel: editedTaskModel);
-                      } else if (tasksAddedByUserCubit != null) {
+                        taskDetailsCubit.afterEditTask(newTaskModel: editedTaskModel);
+                      }
+                      if (tasksAddedByUserCubit != null) {
                         tasksAddedByUserCubit.afterEditTask(oldTaskId: taskModel.tId!, newTaskModel: editedTaskModel);
                       }
                     },

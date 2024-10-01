@@ -74,7 +74,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
   }
 
   void afterEditTask({
-    required int oldTaskId,
+    // required int oldTaskId,
     required final TaskModel newTaskModel,
   }) {
     // recall the function
