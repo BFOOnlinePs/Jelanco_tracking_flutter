@@ -27,37 +27,41 @@ class MyTextFormField extends StatelessWidget {
   final Widget? prefix;
   final Widget? prefixIcon;
   final TextStyle? style;
+  final TextDirection? textDirection;
+  final TextAlign textAlign;
 
-  const MyTextFormField(
-      {super.key,
-      this.controller,
-      this.initialValue,
-      this.labelText,
-      this.titleText,
-      this.obscureText = false,
-      this.keyboardType = TextInputType.text,
-      this.autofocus = false,
-      this.validator,
-      this.textInputAction,
-      this.focusNode,
-      this.onFieldSubmitted,
-      this.enabled = true,
-      this.maxLines = 1,
-      this.onChanged,
-      this.isFieldRequired = false,
-      this.suffixIcon,
-      this.onTap,
-      this.readOnly = false,
-      this.inputFormatters,
-      this.prefix,
-      this.prefixIcon,
-      this.style});
+  const MyTextFormField({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.labelText,
+    this.titleText,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.autofocus = false,
+    this.validator,
+    this.textInputAction,
+    this.focusNode,
+    this.onFieldSubmitted,
+    this.enabled = true,
+    this.maxLines = 1,
+    this.onChanged,
+    this.isFieldRequired = false,
+    this.suffixIcon,
+    this.onTap,
+    this.readOnly = false,
+    this.inputFormatters,
+    this.prefix,
+    this.prefixIcon,
+    this.style,
+    this.textDirection,
+    this.textAlign = TextAlign.start
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-          vertical: TextFormFieldSizeConstants.padding),
+      padding: const EdgeInsets.symmetric(vertical: TextFormFieldSizeConstants.padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,15 +72,12 @@ class MyTextFormField extends StatelessWidget {
                       children: [
                         Text(
                           titleText!,
-                          style: TextStyle(
-                              fontSize: SharedSize.textFiledTitleSize),
+                          style: TextStyle(fontSize: SharedSize.textFiledTitleSize),
                         ),
                         isFieldRequired
                             ? Text(
                                 ' *',
-                                style: TextStyle(
-                                    fontSize: SharedSize.textFiledTitleSize,
-                                    color: Colors.red),
+                                style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
                               )
                             : Container(),
                       ],
@@ -95,20 +96,19 @@ class MyTextFormField extends StatelessWidget {
               // labelText: labelText,
               hintText: labelText,
               hintStyle: TextStyle(fontSize: 16.sp),
+              
               filled: true,
               // fillColor: Colors.white,
               fillColor: Colors.white,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(
-                    TextFormFieldSizeConstants.borderRadius),
+                borderRadius: BorderRadius.circular(TextFormFieldSizeConstants.borderRadius),
                 // borderSide: BorderSide(
                 //   color: Colors.red,
                 //   width: 10.0,
                 // ),
               ),
 
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 10.0.w, horizontal: 20.0.w),
+              contentPadding: EdgeInsets.symmetric(vertical: 10.0.w, horizontal: 20.0.w),
               suffixIcon: suffixIcon,
               prefix: prefix,
               prefixIcon: prefixIcon,
@@ -126,6 +126,9 @@ class MyTextFormField extends StatelessWidget {
             readOnly: readOnly,
             inputFormatters: inputFormatters,
             style: style,
+            textDirection: textDirection,
+            textAlign: textAlign,
+
           ),
         ],
       ),

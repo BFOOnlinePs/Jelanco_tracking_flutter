@@ -54,6 +54,15 @@ class PickMediaFromCameraState extends AddTaskSubmissionStates {}
 
 class PlannedTimePickedState extends AddTaskSubmissionStates {}
 
+class GetOldSubmissionDataLoadingState extends AddTaskSubmissionStates {}
+
+class GetOldSubmissionDataSuccessState extends AddTaskSubmissionStates {}
+
+class GetOldSubmissionDataErrorState extends AddTaskSubmissionStates {
+  final String error;
+  GetOldSubmissionDataErrorState({required this.error});
+}
+
 // compress images mixin
 
 class CompressAllImagesLoadingState extends AddTaskSubmissionStates {}

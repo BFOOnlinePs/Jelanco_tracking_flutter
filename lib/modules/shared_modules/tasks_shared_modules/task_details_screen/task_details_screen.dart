@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
@@ -37,81 +36,63 @@ class TaskDetailsScreen extends StatelessWidget {
             appBar: const MyAppBar(
               title: 'تفاصيل المهمة',
             ),
-            body:
-                taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
-                    ? const Center(
-                        child: MyLoader(),
-                      )
-                    : MyRefreshIndicator(
-                      onRefresh: () async {
-                        await taskDetailsCubit
-                            .getTaskWithSubmissionsAndComments(
-                                taskId: taskId);
-                      },
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        controller: taskDetailsCubit.scrollController,
-                        // padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TaskDetailsSectionWidget(
-                              taskModel: taskDetailsCubit
-                                  .getTaskWithSubmissionsAndCommentsModel!
-                                  .task!,
-                            ),
-                            taskDetailsCubit
-                                    .getTaskWithSubmissionsAndCommentsModel!
-                                    .task!
-                                    .taskSubmissions!
-                                    .isNotEmpty
-                                ? SubmissionsSectionWidget(
-                                    taskDetailsCubit: taskDetailsCubit,
-                                  )
-                                : Container(),
-                            const SizedBox(
-                              height: 60,
-                            ),
-                          ],
-                        ),
+            body: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
+                ? const Center(
+                    child: MyLoader(),
+                  )
+                : MyRefreshIndicator(
+                    onRefresh: () async {
+                      await taskDetailsCubit.getTaskWithSubmissionsAndComments(taskId: taskId);
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      controller: taskDetailsCubit.scrollController,
+                      // padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TaskDetailsSectionWidget(
+                            taskModel: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!,
+                          ),
+                          taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!.isNotEmpty
+                              ? SubmissionsSectionWidget(
+                                  taskDetailsCubit: taskDetailsCubit,
+                                )
+                              : Container(),
+                          const SizedBox(
+                            height: 60,
+                          ),
+                        ],
                       ),
                     ),
-            floatingActionButton:
-                taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
-                    ? Center(
-                        child: Container(),
+                  ),
+            floatingActionButton: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
+                ? Center(
+                    child: Container(),
+                  )
+                : SystemPermissions.hasPermission(SystemPermissions.submitTask) &&
+                        FormatUtils.checkIfNumberInList(
+                            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tAssignedTo!,
+                            UserDataConstants.userId!)
+                    ? MyFloatingActionButton(
+                        onPressed: () {
+                          NavigationServices.navigateTo(
+                            context,
+                            AddTaskSubmissionScreen(
+                              taskId: taskId,
+                              getDataCallback: (taskSubmissionModel) {
+                                print('call the data');
+                                taskDetailsCubit.getTaskWithSubmissionsAndComments(taskId: taskId);
+                                // scroll to the beginning
+                                ScrollUtils.scrollPosition(scrollController: taskDetailsCubit.scrollController);
+                              },
+                            ),
+                          );
+                        },
+                        labelText: 'تسليم المهمة المكلف بها',
+                        icon: Icons.check_circle_outline,
                       )
-                    : SystemPermissions.hasPermission(
-                                SystemPermissions.submitTask) &&
-                            FormatUtils.checkIfNumberInList(
-                                taskDetailsCubit
-                                    .getTaskWithSubmissionsAndCommentsModel!
-                                    .task!
-                                    .tAssignedTo!,
-                                UserDataConstants.userId!)
-                        ? MyFloatingActionButton(
-                            onPressed: () {
-                              NavigationServices.navigateTo(
-                                context,
-                                AddTaskSubmissionScreen(
-                                  taskId: taskId,
-                                  getDataCallback: (taskSubmissionModel) {
-                                    print('call the data');
-                                    taskDetailsCubit
-                                        .getTaskWithSubmissionsAndComments(
-                                            taskId: taskId);
-                                    // scroll to the beginning
-                                    ScrollUtils.scrollPosition(
-                                        scrollController:
-                                            taskDetailsCubit.scrollController);
-                                  },
-                                ),
-                              );
-                            },
-                            labelText: 'تسليم المهمة المكلف بها',
-                            icon: Icons.check_circle_outline,
-                          )
-                        : Container(),
+                    : Container(),
           );
         },
       ),

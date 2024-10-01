@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
@@ -6,8 +5,6 @@ import 'package:jelanco_tracking_system/network/local/cache_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class FCMServices {
-  // static final Dio _dio = Dio();
-
   // when login,
   static Future<void> saveFCMTokenLocallyAndInServer(String token) async {
     print('token in saveFCMTokenLocallyAndInServer method: $token');
@@ -16,12 +13,9 @@ class FCMServices {
     // if (token == CacheHelper.getData(key: MyCacheKeys.firebaseToken)) return;
 
     // save in server:
-
-    // use dio helper
-    final response = await DioHelper.postData(
+    await DioHelper.postData(
       url: EndPointsConstants.baseUrl +
           EndPointsConstants.storeFcmUserTokenEndPoint,
-      // '$baseUrl$storeFcmUserTokenEndPoint',
       data: {
         'frt_user_id': UserDataConstants.userId,
         'frt_registration_token': token
@@ -33,7 +27,6 @@ class FCMServices {
       await CacheHelper.saveData(key: MyCacheKeys.firebaseToken, value: token);
       UserDataConstants.firebaseTokenVar =
           CacheHelper.getData(key: MyCacheKeys.firebaseToken);
-      // firebaseTokenVar = token;
     }).catchError((error) {
       print(error.toString());
     });

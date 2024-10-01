@@ -11,7 +11,6 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
-import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 import '../shared_modules/tasks_shared_modules/task_item.dart';
 

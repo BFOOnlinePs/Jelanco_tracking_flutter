@@ -1,7 +1,14 @@
 class ValidationUtils {
-  static bool isEmailValid(String email) {
-    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    return emailRegex.hasMatch(email);
+  static String? validateEmailOrPhone(String? value) {
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    final phoneRegex = RegExp(r'^\d{10}$'); // Example:
+    if (value == null || value.isEmpty) {
+      return 'الرجاء إدخال البريد الإلكتروني أو رقم الجوال';
+    } else if (!emailRegex.hasMatch(value) && !phoneRegex.hasMatch(value)) {
+      return 'صيغة البريد الإلكتروني / رقم الجوال غير صحيحة.';
+    }
+
+    return null; // Input is valid
   }
 
   static bool isPasswordValid(String password) {
@@ -12,9 +19,9 @@ class ValidationUtils {
   }
 
   static bool isConfirmedPasswordValid(
-      String password,
-      String confirmedPassword,
-      ) {
-    return password == confirmedPassword ;
+    String password,
+    String confirmedPassword,
+  ) {
+    return password == confirmedPassword;
   }
 }

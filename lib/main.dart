@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/firebase_options.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
+import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/remote/firebase_api.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
@@ -106,28 +108,36 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 750),
       // Xiaomi Redmi 13C ( 750 without status bar and bottom nav bar)
       minTextAdapt: true,
-      builder: (context, child) => MaterialApp(
-        // to disable device preview, comment these 3 lines and uncomment the 'locale :context.locale' line
-        // useInheritedMediaQuery: true,
-        // locale: DevicePreview.locale(context),
-        // builder: DevicePreview.appBuilder,
+      builder: (context, child) => MultiBlocProvider(
+        providers: [
+          // notification badge
+          BlocProvider(
+            create: (context) => NotificationsBadgeCubit(),
+          ),
+        ],
+        child: MaterialApp(
+          // to disable device preview, comment these 3 lines and uncomment the 'locale :context.locale' line
+          // useInheritedMediaQuery: true,
+          // locale: DevicePreview.locale(context),
+          // builder: DevicePreview.appBuilder,
 
-        navigatorKey: navigatorKey,
-        // Assign the navigatorKey
-        title: 'جيلانكو - نظام التتبع',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
-          fontFamily: 'Tajawal',
-          useMaterial3: true,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        home: SplashScreen(
-          homeWidget: homeWidget,
+          navigatorKey: navigatorKey,
+          // Assign the navigatorKey
+          title: 'جيلانكو - نظام التتبع',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme:
+                ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
+            fontFamily: 'Tajawal',
+            useMaterial3: true,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          home: SplashScreen(
+            homeWidget: homeWidget,
+          ),
         ),
       ),
     );

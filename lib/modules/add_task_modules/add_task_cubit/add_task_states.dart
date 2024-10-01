@@ -16,6 +16,10 @@ class ChangeSelectedCategoryState extends AddTaskStates {}
 
 class ChangeIsAddClickedState extends AddTaskStates {}
 
+class EmitLoadingState extends AddTaskStates {}
+
+class ToggleVideoPlayPauseState extends AddTaskStates {}
+
 class AddTaskLoadingState extends AddTaskStates {}
 
 class AddTaskSuccessState extends AddTaskStates {
@@ -78,6 +82,8 @@ class CompressAllImagesLoadingState extends AddTaskStates {}
 
 class CompressAllImagesSuccessState extends AddTaskStates {}
 
+class CompressAllVideosSuccessState extends AddTaskStates {}
+
 // compress video mixin
 
 class CompressVideoLoadingState extends AddTaskStates {}
@@ -90,4 +96,3 @@ class CompressVideoErrorState extends AddTaskStates {
   CompressVideoErrorState({required this.error});
 }
 
-class CompressAllVideosSuccessState extends AddTaskStates {}

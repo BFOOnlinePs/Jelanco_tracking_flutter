@@ -10,15 +10,37 @@ import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_user_submissions_model.dart';
 import 'package:jelanco_tracking_system/models/users_models/get_user_by_id_model.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
+import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
-class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
+class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
+{
   HomeCubit() : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
   ScrollController scrollController = ScrollController();
 
+  // final SocketIO notificationsService = SocketIO();
+
+  // void listenToNewNotifications() {
+  //   print('Socket.IO listenToNewNotifications');
+  //   // the sender is: socket.emit('new-notification', data);
+  //   notificationsService.socket.on('new-notification', (data) {
+  //     print('from screen Socket.IO New notification received:: $data');
+  //     // Update the state with the new notification
+  //
+  //     // بدل استدعاء، ابعت الرقم مع الميثود
+  //     // getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState());
+  //     // TaskSubmissionCommentModel newComment =
+  //     // TaskSubmissionCommentModel.fromMap(data);
+  //     // print('newComment.tscId: ${newComment.tscId}');
+  //     // getSubmissionCommentsModel?.submissionComments?.add(newComment);
+  //     emit(ListenToNewNotificationsState());
+  //   });
+  // }
+  //
   GetUserSubmissionsModel? getUserSubmissionsModel;
   List<TaskSubmissionModel> userSubmissionsList = [];
 
@@ -40,12 +62,10 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       }
       getUserSubmissionsModel = GetUserSubmissionsModel.fromMap(value?.data);
 
-      userSubmissionsList.addAll(getUserSubmissionsModel?.submissions
-          as Iterable<TaskSubmissionModel>);
+      userSubmissionsList.addAll(getUserSubmissionsModel?.submissions as Iterable<TaskSubmissionModel>);
 
       isUserSubmissionsLastPage =
-          getUserSubmissionsModel?.pagination?.lastPage ==
-              getUserSubmissionsModel?.pagination?.currentPage;
+          getUserSubmissionsModel?.pagination?.lastPage == getUserSubmissionsModel?.pagination?.currentPage;
 
       isUserSubmissionsLoading = false;
       emit(GetUserSubmissionsSuccessState());
@@ -60,17 +80,16 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   void getCommentsCount({required int submissionId}) async {
     emit(GetCommentsCountLoadingState());
     await DioHelper.getData(
-      url:
-          '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionComments}/${EndPointsConstants.taskSubmissionCommentsCount}',
+      url: '${EndPointsConstants.taskSubmissions}/$submissionId/'
+          '${EndPointsConstants.taskSubmissionComments}/'
+          '${EndPointsConstants.taskSubmissionCommentsCount}',
       // /task-submissions/185/comments/count
     ).then((value) {
       print(value?.data);
-      getSubmissionCommentCountModel =
-          GetSubmissionCommentCountModel.fromMap(value?.data);
+      getSubmissionCommentCountModel = GetSubmissionCommentCountModel.fromMap(value?.data);
       // update the number of comments in the original submission model
-      userSubmissionsList
-          .firstWhere((submission) => submission.tsId == submissionId)
-          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+      userSubmissionsList.firstWhere((submission) => submission.tsId == submissionId).commentsCount =
+          getSubmissionCommentCountModel?.commentsCount;
 
       emit(GetCommentsCountSuccessState());
     }).catchError((error) {
@@ -79,12 +98,12 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
     });
   }
 
-  Future<void> init({required int userId}) async {
+  Future<void> init( BuildContext context,{required int userId}) async {
     try {
       await getUserById(userId: userId);
+      NotificationsBadgeCubit.get(context).getUnreadNotificationsCount();
 
-      // After getUserById is done, call the other functions
-      getUserSubmissions();
+    getUserSubmissions();
       if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) {
         getTasksToSubmit(
           perPage: 3,
@@ -104,8 +123,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
   }) {
     // Replace the old submission with the new one
     // Find the index of the submission with the old ID
-    int index = userSubmissionsList
-        .indexWhere((submission) => submission.tsId == oldSubmissionId);
+    int index = userSubmissionsList.indexWhere((submission) => submission.tsId == oldSubmissionId);
 
     if (index != -1) {
       // Replace the old submission with the new one
@@ -136,8 +154,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
       //
       UserDataConstants.userModel = getUserByIdModel?.user;
 
-      UserDataConstants.permissionsList =
-          getUserByIdModel?.permissions?.map<String>((permission) {
+      UserDataConstants.permissionsList = getUserByIdModel?.permissions?.map<String>((permission) {
         return permission.name ?? '';
       }).toList();
       print('permissionsList: ${UserDataConstants.permissionsList}');
@@ -150,7 +167,7 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> {
 
   @override
   Future<void> close() {
-    print('userSubmissionsList: ${userSubmissionsList.length}');
+    userSubmissionsList.clear();
     scrollController.dispose();
     getUserSubmissionsModel = null;
 

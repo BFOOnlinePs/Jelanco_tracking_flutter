@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_media_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/media_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_time_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_cubit/task_submission_versions_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_versions/task_submission_versions_cubit/task_submission_versions_states.dart';
@@ -51,8 +52,11 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
                               ),
                               ContentWidget(submission.tsContent ?? '',
                                   isSubmission: true),
-                              SubmissionMediaWidget(
-                                submission: submission,
+                              MediaWidget(
+                                attachmentsCategories:
+                                    submission.submissionAttachmentsCategories!,
+                                storagePath:
+                                    EndPointsConstants.taskSubmissionsStorage,
                               ),
                               const MyVerticalSpacer(),
                               SubmissionTimeWidget(submission: submission),

@@ -23,7 +23,7 @@ class _ContentWidgetState extends State<ContentWidget> {
         });
       },
       child: Container(
-        padding:  EdgeInsets.only(top: 6.h),
+        margin: const EdgeInsets.only(top: 4, bottom: 4),
         child: Column(
           children: [
             Text(

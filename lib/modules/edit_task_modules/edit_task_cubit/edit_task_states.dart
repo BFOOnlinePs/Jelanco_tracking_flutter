@@ -36,6 +36,48 @@ class EditTaskErrorState extends EditTaskStates {
   EditTaskErrorState({required this.error});
 }
 
+class EmitLoadingState extends EditTaskStates {}
+
+class PickMediaFromCameraState extends EditTaskStates {}
+
+class PickMultipleImagesState extends EditTaskStates {}
+
+class DeletePickedImageFromListState extends EditTaskStates {}
+
+class CompressAllImagesLoadingState extends EditTaskStates {}
+
+class CompressAllImagesSuccessState extends EditTaskStates {}
+
+class PickVideoState extends EditTaskStates {}
+
+class InitializeVideoControllerState extends EditTaskStates {}
+
+class DeletePickedVideoFromListState extends EditTaskStates {}
+
+class ToggleVideoPlayPauseState extends EditTaskStates {}
+
+class CompressAllVideosSuccessState extends EditTaskStates {}
+
+class AddTaskFileSelectSuccessState extends EditTaskStates {}
+
+class DeletePickedFilesFromListState extends EditTaskStates {}
+
+class AddTaskFileSelectErrorState extends EditTaskStates {
+  final String error;
+
+  AddTaskFileSelectErrorState({required this.error});
+}
+
+class GetOldTaskDataLoadingState extends EditTaskStates {}
+
+class GetOldTaskDataSuccessState extends EditTaskStates {}
+
+class GetOldTaskDataErrorState extends EditTaskStates {
+  final String error;
+
+  GetOldTaskDataErrorState({required this.error});
+}
+
 // Categories Mixin
 
 class CategoriesLoadingState extends EditTaskStates {}
@@ -55,3 +97,15 @@ class GetManagerEmployeesLoadingState extends EditTaskStates {}
 class GetManagerEmployeesSuccessState extends EditTaskStates {}
 
 class GetManagerEmployeesErrorState extends EditTaskStates {}
+
+// compress video mixin
+
+class CompressVideoLoadingState extends EditTaskStates {}
+
+class CompressVideoSuccessState extends EditTaskStates {}
+
+class CompressVideoErrorState extends EditTaskStates {
+  final String error;
+
+  CompressVideoErrorState({required this.error});
+}

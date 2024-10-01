@@ -12,7 +12,7 @@ class TimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       decoration: BoxDecoration(
         border: Border.all(color: ColorsConstants.primaryColor, width: 0.6),
         borderRadius: BorderRadius.circular(8),
@@ -22,7 +22,7 @@ class TimeWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: ColorsConstants.primaryColor, size: 18),
-          const SizedBox(width: 16),
+          const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

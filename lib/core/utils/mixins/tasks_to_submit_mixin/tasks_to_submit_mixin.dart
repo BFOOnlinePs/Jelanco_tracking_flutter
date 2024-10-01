@@ -38,8 +38,6 @@ mixin TasksToSubmitMixin<T> on Cubit<T> {
       tasksAssignedToUserList
           .addAll(getTasksToSubmitModel?.tasks as Iterable<TaskModel>);
 
-      print('tasksAssignedToUserList length: ${tasksAssignedToUserList.length}');
-
       isTasksAssignedToUserLastPage = getTasksToSubmitModel?.pagination?.lastPage ==
           getTasksToSubmitModel?.pagination?.currentPage;
 

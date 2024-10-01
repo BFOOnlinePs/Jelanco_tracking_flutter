@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +15,6 @@ import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_auth_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
-
 import '../../home_modules/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -23,7 +22,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     print(MediaQuery.of(context).size.width);
     print(MediaQuery.of(context).size.height);
     return Scaffold(
@@ -32,9 +30,7 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // const Spacer(flex: 2),
-            SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.12), // Instead of Spacer
+            SizedBox(height: MediaQuery.of(context).size.height * 0.12), // Instead of Spacer
             Image.asset(
               AssetsKeys.appLogo,
               height: SharedSize.logoImageHeight,
@@ -69,8 +65,7 @@ class LoginScreen extends StatelessWidget {
                     if (state is LoginSuccessState) {
                       if (state.userLoginModel.status == true) {
                         print(state.userLoginModel.message);
-                        await UserDataUtils.saveUserDataToLocalStorage(
-                            userLoginModel: state.userLoginModel);
+                        await UserDataUtils.saveUserDataToLocalStorage(userLoginModel: state.userLoginModel);
 
                         // for firebase token
                         await FirebaseApi().initNotification();
@@ -110,22 +105,14 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           MyTextFormField(
-                            labelText: 'login_email_field'.tr(),
+                            labelText: 'البريد الإلكتروني / رقم الجوال',
                             prefixIcon: const Icon(Icons.person),
-                            controller: loginCubit.emailController,
+                            controller: loginCubit.emailPhoneController,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "login_email_field_required_validation"
-                                    .tr();
-                              }
-                              if (!ValidationUtils.isEmailValid(value)) {
-                                return "login_email_field_format_validation"
-                                    .tr();
-                              }
-                              return null;
-                            },
+                            validator: ValidationUtils.validateEmailOrPhone,
+                            // textDirection: TextDirection.ltr,
+                            // textAlign: TextAlign.center,
                           ),
                           MyVerticalSpacer(
                             height: 8.h,
@@ -137,20 +124,19 @@ class LoginScreen extends StatelessWidget {
                             obscureText: true,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "login_password_field_required_validation"
-                                    .tr();
+                                return "login_password_field_required_validation".tr();
                               }
                               return null;
                             },
+                            // textAlign: TextAlign.center,
+
                           ),
                           Align(
                             alignment: AlignmentDirectional.centerStart,
                             child: TextButton(
                               onPressed: () {},
                               child: Text('login_forgot_password'.tr(),
-                                  style: TextStyle(
-                                      color: ColorsConstants.primaryColor,
-                                      fontSize: 14.sp)),
+                                  style: TextStyle(color: ColorsConstants.primaryColor, fontSize: 14.sp)),
                             ),
                           ),
                           SizedBox(
@@ -164,8 +150,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                               child: Text(
                                 'مستخدم',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 14.sp),
+                                style: TextStyle(color: Colors.white, fontSize: 14.sp),
                               ),
                             ),
                           ),
@@ -174,8 +159,7 @@ class LoginScreen extends StatelessWidget {
                             onPressed: state is LoginLoadingState
                                 ? null
                                 : () {
-                                    if (loginCubit.loginFormKey.currentState!
-                                        .validate()) {
+                                    if (loginCubit.loginFormKey.currentState!.validate()) {
                                       loginCubit.userLogin(context);
                                     }
                                   },
@@ -185,8 +169,7 @@ class LoginScreen extends StatelessWidget {
                                   )
                                 : Text(
                                     'login_login_button'.tr(),
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14.sp),
+                                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
                                   ),
                           ),
                         ],

@@ -4,6 +4,7 @@ class AddTaskModel {
   final bool? status;
   final String? message;
   final TaskModel? task;
+  // if uncomment (in api return the category id as int instead of string)
 
   AddTaskModel({
     this.status,

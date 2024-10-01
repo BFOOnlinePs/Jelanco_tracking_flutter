@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_task_submission_with_task_and_comments_model.dart';
@@ -20,29 +21,28 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
     commentService.socket.on('new-comment', (data) {
       print('from screen Socket.IO New comment received:: $data');
       // Update the state with the new comment
-      TaskSubmissionCommentModel newComment =
-          TaskSubmissionCommentModel.fromMap(data);
+      TaskSubmissionCommentModel newComment = TaskSubmissionCommentModel.fromMap(data);
       print('newComment.tscId: ${newComment.tscId}');
-      getTaskSubmissionWithTaskAndCommentsModel
-          ?.taskSubmission?.submissionComments
-          ?.add(newComment);
+      getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission?.submissionComments?.add(newComment);
       emit(ListenToNewCommentsState());
     });
   }
 
-  GetTaskSubmissionWithTaskAndCommentsModel?
-      getTaskSubmissionWithTaskAndCommentsModel;
+  GetTaskSubmissionWithTaskAndCommentsModel? getTaskSubmissionWithTaskAndCommentsModel;
+
+  int? submissionId; // used with afterEditTask
 
   void getTaskSubmissionWithTaskAndComments({required int submissionId}) {
     emit(GetTaskSubmissionWithTaskAndCommentsLoadingState());
+
+    this.submissionId = submissionId;
     // /task-submissions/201/task-and-comments
     DioHelper.getData(
             url:
                 '${EndPointsConstants.taskSubmissions}/$submissionId/${EndPointsConstants.taskSubmissionWithTaskAndComments}')
         .then((value) {
       print(value?.data);
-      getTaskSubmissionWithTaskAndCommentsModel =
-          GetTaskSubmissionWithTaskAndCommentsModel.fromMap(value?.data);
+      getTaskSubmissionWithTaskAndCommentsModel = GetTaskSubmissionWithTaskAndCommentsModel.fromMap(value?.data);
       emit(GetTaskSubmissionWithTaskAndCommentsSuccessState());
     }).catchError((error) {
       emit(GetTaskSubmissionWithTaskAndCommentsErrorState());
@@ -50,19 +50,18 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
     });
   }
 
-
   void afterEditSubmission({
     required final TaskSubmissionModel newSubmissionModel,
   }) {
     // Replace the old submission with the new one
-    // Find the index of the submission with the old ID
-    // int? index = getTaskSubmissionWithTaskAndCommentsModel?.taskSubmissions
-    //     .indexWhere((submission) => submission.tsId == oldSubmissionId);
+    getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = newSubmissionModel;
+    emit(AfterEditSubmissionState());
+  }
 
-      // Replace the old submission with the new one
-      getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = newSubmissionModel;
-      //
-      // print(getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission.toMap());
+  void afterEditTask() {
+    // recall the function
+    getTaskSubmissionWithTaskAndComments(submissionId: submissionId!);
+
     emit(AfterEditSubmissionState());
   }
 

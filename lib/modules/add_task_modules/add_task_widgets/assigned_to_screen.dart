@@ -8,7 +8,6 @@ import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_states.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_card_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 

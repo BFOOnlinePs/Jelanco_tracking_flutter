@@ -27,20 +27,21 @@ import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 // to add submission (in 3 states)
-// regardless if it is the original submission or edit submission / new version or submission without task
+// regardless if it is
+// 1. the original submission
+// 2. edit submission / new version
+// 3. add submission without task
 class AddTaskSubmissionScreen extends StatelessWidget {
   final int taskId; // -1 when add submission without task
-  final TaskSubmissionModel? taskSubmissionModel; // for edit
+  final int? taskSubmissionId; // for edit
   final bool isEdit; // for edit
 
-  final Function(TaskSubmissionModel)?
-      // final Function(TaskSubmissionModel)?
-      getDataCallback; // to get the data after add new submission
+  final Function(TaskSubmissionModel)? getDataCallback; // to get the data after add new submission
 
   AddTaskSubmissionScreen({
     super.key,
     required this.taskId,
-    this.taskSubmissionModel,
+    this.taskSubmissionId,
     this.isEdit = false,
     required this.getDataCallback,
   });
@@ -56,14 +57,17 @@ class AddTaskSubmissionScreen extends StatelessWidget {
           successState: CategoriesSuccessState(),
           errorState: (error) => CategoriesErrorState(error: error),
         ).then((_) {
-          addTaskSubmissionCubit.getOldData(
-            isEdit: isEdit,
-            taskSubmissionModel: taskSubmissionModel,
-          );
+          if (isEdit) {
+            addTaskSubmissionCubit.getOldData(
+              submissionId: taskSubmissionId!,
+            );
+          } else {
+            print('don\'t call the old data');
+          }
         }),
       child: BlocConsumer<AddTaskSubmissionCubit, AddTaskSubmissionStates>(
         listener: (context, state) {
-          print('state is $state');
+          // print('state is $state');
           if (state is AddTaskSubmissionInitialState) {
             print('this is the initial state');
           }
@@ -79,6 +83,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
               if (getDataCallback != null) {
                 getDataCallback!(state.addTaskSubmissionModel.taskSubmission!);
               }
+
               Navigator.pop(context);
             } else {
               SnackbarHelper.showSnackbar(
@@ -119,26 +124,19 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 MyTextFormField(
-                                  titleText:
-                                      'add_task_submission_content_field'.tr(),
-                                  labelText:
-                                      'add_task_submission_content_field_label'
-                                          .tr(),
-                                  controller:
-                                      addTaskSubmissionCubit.contentController,
+                                  titleText: 'add_task_submission_content_field'.tr(),
+                                  labelText: 'add_task_submission_content_field_label'.tr(),
+                                  controller: addTaskSubmissionCubit.contentController,
                                   textInputAction: TextInputAction.newline,
                                   keyboardType: TextInputType.multiline,
                                   isFieldRequired: true,
-                                  maxLines:
-                                      addTaskSubmissionCubit.contentMaxLines,
+                                  maxLines: addTaskSubmissionCubit.contentMaxLines,
                                   onChanged: (text) {
-                                    addTaskSubmissionCubit
-                                        .changeContentMaxLines(text: text);
+                                    addTaskSubmissionCubit.changeContentMaxLines(text: text);
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'add_task_submission_content_required_validation'
-                                          .tr();
+                                      return 'add_task_submission_content_required_validation'.tr();
                                     }
                                     return null;
                                   },
@@ -148,58 +146,40 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText:
-                                            'add_task_start_time_field'.tr(),
-                                        labelText:
-                                            'add_task_start_time_field_label'
-                                                .tr(),
+                                        titleText: 'add_task_start_time_field'.tr(),
+                                        labelText: 'add_task_start_time_field_label'.tr(),
                                         readOnly: true,
-                                        onTap: () => addTaskSubmissionCubit
-                                            .selectDateTime(context, true),
+                                        onTap: () => addTaskSubmissionCubit.selectDateTime(context, true),
                                         // validator: (value) =>
                                         //     addTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: addTaskSubmissionCubit
-                                                        .startTime !=
-                                                    null
-                                                ? MyDateUtils.formatDateTime(
-                                                    addTaskSubmissionCubit
-                                                        .startTime!)
+                                            text: addTaskSubmissionCubit.startTime != null
+                                                ? MyDateUtils.formatDateTime(addTaskSubmissionCubit.startTime!)
                                                 : ''),
                                         style: TextStyle(
-                                          fontSize:
-                                              SharedSize.textFiledTitleSize,
+                                          fontSize: SharedSize.textFiledTitleSize,
                                         ),
                                       ),
                                     ),
                                     const MyHorizontalSpacer(),
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText:
-                                            'add_task_end_time_field'.tr(),
-                                        labelText:
-                                            'add_task_end_time_field_label'
-                                                .tr(),
+                                        titleText: 'add_task_end_time_field'.tr(),
+                                        labelText: 'add_task_end_time_field_label'.tr(),
                                         readOnly: true,
-                                        onTap: () => addTaskSubmissionCubit
-                                            .selectDateTime(context, false),
+                                        onTap: () => addTaskSubmissionCubit.selectDateTime(context, false),
                                         // validator: (value) =>
                                         //     addTaskSubmissionCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: addTaskSubmissionCubit
-                                                        .endTime !=
-                                                    null
-                                                ? MyDateUtils.formatDateTime(
-                                                    addTaskSubmissionCubit
-                                                        .endTime!)
+                                            text: addTaskSubmissionCubit.endTime != null
+                                                ? MyDateUtils.formatDateTime(addTaskSubmissionCubit.endTime!)
                                                 : ''),
                                         style: TextStyle(
-                                          fontSize:
-                                              SharedSize.textFiledTitleSize,
+                                          fontSize: SharedSize.textFiledTitleSize,
                                         ),
                                       ),
                                     ),
@@ -207,11 +187,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                 ),
                                 // const MyVerticalSpacer(),
                                 Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 14, bottom: 16),
+                                  margin: const EdgeInsets.only(top: 14, bottom: 16),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       //from camera
 
@@ -222,15 +200,10 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               iconColor: Colors.green,
                                               label: 'إلتقاط صورة',
                                               onTap: () {
-                                                addTaskSubmissionCubit
-                                                    .requestPermission(
-                                                        context: context,
-                                                        permissionType:
-                                                            PermissionType
-                                                                .camera,
-                                                        functionWhenGranted:
-                                                            addTaskSubmissionCubit
-                                                                .pickMediaFromCamera);
+                                                addTaskSubmissionCubit.requestPermission(
+                                                    context: context,
+                                                    permissionType: PermissionType.camera,
+                                                    functionWhenGranted: addTaskSubmissionCubit.pickMediaFromCamera);
                                               },
                                             ),
                                             MenuItemModel(
@@ -238,17 +211,11 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                               label: 'إلتقاط فيديو',
                                               iconColor: Colors.red,
                                               onTap: () {
-                                                addTaskSubmissionCubit
-                                                    .requestPermission(
-                                                        context: context,
-                                                        permissionType:
-                                                            PermissionType
-                                                                .camera,
-                                                        functionWhenGranted: () =>
-                                                            addTaskSubmissionCubit
-                                                                .pickMediaFromCamera(
-                                                                    isImage:
-                                                                        false));
+                                                addTaskSubmissionCubit.requestPermission(
+                                                    context: context,
+                                                    permissionType: PermissionType.camera,
+                                                    functionWhenGranted: () =>
+                                                        addTaskSubmissionCubit.pickMediaFromCamera(isImage: false));
                                               },
                                             ),
                                           ],
@@ -259,10 +226,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                             onTap: null,
                                           )),
 
-                                      Container(
-                                          width: 0.2,
-                                          height: 26,
-                                          color: Colors.grey),
+                                      Container(width: 0.2, height: 26, color: Colors.grey),
 
                                       MediaOptionWidget(
                                         icon: Icons.image,
@@ -271,49 +235,33 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                         onTap: () {
                                           addTaskSubmissionCubit.requestPermission(
                                               context: context,
-                                              permissionType:
-                                                  PermissionType.storage,
+                                              permissionType: PermissionType.storage,
                                               functionWhenGranted:
-                                                  addTaskSubmissionCubit
-                                                      .pickMultipleImagesFromGallery);
+                                                  addTaskSubmissionCubit.pickMultipleImagesFromGallery);
                                         },
                                       ),
-                                      Container(
-                                          width: 0.2,
-                                          height: 26,
-                                          color: Colors.grey),
+                                      Container(width: 0.2, height: 26, color: Colors.grey),
                                       MediaOptionWidget(
                                         icon: Icons.video_camera_back,
                                         label: 'فيديو',
                                         color: Colors.red,
                                         onTap: () {
-                                          addTaskSubmissionCubit
-                                              .requestPermission(
-                                                  context: context,
-                                                  permissionType:
-                                                      PermissionType.storage,
-                                                  functionWhenGranted:
-                                                      addTaskSubmissionCubit
-                                                          .pickVideoFromGallery);
+                                          addTaskSubmissionCubit.requestPermission(
+                                              context: context,
+                                              permissionType: PermissionType.storage,
+                                              functionWhenGranted: addTaskSubmissionCubit.pickVideoFromGallery);
                                         },
                                       ),
-                                      Container(
-                                          width: 0.2,
-                                          height: 26,
-                                          color: Colors.grey),
+                                      Container(width: 0.2, height: 26, color: Colors.grey),
                                       MediaOptionWidget(
                                         icon: Icons.attach_file,
                                         label: 'ملف',
                                         color: Colors.blue,
                                         onTap: () {
-                                          addTaskSubmissionCubit
-                                              .requestPermission(
-                                                  context: context,
-                                                  permissionType:
-                                                      PermissionType.storage,
-                                                  functionWhenGranted:
-                                                      addTaskSubmissionCubit
-                                                          .pickReportFile);
+                                          addTaskSubmissionCubit.requestPermission(
+                                              context: context,
+                                              permissionType: PermissionType.storage,
+                                              functionWhenGranted: addTaskSubmissionCubit.pickReportFile);
                                         },
                                       ),
                                     ],
@@ -324,7 +272,8 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   //     addTaskSubmissionCubit,
                                   // taskSubmissionModel: taskSubmissionModel,
                                   storagePath: EndPointsConstants.taskSubmissionsStorage,
-                                  oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
+                                  oldSubmissionAttachmentsCategories: addTaskSubmissionCubit
+                                      .GetOldTaskSubmissionModel?.taskSubmission?.submissionAttachmentsCategories,
                                   pickedImagesList: addTaskSubmissionCubit.pickedImagesList,
                                   deletedPickedImageFromList: addTaskSubmissionCubit.deletedPickedImageFromList,
                                 ),
@@ -332,26 +281,29 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   height: 14,
                                 ),
                                 SelectedVideosWidget(
-                                    addTaskSubmissionCubit:
-                                        addTaskSubmissionCubit,
-                                    taskSubmissionModel: taskSubmissionModel),
+                                  pickedVideosList: addTaskSubmissionCubit.pickedVideosList,
+                                  deletePickedVideoFromList: addTaskSubmissionCubit.deletePickedVideoFromList,
+                                  oldSubmissionAttachmentsCategories: addTaskSubmissionCubit
+                                      .GetOldTaskSubmissionModel?.taskSubmission?.submissionAttachmentsCategories,
+                                  videosControllers: addTaskSubmissionCubit.videosControllers,
+                                  oldVideoControllers: addTaskSubmissionCubit.oldVideoControllers,
+                                  toggleVideoPlayPause: addTaskSubmissionCubit.toggleVideoPlayPause,
+                                ),
                                 SelectedAttachmentsWidget(
-                                    addTaskSubmissionCubit:
-                                        addTaskSubmissionCubit,
-                                    taskSubmissionModel: taskSubmissionModel),
+                                  oldSubmissionAttachmentsCategories: addTaskSubmissionCubit
+                                      .GetOldTaskSubmissionModel?.taskSubmission?.submissionAttachmentsCategories,
+                                  pickedFilesList: addTaskSubmissionCubit.pickedFilesList,
+                                  deletedPickedFileFromList: addTaskSubmissionCubit.deletedPickedFileFromList,
+                                ),
                                 const Text(
                                   'إختيار الفئات',
                                   style: TextStyle(fontSize: 16),
                                 ),
-                                if (addTaskSubmissionCubit
-                                        .getTaskCategoriesModel !=
-                                    null)
-                                  ...addTaskSubmissionCubit
-                                      .getTaskCategoriesModel!.taskCategories!
+                                if (addTaskSubmissionCubit.getTaskCategoriesModel != null)
+                                  ...addTaskSubmissionCubit.getTaskCategoriesModel!.taskCategories!
                                       .map((TaskCategoryModel category) {
                                     return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 4),
+                                      margin: const EdgeInsets.symmetric(vertical: 4),
                                       child: CheckboxListTile(
                                         title: Row(
                                           children: [
@@ -363,20 +315,15 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        value: addTaskSubmissionCubit
-                                            .selectedTaskCategoriesList
-                                            .contains(category),
-                                        activeColor:
-                                            ColorsConstants.primaryColor,
+                                        value: addTaskSubmissionCubit.selectedTaskCategoriesList.contains(category),
+                                        activeColor: ColorsConstants.primaryColor,
                                         checkColor: Colors.white,
                                         tileColor: Colors.grey[200],
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              8), // Rounded corners
+                                          borderRadius: BorderRadius.circular(8), // Rounded corners
                                         ),
                                         onChanged: (bool? value) {
-                                          addTaskSubmissionCubit
-                                              .checkBoxChanged(value, category);
+                                          addTaskSubmissionCubit.checkBoxChanged(value, category);
                                         },
                                       ),
                                     );
@@ -387,39 +334,32 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                         ),
                         MyElevatedButton(
                             onPressed: () {
-                              if (addTaskSubmissionCubit
-                                  .addTaskSubmissionFormKey.currentState!
-                                  .validate()) {
-                                addTaskSubmissionCubit
-                                    .isAddTaskSubmissionLoading = true;
+                              if (addTaskSubmissionCubit.addTaskSubmissionFormKey.currentState!.validate()) {
+                                addTaskSubmissionCubit.isAddTaskSubmissionLoading = true;
                                 addTaskSubmissionCubit.emitLoading();
                                 addTaskSubmissionCubit
                                     .requestPermission(
                                   context: context,
                                   permissionType: PermissionType.location,
-                                  functionWhenGranted:
-                                      addTaskSubmissionCubit.getCurrentLocation,
+                                  functionWhenGranted: addTaskSubmissionCubit.getCurrentLocation,
                                 )
                                     .then((value) {
                                   print('add task .then');
                                   addTaskSubmissionCubit.addNewTaskSubmission(
                                     taskId: taskId,
-                                    isEdit: isEdit,
+                                    // isEdit: isEdit,
                                     taskSubmissionId:
-                                        taskSubmissionModel?.tsId ?? -1,
+                                        addTaskSubmissionCubit.GetOldTaskSubmissionModel?.taskSubmission?.tsId ?? -1,
                                     oldAttachments: isEdit
                                         ? [
-                                            ...taskSubmissionModel!
-                                                .submissionAttachmentsCategories!
-                                                .images!
+                                            ...addTaskSubmissionCubit.GetOldTaskSubmissionModel!.taskSubmission!
+                                                .submissionAttachmentsCategories!.images!
                                                 .map((e) => e.aAttachment!),
-                                            ...taskSubmissionModel!
-                                                .submissionAttachmentsCategories!
-                                                .videos!
+                                            ...addTaskSubmissionCubit.GetOldTaskSubmissionModel!.taskSubmission!
+                                                .submissionAttachmentsCategories!.videos!
                                                 .map((e) => e.aAttachment!),
-                                            ...taskSubmissionModel!
-                                                .submissionAttachmentsCategories!
-                                                .files!
+                                            ...addTaskSubmissionCubit.GetOldTaskSubmissionModel!.taskSubmission!
+                                                .submissionAttachmentsCategories!.files!
                                                 .map((e) => e.aAttachment!),
                                           ]
                                         : [],
@@ -429,9 +369,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                 });
                               } else {
                                 print('not valid');
-                                ScrollUtils.scrollPosition(
-                                    scrollController: addTaskSubmissionCubit
-                                        .scrollController);
+                                ScrollUtils.scrollPosition(scrollController: addTaskSubmissionCubit.scrollController);
                               }
                             },
                             // child: Text('add_task_submission_button_submit'.tr()),
@@ -446,7 +384,9 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                   ),
                 ),
                 // addTaskSubmissionCubit.state is AddTaskSubmissionLoadingState
-                addTaskSubmissionCubit.isAddTaskSubmissionLoading
+                addTaskSubmissionCubit.isAddTaskSubmissionLoading ||
+                        state is CategoriesLoadingState ||
+                        state is GetOldSubmissionDataLoadingState
                     ? const LoaderWithDisable()
                     : Container(),
               ],
