@@ -130,7 +130,6 @@ class AddedBySectionWidget extends StatelessWidget {
                   tasksAddedByUserCubit = TasksAddedByUserCubit.get(context);
                 } catch (e) {
                   print('Error in my catch: $e');
-
                 }
 
                 NavigationServices.navigateTo(
@@ -138,18 +137,11 @@ class AddedBySectionWidget extends StatelessWidget {
                   EditTaskScreen(
                     taskId: taskModel.tId!,
                     getDataCallback: (editedTaskModel) {
-                      //   if (taskDetailsCubit != null) {
-                      //     taskDetailsCubit!
-                      //   .
-                      // } else
-                      if (tasksAddedByUserCubit != null) {
-
-                        tasksAddedByUserCubit
-                            .afterEditTask(
-                                oldTaskId: taskModel.tId!,
-                                newTaskModel: editedTaskModel);
+                      if (taskDetailsCubit != null) {
+                        taskDetailsCubit.afterEditTask(oldTaskId: taskModel.tId!, newTaskModel: editedTaskModel);
+                      } else if (tasksAddedByUserCubit != null) {
+                        tasksAddedByUserCubit.afterEditTask(oldTaskId: taskModel.tId!, newTaskModel: editedTaskModel);
                       }
-
                     },
                   ),
                 );

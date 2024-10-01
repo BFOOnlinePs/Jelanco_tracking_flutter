@@ -102,7 +102,6 @@ class EditTaskScreen extends StatelessWidget {
             }
 
             Navigator.pop(context);
-
           } else if (state is EditTaskErrorState) {
             SnackbarHelper.showSnackbar(
               context: context,
