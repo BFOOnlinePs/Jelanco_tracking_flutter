@@ -9,6 +9,8 @@ import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
+import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_cubit/tasks_added_by_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
@@ -16,8 +18,6 @@ class AddedBySectionWidget extends StatelessWidget {
   final TaskModel taskModel;
 
   const AddedBySectionWidget(this.taskModel, {super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,7 @@ class AddedBySectionWidget extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                NavigationServices.navigateTo(context,
-                    UserProfileScreen(userId: taskModel.addedByUser!.id!));
+                NavigationServices.navigateTo(context, UserProfileScreen(userId: taskModel.addedByUser!.id!));
               },
               child: Row(
                 children: [
@@ -41,15 +40,13 @@ class AddedBySectionWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(2),
                     child: taskModel.addedByUser?.image != null
                         ? MyCachedNetworkImage(
-                            imageUrl: EndPointsConstants.profileStorage +
-                                taskModel.addedByUser!.image!,
+                            imageUrl: EndPointsConstants.profileStorage + taskModel.addedByUser!.image!,
                             width: 34,
                             height: 34,
                             fit: BoxFit.cover,
                           )
                         : const Image(
-                            image: AssetImage(AssetsKeys.defaultProfileImage)
-                                as ImageProvider,
+                            image: AssetImage(AssetsKeys.defaultProfileImage) as ImageProvider,
                             width: 34,
                             height: 34,
                             fit: BoxFit.cover,
@@ -79,8 +76,7 @@ class AddedBySectionWidget extends StatelessWidget {
                           //       )
                           //     : Container(),
                           Text(
-                            MyDateUtils.formatDateTimeWithAmPm(
-                                taskModel.createdAt),
+                            MyDateUtils.formatDateTimeWithAmPm(taskModel.createdAt),
                             style: const TextStyle(
                               fontSize: 10,
                             ),
@@ -97,8 +93,7 @@ class AddedBySectionWidget extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  MyDateUtils.formatDateTimeWithAmPm(
-                                      taskModel.updatedAt),
+                                  MyDateUtils.formatDateTimeWithAmPm(taskModel.updatedAt),
                                   style: const TextStyle(
                                     fontSize: 10,
                                   ),
@@ -121,11 +116,41 @@ class AddedBySectionWidget extends StatelessWidget {
               icon: Icons.edit,
               label: 'تعديل',
               onTap: () {
+                TaskDetailsCubit? taskDetailsCubit;
+                TasksAddedByUserCubit? tasksAddedByUserCubit;
+
+                try {
+                  // to show the edited task immediately
+                  taskDetailsCubit = TaskDetailsCubit.get(context);
+                } catch (e) {
+                  print('Error in my catch: $e');
+                }
+
+                try {
+                  tasksAddedByUserCubit = TasksAddedByUserCubit.get(context);
+                } catch (e) {
+                  print('Error in my catch: $e');
+
+                }
+
                 NavigationServices.navigateTo(
                   context,
                   EditTaskScreen(
                     taskId: taskModel.tId!,
+                    getDataCallback: (editedTaskModel) {
+                      //   if (taskDetailsCubit != null) {
+                      //     taskDetailsCubit!
+                      //   .
+                      // } else
+                      if (tasksAddedByUserCubit != null) {
 
+                        tasksAddedByUserCubit
+                            .afterEditTask(
+                                oldTaskId: taskModel.tId!,
+                                newTaskModel: editedTaskModel);
+                      }
+
+                    },
                   ),
                 );
               },

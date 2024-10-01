@@ -11,3 +11,5 @@ class GetTasksAddedByUserErrorState extends TasksAddedByUserStates {
 
   GetTasksAddedByUserErrorState({required this.error});
 }
+
+class AfterEditTaskState extends TasksAddedByUserStates {}

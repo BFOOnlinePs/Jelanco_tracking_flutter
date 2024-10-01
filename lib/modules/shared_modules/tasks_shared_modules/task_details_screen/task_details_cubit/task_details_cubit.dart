@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
@@ -74,6 +75,17 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
 
       print(getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!].toMap());
     }
+    emit(AfterEditSubmissionState());  }
+
+
+  void afterEditTask({
+    required int oldTaskId,
+    required final TaskModel newTaskModel,
+  }) {
+
+      // getTaskWithSubmissionsAndCommentsModel?.task = newTaskModel;
+
+
     emit(AfterEditSubmissionState());  }
 
   @override

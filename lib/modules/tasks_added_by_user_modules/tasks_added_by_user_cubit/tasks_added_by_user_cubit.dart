@@ -33,11 +33,10 @@ class TasksAddedByUserCubit extends Cubit<TasksAddedByUserStates> {
       }
       getTasksAddedByUserModel = GetTasksAddedByUserModel.fromMap(value?.data);
 
-      tasksAddedByUserList
-          .addAll(getTasksAddedByUserModel?.tasks as Iterable<TaskModel>);
+      tasksAddedByUserList.addAll(getTasksAddedByUserModel?.tasks as Iterable<TaskModel>);
 
-      isTasksAddedByUserLastPage = getTasksAddedByUserModel?.pagination?.lastPage ==
-          getTasksAddedByUserModel?.pagination?.currentPage;
+      isTasksAddedByUserLastPage =
+          getTasksAddedByUserModel?.pagination?.lastPage == getTasksAddedByUserModel?.pagination?.currentPage;
 
       isTasksAddedByUserLoading = false;
 
@@ -45,5 +44,24 @@ class TasksAddedByUserCubit extends Cubit<TasksAddedByUserStates> {
     }).catchError((error) {
       emit(GetTasksAddedByUserErrorState(error: error.toString()));
     });
+  }
+
+  void afterEditTask({
+    required int oldTaskId,
+    required final TaskModel newTaskModel,
+  }) {
+    // Replace the old task with the new one
+    // Find the index of the task with the old ID
+    int? index = tasksAddedByUserList.indexWhere((task) => task.tId == oldTaskId);
+    print('tasksAddedByUserList[index!].toMap(): BEFORE EDIT');
+    print(tasksAddedByUserList[index].toMap());
+    if (index != -1) {
+      print('index: $index');
+      // Replace the old task with the new one
+      tasksAddedByUserList[index] = newTaskModel;
+      print('tasksAddedByUserList[index].toMap(): AFTER EDIT');
+      print(tasksAddedByUserList[index].toMap());
+    }
+    emit(AfterEditTaskState());
   }
 }
