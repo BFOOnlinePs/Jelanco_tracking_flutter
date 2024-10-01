@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_user_submissions_model.dart';
 import 'package:jelanco_tracking_system/models/users_models/get_user_by_id_model.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
@@ -97,12 +98,12 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> //
     });
   }
 
-  Future<void> init({required int userId}) async {
+  Future<void> init( BuildContext context,{required int userId}) async {
     try {
       await getUserById(userId: userId);
-      // After getUserById is done, call the other functions
-      // getUnreadNotificationsCount(successState: GetUnreadNotificationsCountSuccessState());
-      getUserSubmissions();
+      NotificationsBadgeCubit.get(context).getUnreadNotificationsCount();
+
+    getUserSubmissions();
       if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) {
         getTasksToSubmit(
           perPage: 3,

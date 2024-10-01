@@ -25,139 +25,110 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(MediaQuery.of(context).size.width);
-    // print(MediaQuery.of(context).size.height);
-
     return BlocProvider(
-      create: (context) => HomeCubit()..init(userId: UserDataConstants.userId!),
-      // ..listenToNewNotifications(),
-
-      // ..getUserById(userId: UserDataConstants.userId!)
-      // ..getUserSubmissions()
-      // ..getTasksToSubmit(
-      //   perPage: 3,
-      //   loadingState: GetTasksToSubmitLoadingState(),
-      //   successState: GetTasksToSubmitSuccessState(),
-      //   errorState: (error) => GetTasksToSubmitErrorState(error),
-      // ),
+      create: (context) => HomeCubit()..init(context, userId: UserDataConstants.userId!),
       child: BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {},
         builder: (context, state) {
           homeCubit = HomeCubit.get(context);
 
           return Scaffold(
-              appBar: MyAppBar(
-                title: 'home_page_title'.tr(),
-                actions: [
-                  UserDataConstants.userModel == null
-                      ? Container()
-                      : BlocConsumer<NotificationsBadgeCubit, NotificationsBadgeStates>(
-                          listener: (context, state) {},
-                          builder: (context, state) {
-                            NotificationsBadgeCubit notificationsBadgeCubit = NotificationsBadgeCubit.get(context);
-                            return Container(
-                              margin: const EdgeInsetsDirectional.only(end: 18),
-                              child: InkWell(
-                                onTap: () {
-                                  NavigationServices.navigateTo(
-                                    context,
-                                    NotificationsScreen(),
-                                  );
-                                },
-                                child: Badge(
-                                  label: Text(notificationsBadgeCubit
-                                          .unreadNotificationsCountModel?.unreadNotificationsCount
-                                          .toString() ??
-                                      ''),
-                                  largeSize: 18,
-                                  textStyle: TextStyle(fontSize: 14),
-                                  child: Icon(
-                                    Icons.notifications,
-                                    size: 25,
-                                  ),
+            appBar: MyAppBar(
+              title: 'home_page_title'.tr(),
+              actions: [
+                UserDataConstants.userModel == null
+                    ? Container()
+                    : BlocConsumer<NotificationsBadgeCubit, NotificationsBadgeStates>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          NotificationsBadgeCubit notificationsBadgeCubit = NotificationsBadgeCubit.get(context);
+                          return Container(
+                            margin: const EdgeInsetsDirectional.only(end: 18),
+                            child: InkWell(
+                              onTap: () {
+                                NavigationServices.navigateTo(
+                                  context,
+                                  NotificationsScreen(),
+                                );
+                              },
+                              child: Badge(
+                                label: Text(notificationsBadgeCubit
+                                        .unreadNotificationsCountModel?.unreadNotificationsCount
+                                        .toString() ??
+                                    ''),
+                                largeSize: 18,
+                                textStyle: TextStyle(fontSize: 14),
+                                child: const Icon(
+                                  Icons.notifications,
+                                  size: 25,
                                 ),
                               ),
-                            );
-                          },
-                        )
-                ],
-              ),
-              drawer: UserDataConstants.userModel != null ? const MyDrawer() : null,
-              body: MyRefreshIndicator(
-                onRefresh: () async {
-                  await Future.wait([
-                    NotificationsBadgeCubit.get(context).getUnreadNotificationsCount(),
-                    homeCubit.getUserSubmissions(),
-                    if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
-                      homeCubit.getTasksToSubmit(
-                        perPage: 3,
-                        loadingState: GetTasksToSubmitLoadingState(),
-                        successState: GetTasksToSubmitSuccessState(),
-                        errorState: (error) => GetTasksToSubmitErrorState(error),
-                      ),
-                  ]);
-                },
-
-                child: UserDataConstants.userModel == null
-                    ? const Center(child: MyLoader())
-                    : CustomScrollView(
-                        controller: homeCubit.scrollController,
-                        slivers: [
-                          // check if the user has a permission to add a submission
-                          if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
-                            SliverToBoxAdapter(
-                              child: HomeAddSubmissionWidget(
-                                homeCubit: homeCubit,
-                              ),
                             ),
-                          if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
-                            SliverToBoxAdapter(
-                              child: HomeTasksToSubmitWidget(
-                                homeCubit: homeCubit,
-                              ),
-                            ),
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                if (index == homeCubit.userSubmissionsList.length &&
-                                    !homeCubit.isUserSubmissionsLastPage) {
-                                  if (!homeCubit.isUserSubmissionsLoading) {
-                                    homeCubit.getUserSubmissions(
-                                      page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
-                                    );
-                                  }
-                                  return Padding(
-                                    padding: EdgeInsets.all(8.0.w),
-                                    child: const LinearProgressIndicator(),
-                                  );
-                                }
-                                final submission = homeCubit.userSubmissionsList[index];
-
-                                return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
-                              },
-                              childCount: homeCubit.userSubmissionsList.length +
-                                  (homeCubit.isUserSubmissionsLastPage ? 0 : 1), // Replace with your data length
+                          );
+                        },
+                      )
+              ],
+            ),
+            drawer: UserDataConstants.userModel != null ? const MyDrawer() : null,
+            body: MyRefreshIndicator(
+              onRefresh: () async {
+                await Future.wait([
+                  NotificationsBadgeCubit.get(context).getUnreadNotificationsCount(),
+                  homeCubit.getUserSubmissions(),
+                  if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
+                    homeCubit.getTasksToSubmit(
+                      perPage: 3,
+                      loadingState: GetTasksToSubmitLoadingState(),
+                      successState: GetTasksToSubmitSuccessState(),
+                      errorState: (error) => GetTasksToSubmitErrorState(error),
+                    ),
+                ]);
+              },
+              child: UserDataConstants.userModel == null
+                  ? const Center(child: MyLoader())
+                  : CustomScrollView(
+                      controller: homeCubit.scrollController,
+                      slivers: [
+                        // check if the user has a permission to add a submission
+                        if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
+                          SliverToBoxAdapter(
+                            child: HomeAddSubmissionWidget(
+                              homeCubit: homeCubit,
                             ),
                           ),
-                        ],
-                      ),
+                        if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
+                          SliverToBoxAdapter(
+                            child: HomeTasksToSubmitWidget(
+                              homeCubit: homeCubit,
+                            ),
+                          ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              if (index == homeCubit.userSubmissionsList.length &&
+                                  !homeCubit.isUserSubmissionsLastPage) {
+                                if (!homeCubit.isUserSubmissionsLoading) {
+                                  homeCubit.getUserSubmissions(
+                                    page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
+                                  );
+                                }
+                                return Padding(
+                                  padding: EdgeInsets.all(8.0.w),
+                                  child: const LinearProgressIndicator(),
+                                );
+                              }
+                              final submission = homeCubit.userSubmissionsList[index];
 
-                // SingleChildScrollView(
-                //   // physics: AlwaysScrollableScrollPhysics(),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       const HomeAddSubmissionWidget(),
-                //       HomeTasksToSubmitWidget(
-                //         homeCubit: homeCubit,
-                //       ),
-                //       HomeUserSubmissionsWidget(
-                //         homeCubit: homeCubit,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-              ));
+                              return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
+                            },
+                            childCount: homeCubit.userSubmissionsList.length +
+                                (homeCubit.isUserSubmissionsLastPage ? 0 : 1), // Replace with your data length
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          );
         },
       ),
     );

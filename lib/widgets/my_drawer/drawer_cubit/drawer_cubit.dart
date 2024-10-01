@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/models/auth_models/user_logout_model.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/local/cache_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/fcm_services.dart';
@@ -25,16 +26,14 @@ class DrawerCubit extends Cubit<DrawerStates> {
       print(value);
       userLogoutModel = UserLogoutModel.fromMap(value?.data);
 
+      // remove number of unread notifications
+      NotificationsBadgeCubit.get(context).unreadNotificationsCountModel = null;
+
       CacheHelper.removeData(key: MyCacheKeys.token).then((_) {
         CacheHelper.removeData(key: MyCacheKeys.userId);
-        // CacheHelper.removeData(key: MyCacheKeys.name);
-        // CacheHelper.removeData(key: MyCacheKeys.email);
-        // CacheHelper.removeData(key: MyCacheKeys.jobTitle);
-        // CacheHelper.removeData(key: MyCacheKeys.permissionsList);
       }).then((_) async {
         // i have to delete my fcm token from local and server before clear user data constants
-        await FCMServices.deleteFCMTokenFromLocalAndServer(
-            UserDataConstants.firebaseTokenVar ?? '');
+        await FCMServices.deleteFCMTokenFromLocalAndServer(UserDataConstants.firebaseTokenVar ?? '');
 
         // Clear static user data constants
         UserDataConstants.userId = null;

@@ -112,7 +112,7 @@ class MyApp extends StatelessWidget {
         providers: [
           // notification badge
           BlocProvider(
-            create: (context) => NotificationsBadgeCubit()..getUnreadNotificationsCount(),
+            create: (context) => NotificationsBadgeCubit(),
           ),
         ],
         child: MaterialApp(
