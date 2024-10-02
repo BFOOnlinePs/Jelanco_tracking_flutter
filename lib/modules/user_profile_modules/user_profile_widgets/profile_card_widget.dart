@@ -28,8 +28,7 @@ class ProfileCardWidget extends StatelessWidget {
       margin: const EdgeInsetsDirectional.only(start: 10, end: 10, bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius:
-            const BorderRadius.vertical(bottom: Radius.circular(20.0)),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20.0)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -64,11 +63,9 @@ class ProfileCardWidget extends StatelessWidget {
                     backgroundColor: Colors.grey.shade300,
                     child: userInfo.image != null
                         ? MyCachedNetworkImage(
-                            imageUrl: EndPointsConstants.profileStorage +
-                                userInfo.image!,
+                            imageUrl: EndPointsConstants.profileStorage + userInfo.image!,
                             imageBuilder: (context, imageProvider) =>
-                                MyCachedImageBuilder(
-                                    imageProvider: imageProvider),
+                                MyCachedImageBuilder(imageProvider: imageProvider),
                             isCircle: true,
                           )
                         : ClipOval(
@@ -116,26 +113,60 @@ class ProfileCardWidget extends StatelessWidget {
               // textAlign: TextAlign.center,
             ),
             const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Icon(
-                //   FontAwesomeIcons.addressCard,
-                //   color: Colors.blueGrey[400],
-                //   size: 20,
-                // ),
-                // const SizedBox(width: 5),
-                Text(
-                  userInfo.jobTitle ?? '',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blueGrey[600],
+            userInfo.userDepartments == null || userInfo.userDepartments!.isEmpty
+                ? Container()
+                : Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Icon(
+                          //   FontAwesomeIcons.addressCard,
+                          //   color: Colors.blueGrey[400],
+                          //   size: 20,
+                          // ),
+                          // const SizedBox(width: 5),
+
+                          // get the departments list
+                          Text(
+                            userInfo.userDepartments!.map((dep) => dep.dName).join(', ') ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blueGrey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
+            userInfo.jobTitle == null
+                ? Container()
+                : Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Icon(
+                          //   FontAwesomeIcons.addressCard,
+                          //   color: Colors.blueGrey[400],
+                          //   size: 20,
+                          // ),
+                          // const SizedBox(width: 5),
+                          Text(
+                            userInfo.jobTitle ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blueGrey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                    ],
+                  ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -158,7 +189,6 @@ class ProfileCardWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 userInfo.phoneNumber != null
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -185,29 +215,24 @@ class ProfileCardWidget extends StatelessWidget {
 
             userInfo.phoneNumber != null && userInfo.id != UserDataConstants.userId
                 ? Column(
-                  children: [
-                    const SizedBox(height: 12),
-
-                    Row(
+                    children: [
+                      const SizedBox(height: 12),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(
-                                      const Color(0xFF007BFF)),
-                                  shape: WidgetStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  backgroundColor: WidgetStateProperty.all(const Color(0xFF007BFF)),
+                                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          ButtonSizeConstants.borderRadius),
+                                      borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
                                     ),
                                   ),
                                 ),
                                 onPressed: () {
-                                  LaunchUrlUtils.makePhoneCall(
-                                      userInfo.phoneNumber!);
+                                  LaunchUrlUtils.makePhoneCall(userInfo.phoneNumber!);
                                 },
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -234,19 +259,15 @@ class ProfileCardWidget extends StatelessWidget {
                           Expanded(
                             child: ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(
-                                    const Color(0xFF25D366)),
-                                shape:
-                                    WidgetStateProperty.all<RoundedRectangleBorder>(
+                                backgroundColor: WidgetStateProperty.all(const Color(0xFF25D366)),
+                                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        ButtonSizeConstants.borderRadius),
+                                    borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
                                   ),
                                 ),
                               ),
                               onPressed: () {
-                                LaunchUrlUtils.sendWhatsAppMessage(
-                                    userInfo.phoneNumber!);
+                                LaunchUrlUtils.sendWhatsAppMessage(userInfo.phoneNumber!);
                               },
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -273,8 +294,8 @@ class ProfileCardWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                  ],
-                )
+                    ],
+                  )
                 : Container(),
             // Divider(height: 0.5, color: Colors.grey[300],)
           ],
