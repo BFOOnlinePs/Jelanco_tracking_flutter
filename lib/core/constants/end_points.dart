@@ -17,8 +17,7 @@ class EndPointsConstants {
 
   static const String tasksStorage = '$url/public/storage/tasks_attachments/';
   static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
-  static const String taskSubmissionsCommentStorage =
-      '$url/public/storage/comments_attachments/';
+  static const String taskSubmissionsCommentStorage = '$url/public/storage/comments_attachments/';
   static const String thumbnailStorage = '$url/public/storage/thumbnails/';
   static const String profileStorage = '$url/public/storage/profile_images/';
 
@@ -45,14 +44,12 @@ class EndPointsConstants {
   static const String userSubmissions = 'user-submissions';
   static const String taskSubmissions = 'task-submissions';
   static const String taskSubmissionWithTaskAndComments = 'task-and-comments';
-  static const String taskSubmissionVersions =
-      'versions'; // /task-submissions/106/versions
+  static const String taskSubmissionVersions = 'versions'; // /task-submissions/106/versions
   static const String todaySubmissions = '$taskSubmissions/today';
 
   // task submission comment
   static const String taskSubmissionComments = 'comments';
-  static const String taskSubmissionCommentsCount =
-      'count'; // /task-submissions/185/comments/count
+  static const String taskSubmissionCommentsCount = 'count'; // /task-submissions/185/comments/count
 
   // categories
   static const String taskCategories = 'task-categories';
@@ -60,13 +57,11 @@ class EndPointsConstants {
   // users
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1
-  static const String updateProfile =
-      '$userProfile/image'; // /users/profile/image
+  static const String updateProfile = '$userProfile/image'; // /users/profile/image
 
   // manager employees
   static const String managerEmployees = '$users/employees';
-  static const String managerEmployeesWithTaskAssignees =
-      '$users/employees/with-task-assignees';
+  static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
 
   // notifications
   static const String notifications = 'notifications';
