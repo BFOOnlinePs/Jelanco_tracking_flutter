@@ -45,6 +45,7 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
                           .getTaskSubmissionVersionsModel!.submissionsVersions!
                           .map((submission) {
                           return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SubmissionHeaderWidget(
                                 submissionModel: submission,
@@ -58,9 +59,12 @@ class TaskSubmissionVersionsScreen extends StatelessWidget {
                                 storagePath:
                                     EndPointsConstants.taskSubmissionsStorage,
                               ),
-                              const MyVerticalSpacer(),
+                              // const MyVerticalSpacer(),
                               SubmissionTimeWidget(submission: submission),
+                              // const MyVerticalSpacer(),
+                              Divider( thickness: 1.5, color: Colors.grey.shade300),
                               const MyVerticalSpacer(),
+
                             ],
                           );
                         }).toList()

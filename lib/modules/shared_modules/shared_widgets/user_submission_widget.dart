@@ -36,12 +36,11 @@ class UserSubmissionWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsetsDirectional.only(
-              start: 16.w, end: 16.w, top: 6.h, bottom: 0.h),
+          margin: EdgeInsetsDirectional.only(start: 16.w, end: 16.w, top: 6.h, bottom: 0.h),
           child: InkWell(
             onTap: () {
-              NavigationServices.navigateTo(context,
-                  TaskSubmissionDetailsScreen(submissionId: submission.tsId!));
+              NavigationServices.navigateTo(
+                  context, TaskSubmissionDetailsScreen(submissionId: submission.tsId!));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +51,6 @@ class UserSubmissionWidget extends StatelessWidget {
                   userProfileCubit: userProfileCubit,
                   todaySubmissionsCubit: todaySubmissionsCubit,
                 ),
-
                 ContentWidget(submission.tsContent ?? '', isSubmission: true),
                 MediaWidget(
                   attachmentsCategories: submission.submissionAttachmentsCategories!,
@@ -62,43 +60,9 @@ class UserSubmissionWidget extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const MyVerticalSpacer(),
-
-                          // SectionTitleWidget('تفاصيل المهمة',
-                          //     status: TaskStatusEnum.getStatus(
-                          //         submission.taskDetails!.tStatus!),
-                          //     statusIcon: Icons.flag),
-                          //                         Text('تم إسناد هذا التسليم إلى المهمة ادناه:'),
+                          // const MyVerticalSpacer(),
                           SubmissionTaskWidget(
-                              taskContent: submission.taskDetails!.tContent!,
-                              taskId: submission.tsTaskId!),
-                          // ContentWidget(
-                          //   submission.taskDetails!.tContent!,
-                          // ),
-                          // submission.taskDetails!.taskCategory !=
-                          //         null
-                          // ? CategoryRowWidget(
-                          //     'التصنيف',
-                          //     submission.taskDetails!
-                          //             .taskCategory!.cName ??
-                          //         '')
-                          // : Container(),
-
-                          // submission.taskDetails!
-                          //     .assignedToUsers!.isNotEmpty
-                          //     ? AssignedToWidget(
-                          //     'الموظفين المكلفين',
-                          //     submission.taskDetails
-                          //         ?.assignedToUsers!
-                          //         .map((user) => user.name)
-                          //         .join(', ') ??
-                          //         '',
-                          //     Icons.person)
-                          //     : Container(),
-                          // MyVerticalSpacer(),
-                          // TaskPlanedTimeWidget(
-                          //     taskModel: submission.taskDetails!),
-                          // MyVerticalSpacer(),
+                              taskContent: submission.taskDetails!.tContent!, taskId: submission.tsTaskId!),
                         ],
                       )
                     : Container(),
@@ -115,12 +79,10 @@ class UserSubmissionWidget extends StatelessWidget {
                 const SizedBox(
                   height: 8,
                 ),
-                if (SystemPermissions.hasPermission(
-                    SystemPermissions.viewComments))
+                if (SystemPermissions.hasPermission(SystemPermissions.viewComments))
                   Row(
                     children: [
-                      submission.commentsCount != null &&
-                              submission.commentsCount! > 0
+                      submission.commentsCount != null && submission.commentsCount! > 0
                           ? Row(
                               children: [
                                 InkWell(
@@ -132,28 +94,18 @@ class UserSubmissionWidget extends StatelessWidget {
                                           submissionId: submission.tsId!,
                                           onPopCallback: () {
                                             if (SystemPermissions.hasPermission(
-                                                SystemPermissions
-                                                    .viewComments)) {
+                                                SystemPermissions.viewComments)) {
                                               if (homeCubit != null) {
                                                 return homeCubit!
-                                                    .getCommentsCount(
-                                                        submissionId:
-                                                            submission.tsId!);
-                                              } else if (userProfileCubit !=
-                                                  null) {
+                                                    .getCommentsCount(submissionId: submission.tsId!);
+                                              } else if (userProfileCubit != null) {
                                                 return userProfileCubit!
-                                                    .getCommentsCount(
-                                                        submissionId:
-                                                            submission.tsId!);
-                                              } else if (todaySubmissionsCubit !=
-                                                  null) {
+                                                    .getCommentsCount(submissionId: submission.tsId!);
+                                              } else if (todaySubmissionsCubit != null) {
                                                 return todaySubmissionsCubit!
-                                                    .getCommentsCount(
-                                                        submissionId:
-                                                            submission.tsId!);
+                                                    .getCommentsCount(submissionId: submission.tsId!);
                                               } else {
-                                                print(
-                                                    'no get comments count function provided');
+                                                print('no get comments count function provided');
                                               }
                                             }
                                           },
@@ -161,10 +113,8 @@ class UserSubmissionWidget extends StatelessWidget {
                                       );
                                     },
                                     child: submission.commentsCount == 1
-                                        ? Text(
-                                            '${submission.commentsCount} تعليق')
-                                        : Text(
-                                            '${submission.commentsCount} تعليقات')),
+                                        ? Text('${submission.commentsCount} تعليق')
+                                        : Text('${submission.commentsCount} تعليقات')),
                                 const SizedBox(
                                   width: 16,
                                 ),
@@ -180,21 +130,17 @@ class UserSubmissionWidget extends StatelessWidget {
                                 taskId: submission.tsTaskId!,
                                 submissionId: submission.tsId!,
                                 onPopCallback: () {
-                                  if (SystemPermissions.hasPermission(
-                                      SystemPermissions.viewComments)) {
+                                  if (SystemPermissions.hasPermission(SystemPermissions.viewComments)) {
                                     if (homeCubit != null) {
-                                      return homeCubit!.getCommentsCount(
-                                          submissionId: submission.tsId!);
+                                      return homeCubit!.getCommentsCount(submissionId: submission.tsId!);
                                     } else if (userProfileCubit != null) {
-                                      return userProfileCubit!.getCommentsCount(
-                                          submissionId: submission.tsId!);
+                                      return userProfileCubit!
+                                          .getCommentsCount(submissionId: submission.tsId!);
                                     } else if (todaySubmissionsCubit != null) {
                                       return todaySubmissionsCubit!
-                                          .getCommentsCount(
-                                              submissionId: submission.tsId!);
+                                          .getCommentsCount(submissionId: submission.tsId!);
                                     } else {
-                                      print(
-                                          'no get comments count function provided');
+                                      print('no get comments count function provided');
                                     }
                                   }
                                 },
@@ -211,8 +157,7 @@ class UserSubmissionWidget extends StatelessWidget {
                               contentPadding: const EdgeInsets.only(bottom: 0),
 
                               /// may change later
-                              hintText: SystemPermissions.hasPermission(
-                                      SystemPermissions.addComment)
+                              hintText: SystemPermissions.hasPermission(SystemPermissions.addComment)
                                   ? "أضف تعليق ..."
                                   : 'مشاهدة التعليقات',
                               enabledBorder: const UnderlineInputBorder(

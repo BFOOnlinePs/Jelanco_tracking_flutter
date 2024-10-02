@@ -51,8 +51,8 @@ class SubmissionHeaderWidget extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                NavigationServices.navigateTo(context,
-                    UserProfileScreen(userId: submissionModel.tsSubmitter!));
+                NavigationServices.navigateTo(
+                    context, UserProfileScreen(userId: submissionModel.tsSubmitter!));
               },
               child: Row(
                 // crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,16 +65,14 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     padding: EdgeInsets.all(2.w),
                     child: submissionModel.submitterUser?.image != null
                         ? MyCachedNetworkImage(
-                            imageUrl: EndPointsConstants.profileStorage +
-                                submissionModel.submitterUser!.image!,
+                            imageUrl:
+                                EndPointsConstants.profileStorage + submissionModel.submitterUser!.image!,
                             width: 34.w,
                             height: 34.w,
                             fit: BoxFit.cover,
                           )
                         : Image(
-                            image:
-                                const AssetImage(AssetsKeys.defaultProfileImage)
-                                    as ImageProvider,
+                            image: const AssetImage(AssetsKeys.defaultProfileImage) as ImageProvider,
                             width: 34.w,
                             height: 34.w,
                             fit: BoxFit.cover,
@@ -95,8 +93,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          MyDateUtils.formatDateTimeWithAmPm(
-                              submissionModel.createdAt),
+                          MyDateUtils.formatDateTimeWithAmPm(submissionModel.createdAt),
                           // MyDateUtils.formatDateTime2(submissionModel.createdAt),
                           // submissionModel.createdAt.toString() ?? '',
                           style: TextStyle(
@@ -113,14 +110,11 @@ class SubmissionHeaderWidget extends StatelessWidget {
           Row(
             children: [
               showSubmissionOptions &&
-              (submissionModel.tsParentId != -1 ||
-                      (SystemPermissions.hasPermission(
-                              SystemPermissions.editSubmission) &&
-                          submissionModel.tsSubmitter ==
-                              UserDataConstants.userId))
+                      (submissionModel.tsParentId != -1 ||
+                          (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
+                              submissionModel.tsSubmitter == UserDataConstants.userId))
                   ? TaskOptionsWidget(menuItems: [
-                      if (SystemPermissions.hasPermission(
-                              SystemPermissions.editSubmission) &&
+                      if (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
                           submissionModel.tsSubmitter == UserDataConstants.userId)
                         MenuItemModel(
                           icon: Icons.edit,
@@ -146,9 +140,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                                         newSubmissionModel: newSubmissionModel);
                                   } else if (taskSubmissionDetailsCubit != null) {
                                     taskSubmissionDetailsCubit!
-                                        .afterEditSubmission(
-                                            newSubmissionModel:
-                                                newSubmissionModel);
+                                        .afterEditSubmission(newSubmissionModel: newSubmissionModel);
                                   } else if (userProfileCubit != null) {
                                     userProfileCubit!.afterEditSubmission(
                                         oldSubmissionId: submissionModel.tsId!,
@@ -158,8 +150,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                                         oldSubmissionId: submissionModel.tsId!,
                                         newSubmissionModel: newSubmissionModel);
                                   } else {
-                                    print(
-                                        'no afterEditSubmission function provided');
+                                    print('no afterEditSubmission function provided');
                                   }
                                 },
                               ),
@@ -183,20 +174,21 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     ])
                   : Container(),
               GestureDetector(
-                  onTap: () {
-                    // NavigationServices.navigateTo(context, SubmissionLocationDialog(
-                    //   taskSubmissionModel: submissionModel,
-                    // ));
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return SubmissionLocationDialog(
-                          taskSubmissionModel: submissionModel,
-                        );
-                      },
-                    );
-                  },
-                  child: const Icon(Icons.location_on))
+                onTap: () {
+                  // NavigationServices.navigateTo(context, SubmissionLocationDialog(
+                  //   taskSubmissionModel: submissionModel,
+                  // ));
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SubmissionLocationDialog(
+                        taskSubmissionModel: submissionModel,
+                      );
+                    },
+                  );
+                },
+                child: const Icon(Icons.location_on),
+              ),
             ],
           ),
         ],

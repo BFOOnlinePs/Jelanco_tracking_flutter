@@ -22,7 +22,7 @@ class MyDateUtils {
 
   static String formatDateTime2(DateTime? dateTime) {
     if (dateTime == null) return '';
-    final DateFormat dateFormatter = DateFormat('M-d-yyyy | HH:mm');
+    final DateFormat dateFormatter = DateFormat('d-M-yyyy | HH:mm');
     return dateFormatter.format(dateTime);
     // '${formatDayName(dateTime, userLocale.toString())} ${dateFormatter.format(dateTime)}';
   }
@@ -39,7 +39,7 @@ class MyDateUtils {
     if (dateTime == null) return '';
 
     // Date format with AM/PM: 'M-d-yyyy | hh:mm a'
-    final DateFormat dateFormatter = DateFormat('M-d-yyyy | hh:mm a');
+    final DateFormat dateFormatter = DateFormat('d-M-yyyy | hh:mm a');
 
     return dateFormatter.format(dateTime);
 
