@@ -34,7 +34,7 @@ class TaskDetailsScreen extends StatelessWidget {
           taskDetailsCubit = TaskDetailsCubit.get(context);
           return Scaffold(
             appBar: const MyAppBar(
-              title: 'تفاصيل المهمة',
+              title: 'تفاصيل التكليف',
             ),
             body: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
                 ? const Center(
@@ -54,7 +54,8 @@ class TaskDetailsScreen extends StatelessWidget {
                           TaskDetailsSectionWidget(
                             taskModel: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!,
                           ),
-                          taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!.isNotEmpty
+                          taskDetailsCubit
+                                  .getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!.isNotEmpty
                               ? SubmissionsSectionWidget(
                                   taskDetailsCubit: taskDetailsCubit,
                                 )
@@ -84,7 +85,8 @@ class TaskDetailsScreen extends StatelessWidget {
                                 print('call the data');
                                 taskDetailsCubit.getTaskWithSubmissionsAndComments(taskId: taskId);
                                 // scroll to the beginning
-                                ScrollUtils.scrollPosition(scrollController: taskDetailsCubit.scrollController);
+                                ScrollUtils.scrollPosition(
+                                    scrollController: taskDetailsCubit.scrollController);
                               },
                             ),
                           );

@@ -41,7 +41,8 @@ class HomeScreen extends StatelessWidget {
                     : BlocConsumer<NotificationsBadgeCubit, NotificationsBadgeStates>(
                         listener: (context, state) {},
                         builder: (context, state) {
-                          NotificationsBadgeCubit notificationsBadgeCubit = NotificationsBadgeCubit.get(context);
+                          NotificationsBadgeCubit notificationsBadgeCubit =
+                              NotificationsBadgeCubit.get(context);
                           return Container(
                             margin: const EdgeInsetsDirectional.only(end: 18),
                             child: InkWell(
@@ -51,18 +52,23 @@ class HomeScreen extends StatelessWidget {
                                   NotificationsScreen(),
                                 );
                               },
-                              child: Badge(
-                                label: Text(notificationsBadgeCubit
-                                        .unreadNotificationsCountModel?.unreadNotificationsCount
-                                        .toString() ??
-                                    ''),
-                                largeSize: 18,
-                                textStyle: TextStyle(fontSize: 14),
-                                child: const Icon(
-                                  Icons.notifications,
-                                  size: 25,
-                                ),
-                              ),
+                              child: notificationsBadgeCubit.unreadNotificationsCountModel == null
+                                  ? const Icon(
+                                      Icons.notifications,
+                                      size: 25,
+                                    )
+                                  : Badge(
+                                      label: Text(notificationsBadgeCubit
+                                              .unreadNotificationsCountModel?.unreadNotificationsCount
+                                              .toString() ??
+                                          ''),
+                                      largeSize: 18,
+                                      textStyle: TextStyle(fontSize: 14),
+                                      child: const Icon(
+                                        Icons.notifications,
+                                        size: 25,
+                                      ),
+                                    ),
                             ),
                           );
                         },
@@ -122,7 +128,9 @@ class HomeScreen extends StatelessWidget {
                               return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
                             },
                             childCount: homeCubit.userSubmissionsList.length +
-                                (homeCubit.isUserSubmissionsLastPage ? 0 : 1), // Replace with your data length
+                                (homeCubit.isUserSubmissionsLastPage
+                                    ? 0
+                                    : 1), // Replace with your data length
                           ),
                         ),
                       ],
