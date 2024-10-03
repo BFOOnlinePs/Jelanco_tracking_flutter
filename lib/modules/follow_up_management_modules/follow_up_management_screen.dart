@@ -4,27 +4,22 @@ import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cub
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_states.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 
-class UsersFollowUpManagementScreen extends StatefulWidget {
+class UsersFollowUpManagementScreen extends StatelessWidget {
   const UsersFollowUpManagementScreen({super.key});
 
   @override
-  _UsersFollowUpManagementScreenState createState() => _UsersFollowUpManagementScreenState();
-}
-
-class _UsersFollowUpManagementScreenState extends State<UsersFollowUpManagementScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('تعيين المتابعين'),
-      ),
-      body: BlocProvider(
-        create: (context) => FollowUpManagementCubit()..getManagers(),
-        child: BlocConsumer<FollowUpManagementCubit, FollowUpManagementStates>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            FollowUpManagementCubit followUpManagementCubit = FollowUpManagementCubit.get(context);
-            return Column(
+    return BlocProvider(
+      create: (context) => FollowUpManagementCubit()..getManagers(),
+      child: BlocConsumer<FollowUpManagementCubit, FollowUpManagementStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          FollowUpManagementCubit followUpManagementCubit = FollowUpManagementCubit.get(context);
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('تعيين المتابعين'),
+            ),
+            body: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -55,16 +50,16 @@ class _UsersFollowUpManagementScreenState extends State<UsersFollowUpManagementS
                   ),
                 ),
               ],
-            );
-          },
-        ),
-      ),
-      floatingActionButton: MyFloatingActionButton(
-        icon: Icons.add,
-        labelText: 'متابع جديد',
-        onPressed: () {
-          // // Navigate to add a new user
-          // navigateToEditAddScreen('');
+            ),
+            floatingActionButton: MyFloatingActionButton(
+              icon: Icons.add,
+              labelText: 'متابع جديد',
+              onPressed: () {
+                // // Navigate to add a new user
+                // navigateToEditAddScreen('');
+              },
+            ),
+          );
         },
       ),
     );

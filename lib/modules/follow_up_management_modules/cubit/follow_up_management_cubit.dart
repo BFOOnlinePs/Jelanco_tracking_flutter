@@ -33,7 +33,6 @@ class FollowUpManagementCubit extends Cubit<FollowUpManagementStates> {
     filteredUsers = getManagersModel!.managers!
         .where((user) => user.name!.toLowerCase().contains(query.toLowerCase()))
         .toList();
-
     emit(UsersSearchState());
   }
 
