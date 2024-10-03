@@ -49,8 +49,7 @@ class AssignedToScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'assigned_to_search_box'.tr(),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                            ButtonSizeConstants.borderRadius),
+                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
                       ),
                     ),
                     onChanged: assignedToCubit.filterUsers,
@@ -58,8 +57,7 @@ class AssignedToScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: assignedToCubit.filteredUsers.isEmpty ||
-                          !SystemPermissions.hasPermission(
-                              SystemPermissions.viewManagerUsers)
+                          !SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers)
                       ? Center(
                           child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -72,7 +70,7 @@ class AssignedToScreen extends StatelessWidget {
                             ),
                             Text(assignedToCubit.filteredUsers.isEmpty
                                 ? 'لا يوجد مستخدمين'
-                                : 'ليست لديك صلاحية لرؤية المستخدمين'),
+                                : 'ليس لديك صلاحية لمتابعة الموظفين'),
                           ],
                         ))
                       : ListView(
@@ -84,19 +82,12 @@ class AssignedToScreen extends StatelessWidget {
                                     radius: 20,
                                     child: user.image != null
                                         ? MyCachedNetworkImage(
-                                            imageUrl: EndPointsConstants
-                                                    .profileStorage +
-                                                user.image!,
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    MyCachedImageBuilder(
-                                                        imageProvider:
-                                                            imageProvider),
+                                            imageUrl: EndPointsConstants.profileStorage + user.image!,
+                                            imageBuilder: (context, imageProvider) =>
+                                                MyCachedImageBuilder(imageProvider: imageProvider),
                                             isCircle: true,
                                           )
-                                        : ClipOval(
-                                            child: Image.asset(AssetsKeys
-                                                .defaultProfileImage)),
+                                        : ClipOval(child: Image.asset(AssetsKeys.defaultProfileImage)),
                                   ),
                                   const SizedBox(
                                     width: 10,
@@ -109,8 +100,7 @@ class AssignedToScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              value:
-                                  assignedToCubit.selectedUsers.contains(user),
+                              value: assignedToCubit.selectedUsers.contains(user),
                               onChanged: (bool? value) {
                                 assignedToCubit.checkBoxChanged(value, user);
                               },

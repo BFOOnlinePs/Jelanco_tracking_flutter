@@ -14,7 +14,8 @@ import 'package:jelanco_tracking_system/modules/shared_modules/notifications_bad
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
-class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
+class HomeCubit extends Cubit<HomeStates>
+    with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
 {
   HomeCubit() : super(HomeInitialState());
 
@@ -98,12 +99,15 @@ class HomeCubit extends Cubit<HomeStates> with TasksToSubmitMixin<HomeStates> //
     });
   }
 
-  Future<void> init( BuildContext context,{required int userId}) async {
+  Future<void> init(BuildContext context, {required int userId}) async {
     try {
       await getUserById(userId: userId);
       NotificationsBadgeCubit.get(context).getUnreadNotificationsCount();
 
-    getUserSubmissions();
+      if (SystemPermissions.hasPermission(SystemPermissions.viewSubmissions)) {
+        getUserSubmissions();
+      }
+
       if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) {
         getTasksToSubmit(
           perPage: 3,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
@@ -106,20 +107,21 @@ class UserProfileScreen extends StatelessWidget {
       ),
 
       // if the current user can assign task to this user
-      floatingActionButton: userId != UserDataConstants.userId
-          ? MyFloatingActionButton(
-              onPressed: () {
-                NavigationServices.navigateTo(
-                  context,
-                  AddTaskScreen(
-                    initialSelectedUserId: userId,
-                  ),
-                );
-              },
-              labelText: 'إضافة تكليف',
-              icon: Icons.add_task,
-            )
-          : Container(),
+      floatingActionButton:
+          userId != UserDataConstants.userId && SystemPermissions.hasPermission(SystemPermissions.addTask)
+              ? MyFloatingActionButton(
+                  onPressed: () {
+                    NavigationServices.navigateTo(
+                      context,
+                      AddTaskScreen(
+                        initialSelectedUserId: userId,
+                      ),
+                    );
+                  },
+                  labelText: 'إضافة تكليف',
+                  icon: Icons.add_task,
+                )
+              : Container(),
     );
   }
 }

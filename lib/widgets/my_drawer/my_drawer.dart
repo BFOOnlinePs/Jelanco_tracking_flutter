@@ -115,7 +115,7 @@ class MyDrawer extends StatelessWidget {
                               ),
 
                               if (SystemPermissions.hasPermission(
-                                  SystemPermissions.submitTask))
+                                  SystemPermissions.viewSubmissions)) // submitTask
                                 DrawerItem(
                                   icon: Icons.today_rounded,
                                   text: 'سجلات اليوم',
