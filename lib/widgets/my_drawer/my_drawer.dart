@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/follow_up_management_modules/follow_up_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
@@ -108,12 +109,33 @@ class MyDrawer extends StatelessWidget {
                                 onTap: () {
                                   NavigationServices.navigateTo(
                                     context,
-                                    UserProfileScreen(
-                                        userId: UserDataConstants.userId!),
+                                    UserProfileScreen(userId: UserDataConstants.userId!),
                                   );
                                 },
                               ),
-
+                              if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
+                                DrawerItem(
+                                  icon: Icons.person_add_alt,
+                                  text: 'تعيين متابعين',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                        UsersFollowUpManagementScreen(),
+                                       // UserFollowUpManagement(),
+                                    );
+                                  },
+                                ),
+                              if (SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers))
+                                DrawerItem(
+                                  icon: Icons.people_alt_outlined,
+                                  text: 'متابعة الموظفين',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                      const ManagerEmployeesScreen(),
+                                    );
+                                  },
+                                ),
                               if (SystemPermissions.hasPermission(
                                   SystemPermissions.viewSubmissions)) // submitTask
                                 DrawerItem(
@@ -126,21 +148,7 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.viewManagerUsers))
-                                DrawerItem(
-                                  icon: Icons.people_alt_outlined,
-                                  text: 'متابعة الموظفين',
-                                  onTap: () {
-                                    NavigationServices.navigateTo(
-                                      context,
-                                      const ManagerEmployeesScreen(),
-                                    );
-                                  },
-                                ),
-
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.addTask))
+                              if (SystemPermissions.hasPermission(SystemPermissions.addTask))
                                 DrawerItem(
                                   icon: Icons.task_alt,
                                   text: 'drawer_tasks_i_added_title'.tr(),
@@ -151,12 +159,10 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.viewTasksAssignedToMe))
+                              if (SystemPermissions.hasPermission(SystemPermissions.viewTasksAssignedToMe))
                                 DrawerItem(
                                   icon: Icons.task_alt,
-                                  text:
-                                      'drawer_tasks_assigned_to_me_title'.tr(),
+                                  text: 'drawer_tasks_assigned_to_me_title'.tr(),
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,

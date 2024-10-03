@@ -1,14 +1,18 @@
 class EndPointsConstants {
   static const String baseUrl = '$url/public/api/';
+
   // static const String baseUrl = '$url/api/';
 
   // static const String url = 'http://chic.ps';
   // static const String url = 'https://jelanco.bfohost.com';
   static const String url = 'http://192.168.1.23/BFO/jelanco_tracking';
+
   // static const String url = 'https://we.jelanco.net';
 
   // static const String socketIoUrl = 'https://jelanco.bfohost.com:3000';
+
   static const String socketIoUrl = 'http://192.168.1.23:3000';
+
   // static const String socketIoUrl = 'http://chic.ps:3000';
 
   static const String tasksStorage = '$url/public/storage/tasks_attachments/';
@@ -55,6 +59,7 @@ class EndPointsConstants {
   static const String updateProfile = '$userProfile/image'; // /users/profile/image
 
   // manager employees
+  static const String managers = '$users/managers';
   static const String managerEmployees = '$users/employees';
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
 

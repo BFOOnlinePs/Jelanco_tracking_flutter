@@ -80,7 +80,8 @@ class HomeScreen extends StatelessWidget {
               onRefresh: () async {
                 await Future.wait([
                   NotificationsBadgeCubit.get(context).getUnreadNotificationsCount(),
-                  homeCubit.getUserSubmissions(),
+                  if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
+                    homeCubit.getUserSubmissions(),
                   if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
                     homeCubit.getTasksToSubmit(
                       perPage: 3,
@@ -108,31 +109,33 @@ class HomeScreen extends StatelessWidget {
                               homeCubit: homeCubit,
                             ),
                           ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              if (index == homeCubit.userSubmissionsList.length &&
-                                  !homeCubit.isUserSubmissionsLastPage) {
-                                if (!homeCubit.isUserSubmissionsLoading) {
-                                  homeCubit.getUserSubmissions(
-                                    page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
+                        if (SystemPermissions.hasPermission(SystemPermissions.viewSubmissions))
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                if (index == homeCubit.userSubmissionsList.length &&
+                                    !homeCubit.isUserSubmissionsLastPage) {
+                                  if (!homeCubit.isUserSubmissionsLoading) {
+
+                                    homeCubit.getUserSubmissions(
+                                      page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
+                                    );
+                                  }
+                                  return Padding(
+                                    padding: EdgeInsets.all(8.0.w),
+                                    child: const LinearProgressIndicator(),
                                   );
                                 }
-                                return Padding(
-                                  padding: EdgeInsets.all(8.0.w),
-                                  child: const LinearProgressIndicator(),
-                                );
-                              }
-                              final submission = homeCubit.userSubmissionsList[index];
+                                final submission = homeCubit.userSubmissionsList[index];
 
-                              return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
-                            },
-                            childCount: homeCubit.userSubmissionsList.length +
-                                (homeCubit.isUserSubmissionsLastPage
-                                    ? 0
-                                    : 1), // Replace with your data length
+                                return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
+                              },
+                              childCount: homeCubit.userSubmissionsList.length +
+                                  (homeCubit.isUserSubmissionsLastPage
+                                      ? 0
+                                      : 1), // Replace with your data length
+                            ),
                           ),
-                        ),
                       ],
                     ),
             ),
