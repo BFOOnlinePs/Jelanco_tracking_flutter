@@ -40,13 +40,30 @@ class FollowUpManagementCubit extends Cubit<FollowUpManagementStates> {
   }
 
   void navigateToEditAddScreen(BuildContext context, UserModel? user) async {
-    final result = await NavigationServices.navigateTo(context, AddEditUsersScreen(selectedUser: user));
+    final ManagerAction? managerAction = await NavigationServices.navigateTo<ManagerAction>(
+        context, AddEditUsersScreen(selectedUserId: user?.id));
 
-    if (result != null && result is List<String>) {
-      // setState(() {
-      // users = result; // Update selected users when returning from edit/add screen
-      // filteredUsers = users; // Update filtered users
-      // });
+    print('managerAction: $managerAction');
+    if (managerAction != null) {
+      // add the new manager if not exists
+      if (managerAction.isRemove == true) {
+        getManagersModel?.managers?.removeWhere((manager) => manager.id == managerAction.managerModel?.id);
+      } else if (!getManagersModel!.managers!
+          .any((manager) => manager.id == managerAction.managerModel?.id)) {
+        getManagersModel?.managers?.add(managerAction.managerModel ?? UserModel());
+        // filteredUsers.add(UserModel(id: newManagerId));
+      }
+      emit(NavigateToEditAddScreenSuccessState());
     }
   }
+}
+
+class ManagerAction {
+  final UserModel? managerModel;
+  final bool? isRemove;
+
+  ManagerAction({
+    this.managerModel,
+    this.isRemove = false,
+  });
 }

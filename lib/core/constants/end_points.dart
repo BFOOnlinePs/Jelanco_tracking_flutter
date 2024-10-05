@@ -1,28 +1,28 @@
 class EndPointsConstants {
-  // static const String baseUrl = '$url/public/api/';
+  static const String baseUrl = '$url/public/api/';
 
-  static const String baseUrl = '$url/api/';
+  // static const String baseUrl = '$url/api/';
 
-  static const String url = 'https://jelanco.bfohost.com';
-  // static const String url = 'http://192.168.1.23/BFO/jelanco_tracking';
-
-
-  static const String socketIoUrl = 'https://jelanco.bfohost.com:3000';
-
-  // static const String socketIoUrl = 'http://192.168.1.23:3000';
+  // static const String url = 'https://jelanco.bfohost.com';
+  static const String url = 'http://192.168.1.23/BFO/jelanco_tracking';
 
 
-  // static const String tasksStorage = '$url/public/storage/tasks_attachments/';
-  // static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
-  // static const String taskSubmissionsCommentStorage = '$url/public/storage/comments_attachments/';
-  // static const String thumbnailStorage = '$url/public/storage/thumbnails/';
-  // static const String profileStorage = '$url/public/storage/profile_images/';
+  // static const String socketIoUrl = 'https://jelanco.bfohost.com:3000';
 
-  static const String tasksStorage = '$url/storage/tasks_attachments/';
-  static const String taskSubmissionsStorage = '$url/storage/uploads/';
-  static const String taskSubmissionsCommentStorage = '$url/storage/comments_attachments/';
-  static const String thumbnailStorage = '$url/storage/thumbnails/';
-  static const String profileStorage = '$url/storage/profile_images/';
+  static const String socketIoUrl = 'http://192.168.1.23:3000';
+
+
+  static const String tasksStorage = '$url/public/storage/tasks_attachments/';
+  static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
+  static const String taskSubmissionsCommentStorage = '$url/public/storage/comments_attachments/';
+  static const String thumbnailStorage = '$url/public/storage/thumbnails/';
+  static const String profileStorage = '$url/public/storage/profile_images/';
+
+  // static const String tasksStorage = '$url/storage/tasks_attachments/';
+  // static const String taskSubmissionsStorage = '$url/storage/uploads/';
+  // static const String taskSubmissionsCommentStorage = '$url/storage/comments_attachments/';
+  // static const String thumbnailStorage = '$url/storage/thumbnails/';
+  // static const String profileStorage = '$url/storage/profile_images/';
 
   // auth
   static const String login = 'login';
@@ -60,6 +60,8 @@ class EndPointsConstants {
   static const String managerEmployees = '$users/employees';
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
   static const String addEditManagerEmployees = '$managerEmployees/add-edit'; // /users/employees/add-edit
+  static const String deleteManager = '$managers/delete'; // users/managers/delete
+
 
 
   // notifications

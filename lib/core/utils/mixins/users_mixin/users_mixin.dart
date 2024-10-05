@@ -6,13 +6,13 @@ import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 mixin UsersMixin<T> on Cubit<T> {
   GetAllUsersModel? getAllUsersModel;
 
-  void getAllUsers({
+  Future<void> getAllUsers({
     required T loadingState,
     required T successState,
     required T Function(String error) errorState,
-  }) {
+  }) async {
     emit(loadingState);
-    DioHelper.getData(url: EndPointsConstants.users).then((value) {
+    await DioHelper.getData(url: EndPointsConstants.users).then((value) {
       print(value?.data);
       getAllUsersModel = GetAllUsersModel.fromMap(value?.data);
       emit(successState);
