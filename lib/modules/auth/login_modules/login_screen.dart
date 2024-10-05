@@ -139,21 +139,21 @@ class LoginScreen extends StatelessWidget {
                                   style: TextStyle(color: ColorsConstants.primaryColor, fontSize: 14.sp)),
                             ),
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                loginCubit.selectActor(newId: 1);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black26,
-                              ),
-                              child: Text(
-                                'مستخدم',
-                                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                              ),
-                            ),
-                          ),
+                          // SizedBox(
+                          //   width: double.infinity,
+                          //   child: ElevatedButton(
+                          //     onPressed: () {
+                          //       loginCubit.selectActor(newId: 1);
+                          //     },
+                          //     style: ElevatedButton.styleFrom(
+                          //       backgroundColor: Colors.black26,
+                          //     ),
+                          //     child: Text(
+                          //       'مستخدم',
+                          //       style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                          //     ),
+                          //   ),
+                          // ),
                           const MyVerticalSpacer(),
                           MyAuthElevatedButton(
                             onPressed: state is LoginLoadingState
