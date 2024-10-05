@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/manager_employees_models/get_managers_model.dart';
+import 'package:jelanco_tracking_system/modules/follow_up_management_modules/add_edit_users_modules/add_edit_users_screen.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
@@ -36,19 +39,14 @@ class FollowUpManagementCubit extends Cubit<FollowUpManagementStates> {
     emit(UsersSearchState());
   }
 
-  void navigateToEditAddScreen(String user) async {
-    // final result = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => AddEditUsersScreen(selectedUser: user),
-    //   ),
-    // );
+  void navigateToEditAddScreen(BuildContext context, UserModel? user) async {
+    final result = await NavigationServices.navigateTo(context, AddEditUsersScreen(selectedUser: user));
 
-    // if (result != null && result is List<String>) {
-    //   // setState(() {
-    //     users = result; // Update selected users when returning from edit/add screen
-    //     filteredUsers = users; // Update filtered users
-    //   // });
-    // }
+    if (result != null && result is List<String>) {
+      // setState(() {
+      // users = result; // Update selected users when returning from edit/add screen
+      // filteredUsers = users; // Update filtered users
+      // });
+    }
   }
 }

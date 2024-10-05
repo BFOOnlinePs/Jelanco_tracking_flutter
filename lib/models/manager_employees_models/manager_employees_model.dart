@@ -1,6 +1,6 @@
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 
-// GetManagerEmployeesModel and GetManagerEmployeesWithTaskAssigneesModel
+// GetManagerEmployeesModel + GetManagerEmployeesModelById + GetManagerEmployeesWithTaskAssigneesModel
 class GetManagerEmployeesModel {
   final bool? status;
   final List<UserModel>? managerEmployees;

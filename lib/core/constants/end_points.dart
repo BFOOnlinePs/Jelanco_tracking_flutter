@@ -62,6 +62,8 @@ class EndPointsConstants {
   static const String managers = '$users/managers';
   static const String managerEmployees = '$users/employees';
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
+  static const String addEditManagerEmployees = '$managerEmployees/add-edit'; // /users/employees/add-edit
+
 
   // notifications
   static const String notifications = 'notifications';

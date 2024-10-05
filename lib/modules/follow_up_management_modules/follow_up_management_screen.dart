@@ -41,8 +41,8 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                           icon: Icon(Icons.edit),
                           onPressed: () {
                             // // Navigate to edit screen with the selected user
-                            // followUpManagementCubit
-                            //     .navigateToEditAddScreen(followUpManagementCubit.filteredUsers[index]);
+                            followUpManagementCubit.navigateToEditAddScreen(
+                                context, followUpManagementCubit.filteredUsers[index]);
                           },
                         ),
                       );
@@ -56,7 +56,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
               labelText: 'متابع جديد',
               onPressed: () {
                 // // Navigate to add a new user
-                // navigateToEditAddScreen('');
+                followUpManagementCubit.navigateToEditAddScreen(context, null);
               },
             ),
           );

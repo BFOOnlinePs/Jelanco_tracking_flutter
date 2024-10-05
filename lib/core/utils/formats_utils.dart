@@ -3,7 +3,7 @@
 class FormatUtils {
   // this format: "["2000", "2020"]" || [الخليل, القدس, رام الله]
   // return string
-  static String citiesNamesFormat(String? list) {
+  static String formJsonToString(String? list) {
     if (list == null) return '';
     String? str =
     list.replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').replaceAll(',', ' | ');
