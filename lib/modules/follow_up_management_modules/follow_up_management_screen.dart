@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
+import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_states.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
+import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
+import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 class UsersFollowUpManagementScreen extends StatelessWidget {
   const UsersFollowUpManagementScreen({super.key});
@@ -30,17 +35,15 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                         ? Container()
                         : Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                labelText: 'بحث عن مستخدم',
-                                border: OutlineInputBorder(),
-                              ),
+                            child: MyTextFormField(
+                              labelText: 'بحث عن مستخدم',
                               onChanged: followUpManagementCubit.usersSearch,
-                            ),
-                          ),
+                              prefixIcon: Icon(Icons.search),
+                            )),
                     Expanded(
-                      child: followUpManagementCubit.filteredUsers.isEmpty
-                          ? Center(
+                      child: followUpManagementCubit.filteredUsers.isEmpty &&
+                              state is! GetManagersLoadingState
+                          ? const Center(
                               child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -56,13 +59,36 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                           : ListView.builder(
                               itemCount: followUpManagementCubit.filteredUsers.length,
                               itemBuilder: (context, index) {
+                                UserModel user = followUpManagementCubit.filteredUsers[index];
                                 return ListTile(
-                                  title:
-                                      Text(followUpManagementCubit.filteredUsers[index].name ?? 'user name'),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () {
-                                      // // Navigate to edit screen with the selected user
+                                  title: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        child: user.image != null
+                                            ? MyCachedNetworkImage(
+                                                imageUrl: EndPointsConstants.profileStorage + user.image!,
+                                                imageBuilder: (context, imageProvider) =>
+                                                    MyCachedImageBuilder(imageProvider: imageProvider),
+                                                isCircle: true,
+                                              )
+                                            : ClipOval(child: Image.asset(AssetsKeys.defaultProfileImage)),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          user.name ?? 'name',
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: GestureDetector(
+                                    child: Icon(Icons.edit),
+                                    onTap: () {
+                                      // Navigate to edit screen with the selected user
                                       followUpManagementCubit.navigateToEditAddScreen(
                                           context, followUpManagementCubit.filteredUsers[index]);
                                     },
