@@ -8,6 +8,8 @@ import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cub
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_text_button_no_border.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 
+import '../../../widgets/loaders/loader_with_disable.dart';
+
 class AddEditUsersScreen extends StatefulWidget {
   final int? selectedUserId;
 
@@ -36,8 +38,6 @@ class _AddEditUsersScreenState extends State<AddEditUsersScreen> {
           if (state is GetAllUsersSuccessState) {
             addEditUsersCubit.allUsers = addEditUsersCubit.getAllUsersModel?.users ?? [];
             addEditUsersCubit.filteredAllUsers = addEditUsersCubit.allUsers; // Initialize with all users
-            print('when GetAllUsersSuccessState');
-            print('allUsers: ${addEditUsersCubit.allUsers.map((user) => user.toMap()).toList()}');
 
             addEditUsersCubit.initValues(widget.selectedUserId);
           } else if (state is AddEditManagerEmployeesSuccessState) {
@@ -78,90 +78,105 @@ class _AddEditUsersScreenState extends State<AddEditUsersScreen> {
         },
         builder: (context, state) {
           addEditUsersCubit = AddEditUsersCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('إضافة / تعديل الموظفين'),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Dropdown for selecting a user
-                  Row(
+          return Stack(
+            children: [
+              Scaffold(
+                appBar: AppBar(
+                  title: Text('إضافة / تعديل الموظفين'),
+                ),
+                body: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المسؤول:',
+                      // Dropdown for selecting a user
+                      Row(
+                        children: [
+                          const Text(
+                            'المسؤول:',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Spacer(),
+                          MyTextButtonNoBorder(
+                              onPressed: addEditUsersCubit.managerUser == null ||
+                                      (addEditUsersCubit.getManagerEmployeesByIdModel != null &&
+                                          addEditUsersCubit
+                                              .getManagerEmployeesByIdModel!.managerEmployees!.isEmpty)
+                                  ? null
+                                  : () {
+                                      addEditUsersCubit.deleteManager();
+                                    },
+                              child: Text('حذف المسؤول'))
+                        ],
+                      ),
+                      DropdownButtonFormField<UserModel>(
+                        value: addEditUsersCubit.managerUser,
+                        hint: Text('إختر موظف'),
+                        items: addEditUsersCubit.allUsers.map((UserModel user) {
+                          return DropdownMenuItem<UserModel>(
+                            value: user,
+                            child: Text(user.name ?? ''),
+                          );
+                        }).toList(),
+                        onChanged: (UserModel? newValue) {
+                          // setState(() {
+                          //   addEditUsersCubit.managerUser = newValue; // Update the selected user
+                          // });
+                          addEditUsersCubit.selectManager(newValue);
+                        },
+                        validator: (value) => value == null ? 'الرجاء إختيار موظف' : null,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'تحديد الموظفين للمتابعة:',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Spacer(),
-                      MyTextButtonNoBorder(
-                          onPressed: () {
-                            addEditUsersCubit.deleteManager();
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'بحث عن موظفين',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: addEditUsersCubit.usersSearch,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: addEditUsersCubit.filteredAllUsers.length,
+                          itemBuilder: (context, index) {
+                            // Exclude the manager user from the list by its id
+                            if (addEditUsersCubit.managerUser != null &&
+                                addEditUsersCubit.filteredAllUsers[index].id ==
+                                    addEditUsersCubit.managerUser!.id) {
+                              return const SizedBox.shrink();
+                            }
+                            return CheckboxListTile(
+                              title: Text(addEditUsersCubit.filteredAllUsers[index].name ?? 'user name'),
+                              value: addEditUsersCubit.employeesUsers
+                                  .contains(addEditUsersCubit.filteredAllUsers[index]),
+                              onChanged: (bool? value) {
+                                addEditUsersCubit
+                                    .toggleEmployeeSelection(addEditUsersCubit.filteredAllUsers[index]);
+                              },
+                            );
                           },
-                          child: Text('حذف المسؤول'))
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          addEditUsersCubit.addEditManagerEmployees();
+                        },
+                        child: Text('حفظ'),
+                      ),
                     ],
                   ),
-                  DropdownButtonFormField<UserModel>(
-                    value: addEditUsersCubit.managerUser,
-                    hint: Text('إختر موظف'),
-                    items: addEditUsersCubit.allUsers.map((UserModel user) {
-                      return DropdownMenuItem<UserModel>(
-                        value: user,
-                        child: Text(user.name ?? ''),
-                      );
-                    }).toList(),
-                    onChanged: (UserModel? newValue) {
-                      // setState(() {
-                      //   addEditUsersCubit.managerUser = newValue; // Update the selected user
-                      // });
-                      addEditUsersCubit.selectManager(newValue);
-                    },
-                    validator: (value) => value == null ? 'الرجاء إختيار موظف' : null,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'تحديد الموظفين للمتابعة:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'بحث عن موظفين',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: addEditUsersCubit.usersSearch,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: addEditUsersCubit.filteredAllUsers.length,
-                      itemBuilder: (context, index) {
-                        // Exclude the manager user from the list by its id
-                        if (addEditUsersCubit.managerUser != null &&
-                            addEditUsersCubit.filteredAllUsers[index].id ==
-                                addEditUsersCubit.managerUser!.id) {
-                          return const SizedBox.shrink();
-                        }
-                        return CheckboxListTile(
-                          title: Text(addEditUsersCubit.filteredAllUsers[index].name ?? 'user name'),
-                          value: addEditUsersCubit.employeesUsers
-                              .contains(addEditUsersCubit.filteredAllUsers[index]),
-                          onChanged: (bool? value) {
-                            addEditUsersCubit
-                                .toggleEmployeeSelection(addEditUsersCubit.filteredAllUsers[index]);
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      addEditUsersCubit.addEditManagerEmployees();
-                    },
-                    child: Text('حفظ'),
-                  ),
-                ],
+                ),
               ),
-            ),
+              state is GetAllUsersLoadingState ||
+                      state is GetManagerEmployeesByIdLoadingState ||
+                      state is DeleteManagerLoadingState ||
+                      state is AddEditManagerEmployeesLoadingState
+                  ? const LoaderWithDisable()
+                  : Container(),
+            ],
           );
         },
       ),

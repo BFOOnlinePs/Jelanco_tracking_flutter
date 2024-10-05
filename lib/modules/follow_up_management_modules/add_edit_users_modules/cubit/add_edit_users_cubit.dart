@@ -25,11 +25,12 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     if (allUsers.any((user) => user.id == selectedUserId)) {
       managerUser = allUsers.firstWhere((user) => user.id == selectedUserId);
     } else {
-      managerUser = null; // or handle it as per your logic
+      managerUser = null;
     }
-    await getManagerEmployeesById(managerUser!.id!);
-    setInitialSelectedUsers(getManagerEmployeesByIdModel?.managerEmployees ?? []);
-
+    if (managerUser != null) {
+      await getManagerEmployeesById(managerUser!.id!);
+      setInitialSelectedUsers(getManagerEmployeesByIdModel?.managerEmployees ?? []);
+    }
     emit(InitValuesState());
   }
 
