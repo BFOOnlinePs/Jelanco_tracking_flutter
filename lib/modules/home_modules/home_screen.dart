@@ -12,6 +12,7 @@ import 'package:jelanco_tracking_system/modules/home_modules/home_widgets/home_t
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/notifications_badge_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
@@ -36,43 +37,7 @@ class HomeScreen extends StatelessWidget {
             appBar: MyAppBar(
               title: 'home_page_title'.tr(),
               actions: [
-                UserDataConstants.userModel == null
-                    ? Container()
-                    : BlocConsumer<NotificationsBadgeCubit, NotificationsBadgeStates>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          NotificationsBadgeCubit notificationsBadgeCubit =
-                              NotificationsBadgeCubit.get(context);
-                          return Container(
-                            margin: const EdgeInsetsDirectional.only(end: 18),
-                            child: InkWell(
-                              onTap: () {
-                                NavigationServices.navigateTo(
-                                  context,
-                                  NotificationsScreen(),
-                                );
-                              },
-                              child: notificationsBadgeCubit.unreadNotificationsCountModel == null
-                                  ? const Icon(
-                                      Icons.notifications,
-                                      size: 25,
-                                    )
-                                  : Badge(
-                                      label: Text(notificationsBadgeCubit
-                                              .unreadNotificationsCountModel?.unreadNotificationsCount
-                                              .toString() ??
-                                          ''),
-                                      largeSize: 18,
-                                      textStyle: TextStyle(fontSize: 14),
-                                      child: const Icon(
-                                        Icons.notifications,
-                                        size: 25,
-                                      ),
-                                    ),
-                            ),
-                          );
-                        },
-                      )
+                UserDataConstants.userModel == null ? Container() : const NotificationsBadgeWidget(),
               ],
             ),
             drawer: UserDataConstants.userModel != null ? const MyDrawer() : null,
@@ -116,7 +81,6 @@ class HomeScreen extends StatelessWidget {
                                 if (index == homeCubit.userSubmissionsList.length &&
                                     !homeCubit.isUserSubmissionsLastPage) {
                                   if (!homeCubit.isUserSubmissionsLoading) {
-
                                     homeCubit.getUserSubmissions(
                                       page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
                                     );

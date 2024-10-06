@@ -1,8 +1,8 @@
-class EndPointsConstants {
+class EndPointsConstants { 
   /// HOST
   // static const String baseUrl = '$url/api/';
   // static const String url = 'https://jelanco.bfohost.com';
-  // static const String socketIoUrl = 'https://jelanco.bfohost.com:3000';
+  // static const String socketIoUrl = 'http://46.60.127.162:3000'; //  https://jelanco.bfohost.com:3000
   // static const String tasksStorage = '$url/storage/tasks_attachments/';
   // static const String taskSubmissionsStorage = '$url/storage/uploads/';
   // static const String taskSubmissionsCommentStorage = '$url/storage/comments_attachments/';
@@ -18,7 +18,6 @@ class EndPointsConstants {
   static const String taskSubmissionsCommentStorage = '$url/public/storage/comments_attachments/';
   static const String thumbnailStorage = '$url/public/storage/thumbnails/';
   static const String profileStorage = '$url/public/storage/profile_images/';
-  
 
   // auth
   static const String login = 'login';
@@ -57,8 +56,6 @@ class EndPointsConstants {
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
   static const String addEditManagerEmployees = '$managerEmployees/add-edit'; // /users/employees/add-edit
   static const String deleteManager = '$managers/delete'; // users/managers/delete
-
-
 
   // notifications
   static const String notifications = 'notifications';

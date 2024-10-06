@@ -37,7 +37,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                         : Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: MyTextFormField(
-                              labelText: 'بحث عن مستخدم',
+                              labelText: 'بحث عن متابع',
                               onChanged: followUpManagementCubit.usersSearch,
                               prefixIcon: const Icon(Icons.search),
                             )),
