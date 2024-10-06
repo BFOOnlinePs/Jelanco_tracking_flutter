@@ -18,20 +18,20 @@ class MyDropdownButton<T> extends StatelessWidget {
   final double? menuMaxHeight;
   final bool isFieldRequired;
 
-  const MyDropdownButton({super.key, 
-    this.label,
-    this.hint,
-    required this.value,
-    required this.items,
-    required this.displayText,
-    // required this.unique,
-    required this.onChanged,
-    this.validator,
-    this.isRequired = false,
-    this.alignmentGeometry = AlignmentDirectional.centerStart,
-    this.menuMaxHeight,
-    this.isFieldRequired = false
-  });
+  const MyDropdownButton(
+      {super.key,
+      this.label,
+      this.hint,
+      required this.value,
+      required this.items,
+      required this.displayText,
+      // required this.unique,
+      required this.onChanged,
+      this.validator,
+      this.isRequired = false,
+      this.alignmentGeometry = AlignmentDirectional.centerStart,
+      this.menuMaxHeight,
+      this.isFieldRequired = false});
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +41,26 @@ class MyDropdownButton<T> extends StatelessWidget {
         children: [
           label != null
               ? Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    label!,
-                    style:  TextStyle(
-                        fontSize: SharedSize.textFiledTitleSize),
-                  ),
-                  isFieldRequired
-                      ? const Text(
-                    ' *',
-                    style:
-                    TextStyle(fontSize: 16, color: Colors.red),
-                  )
-                      : Container(),
-                ],
-              ),
-              const SizedBox(
-                height: TextFormFieldSizeConstants.sizedBoxHeight,
-              ),
-            ],
-          )
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          label!,
+                          style: TextStyle(fontSize: SharedSize.textFiledTitleSize),
+                        ),
+                        isFieldRequired
+                            ? const Text(
+                                ' *',
+                                style: TextStyle(fontSize: 16, color: Colors.red),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: TextFormFieldSizeConstants.sizedBoxHeight,
+                    ),
+                  ],
+                )
               : Container(),
           Container(
             // padding: EdgeInsets.symmetric(horizontal: 10.0),

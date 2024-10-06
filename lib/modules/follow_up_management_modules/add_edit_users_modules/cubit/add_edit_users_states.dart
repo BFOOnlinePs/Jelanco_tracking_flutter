@@ -41,6 +41,8 @@ class DeleteManagerSuccessState extends AddEditUsersStates {
 
 class DeleteManagerErrorState extends AddEditUsersStates {}
 
+class ToggleAllUsersSelectionState extends AddEditUsersStates {}
+
 // users mixin
 
 class GetAllUsersLoadingState extends AddEditUsersStates {}

@@ -13,11 +13,13 @@ import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.da
 class MediaWidget extends StatelessWidget {
   final AttachmentsCategories? attachmentsCategories;
   final String storagePath;
+  final bool isOpenInMediaViewer; // false for home
 
   const MediaWidget({
     super.key,
     required this.attachmentsCategories,
     required this.storagePath,
+    this.isOpenInMediaViewer = true,
   });
 
   @override
@@ -39,6 +41,7 @@ class MediaWidget extends StatelessWidget {
                         child: FilesListViewWidget(
                           storagePath: storagePath,
                           files: attachmentsCategories!.files,
+                          isOpenFile: isOpenInMediaViewer,
                         ),
                       )
                     : Container(),
@@ -58,23 +61,26 @@ class MediaWidget extends StatelessWidget {
                                 height: 200,
                                 margin: const EdgeInsetsDirectional.only(end: 8),
                                 child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MyMediaViewer(
-                                          storagePath: storagePath,
-                                          mediaList: attachmentsCategories!.images!
-                                              .map((image) =>
-                                                  MediaItem(type: MediaType.image, url: image.aAttachment!))
-                                              .toList()
-                                            ..addAll(attachmentsCategories!.videos!.map((video) =>
-                                                MediaItem(type: MediaType.video, url: video.aAttachment!))),
-                                          startIndex: index, // Start at the tapped image index
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                  onTap: isOpenInMediaViewer
+                                      ? () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MyMediaViewer(
+                                                storagePath: storagePath,
+                                                mediaList: attachmentsCategories!.images!
+                                                    .map((image) => MediaItem(
+                                                        type: MediaType.image, url: image.aAttachment!))
+                                                    .toList()
+                                                  ..addAll(attachmentsCategories!.videos!.map((video) =>
+                                                      MediaItem(
+                                                          type: MediaType.video, url: video.aAttachment!))),
+                                                startIndex: index, // Start at the tapped image index
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      : null,
                                   child: SizedBox(
                                     height: 220,
                                     width: 132,
@@ -90,23 +96,26 @@ class MediaWidget extends StatelessWidget {
                               // This is a video
                               int videoIndex = index - attachmentsCategories!.images!.length;
                               return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyMediaViewer(
-                                        storagePath: storagePath,
-                                        mediaList: attachmentsCategories!.images!
-                                            .map((image) =>
-                                                MediaItem(type: MediaType.image, url: image.aAttachment!))
-                                            .toList()
-                                          ..addAll(attachmentsCategories!.videos!.map((video) =>
-                                              MediaItem(type: MediaType.video, url: video.aAttachment!))),
-                                        startIndex: index, // Start at the tapped video index
-                                      ),
-                                    ),
-                                  );
-                                },
+                                onTap: isOpenInMediaViewer
+                                    ? () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MyMediaViewer(
+                                              storagePath: storagePath,
+                                              mediaList: attachmentsCategories!.images!
+                                                  .map((image) => MediaItem(
+                                                      type: MediaType.image, url: image.aAttachment!))
+                                                  .toList()
+                                                ..addAll(attachmentsCategories!.videos!.map((video) =>
+                                                    MediaItem(
+                                                        type: MediaType.video, url: video.aAttachment!))),
+                                              startIndex: index, // Start at the tapped video index
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    : null,
                                 child: Container(
                                   height: 220,
                                   width: 132,

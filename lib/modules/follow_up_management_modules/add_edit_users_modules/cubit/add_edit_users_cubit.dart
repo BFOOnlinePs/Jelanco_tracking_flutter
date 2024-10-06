@@ -64,11 +64,15 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     });
   }
 
-  // set the selected users
+  // set the selected users (when changing manager)
   void setInitialSelectedUsers(List<UserModel> selectedUsers) {
     print('employeesUsers before: $employeesUsers');
     employeesUsers =
         allUsers.where((user) => selectedUsers.any((selectedUser) => selectedUser.id == user.id)).toList();
+    // reorder the filteredAllUsers lost, make the employeesUsers at the beginning of the filteredAllUsers list
+    filteredAllUsers =
+        employeesUsers + filteredAllUsers.where((user) => !employeesUsers.contains(user)).toList();
+
     print('employeesUsers after: $employeesUsers');
     emit(SetInitialSelectedUsersState());
   }
@@ -80,6 +84,24 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
       employeesUsers.add(user);
     }
     emit(ToggleUsersSelectionState());
+  }
+
+  void toggleAllUsersSelection() {
+    // If all users are selected, clear the list; otherwise, select all users
+    if (employeesUsers.length == filteredAllUsers.length) {
+      employeesUsers.clear();
+    } else {
+      employeesUsers
+        ..clear() // Clear any previously selected users
+        ..addAll(filteredAllUsers); // Select all users
+    }
+
+    // if (employeesUsers.isEmpty) {
+    //   employeesUsers = allUsers;
+    // } else {
+    //   employeesUsers = [];
+    // }
+    emit(ToggleAllUsersSelectionState());
   }
 
   DeleteManagerModel? deleteManagerModel;

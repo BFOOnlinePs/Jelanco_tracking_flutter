@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_states.dart';
+import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
@@ -25,8 +26,8 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
           return Stack(
             children: [
               Scaffold(
-                appBar: AppBar(
-                  title: Text('تعيين المتابعين'),
+                appBar: const MyAppBar(
+                  title: 'المتابعين الحاليين',
                 ),
                 body: Column(
                   children: [
@@ -38,7 +39,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                             child: MyTextFormField(
                               labelText: 'بحث عن مستخدم',
                               onChanged: followUpManagementCubit.usersSearch,
-                              prefixIcon: Icon(Icons.search),
+                              prefixIcon: const Icon(Icons.search),
                             )),
                     Expanded(
                       child: followUpManagementCubit.filteredUsers.isEmpty &&
@@ -86,7 +87,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                                     ],
                                   ),
                                   trailing: GestureDetector(
-                                    child: Icon(Icons.edit),
+                                    child: const Icon(Icons.edit),
                                     onTap: () {
                                       // Navigate to edit screen with the selected user
                                       followUpManagementCubit.navigateToEditAddScreen(
