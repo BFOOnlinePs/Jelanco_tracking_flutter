@@ -70,19 +70,17 @@ class AddCommentWidget extends StatelessWidget {
                         backgroundColor: Colors.grey.withOpacity(0.12),
                         child: UserDataConstants.image != null
                             ? MyCachedNetworkImage(
-                                imageUrl: EndPointsConstants.profileStorage +
-                                    UserDataConstants.image!,
+                                imageUrl: EndPointsConstants.profileStorage + UserDataConstants.image!,
                                 imageBuilder: (context, imageProvider) =>
-                                    MyCachedImageBuilder(
-                                        imageProvider: imageProvider),
+                                    MyCachedImageBuilder(imageProvider: imageProvider),
                                 isCircle: true,
                               )
                             : ClipOval(
-                              child: Image.asset(
+                                child: Image.asset(
                                   AssetsKeys.defaultProfileImage,
                                   // fit: BoxFit.cover,
                                 ),
-                            ),
+                              ),
                       ),
                       const SizedBox(width: 10),
 
@@ -103,8 +101,7 @@ class AddCommentWidget extends StatelessWidget {
                             ),
                             filled: true,
                             fillColor: Colors.grey.withOpacity(0.12),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           ),
                         ),
                       ),
@@ -134,18 +131,13 @@ class AddCommentWidget extends StatelessWidget {
                                       height: 100,
                                       showDeleteIcon: true,
                                       onDeletePressed: () {
-                                        addCommentCubit
-                                            .deletedPickedImageFromList(
-                                                index: index);
+                                        addCommentCubit.deletedPickedImageFromList(index: index);
                                       },
-                                      margin: const EdgeInsetsDirectional.only(
-                                          end: 10),
+                                      margin: const EdgeInsetsDirectional.only(end: 10),
                                       child: Image.file(
-                                        File(addCommentCubit
-                                            .pickedImagesList[index].path),
+                                        File(addCommentCubit.pickedImagesList[index].path),
                                       )),
-                                  itemCount:
-                                      addCommentCubit.pickedImagesList.length,
+                                  itemCount: addCommentCubit.pickedImagesList.length,
                                 ),
                               ),
                         addCommentCubit.pickedVideosList.isEmpty
@@ -158,23 +150,18 @@ class AddCommentWidget extends StatelessWidget {
                                   itemBuilder: (context, index) {
                                     return MyVideo(
                                       height: 150,
-                                      videoPlayerController: addCommentCubit
-                                          .videoControllers[index],
+                                      videoPlayerController: addCommentCubit.videoControllers[index],
                                       index: index,
                                       showDeleteIcon: true,
                                       onDeletePressed: () {
-                                        addCommentCubit
-                                            .deletedPickedVideoFromList(
-                                                index: index);
+                                        addCommentCubit.deletedPickedVideoFromList(index: index);
                                       },
-                                      margin: const EdgeInsetsDirectional.only(
-                                          end: 10),
+                                      margin: const EdgeInsetsDirectional.only(end: 10),
                                       showTogglePlayPause: false,
                                       showVideoIcon: true,
                                     );
                                   },
-                                  itemCount:
-                                      addCommentCubit.pickedVideosList.length,
+                                  itemCount: addCommentCubit.pickedVideosList.length,
                                 ),
                               ),
                       ],
@@ -184,20 +171,14 @@ class AddCommentWidget extends StatelessWidget {
                   addCommentCubit.pickedFilesList.isEmpty
                       ? Container()
                       : SizedBox(
-                          height: addCommentCubit.pickedFilesList.length > 3
-                              ? 200
-                              : null,
+                          height: addCommentCubit.pickedFilesList.length > 3 ? 200 : null,
                           child: ListView.builder(
                             shrinkWrap: true,
                             // physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              String fileName = addCommentCubit
-                                  .pickedFilesList[index].path
-                                  .split('/')
-                                  .last;
+                              String fileName = addCommentCubit.pickedFilesList[index].path.split('/').last;
                               return Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 16),
+                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
                                   borderRadius: BorderRadius.circular(8),
@@ -212,9 +193,7 @@ class AddCommentWidget extends StatelessWidget {
                                 child: ListTile(
                                   leading: IconButton(
                                     icon: const Icon(Icons.close),
-                                    onPressed: () => addCommentCubit
-                                        .deletedPickedFileFromList(
-                                            index: index),
+                                    onPressed: () => addCommentCubit.deletedPickedFileFromList(index: index),
                                   ),
                                   title: Text(
                                     fileName,
@@ -241,8 +220,7 @@ class AddCommentWidget extends StatelessWidget {
                               addCommentCubit.requestPermission(
                                   context: context,
                                   permissionType: PermissionType.camera,
-                                  functionWhenGranted:
-                                      addCommentCubit.pickMediaFromCamera);
+                                  functionWhenGranted: addCommentCubit.pickMediaFromCamera);
                             },
                           ),
                           MenuItemModel(
@@ -253,8 +231,8 @@ class AddCommentWidget extends StatelessWidget {
                               addCommentCubit.requestPermission(
                                   context: context,
                                   permissionType: PermissionType.camera,
-                                  functionWhenGranted: () => addCommentCubit
-                                      .pickMediaFromCamera(isImage: false));
+                                  functionWhenGranted: () =>
+                                      addCommentCubit.pickMediaFromCamera(isImage: false));
                             },
                           ),
                         ],
@@ -269,8 +247,7 @@ class AddCommentWidget extends StatelessWidget {
                           addCommentCubit.requestPermission(
                               context: context,
                               permissionType: PermissionType.storage,
-                              functionWhenGranted: addCommentCubit
-                                  .pickMultipleImagesFromGallery);
+                              functionWhenGranted: addCommentCubit.pickMultipleImagesFromGallery);
                         },
                       ),
                       MediaOptionButton(
@@ -279,8 +256,7 @@ class AddCommentWidget extends StatelessWidget {
                           addCommentCubit.requestPermission(
                               context: context,
                               permissionType: PermissionType.storage,
-                              functionWhenGranted: addCommentCubit
-                                  .pickMultipleVideosFromGallery);
+                              functionWhenGranted: addCommentCubit.pickMultipleVideosFromGallery);
                         },
                       ),
                       MediaOptionButton(
@@ -289,27 +265,23 @@ class AddCommentWidget extends StatelessWidget {
                           addCommentCubit.requestPermission(
                               context: context,
                               permissionType: PermissionType.storage,
-                              functionWhenGranted:
-                                  addCommentCubit.pickReportFile);
+                              functionWhenGranted: addCommentCubit.pickReportFile);
                         },
                       ),
                       const Spacer(),
                       IconButton(
                         icon: Icon(Icons.send,
-                            color:
-                                addCommentCubit.commentController.text.isEmpty
-                                    ? Colors.grey
-                                    : ColorsConstants.primaryColor),
-                        onPressed: addCommentCubit
-                                .commentController.text.isEmpty
+                            color: addCommentCubit.commentController.text.isEmpty
+                                ? Colors.grey
+                                : ColorsConstants.primaryColor),
+                        onPressed: addCommentCubit.commentController.text.isEmpty
                             ? null
                             : () {
                                 addCommentCubit.addComment(
                                   taskId: taskId,
                                   taskSubmissionId: taskSubmissionId,
                                   parentId: -1,
-                                  commentContent:
-                                      addCommentCubit.commentController.text,
+                                  commentContent: addCommentCubit.commentController.text,
                                 );
                               },
                       ),
@@ -329,8 +301,7 @@ class MediaOptionButton extends StatelessWidget {
   final IconData icon;
   final Function()? onPressed;
 
-  const MediaOptionButton(
-      {super.key, required this.icon, required this.onPressed});
+  const MediaOptionButton({super.key, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

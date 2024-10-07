@@ -439,7 +439,9 @@ class EditTaskScreen extends StatelessWidget {
                         state is GetOldTaskDataLoadingState ||
                         editTaskCubit.getTaskCategoriesModel == null ||
                         editTaskCubit.getManagerEmployeesWithTaskAssigneesModel == null
-                    ? const LoaderWithDisable()
+                    ? LoaderWithDisable(
+                        isShowMessage: state is EditTaskLoadingState ? true : false,
+                      )
                     : Container()
               ],
             ),
