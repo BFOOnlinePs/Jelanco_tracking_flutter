@@ -36,7 +36,6 @@ class SubmissionCommentsScreen extends StatelessWidget {
           onPressed: () {
             // Call the callback function before popping
             onPopCallback();
-            // TODO: update the number only when changed
             print("pop");
             Navigator.pop(context);
           },
@@ -119,11 +118,15 @@ class SubmissionCommentsScreen extends StatelessWidget {
                           // : Text('data'),
                           if (SystemPermissions.hasPermission(
                               SystemPermissions.addComment))
-                            ElevatedButton(
-                              onPressed: () {
-                                openBottomSheet(context);
-                              },
-                              child: const Text('أكتب تعليق'),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  openBottomSheet(context);
+                                },
+                                child: const Text('أكتب تعليق'),
+
+                              ),
                             )
                         ],
                       ),
@@ -131,7 +134,7 @@ class SubmissionCommentsScreen extends StatelessWidget {
                   ),
                 ),
                 state is GetSubmissionCommentsLoadingState &&
-                        submissionCommentsCubit.getSubmissionCommentsModel !=
+                        submissionCommentsCubit.getSubmissionCommentsModel ==
                             null
                     ? const LoaderWithDisable()
                     : Container(),

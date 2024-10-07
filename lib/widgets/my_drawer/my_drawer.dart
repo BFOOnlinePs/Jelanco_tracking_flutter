@@ -113,18 +113,18 @@ class MyDrawer extends StatelessWidget {
                                   );
                                 },
                               ),
-                              // if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
-                              //   DrawerItem(
-                              //     icon: Icons.person_add_alt,
-                              //     text: 'تعيين متابعين',
-                              //     onTap: () {
-                              //       NavigationServices.navigateTo(
-                              //         context,
-                              //           UsersFollowUpManagementScreen(),
-                              //          // UserFollowUpManagement(),
-                              //       );
-                              //     },
-                              //   ),
+                              if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
+                                DrawerItem(
+                                  icon: Icons.person_add_alt,
+                                  text: 'تعيين متابعين',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                      context,
+                                        UsersFollowUpManagementScreen(),
+                                       // UserFollowUpManagement(),
+                                    );
+                                  },
+                                ),
                               if (SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers))
                                 DrawerItem(
                                   icon: Icons.people_alt_outlined,

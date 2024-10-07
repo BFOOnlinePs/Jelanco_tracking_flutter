@@ -467,9 +467,10 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     print('videoPath:: $videoPath');
     if (videoPath.endsWith('.mp4')) {
       print('videoPath:: $videoPath');
+      print('videoFullPath:: ${EndPointsConstants.taskSubmissionsStorage + videoPath}');
 
       VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.tasksStorage + videoPath));
+          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);

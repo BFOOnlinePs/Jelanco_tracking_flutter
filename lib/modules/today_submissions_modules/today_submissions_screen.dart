@@ -22,7 +22,7 @@ class TodaySubmissionsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const MyScreenTitleWidget(title: 'ما تم تسليمه اليوم'),
+          const MyScreenTitleWidget(title: 'ما قمت بتسليمه اليوم'),
           BlocProvider(
             create: (context) => TodaySubmissionsCubit()..getTodaySubmissions(),
             child: BlocConsumer<TodaySubmissionsCubit, TodaySubmissionsStates>(
@@ -32,39 +32,30 @@ class TodaySubmissionsScreen extends StatelessWidget {
                 return Expanded(
                   child: todaySubmissionsCubit.getTodaySubmissionsModel == null
                       ? const Center(child: MyLoader())
-                      : todaySubmissionsCubit
-                              .getTodaySubmissionsModel!.submissions!.isEmpty
+                      : todaySubmissionsCubit.getTodaySubmissionsModel!.submissions!.isEmpty
                           ? const Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Image(
-                                    image: AssetImage(
-                                        AssetsKeys.defaultNoSubmissionsImage2),
+                                    image: AssetImage(AssetsKeys.defaultNoSubmissionsImage2),
                                     height: 250,
                                   ),
                                   Text(
                                     'لا توجد تسليمات',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             )
                           : ListView.builder(
                               itemBuilder: (context, index) {
-                                if (index ==
-                                        todaySubmissionsCubit
-                                            .todaySubmissionsList.length &&
-                                    !todaySubmissionsCubit
-                                        .isTodaySubmissionsLastPage) {
-                                  if (!todaySubmissionsCubit
-                                      .isTodaySubmissionsLoading) {
+                                if (index == todaySubmissionsCubit.todaySubmissionsList.length &&
+                                    !todaySubmissionsCubit.isTodaySubmissionsLastPage) {
+                                  if (!todaySubmissionsCubit.isTodaySubmissionsLoading) {
                                     todaySubmissionsCubit.getTodaySubmissions(
                                       page: todaySubmissionsCubit
-                                              .getTodaySubmissionsModel!
-                                              .pagination!
-                                              .currentPage! +
+                                              .getTodaySubmissionsModel!.pagination!.currentPage! +
                                           1,
                                     );
                                   }
@@ -73,8 +64,7 @@ class TodaySubmissionsScreen extends StatelessWidget {
                                     child: const Center(child: MyLoader()),
                                   );
                                 }
-                                final submission = todaySubmissionsCubit
-                                    .todaySubmissionsList[index];
+                                final submission = todaySubmissionsCubit.todaySubmissionsList[index];
 
                                 return UserSubmissionWidget(
                                   submission: submission,
@@ -85,12 +75,8 @@ class TodaySubmissionsScreen extends StatelessWidget {
                                   ///
                                 );
                               },
-                              itemCount: todaySubmissionsCubit
-                                      .todaySubmissionsList.length +
-                                  (todaySubmissionsCubit
-                                          .isTodaySubmissionsLastPage
-                                      ? 0
-                                      : 1),
+                              itemCount: todaySubmissionsCubit.todaySubmissionsList.length +
+                                  (todaySubmissionsCubit.isTodaySubmissionsLastPage ? 0 : 1),
                             ),
                 );
               },

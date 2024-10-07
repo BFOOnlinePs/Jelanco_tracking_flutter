@@ -12,29 +12,29 @@ class SubmissionTimeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10, top: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          submission.tsActualStartTime != null
-              ? Expanded(
-                  child: TimeWidget('وقت البدء', submission.tsActualStartTime!,
-                      Icons.access_time),
-                )
-              : Container(),
-          submission.tsActualStartTime != null &&
-                  submission.tsActualEndTime != null
-              ? const SizedBox(width: 10)
-              : Container(),
-          submission.tsActualEndTime != null
-              ? Expanded(
-                  child: TimeWidget('وقت الإنتهاء', submission.tsActualEndTime!,
-                      Icons.access_time_outlined),
-                )
-              : Container(),
-        ],
-      ),
-    );
+    return submission.tsActualStartTime != null || submission.tsActualEndTime != null
+        ? Container(
+            margin: const EdgeInsets.only(bottom: 10, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                submission.tsActualStartTime != null
+                    ? Expanded(
+                        child: TimeWidget('وقت البدء', submission.tsActualStartTime!, Icons.access_time),
+                      )
+                    : Container(),
+                submission.tsActualStartTime != null && submission.tsActualEndTime != null
+                    ? const SizedBox(width: 10)
+                    : Container(),
+                submission.tsActualEndTime != null
+                    ? Expanded(
+                        child: TimeWidget(
+                            'وقت الإنتهاء', submission.tsActualEndTime!, Icons.access_time_outlined),
+                      )
+                    : Container(),
+              ],
+            ),
+          )
+        : Container();
   }
 }

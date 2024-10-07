@@ -51,10 +51,15 @@ class UserSubmissionWidget extends StatelessWidget {
                   userProfileCubit: userProfileCubit,
                   todaySubmissionsCubit: todaySubmissionsCubit,
                 ),
-                ContentWidget(submission.tsContent ?? '', isSubmission: true),
+                ContentWidget(
+                  submission.tsContent ?? '',
+                  isSubmission: true,
+                  isTextExpanded: false,
+                ),
                 MediaWidget(
                   attachmentsCategories: submission.submissionAttachmentsCategories!,
                   storagePath: EndPointsConstants.taskSubmissionsStorage,
+                  isOpenInMediaViewer: false,
                 ),
                 submission.taskDetails != null
                     ? Column(

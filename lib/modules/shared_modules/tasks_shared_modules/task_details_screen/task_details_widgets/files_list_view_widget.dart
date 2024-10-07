@@ -8,11 +8,13 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_atta
 class FilesListViewWidget extends StatelessWidget {
   final String? storagePath;
   final List<SubmissionAttachmentModel>? files;
+  final bool isOpenFile;
 
   const FilesListViewWidget({
     super.key,
     required this.storagePath,
     required this.files,
+    this.isOpenFile = true,
   });
 
   @override
@@ -25,12 +27,12 @@ class FilesListViewWidget extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => Container(
           margin: const EdgeInsetsDirectional.only(end: 6, top: 4),
           child: InkWell(
-            onTap: () {
+            onTap: isOpenFile ? () {
               LaunchUrlUtils.launchMyUrl(
                 storagePath: storagePath!,
                 uriString: files![index].aAttachment!,
               );
-            },
+            } : null,
             borderRadius: BorderRadius.circular(8.0),
             splashColor: Colors.blue.withOpacity(0.2),
             highlightColor: Colors.blue.withOpacity(0.1),

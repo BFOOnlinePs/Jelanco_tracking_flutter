@@ -12,8 +12,9 @@ class MyTextButtonNoBorder extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       child: child,
+
       // style: ButtonStyle(
-      //
+      //   padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero), // Remove all padding
       // ),
     );
   }

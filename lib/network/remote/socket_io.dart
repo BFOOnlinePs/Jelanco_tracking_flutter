@@ -1,5 +1,4 @@
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
-import 'package:jelanco_tracking_system/models/basic_models/notification_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -16,6 +15,9 @@ class SocketIO {
     socket = IO.io(EndPointsConstants.socketIoUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
+      'secure': true,
+      'forceNew': true,
+
     });
 
     socket.connect();

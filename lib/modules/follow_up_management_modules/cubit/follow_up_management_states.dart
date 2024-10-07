@@ -9,3 +9,5 @@ class GetManagersSuccessState extends FollowUpManagementStates {}
 class GetManagersErrorState extends FollowUpManagementStates {}
 
 class UsersSearchState extends FollowUpManagementStates {}
+
+class NavigateToEditAddScreenSuccessState extends FollowUpManagementStates {}

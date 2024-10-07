@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class LoaderWithDisable extends StatelessWidget {
   const LoaderWithDisable({super.key});
@@ -13,7 +14,14 @@ class LoaderWithDisable extends StatelessWidget {
           color: Colors.black.withOpacity(0.5),
           dismissible: false,
         ),
-        const Center(
+        Center(
+          // child: CircularPercentIndicator(
+          //   radius: 60.0,
+          //   lineWidth: 5.0,
+          //   percent: 1.0,
+          //   center: new Text("100%"),
+          //   progressColor: Colors.green,
+          // ),
           child: MyLoader(),
         ),
       ],
