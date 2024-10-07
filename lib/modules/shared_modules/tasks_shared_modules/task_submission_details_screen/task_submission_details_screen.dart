@@ -14,6 +14,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
+import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 class TaskSubmissionDetailsScreen extends StatelessWidget {
@@ -31,83 +32,71 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
         create: (context) => TaskSubmissionDetailsCubit()
           ..getTaskSubmissionWithTaskAndComments(submissionId: submissionId)
           ..listenToNewComments(),
-        child: BlocConsumer<TaskSubmissionDetailsCubit,
-            TaskSubmissionDetailsStates>(
+        child: BlocConsumer<TaskSubmissionDetailsCubit, TaskSubmissionDetailsStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            TaskSubmissionDetailsCubit taskSubmissionDetailsCubit =
-                TaskSubmissionDetailsCubit.get(context);
+            TaskSubmissionDetailsCubit taskSubmissionDetailsCubit = TaskSubmissionDetailsCubit.get(context);
 
-            return taskSubmissionDetailsCubit
-                        .getTaskSubmissionWithTaskAndCommentsModel ==
-                    null
+            return taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel == null
                 ? const Center(child: MyLoader())
-                : SingleChildScrollView(
+                :
+                // MyRefreshIndicator(
+                //         onRefresh: () {
+                //           // return taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndComments(
+                //           //     submissionId: submissionId);
+                //         },
+                //         child:
+                SingleChildScrollView(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel
-                                    ?.taskSubmission
-                                    ?.taskDetails !=
+                                    .getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission?.taskDetails !=
                                 null
                             ? TaskDetailsSectionWidget(
                                 taskModel: taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel!
-                                    .taskSubmission!
-                                    .taskDetails!)
+                                    .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.taskDetails!)
                             : Container(),
                         Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10),
+                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SubmissionHeaderWidget(
                                 submissionModel: taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel!
-                                    .taskSubmission!,
-                                  taskSubmissionDetailsCubit: taskSubmissionDetailsCubit,
-
+                                    .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!,
+                                taskSubmissionDetailsCubit: taskSubmissionDetailsCubit,
                               ),
                               ContentWidget(
-                                taskSubmissionDetailsCubit
-                                        .getTaskSubmissionWithTaskAndCommentsModel!
-                                        .taskSubmission!
-                                        .tsContent ??
+                                taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                        .taskSubmission!.tsContent ??
                                     '',
                                 isSubmission: true,
                               ),
-                              taskSubmissionDetailsCubit
-                                  .getTaskSubmissionWithTaskAndCommentsModel!
-                                  .taskSubmission
-                                  !.submissionCategories!.isNotEmpty ?
-                              WrappedLabelValueWidget(
-                                  'التصنيف',
-                                  taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission
-                                      ?.submissionCategories
-                                      ?.map((category) => category.cName)
-                                      .join(', ') ?? '') : Container(),
+                              taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                      .taskSubmission!.submissionCategories!.isNotEmpty
+                                  ? WrappedLabelValueWidget(
+                                      'التصنيف',
+                                      taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                              .taskSubmission?.submissionCategories
+                                              ?.map((category) => category.cName)
+                                              .join(', ') ??
+                                          '')
+                                  : Container(),
                               SubmissionTimeWidget(
                                   submission: taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!),
+                                      .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!),
                               MediaWidget(
                                 attachmentsCategories: taskSubmissionDetailsCubit
                                     .getTaskSubmissionWithTaskAndCommentsModel!
-                                    .taskSubmission!.submissionAttachmentsCategories!,
+                                    .taskSubmission!
+                                    .submissionAttachmentsCategories!,
                                 storagePath: EndPointsConstants.taskSubmissionsStorage,
-
                               ),
 
-
                               // SubmissionTimeWidget(submission: submission),
-                              taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!
-                                      .submissionComments!
-                                      .isNotEmpty
+                              taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                      .taskSubmission!.submissionComments!.isNotEmpty
                                   ? CommentsSectionWidget(
                                       comments: taskSubmissionDetailsCubit
                                           .getTaskSubmissionWithTaskAndCommentsModel!
@@ -118,14 +107,11 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 6,
                               ),
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.addComment))
-                              ShowModalAddCommentButton(
-                                  taskId: taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!
-                                      .tsTaskId!,
-                                  submissionId: submissionId),
+                              if (SystemPermissions.hasPermission(SystemPermissions.addComment))
+                                ShowModalAddCommentButton(
+                                    taskId: taskSubmissionDetailsCubit
+                                        .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsTaskId!,
+                                    submissionId: submissionId),
                             ],
                           ),
                         ),
@@ -133,6 +119,7 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
                       ],
                     ),
                   );
+            // );
           },
         ),
       ),

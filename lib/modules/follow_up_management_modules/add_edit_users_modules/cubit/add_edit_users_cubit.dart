@@ -93,14 +93,10 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     } else {
       employeesUsers
         ..clear() // Clear any previously selected users
-        ..addAll(filteredAllUsers); // Select all users
+        ..addAll(filteredAllUsers)
+        ..removeWhere((user) => user.id == managerUser?.id); // Select all users expect the manager
     }
 
-    // if (employeesUsers.isEmpty) {
-    //   employeesUsers = allUsers;
-    // } else {
-    //   employeesUsers = [];
-    // }
     emit(ToggleAllUsersSelectionState());
   }
 
@@ -127,7 +123,6 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     DioHelper.postData(url: EndPointsConstants.addEditManagerEmployees, data: {
       'manager_id': managerUser?.id,
       'employee_ids': FormatUtils.formatList<UserModel>(employeesUsers, (user) => user?.id.toString()),
-      // 'is_remove': employeesUsers.isEmpty ? true : false
     }).then((value) {
       print(value?.data);
       addEditManagerEmployeesModel = AddEditManagerEmployeesModel.fromMap(value?.data);

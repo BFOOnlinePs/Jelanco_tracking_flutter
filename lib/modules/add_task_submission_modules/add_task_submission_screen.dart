@@ -30,7 +30,7 @@ import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_fie
 // regardless if it is
 // 1. the original submission
 // 2. edit submission / new version
-// 3. add submission without task
+// 3. add submission without task (from home)
 class AddTaskSubmissionScreen extends StatelessWidget {
   final int taskId; // -1 when add submission without task
   final int? taskSubmissionId; // for edit
