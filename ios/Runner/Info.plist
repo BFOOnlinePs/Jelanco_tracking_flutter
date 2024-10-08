@@ -7,13 +7,17 @@
 	<key>CFBundleDisplayName</key>
 	<string>Jelanco Tracking System</string>
 	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to allow you to pick images.</string>
     <key>NSCameraUsageDescription</key>
     <string>We need access to your camera</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>We need access to your microphone for recording videos</string>
-	<string>$(EXECUTABLE_NAME)</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app requires access to your location while you are using the app.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app requires access to your location at all times.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -35,16 +39,17 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+	<array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
 	<key>LSApplicationQueriesSchemes</key>
     <array>
-      <string>sms</string>
-      <string>tel</string>
+        <string>sms</string>
+        <string>tel</string>
     </array>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
+
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -56,5 +61,15 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
+
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to deliver personalized ads to you.</string>
+
 </dict>
 </plist>

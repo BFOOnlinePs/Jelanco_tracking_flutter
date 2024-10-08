@@ -16,28 +16,37 @@ mixin PermissionsMixin<T> on Cubit<T> {
   }) async {
     print('requestPermission for $permissionType');
 
-    // Get device info to check Android SDK version
-    final deviceInfo = await DeviceInfoPlugin().androidInfo;
-    final sdkVersion = deviceInfo.version.sdkInt;
+    // Check platform to avoid checking Android SDK on iOS
+    if (Theme.of(context).platform == TargetPlatform.android) {
+      // Get device info to check Android SDK version
+      final deviceInfo = await DeviceInfoPlugin().androidInfo;
+      final sdkVersion = deviceInfo.version.sdkInt;
+
+      if (permissionType == PermissionType.storage && sdkVersion > 32) {
+        await _requestPhotosAndVideosPermissions();
+        return;
+      }
+    }
 
     // Request permissions based on type and SDK version
     switch (permissionType) {
       case PermissionType.storage:
-        if (sdkVersion > 32) {
-          await _requestPhotosAndVideosPermissions();
-          print('Storage permissions requested for Android SDK > 32');
-        } else {
-          permissionStatus = await Permission.storage.request();
-          print('Storage permission requested for Android SDK <= 32');
-        }
+        // if (sdkVersion > 32) {
+        //   await _requestPhotosAndVideosPermissions();
+        //   print('Storage permissions requested for Android SDK > 32');
+        // } else {
+        permissionStatus = await Permission.storage.request();
+        print('Storage permission requested for Android SDK <= 32 OR IOS');
+        // }
         break;
 
       case PermissionType.location:
+
         permissionStatus = await Permission.location.request();
         print('Location permission requested');
         break;
 
-        case PermissionType.camera:
+      case PermissionType.camera:
         permissionStatus = await Permission.camera.request();
         print('Camera permission requested');
         break;
@@ -52,7 +61,7 @@ mixin PermissionsMixin<T> on Cubit<T> {
       if (functionWhenGranted != null) {
         await functionWhenGranted();
       }
-    } else if (permissionStatus?.isDenied == true) {
+    } else if (permissionStatus?.isDenied == true || permissionStatus?.isPermanentlyDenied == true){
       print('${permissionType.toString()} permission denied');
       await _showPermissionDeniedDialog(context);
     }
@@ -67,36 +76,48 @@ mixin PermissionsMixin<T> on Cubit<T> {
     if (photoPermission.isGranted && videoPermission.isGranted) {
       permissionStatus = photoPermission; // Assuming both are granted
     } else {
-      permissionStatus =
-          PermissionStatus.denied; // Default to denied if any are denied
+      permissionStatus = PermissionStatus.denied; // Default to denied if any are denied
     }
   }
 
   Future<void> _showPermissionDeniedDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text("permission_denied".tr()),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text("permission_needed").tr(),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                openAppSettings();
-              },
-              child: const Text('permission_go_to_settings').tr(),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("permission_exit_button").tr(),
+      builder: (BuildContext context)
+      {
+        String message;
+
+        // Check if the permission is permanently denied
+        if (permissionStatus?.isPermanentlyDenied == true) {
+          message = "تم رفض الصلاحية بشكل نهائي";
+        } else {
+          message = "بحاجة الى صلاحية";
+        }
+
+
+       return AlertDialog(
+          title: Text("permission_denied".tr()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("permission_needed").tr(),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  openAppSettings();
+                },
+                child: const Text('permission_go_to_settings').tr(),
+              )
+            ],
           ),
-        ],
-      ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("permission_exit_button").tr(),
+            ),
+          ],
+        );
+      },
     );
   }
 }
