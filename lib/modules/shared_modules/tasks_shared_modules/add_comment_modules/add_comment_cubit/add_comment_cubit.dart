@@ -19,10 +19,7 @@ import 'package:video_player/video_player.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/add_task_submission_comment_model.dart';
 
 class AddCommentCubit extends Cubit<AddCommentStates>
-    with
-        PermissionsMixin,
-        CompressVideoMixin<AddCommentStates>,
-        CompressImagesMixin<AddCommentStates> {
+    with PermissionsMixin, CompressVideoMixin<AddCommentStates>, CompressImagesMixin<AddCommentStates> {
   AddCommentCubit() : super(AddCommentInitialState());
 
   static AddCommentCubit get(context) => BlocProvider.of(context);
@@ -176,14 +173,12 @@ class AddCommentCubit extends Cubit<AddCommentStates>
         String? mimeType = lookupMimeType(file.path!);
         String extension = file.extension ?? '';
 
-        if (mimeType != null &&
-            FilesExtensionsUtils.isAcceptedFileType(extension)) {
+        if (mimeType != null && FilesExtensionsUtils.isAcceptedFileType(extension)) {
           pickedFilesList.add(selectedFile);
           emit(AddTaskSubmissionFileSelectSuccessState());
         } else {
           emit(AddTaskSubmissionFileSelectErrorState(
-              error:
-                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+              error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
         }
       }
     }
@@ -210,8 +205,12 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     emit(AddCommentLoadingState());
 
     // compress images videos before send them to back-end
-    await compressAllImages();
-    await compressVideos();
+    if (pickedImagesList.isNotEmpty) {
+      await compressAllImages();
+    }
+    if (pickedVideosList.isNotEmpty) {
+      await compressVideos();
+    }
 
     Map<String, dynamic> data = {
       'task_id': taskId,
@@ -259,13 +258,10 @@ class AddCommentCubit extends Cubit<AddCommentStates>
     ).then((value) {
       clearCommentData();
       print(value?.data);
-      addTaskSubmissionCommentModel =
-          AddTaskSubmissionCommentModel.fromMap(value?.data);
-      emit(AddCommentSuccessState(
-          addTaskSubmissionCommentModel: addTaskSubmissionCommentModel!));
+      addTaskSubmissionCommentModel = AddTaskSubmissionCommentModel.fromMap(value?.data);
+      emit(AddCommentSuccessState(addTaskSubmissionCommentModel: addTaskSubmissionCommentModel!));
 
       commentService.addComment(addTaskSubmissionCommentModel!.comment!);
-
     }).catchError((error) {
       emit(AddCommentErrorState(error: error.toString()));
       print(error.toString());

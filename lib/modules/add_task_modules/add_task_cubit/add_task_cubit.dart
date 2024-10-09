@@ -232,7 +232,9 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       emit(ToggleVideoPlayPauseState());
     } else if (videosControllers[index] != null) {
       print('new videos');
-      videosControllers[index]!.value.isPlaying ? videosControllers[index]!.pause() : videosControllers[index]!.play();
+      videosControllers[index]!.value.isPlaying
+          ? videosControllers[index]!.pause()
+          : videosControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     }
   }
@@ -296,7 +298,8 @@ class AddTaskCubit extends Cubit<AddTaskStates>
           pickedFilesList.add(selectedFile);
           emit(AddTaskFileSelectSuccessState());
         } else {
-          emit(AddTaskFileSelectErrorState(error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+          emit(AddTaskFileSelectErrorState(
+              error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
@@ -335,8 +338,12 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     emit(AddTaskLoadingState());
 
     // compress images videos before send them to back-end
-    await compressAllImages();
-    await compressVideos();
+    if (pickedImagesList.isNotEmpty) {
+      await compressAllImages();
+    }
+    if (pickedVideosList.isNotEmpty) {
+      await compressVideos();
+    }
 
     Map<String, dynamic> dataObject = {
       'content': contentController.text,

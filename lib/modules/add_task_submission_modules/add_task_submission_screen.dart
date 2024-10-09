@@ -355,7 +355,6 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                   functionWhenGranted: addTaskSubmissionCubit.getCurrentLocation,
                                 )
                                     .then((value) {
-                                  print('add task .then');
                                   addTaskSubmissionCubit.addNewTaskSubmission(
                                     taskId: taskId,
                                     // isEdit: isEdit,
