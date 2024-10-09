@@ -41,6 +41,7 @@ mixin PermissionsMixin<T> on Cubit<T> {
         break;
 
       case PermissionType.location:
+        //
         permissionStatus = await Permission.location.request();
         print('permissionStatus?.isRestricted? ${permissionStatus?.isRestricted}');
         permissionStatus = await Permission.locationWhenInUse.request();
