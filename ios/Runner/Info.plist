@@ -14,10 +14,12 @@
     <string>We need access to your camera</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>We need access to your microphone for recording videos</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app requires access to your location while you are using the app.</string>
+   <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need access to your location to provide location-based services.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>This app requires access to your location at all times.</string>
+    <string>We need access to your location to provide location-based services even when the app is in the background.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We need access to your location to provide location-based services.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

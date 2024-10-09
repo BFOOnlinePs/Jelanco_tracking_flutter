@@ -41,8 +41,10 @@ mixin PermissionsMixin<T> on Cubit<T> {
         break;
 
       case PermissionType.location:
-
         permissionStatus = await Permission.location.request();
+        print('permissionStatus?.isRestricted? ${permissionStatus?.isRestricted}');
+        permissionStatus = await Permission.locationWhenInUse.request();
+        print('permissionStatus?.isRestricted? ${permissionStatus?.isRestricted}');
         print('Location permission requested');
         break;
 
@@ -61,7 +63,7 @@ mixin PermissionsMixin<T> on Cubit<T> {
       if (functionWhenGranted != null) {
         await functionWhenGranted();
       }
-    } else if (permissionStatus?.isDenied == true || permissionStatus?.isPermanentlyDenied == true){
+    } else if (permissionStatus?.isDenied == true || permissionStatus?.isPermanentlyDenied == true) {
       print('${permissionType.toString()} permission denied');
       await _showPermissionDeniedDialog(context);
     }
@@ -83,8 +85,7 @@ mixin PermissionsMixin<T> on Cubit<T> {
   Future<void> _showPermissionDeniedDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (BuildContext context)
-      {
+      builder: (BuildContext context) {
         String message;
 
         // Check if the permission is permanently denied
@@ -94,8 +95,7 @@ mixin PermissionsMixin<T> on Cubit<T> {
           message = "بحاجة الى صلاحية";
         }
 
-
-       return AlertDialog(
+        return AlertDialog(
           title: Text("permission_denied".tr()),
           content: Column(
             mainAxisSize: MainAxisSize.min,
