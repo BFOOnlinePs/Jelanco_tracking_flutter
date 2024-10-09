@@ -31,8 +31,7 @@ import '../../core/constants/button_size.dart';
 import 'add_task_widgets/assigned_to_screen.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final int?
-      initialSelectedUserId; // when add task to a specific user from profile screen
+  final int? initialSelectedUserId; // when add task to a specific user from profile screen
 
   AddTaskScreen({super.key, this.initialSelectedUserId});
 
@@ -60,8 +59,7 @@ class AddTaskScreen extends StatelessWidget {
             // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
             // addTaskCubit.filteredUsers = addTaskCubit.users;
             if (initialSelectedUserId != null) {
-              addTaskCubit.addInitialSelectedUser(
-                  userId: initialSelectedUserId!);
+              addTaskCubit.addInitialSelectedUser(userId: initialSelectedUserId!);
             }
           } else if (state is AddTaskSuccessState) {
             SnackbarHelper.showSnackbar(
@@ -88,9 +86,7 @@ class AddTaskScreen extends StatelessWidget {
             );
           } else if (state is GetManagerEmployeesErrorState) {
             SnackbarHelper.showSnackbar(
-                context: context,
-                snackBarStates: SnackBarStates.error,
-                message: 'ERROR !!');
+                context: context, snackBarStates: SnackBarStates.error, message: 'ERROR !!');
           }
         },
         builder: (context, state) {
@@ -119,15 +115,11 @@ class AddTaskScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text('add_task_assign_to_field'.tr(),
-                                            style: TextStyle(
-                                                fontSize: SharedSize
-                                                    .textFiledTitleSize)),
+                                            style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                                         Text(
                                           ' *',
                                           style: TextStyle(
-                                              fontSize:
-                                                  SharedSize.textFiledTitleSize,
-                                              color: Colors.red),
+                                              fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
                                         ),
                                       ],
                                     ),
@@ -147,11 +139,8 @@ class AddTaskScreen extends StatelessWidget {
                                             // onSelected: (selectedUsers) {
                                             //   addTaskCubit.emitAfterReturn();
                                             // },
-                                            users: addTaskCubit
-                                                .getManagerEmployeesModel!
-                                                .managerEmployees!,
-                                            selectedUsers:
-                                                addTaskCubit.selectedUsers,
+                                            users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
+                                            selectedUsers: addTaskCubit.selectedUsers,
                                           );
                                         },
                                       ),
@@ -167,31 +156,25 @@ class AddTaskScreen extends StatelessWidget {
                                       ),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(
-                                            ButtonSizeConstants.borderRadius),
+                                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
                                         border: Border.all(
                                           color: Colors.black,
                                           width: 1.0,
                                         ),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Text(
-                                                addTaskCubit
-                                                        .selectedUsers.isEmpty
-                                                    ? 'add_task_assign_to_field'
-                                                        .tr()
+                                                addTaskCubit.selectedUsers.isEmpty
+                                                    ? 'add_task_assign_to_field'.tr()
                                                     : addTaskCubit.selectedUsers
-                                                        .map(
-                                                            (user) => user.name)
+                                                        .map((user) => user.name)
                                                         .join(', '),
-                                                style: const TextStyle(
-                                                    color: Colors.black54),
+                                                style: const TextStyle(color: Colors.black54),
                                               ),
                                             ),
                                           ),
@@ -200,18 +183,14 @@ class AddTaskScreen extends StatelessWidget {
                                       )),
                                 ),
                                 // addTaskCubit.addTaskModel != null &&
-                                addTaskCubit.isAddClicked &&
-                                        addTaskCubit.selectedUsers.isEmpty
+                                addTaskCubit.isAddClicked && addTaskCubit.selectedUsers.isEmpty
                                     ? MyErrorFieldText(
-                                        text:
-                                            'add_task_assign_to_field_required_validation'
-                                                .tr())
+                                        text: 'add_task_assign_to_field_required_validation'.tr())
                                     : Container(),
                                 const MyVerticalSpacer(),
                                 MyTextFormField(
                                   titleText: 'add_task_content_field'.tr(),
-                                  labelText:
-                                      'add_task_content_field_label'.tr(),
+                                  labelText: 'add_task_content_field_label'.tr(),
                                   controller: addTaskCubit.contentController,
                                   textInputAction: TextInputAction.newline,
                                   keyboardType: TextInputType.multiline,
@@ -220,8 +199,7 @@ class AddTaskScreen extends StatelessWidget {
                                   // onChanged: (value) => addTaskCubit.content = value,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'add_task_content_field_required_validation'
-                                          .tr();
+                                      return 'add_task_content_field_required_validation'.tr();
                                     }
                                     return null;
                                   },
@@ -231,25 +209,17 @@ class AddTaskScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText:
-                                            'add_task_start_time_field'.tr(),
-                                        labelText:
-                                            'add_task_start_time_field_label'
-                                                .tr(),
+                                        titleText: 'add_task_start_time_field'.tr(),
+                                        labelText: 'add_task_start_time_field_label'.tr(),
                                         readOnly: true,
-                                        onTap: () => addTaskCubit
-                                            .selectDateTime(context, true),
+                                        onTap: () => addTaskCubit.selectDateTime(context, true),
                                         // validator: (value) =>
                                         //     addTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: addTaskCubit
-                                                        .plannedStartTime !=
-                                                    null
-                                                ? MyDateUtils.formatDateTime(
-                                                    addTaskCubit
-                                                        .plannedStartTime!)
+                                            text: addTaskCubit.plannedStartTime != null
+                                                ? MyDateUtils.formatDateTime(addTaskCubit.plannedStartTime!)
                                                 : ''),
                                         style: const TextStyle(
                                           fontSize: 14,
@@ -259,24 +229,17 @@ class AddTaskScreen extends StatelessWidget {
                                     const MyHorizontalSpacer(),
                                     Expanded(
                                       child: MyTextFormField(
-                                        titleText:
-                                            'add_task_end_time_field'.tr(),
-                                        labelText:
-                                            'add_task_end_time_field_label'
-                                                .tr(),
+                                        titleText: 'add_task_end_time_field'.tr(),
+                                        labelText: 'add_task_end_time_field_label'.tr(),
                                         readOnly: true,
-                                        onTap: () => addTaskCubit
-                                            .selectDateTime(context, false),
+                                        onTap: () => addTaskCubit.selectDateTime(context, false),
                                         // validator: (value) =>
                                         //     addTaskCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
                                         //         : null,
                                         controller: TextEditingController(
-                                            text: addTaskCubit.plannedEndTime !=
-                                                    null
-                                                ? MyDateUtils.formatDateTime(
-                                                    addTaskCubit
-                                                        .plannedEndTime!)
+                                            text: addTaskCubit.plannedEndTime != null
+                                                ? MyDateUtils.formatDateTime(addTaskCubit.plannedEndTime!)
                                                 : ''),
                                         style: const TextStyle(
                                           fontSize: 14,
@@ -289,27 +252,20 @@ class AddTaskScreen extends StatelessWidget {
                                 MyDropdownButton<TaskCategoryModel>(
                                   label: 'add_task_category_field'.tr(),
                                   hint: 'add_task_category_field_hint'.tr(),
-                                  items: addTaskCubit.getTaskCategoriesModel
-                                          ?.taskCategories ??
-                                      [],
+                                  items: addTaskCubit.getTaskCategoriesModel?.taskCategories ?? [],
                                   onChanged: (value) {
-                                    addTaskCubit.changeSelectedCategory(
-                                        newSelectedCategory: value);
+                                    addTaskCubit.changeSelectedCategory(newSelectedCategory: value);
                                   },
                                   value: addTaskCubit.selectedCategory,
-                                  displayText:
-                                      (TaskCategoryModel taskCategory) =>
-                                          taskCategory.cName ?? '',
+                                  displayText: (TaskCategoryModel taskCategory) => taskCategory.cName ?? '',
                                   // validator: (value) =>
                                   //     value == null ? 'Select a category' : null,
                                 ),
                                 const MyVerticalSpacer(),
                                 Container(
-                                  margin: const EdgeInsets.only(
-                                      top: 14, bottom: 16),
+                                  margin: const EdgeInsets.only(top: 14, bottom: 16),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       //from camera
 
@@ -322,11 +278,8 @@ class AddTaskScreen extends StatelessWidget {
                                               onTap: () {
                                                 addTaskCubit.requestPermission(
                                                     context: context,
-                                                    permissionType:
-                                                        PermissionType.camera,
-                                                    functionWhenGranted:
-                                                        addTaskCubit
-                                                            .pickMediaFromCamera);
+                                                    permissionType: PermissionType.camera,
+                                                    functionWhenGranted: addTaskCubit.pickMediaFromCamera);
                                               },
                                             ),
                                             MenuItemModel(
@@ -336,13 +289,9 @@ class AddTaskScreen extends StatelessWidget {
                                               onTap: () {
                                                 addTaskCubit.requestPermission(
                                                     context: context,
-                                                    permissionType:
-                                                        PermissionType.camera,
+                                                    permissionType: PermissionType.camera,
                                                     functionWhenGranted: () =>
-                                                        addTaskCubit
-                                                            .pickMediaFromCamera(
-                                                                isImage:
-                                                                    false));
+                                                        addTaskCubit.pickMediaFromCamera(isImage: false));
                                               },
                                             ),
                                           ],
@@ -353,10 +302,7 @@ class AddTaskScreen extends StatelessWidget {
                                             onTap: null,
                                           )),
 
-                                      Container(
-                                          width: 0.2,
-                                          height: 26,
-                                          color: Colors.grey),
+                                      Container(width: 0.2, height: 26, color: Colors.grey),
 
                                       MediaOptionWidget(
                                         icon: Icons.image,
@@ -365,16 +311,12 @@ class AddTaskScreen extends StatelessWidget {
                                         onTap: () {
                                           addTaskCubit.requestPermission(
                                               context: context,
-                                              permissionType:
-                                                  PermissionType.storage,
-                                              functionWhenGranted: addTaskCubit
-                                                  .pickMultipleImagesFromGallery);
+                                              permissionType: PermissionType.storage,
+                                              functionWhenGranted:
+                                                  addTaskCubit.pickMultipleImagesFromGallery);
                                         },
                                       ),
-                                      Container(
-                                          width: 0.2,
-                                          height: 26,
-                                          color: Colors.grey),
+                                      Container(width: 0.2, height: 26, color: Colors.grey),
                                       MediaOptionWidget(
                                         icon: Icons.video_camera_back,
                                         label: 'فيديو',
@@ -382,16 +324,11 @@ class AddTaskScreen extends StatelessWidget {
                                         onTap: () {
                                           addTaskCubit.requestPermission(
                                               context: context,
-                                              permissionType:
-                                                  PermissionType.storage,
-                                              functionWhenGranted: addTaskCubit
-                                                  .pickVideoFromGallery);
+                                              permissionType: PermissionType.storage,
+                                              functionWhenGranted: addTaskCubit.pickVideoFromGallery);
                                         },
                                       ),
-                                      Container(
-                                          width: 0.2,
-                                          height: 26,
-                                          color: Colors.grey),
+                                      Container(width: 0.2, height: 26, color: Colors.grey),
                                       MediaOptionWidget(
                                         icon: Icons.attach_file,
                                         label: 'ملف',
@@ -399,10 +336,8 @@ class AddTaskScreen extends StatelessWidget {
                                         onTap: () {
                                           addTaskCubit.requestPermission(
                                               context: context,
-                                              permissionType:
-                                                  PermissionType.storage,
-                                              functionWhenGranted:
-                                                  addTaskCubit.pickReportFile);
+                                              permissionType: PermissionType.storage,
+                                              functionWhenGranted: addTaskCubit.pickReportFile);
                                         },
                                       ),
                                     ],
@@ -412,32 +347,24 @@ class AddTaskScreen extends StatelessWidget {
                                   storagePath: EndPointsConstants.tasksStorage,
                                   // old not used yet since the task has no version
                                   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
-                                  pickedImagesList:
-                                      addTaskCubit.pickedImagesList,
-                                  deletedPickedImageFromList:
-                                      addTaskCubit.deletePickedImageFromList,
+                                  pickedImagesList: addTaskCubit.pickedImagesList,
+                                  deletedPickedImageFromList: addTaskCubit.deletePickedImageFromList,
                                 ),
                                 const SizedBox(
                                   height: 14,
                                 ),
                                 SelectedVideosWidget(
-                                  pickedVideosList:
-                                      addTaskCubit.pickedVideosList,
-                                  deletePickedVideoFromList:
-                                      addTaskCubit.deletePickedVideoFromList,
-                                  oldVideoControllers:
-                                      addTaskCubit.oldVideoControllers,
+                                  pickedVideosList: addTaskCubit.pickedVideosList,
+                                  deletePickedVideoFromList: addTaskCubit.deletePickedVideoFromList,
+                                  oldVideoControllers: addTaskCubit.oldVideoControllers,
                                   // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories,
-                                  videosControllers:
-                                      addTaskCubit.videosControllers,
-                                  toggleVideoPlayPause:
-                                      addTaskCubit.toggleVideoPlayPause,
+                                  videosControllers: addTaskCubit.videosControllers,
+                                  toggleVideoPlayPause: addTaskCubit.toggleVideoPlayPause,
                                 ),
                                 SelectedAttachmentsWidget(
                                   pickedFilesList: addTaskCubit.pickedFilesList,
                                   // old not used yet since the task has no version
-                                  deletedPickedFileFromList:
-                                      addTaskCubit.deletedPickedFileFromList,
+                                  deletedPickedFileFromList: addTaskCubit.deletedPickedFileFromList,
                                 ),
                               ],
                             ),
@@ -463,7 +390,9 @@ class AddTaskScreen extends StatelessWidget {
                 addTaskCubit.isAddTaskSubmissionLoading ||
                         addTaskCubit.getTaskCategoriesModel == null ||
                         addTaskCubit.getManagerEmployeesModel == null
-                    ? const LoaderWithDisable()
+                    ? LoaderWithDisable(
+                        isShowMessage: addTaskCubit.isAddTaskSubmissionLoading ? true : false,
+                      )
                     : Container()
               ],
             ),

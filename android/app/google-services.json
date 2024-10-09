@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1026037180604:android:79ff7eefec81317a3a88b9",
+        "mobilesdk_app_id": "1:1026037180604:android:caa96b7cc5130a263a88b9",
         "android_client_info": {
-          "package_name": "com.example.jelanco_tracking_system"
+          "package_name": "com.jelanco.tracking"
         }
       },
       "oauth_client": [],

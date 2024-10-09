@@ -30,12 +30,12 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
 
   GetTaskSubmissionWithTaskAndCommentsModel? getTaskSubmissionWithTaskAndCommentsModel;
 
-  int? submissionId; // used with afterEditTask
+  // int? submissionId; // used with afterEditTask
 
   Future<void> getTaskSubmissionWithTaskAndComments({required int submissionId}) async {
     emit(GetTaskSubmissionWithTaskAndCommentsLoadingState());
 
-    this.submissionId = submissionId;
+    // this.submissionId = submissionId;
     // /task-submissions/201/task-and-comments
     await DioHelper.getData(
             url:
@@ -63,13 +63,15 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
   void afterEditTask() async {
     // recall the function
     print('afterEditTask');
-    await getTaskSubmissionWithTaskAndComments(submissionId: submissionId!);
+    await getTaskSubmissionWithTaskAndComments(
+        submissionId: getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!);
     emit(AfterEditSubmissionState());
   }
 
   @override
   Future<void> close() {
     commentService.socket.off('new-comment');
+
     return super.close();
   }
 }

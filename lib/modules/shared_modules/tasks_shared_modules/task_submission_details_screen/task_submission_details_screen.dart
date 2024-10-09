@@ -22,6 +22,9 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
 
   const TaskSubmissionDetailsScreen({super.key, required this.submissionId});
 
+  // in the rest of the code i used
+  // taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!
+  // instead of submissionId, to ensure that i used the new version of the submission after edit
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,87 +42,91 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
 
             return taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel == null
                 ? const Center(child: MyLoader())
-                :
-                // MyRefreshIndicator(
-                //         onRefresh: () {
-                //           // return taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndComments(
-                //           //     submissionId: submissionId);
-                //         },
-                //         child:
-                SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission?.taskDetails !=
-                                null
-                            ? TaskDetailsSectionWidget(
-                                taskModel: taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.taskDetails!)
-                            : Container(),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SubmissionHeaderWidget(
-                                submissionModel: taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!,
-                                taskSubmissionDetailsCubit: taskSubmissionDetailsCubit,
-                              ),
-                              ContentWidget(
+                : MyRefreshIndicator(
+                    onRefresh: () {
+                      // new id if edited
+                      return taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndComments(
+                          submissionId: taskSubmissionDetailsCubit
+                              .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!);
+                    },
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission
+                                      ?.taskDetails !=
+                                  null
+                              ? TaskDetailsSectionWidget(
+                                  taskModel: taskSubmissionDetailsCubit
+                                      .getTaskSubmissionWithTaskAndCommentsModel!
+                                      .taskSubmission!
+                                      .taskDetails!)
+                              : Container(),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SubmissionHeaderWidget(
+                                  submissionModel: taskSubmissionDetailsCubit
+                                      .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!,
+                                  taskSubmissionDetailsCubit: taskSubmissionDetailsCubit,
+                                ),
+                                ContentWidget(
+                                  taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                          .taskSubmission!.tsContent ??
+                                      '',
+                                  isSubmission: true,
+                                ),
                                 taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                        .taskSubmission!.tsContent ??
-                                    '',
-                                isSubmission: true,
-                              ),
-                              taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!.submissionCategories!.isNotEmpty
-                                  ? WrappedLabelValueWidget(
-                                      'التصنيف',
-                                      taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                              .taskSubmission?.submissionCategories
-                                              ?.map((category) => category.cName)
-                                              .join(', ') ??
-                                          '')
-                                  : Container(),
-                              SubmissionTimeWidget(
-                                  submission: taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!),
-                              MediaWidget(
-                                attachmentsCategories: taskSubmissionDetailsCubit
-                                    .getTaskSubmissionWithTaskAndCommentsModel!
-                                    .taskSubmission!
-                                    .submissionAttachmentsCategories!,
-                                storagePath: EndPointsConstants.taskSubmissionsStorage,
-                              ),
+                                        .taskSubmission!.submissionCategories!.isNotEmpty
+                                    ? WrappedLabelValueWidget(
+                                        'التصنيف',
+                                        taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                                .taskSubmission?.submissionCategories
+                                                ?.map((category) => category.cName)
+                                                .join(', ') ??
+                                            '')
+                                    : Container(),
+                                SubmissionTimeWidget(
+                                    submission: taskSubmissionDetailsCubit
+                                        .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!),
+                                MediaWidget(
+                                  attachmentsCategories: taskSubmissionDetailsCubit
+                                      .getTaskSubmissionWithTaskAndCommentsModel!
+                                      .taskSubmission!
+                                      .submissionAttachmentsCategories!,
+                                  storagePath: EndPointsConstants.taskSubmissionsStorage,
+                                ),
 
-                              // SubmissionTimeWidget(submission: submission),
-                              taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!.submissionComments!.isNotEmpty
-                                  ? CommentsSectionWidget(
-                                      comments: taskSubmissionDetailsCubit
+                                // SubmissionTimeWidget(submission: submission),
+                                taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
+                                        .taskSubmission!.submissionComments!.isNotEmpty
+                                    ? CommentsSectionWidget(
+                                        comments: taskSubmissionDetailsCubit
+                                            .getTaskSubmissionWithTaskAndCommentsModel!
+                                            .taskSubmission!
+                                            .submissionComments!,
+                                      )
+                                    : Container(),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                if (SystemPermissions.hasPermission(SystemPermissions.addComment))
+                                  ShowModalAddCommentButton(
+                                      taskId: taskSubmissionDetailsCubit
                                           .getTaskSubmissionWithTaskAndCommentsModel!
                                           .taskSubmission!
-                                          .submissionComments!,
-                                    )
-                                  : Container(),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              if (SystemPermissions.hasPermission(SystemPermissions.addComment))
-                                ShowModalAddCommentButton(
-                                    taskId: taskSubmissionDetailsCubit
-                                        .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsTaskId!,
-                                    submissionId: submissionId),
-                            ],
+                                          .tsTaskId!,
+                                      submissionId: taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!),
+                              ],
+                            ),
                           ),
-                        ),
-                        const MyVerticalSpacer(),
-                      ],
+                          const MyVerticalSpacer(),
+                        ],
+                      ),
                     ),
                   );
-            // );
           },
         ),
       ),
