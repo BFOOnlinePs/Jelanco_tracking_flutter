@@ -22,166 +22,169 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // const Spacer(flex: 2),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.12), // Instead of Spacer
-            Image.asset(
-              AssetsKeys.appLogo,
-              height: SharedSize.logoImageHeight,
-            ),
-            // const Spacer(),
-            SizedBox(height: 20.sp), // Instead of Spacer
-
-            Text(
-              'login_title'.tr(),
-              style: TextStyle(
-                fontSize: 32.sp,
-                fontWeight: FontWeight.bold,
-                color: ColorsConstants.primaryColor,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // const Spacer(flex: 2),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.12), // Instead of Spacer
+              Image.asset(
+                AssetsKeys.appLogo,
+                height: SharedSize.logoImageHeight,
               ),
-            ),
-            Text(
-              'login_subtitle'.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                color: ColorsConstants.primaryColor,
+              // const Spacer(),
+              SizedBox(height: 20.sp), // Instead of Spacer
+
+              Text(
+                'login_title'.tr(),
+                style: TextStyle(
+                  fontSize: 32.sp,
+                  fontWeight: FontWeight.bold,
+                  color: ColorsConstants.primaryColor,
+                ),
               ),
-            ),
-            MyVerticalSpacer(
-              height: 24.h,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0.w),
-              child: BlocProvider(
-                create: (context) => LoginCubit(),
-                child: BlocConsumer<LoginCubit, LoginStates>(
-                  listener: (context, state) async {
-                    if (state is LoginSuccessState) {
-                      if (state.userLoginModel.status == true) {
-                        print(state.userLoginModel.message);
-                        await UserDataUtils.saveUserDataToLocalStorage(userLoginModel: state.userLoginModel);
+              Text(
+                'login_subtitle'.tr(),
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  color: ColorsConstants.primaryColor,
+                ),
+              ),
+              MyVerticalSpacer(
+                height: 24.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0.w),
+                child: BlocProvider(
+                  create: (context) => LoginCubit(),
+                  child: BlocConsumer<LoginCubit, LoginStates>(
+                    listener: (context, state) async {
+                      if (state is LoginSuccessState) {
+                        if (state.userLoginModel.status == true) {
+                          print(state.userLoginModel.message);
+                          await UserDataUtils.saveUserDataToLocalStorage(
+                              userLoginModel: state.userLoginModel);
 
-                        // for firebase token
-                        await FirebaseApi().initNotification();
+                          // for firebase token
+                          await FirebaseApi().initNotification();
 
-                        NavigationServices.navigateTo(
-                          context,
-                          HomeScreen(),
-                          // BottomNavBarScreens(),
-                          removeAll: true,
-                        );
-                      } else {
-                        print(state.userLoginModel.message);
+                          NavigationServices.navigateTo(
+                            context,
+                            HomeScreen(),
+                            // BottomNavBarScreens(),
+                            removeAll: true,
+                          );
+                        } else {
+                          print(state.userLoginModel.message);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                state.userLoginModel.message ?? "Error !!",
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      } else if (state is LoginErrorState) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              state.userLoginModel.message ?? "Error !!",
+                              state.error,
                             ),
                             backgroundColor: Colors.red,
                           ),
                         );
                       }
-                    } else if (state is LoginErrorState) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            state.error,
-                          ),
-                          backgroundColor: Colors.red,
+                    },
+                    builder: (context, state) {
+                      LoginCubit loginCubit = LoginCubit.get(context);
+                      return Form(
+                        key: loginCubit.loginFormKey,
+                        child: Column(
+                          children: [
+                            MyTextFormField(
+                              labelText: 'البريد الإلكتروني / رقم الجوال',
+                              prefixIcon: const Icon(Icons.person),
+                              controller: loginCubit.emailPhoneController,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: ValidationUtils.validateEmailOrPhone,
+                              // textDirection: TextDirection.ltr,
+                              // textAlign: TextAlign.center,
+                            ),
+                            MyVerticalSpacer(
+                              height: 8.h,
+                            ),
+                            MyTextFormField(
+                              labelText: 'login_password_field'.tr(),
+                              controller: loginCubit.passwordController,
+                              prefixIcon: const Icon(Icons.lock),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "login_password_field_required_validation".tr();
+                                }
+                                return null;
+                              },
+                              // textAlign: TextAlign.center,
+                            ),
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text('login_forgot_password'.tr(),
+                                    style: TextStyle(color: ColorsConstants.primaryColor, fontSize: 14.sp)),
+                              ),
+                            ),
+                            // SizedBox(
+                            //   width: double.infinity,
+                            //   child: ElevatedButton(
+                            //     onPressed: () {
+                            //       loginCubit.selectActor(newId: 1);
+                            //     },
+                            //     style: ElevatedButton.styleFrom(
+                            //       backgroundColor: Colors.black26,
+                            //     ),
+                            //     child: Text(
+                            //       'مستخدم',
+                            //       style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                            //     ),
+                            //   ),
+                            // ),
+                            const MyVerticalSpacer(),
+                            MyAuthElevatedButton(
+                              onPressed: state is LoginLoadingState
+                                  ? null
+                                  : () {
+                                      if (loginCubit.loginFormKey.currentState!.validate()) {
+                                        loginCubit.userLogin(context);
+                                      }
+                                    },
+                              child: state is LoginLoadingState
+                                  ? const MyLoader(
+                                      color: Colors.white,
+                                    )
+                                  : Text(
+                                      'login_login_button'.tr(),
+                                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                                    ),
+                            ),
+                          ],
                         ),
                       );
-                    }
-                  },
-                  builder: (context, state) {
-                    LoginCubit loginCubit = LoginCubit.get(context);
-                    return Form(
-                      key: loginCubit.loginFormKey,
-                      child: Column(
-                        children: [
-                          MyTextFormField(
-                            labelText: 'البريد الإلكتروني / رقم الجوال',
-                            prefixIcon: const Icon(Icons.person),
-                            controller: loginCubit.emailPhoneController,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: ValidationUtils.validateEmailOrPhone,
-                            // textDirection: TextDirection.ltr,
-                            // textAlign: TextAlign.center,
-                          ),
-                          MyVerticalSpacer(
-                            height: 8.h,
-                          ),
-                          MyTextFormField(
-                            labelText: 'login_password_field'.tr(),
-                            controller: loginCubit.passwordController,
-                            prefixIcon: const Icon(Icons.lock),
-                            obscureText: true,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "login_password_field_required_validation".tr();
-                              }
-                              return null;
-                            },
-                            // textAlign: TextAlign.center,
-
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text('login_forgot_password'.tr(),
-                                  style: TextStyle(color: ColorsConstants.primaryColor, fontSize: 14.sp)),
-                            ),
-                          ),
-                          // SizedBox(
-                          //   width: double.infinity,
-                          //   child: ElevatedButton(
-                          //     onPressed: () {
-                          //       loginCubit.selectActor(newId: 1);
-                          //     },
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor: Colors.black26,
-                          //     ),
-                          //     child: Text(
-                          //       'مستخدم',
-                          //       style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                          //     ),
-                          //   ),
-                          // ),
-                          const MyVerticalSpacer(),
-                          MyAuthElevatedButton(
-                            onPressed: state is LoginLoadingState
-                                ? null
-                                : () {
-                                    if (loginCubit.loginFormKey.currentState!.validate()) {
-                                      loginCubit.userLogin(context);
-                                    }
-                                  },
-                            child: state is LoginLoadingState
-                                ? const MyLoader(
-                                    color: Colors.white,
-                                  )
-                                : Text(
-                                    'login_login_button'.tr(),
-                                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                                  ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
-            ),
-            // const Spacer(flex: 2),
-            // SizedBox(height: 80.sp), // Instead of Spacer
-          ],
+              // const Spacer(flex: 2),
+              // SizedBox(height: 80.sp), // Instead of Spacer
+            ],
+          ),
         ),
       ),
     );

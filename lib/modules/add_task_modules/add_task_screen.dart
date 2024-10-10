@@ -92,309 +92,315 @@ class AddTaskScreen extends StatelessWidget {
         builder: (context, state) {
           addTaskCubit = AddTaskCubit.get(context);
 
-          return Scaffold(
-            appBar: MyAppBar(
-              title: 'add_task_title'.tr(),
-            ),
-            body: Stack(
-              children: [
-                MyScreen(
-                  // padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: addTaskCubit.formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('add_task_assign_to_field'.tr(),
-                                            style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
-                                        Text(
-                                          ' *',
-                                          style: TextStyle(
-                                              fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10.0),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
-                                          // addTaskCubit.filteredUsers = addTaskCubit.users;
-                                          return AssignedToScreen(
-                                            isAddTask: true,
-                                            // onSelected: (selectedUsers) {
-                                            //   addTaskCubit.emitAfterReturn();
-                                            // },
-                                            users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
-                                            selectedUsers: addTaskCubit.selectedUsers,
-                                          );
-                                        },
-                                      ),
-                                    ).then((_) {
-                                      // This code will run when the AnotherScreen is popped off the stack
-                                      addTaskCubit.emitAfterReturn();
-                                    });
-                                  },
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 15,
-                                        horizontal: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Scaffold(
+              appBar: MyAppBar(
+                title: 'add_task_title'.tr(),
+              ),
+              body: Stack(
+                children: [
+                  MyScreen(
+                    // padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: addTaskCubit.formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Row(
                                         children: [
-                                          Expanded(
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Text(
-                                                addTaskCubit.selectedUsers.isEmpty
-                                                    ? 'add_task_assign_to_field'.tr()
-                                                    : addTaskCubit.selectedUsers
-                                                        .map((user) => user.name)
-                                                        .join(', '),
-                                                style: const TextStyle(color: Colors.black54),
+                                          Text('add_task_assign_to_field'.tr(),
+                                              style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                          Text(
+                                            ' *',
+                                            style: TextStyle(
+                                                fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                    ],
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            // addTaskCubit.users = addTaskCubit.getAllUsersModel!.users!;
+                                            // addTaskCubit.filteredUsers = addTaskCubit.users;
+                                            return AssignedToScreen(
+                                              isAddTask: true,
+                                              // onSelected: (selectedUsers) {
+                                              //   addTaskCubit.emitAfterReturn();
+                                              // },
+                                              users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
+                                              selectedUsers: addTaskCubit.selectedUsers,
+                                            );
+                                          },
+                                        ),
+                                      ).then((_) {
+                                        // This code will run when the AnotherScreen is popped off the stack
+                                        addTaskCubit.emitAfterReturn();
+                                      });
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 15,
+                                          horizontal: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Text(
+                                                  addTaskCubit.selectedUsers.isEmpty
+                                                      ? 'add_task_assign_to_field'.tr()
+                                                      : addTaskCubit.selectedUsers
+                                                          .map((user) => user.name)
+                                                          .join(', '),
+                                                  style: const TextStyle(color: Colors.black54),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          const Icon(Icons.arrow_forward),
-                                        ],
-                                      )),
-                                ),
-                                // addTaskCubit.addTaskModel != null &&
-                                addTaskCubit.isAddClicked && addTaskCubit.selectedUsers.isEmpty
-                                    ? MyErrorFieldText(
-                                        text: 'add_task_assign_to_field_required_validation'.tr())
-                                    : Container(),
-                                const MyVerticalSpacer(),
-                                MyTextFormField(
-                                  titleText: 'add_task_content_field'.tr(),
-                                  labelText: 'add_task_content_field_label'.tr(),
-                                  controller: addTaskCubit.contentController,
-                                  textInputAction: TextInputAction.newline,
-                                  keyboardType: TextInputType.multiline,
-                                  isFieldRequired: true,
-                                  maxLines: 3,
-                                  // onChanged: (value) => addTaskCubit.content = value,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'add_task_content_field_required_validation'.tr();
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const MyVerticalSpacer(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: MyTextFormField(
-                                        titleText: 'add_task_start_time_field'.tr(),
-                                        labelText: 'add_task_start_time_field_label'.tr(),
-                                        readOnly: true,
-                                        onTap: () => addTaskCubit.selectDateTime(context, true),
-                                        // validator: (value) =>
-                                        //     addTaskCubit.plannedStartTime == null
-                                        //         ? 'Select a start time'
-                                        //         : null,
-                                        controller: TextEditingController(
-                                            text: addTaskCubit.plannedStartTime != null
-                                                ? MyDateUtils.formatDateTime(addTaskCubit.plannedStartTime!)
-                                                : ''),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                    const MyHorizontalSpacer(),
-                                    Expanded(
-                                      child: MyTextFormField(
-                                        titleText: 'add_task_end_time_field'.tr(),
-                                        labelText: 'add_task_end_time_field_label'.tr(),
-                                        readOnly: true,
-                                        onTap: () => addTaskCubit.selectDateTime(context, false),
-                                        // validator: (value) =>
-                                        //     addTaskCubit.plannedEndTime == null
-                                        //         ? 'Select an end time'
-                                        //         : null,
-                                        controller: TextEditingController(
-                                            text: addTaskCubit.plannedEndTime != null
-                                                ? MyDateUtils.formatDateTime(addTaskCubit.plannedEndTime!)
-                                                : ''),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const MyVerticalSpacer(),
-                                MyDropdownButton<TaskCategoryModel>(
-                                  label: 'add_task_category_field'.tr(),
-                                  hint: 'add_task_category_field_hint'.tr(),
-                                  items: addTaskCubit.getTaskCategoriesModel?.taskCategories ?? [],
-                                  onChanged: (value) {
-                                    addTaskCubit.changeSelectedCategory(newSelectedCategory: value);
-                                  },
-                                  value: addTaskCubit.selectedCategory,
-                                  displayText: (TaskCategoryModel taskCategory) => taskCategory.cName ?? '',
-                                  // validator: (value) =>
-                                  //     value == null ? 'Select a category' : null,
-                                ),
-                                const MyVerticalSpacer(),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 14, bottom: 16),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      //from camera
-
-                                      TaskOptionsWidget(
-                                          menuItems: [
-                                            MenuItemModel(
-                                              icon: Icons.image,
-                                              iconColor: Colors.green,
-                                              label: 'إلتقاط صورة',
-                                              onTap: () {
-                                                addTaskCubit.requestPermission(
-                                                    context: context,
-                                                    permissionType: PermissionType.camera,
-                                                    functionWhenGranted: addTaskCubit.pickMediaFromCamera);
-                                              },
-                                            ),
-                                            MenuItemModel(
-                                              icon: Icons.video_camera_back,
-                                              label: 'إلتقاط فيديو',
-                                              iconColor: Colors.red,
-                                              onTap: () {
-                                                addTaskCubit.requestPermission(
-                                                    context: context,
-                                                    permissionType: PermissionType.camera,
-                                                    functionWhenGranted: () =>
-                                                        addTaskCubit.pickMediaFromCamera(isImage: false));
-                                              },
-                                            ),
+                                            const Icon(Icons.arrow_forward),
                                           ],
-                                          child: const MediaOptionWidget(
-                                            icon: Icons.camera_alt,
-                                            label: 'كاميرا',
-                                            color: Colors.blue,
-                                            onTap: null,
-                                          )),
-
-                                      Container(width: 0.2, height: 26, color: Colors.grey),
-
-                                      MediaOptionWidget(
-                                        icon: Icons.image,
-                                        label: 'صورة',
-                                        color: Colors.green,
-                                        onTap: () {
-                                          addTaskCubit.requestPermission(
-                                              context: context,
-                                              permissionType: PermissionType.storage,
-                                              functionWhenGranted:
-                                                  addTaskCubit.pickMultipleImagesFromGallery);
-                                        },
+                                        )),
+                                  ),
+                                  // addTaskCubit.addTaskModel != null &&
+                                  addTaskCubit.isAddClicked && addTaskCubit.selectedUsers.isEmpty
+                                      ? MyErrorFieldText(
+                                          text: 'add_task_assign_to_field_required_validation'.tr())
+                                      : Container(),
+                                  const MyVerticalSpacer(),
+                                  MyTextFormField(
+                                    titleText: 'add_task_content_field'.tr(),
+                                    labelText: 'add_task_content_field_label'.tr(),
+                                    controller: addTaskCubit.contentController,
+                                    textInputAction: TextInputAction.newline,
+                                    keyboardType: TextInputType.multiline,
+                                    isFieldRequired: true,
+                                    maxLines: 3,
+                                    // onChanged: (value) => addTaskCubit.content = value,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'add_task_content_field_required_validation'.tr();
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const MyVerticalSpacer(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: MyTextFormField(
+                                          titleText: 'add_task_start_time_field'.tr(),
+                                          labelText: 'add_task_start_time_field_label'.tr(),
+                                          readOnly: true,
+                                          onTap: () => addTaskCubit.selectDateTime(context, true),
+                                          // validator: (value) =>
+                                          //     addTaskCubit.plannedStartTime == null
+                                          //         ? 'Select a start time'
+                                          //         : null,
+                                          controller: TextEditingController(
+                                              text: addTaskCubit.plannedStartTime != null
+                                                  ? MyDateUtils.formatDateTime(addTaskCubit.plannedStartTime!)
+                                                  : ''),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ),
-                                      Container(width: 0.2, height: 26, color: Colors.grey),
-                                      MediaOptionWidget(
-                                        icon: Icons.video_camera_back,
-                                        label: 'فيديو',
-                                        color: Colors.red,
-                                        onTap: () {
-                                          addTaskCubit.requestPermission(
-                                              context: context,
-                                              permissionType: PermissionType.storage,
-                                              functionWhenGranted: addTaskCubit.pickVideoFromGallery);
-                                        },
-                                      ),
-                                      Container(width: 0.2, height: 26, color: Colors.grey),
-                                      MediaOptionWidget(
-                                        icon: Icons.attach_file,
-                                        label: 'ملف',
-                                        color: Colors.blue,
-                                        onTap: () {
-                                          addTaskCubit.requestPermission(
-                                              context: context,
-                                              permissionType: PermissionType.storage,
-                                              functionWhenGranted: addTaskCubit.pickReportFile);
-                                        },
+                                      const MyHorizontalSpacer(),
+                                      Expanded(
+                                        child: MyTextFormField(
+                                          titleText: 'add_task_end_time_field'.tr(),
+                                          labelText: 'add_task_end_time_field_label'.tr(),
+                                          readOnly: true,
+                                          onTap: () => addTaskCubit.selectDateTime(context, false),
+                                          // validator: (value) =>
+                                          //     addTaskCubit.plannedEndTime == null
+                                          //         ? 'Select an end time'
+                                          //         : null,
+                                          controller: TextEditingController(
+                                              text: addTaskCubit.plannedEndTime != null
+                                                  ? MyDateUtils.formatDateTime(addTaskCubit.plannedEndTime!)
+                                                  : ''),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                SelectedImagesWidget(
-                                  storagePath: EndPointsConstants.tasksStorage,
-                                  // old not used yet since the task has no version
-                                  // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
-                                  pickedImagesList: addTaskCubit.pickedImagesList,
-                                  deletedPickedImageFromList: addTaskCubit.deletePickedImageFromList,
-                                ),
-                                const SizedBox(
-                                  height: 14,
-                                ),
-                                SelectedVideosWidget(
-                                  pickedVideosList: addTaskCubit.pickedVideosList,
-                                  deletePickedVideoFromList: addTaskCubit.deletePickedVideoFromList,
-                                  oldVideoControllers: addTaskCubit.oldVideoControllers,
-                                  // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories,
-                                  videosControllers: addTaskCubit.videosControllers,
-                                  toggleVideoPlayPause: addTaskCubit.toggleVideoPlayPause,
-                                ),
-                                SelectedAttachmentsWidget(
-                                  pickedFilesList: addTaskCubit.pickedFilesList,
-                                  // old not used yet since the task has no version
-                                  deletedPickedFileFromList: addTaskCubit.deletedPickedFileFromList,
-                                ),
-                              ],
+                                  const MyVerticalSpacer(),
+                                  MyDropdownButton<TaskCategoryModel>(
+                                    label: 'add_task_category_field'.tr(),
+                                    hint: 'add_task_category_field_hint'.tr(),
+                                    items: addTaskCubit.getTaskCategoriesModel?.taskCategories ?? [],
+                                    onChanged: (value) {
+                                      addTaskCubit.changeSelectedCategory(newSelectedCategory: value);
+                                    },
+                                    value: addTaskCubit.selectedCategory,
+                                    displayText: (TaskCategoryModel taskCategory) => taskCategory.cName ?? '',
+                                    // validator: (value) =>
+                                    //     value == null ? 'Select a category' : null,
+                                  ),
+                                  const MyVerticalSpacer(),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 14, bottom: 16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        //from camera
+
+                                        TaskOptionsWidget(
+                                            menuItems: [
+                                              MenuItemModel(
+                                                icon: Icons.image,
+                                                iconColor: Colors.green,
+                                                label: 'إلتقاط صورة',
+                                                onTap: () {
+                                                  addTaskCubit.requestPermission(
+                                                      context: context,
+                                                      permissionType: PermissionType.camera,
+                                                      functionWhenGranted: addTaskCubit.pickMediaFromCamera);
+                                                },
+                                              ),
+                                              MenuItemModel(
+                                                icon: Icons.video_camera_back,
+                                                label: 'إلتقاط فيديو',
+                                                iconColor: Colors.red,
+                                                onTap: () {
+                                                  addTaskCubit.requestPermission(
+                                                      context: context,
+                                                      permissionType: PermissionType.camera,
+                                                      functionWhenGranted: () =>
+                                                          addTaskCubit.pickMediaFromCamera(isImage: false));
+                                                },
+                                              ),
+                                            ],
+                                            child: const MediaOptionWidget(
+                                              icon: Icons.camera_alt,
+                                              label: 'كاميرا',
+                                              color: Colors.blue,
+                                              onTap: null,
+                                            )),
+
+                                        Container(width: 0.2, height: 26, color: Colors.grey),
+
+                                        MediaOptionWidget(
+                                          icon: Icons.image,
+                                          label: 'صورة',
+                                          color: Colors.green,
+                                          onTap: () {
+                                            addTaskCubit.requestPermission(
+                                                context: context,
+                                                permissionType: PermissionType.storage,
+                                                functionWhenGranted:
+                                                    addTaskCubit.pickMultipleImagesFromGallery);
+                                          },
+                                        ),
+                                        Container(width: 0.2, height: 26, color: Colors.grey),
+                                        MediaOptionWidget(
+                                          icon: Icons.video_camera_back,
+                                          label: 'فيديو',
+                                          color: Colors.red,
+                                          onTap: () {
+                                            addTaskCubit.requestPermission(
+                                                context: context,
+                                                permissionType: PermissionType.storage,
+                                                functionWhenGranted: addTaskCubit.pickVideoFromGallery);
+                                          },
+                                        ),
+                                        Container(width: 0.2, height: 26, color: Colors.grey),
+                                        MediaOptionWidget(
+                                          icon: Icons.attach_file,
+                                          label: 'ملف',
+                                          color: Colors.blue,
+                                          onTap: () {
+                                            addTaskCubit.requestPermission(
+                                                context: context,
+                                                permissionType: PermissionType.storage,
+                                                functionWhenGranted: addTaskCubit.pickReportFile);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SelectedImagesWidget(
+                                    storagePath: EndPointsConstants.tasksStorage,
+                                    // old not used yet since the task has no version
+                                    // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories ,
+                                    pickedImagesList: addTaskCubit.pickedImagesList,
+                                    deletedPickedImageFromList: addTaskCubit.deletePickedImageFromList,
+                                  ),
+                                  const SizedBox(
+                                    height: 14,
+                                  ),
+                                  SelectedVideosWidget(
+                                    pickedVideosList: addTaskCubit.pickedVideosList,
+                                    deletePickedVideoFromList: addTaskCubit.deletePickedVideoFromList,
+                                    oldVideoControllers: addTaskCubit.oldVideoControllers,
+                                    // oldSubmissionAttachmentsCategories: taskSubmissionModel?.submissionAttachmentsCategories,
+                                    videosControllers: addTaskCubit.videosControllers,
+                                    toggleVideoPlayPause: addTaskCubit.toggleVideoPlayPause,
+                                  ),
+                                  SelectedAttachmentsWidget(
+                                    pickedFilesList: addTaskCubit.pickedFilesList,
+                                    // old not used yet since the task has no version
+                                    deletedPickedFileFromList: addTaskCubit.deletedPickedFileFromList,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        MyElevatedButton(
-                          onPressed: () {
-                            addTaskCubit.changeIsAddClicked(true);
-                            if (addTaskCubit.formKey.currentState!.validate()) {
-                              addTaskCubit.isAddTaskSubmissionLoading = true;
-                              addTaskCubit.emitLoading();
-                              addTaskCubit.addTask();
-                            }
-                          },
-                          // child: Text('add_task_add_button'.tr()),
-                          isWidthFull: true,
-                          buttonText: 'add_task_add_button'.tr(),
-                        ),
-                      ],
+                          MyElevatedButton(
+                            onPressed: () {
+                              addTaskCubit.changeIsAddClicked(true);
+                              if (addTaskCubit.formKey.currentState!.validate()) {
+                                addTaskCubit.isAddTaskSubmissionLoading = true;
+                                addTaskCubit.emitLoading();
+                                addTaskCubit.addTask();
+                              }
+                            },
+                            // child: Text('add_task_add_button'.tr()),
+                            isWidthFull: true,
+                            buttonText: 'add_task_add_button'.tr(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                addTaskCubit.isAddTaskSubmissionLoading ||
-                        addTaskCubit.getTaskCategoriesModel == null ||
-                        addTaskCubit.getManagerEmployeesModel == null
-                    ? LoaderWithDisable(
-                        isShowMessage: addTaskCubit.isAddTaskSubmissionLoading ? true : false,
-                      )
-                    : Container()
-              ],
+                  addTaskCubit.isAddTaskSubmissionLoading ||
+                          addTaskCubit.getTaskCategoriesModel == null ||
+                          addTaskCubit.getManagerEmployeesModel == null
+                      ? LoaderWithDisable(
+                          isShowMessage: addTaskCubit.isAddTaskSubmissionLoading ? true : false,
+                        )
+                      : Container()
+                ],
+              ),
             ),
           );
         },
