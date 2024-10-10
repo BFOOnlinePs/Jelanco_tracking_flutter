@@ -37,7 +37,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
                       children: [
                         SubmissionHeaderWidget(
                           submissionModel: submission,
-                          taskDetailsCubit: taskDetailsCubit,
+                          // taskDetailsCubit: taskDetailsCubit,
                         ),
                         ContentWidget(
                           submission.tsContent ?? '',

@@ -84,184 +84,189 @@ class AddEditUsersScreen extends StatelessWidget {
         },
         builder: (context, state) {
           addEditUsersCubit = AddEditUsersCubit.get(context);
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: const MyAppBar(
-                  title: 'إضافة / تعديل المتابعين',
-                ),
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'المسؤول:',
-                            style: TextStyle(
-                              fontSize: 18,
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Stack(
+              children: [
+                Scaffold(
+                  appBar: const MyAppBar(
+                    title: 'إضافة / تعديل المتابعين',
+                  ),
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'المسؤول:',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          const MyVerticalSpacer(
-                            height: 4,
-                          ),
-                          MyDropdownSearch<UserModel>(
-                              selectedItem: addEditUsersCubit.managerUser,
-                              items: addEditUsersCubit.allUsers,
-                              hintText: 'إختر موظف ليصبح المسؤول',
-                              itemAsString: (UserModel user) => user.name ?? '',
-                              showSearchBox: true,
-                              onChanged: (UserModel? newValue) {
-                                addEditUsersCubit.selectManager(newValue);
-                              }),
-                          // MyDropdownButton<UserModel>(
-                          //     value: addEditUsersCubit.managerUser,
-                          //     items: addEditUsersCubit.allUsers,
-                          //     hint: 'إختر موظف ليصبح المسؤول',
-                          //     displayText: (UserModel user) => user.name ?? '',
-                          //     onChanged: (UserModel? newValue) {
-                          //       addEditUsersCubit.selectManager(newValue);
-                          //     }),
+                            const MyVerticalSpacer(
+                              height: 4,
+                            ),
+                            MyDropdownSearch<UserModel>(
+                                selectedItem: addEditUsersCubit.managerUser,
+                                items: addEditUsersCubit.allUsers,
+                                hintText: 'إختر موظف ليصبح المسؤول',
+                                itemAsString: (UserModel user) => user.name ?? '',
+                                showSearchBox: true,
+                                onChanged: (UserModel? newValue) {
+                                  addEditUsersCubit.selectManager(newValue);
+                                }),
+                            // MyDropdownButton<UserModel>(
+                            //     value: addEditUsersCubit.managerUser,
+                            //     items: addEditUsersCubit.allUsers,
+                            //     hint: 'إختر موظف ليصبح المسؤول',
+                            //     displayText: (UserModel user) => user.name ?? '',
+                            //     onChanged: (UserModel? newValue) {
+                            //       addEditUsersCubit.selectManager(newValue);
+                            //     }),
 
-                          addEditUsersCubit.managerUser == null ||
-                                  (addEditUsersCubit.getManagerEmployeesByIdModel != null &&
-                                      addEditUsersCubit
-                                          .getManagerEmployeesByIdModel!.managerEmployees!.isEmpty)
-                              ? Container()
-                              : Container(
-                                  margin: EdgeInsets.only(top: 6),
-                                  child: Row(
-                                    children: [
-                                      Spacer(),
-                                      MyTextButtonScratch(
-                                          onPressed: () {
-                                            addEditUsersCubit.deleteManager();
-                                          },
-                                          child: Text('حذف المسؤول')),
-                                    ],
+                            addEditUsersCubit.managerUser == null ||
+                                    (addEditUsersCubit.getManagerEmployeesByIdModel != null &&
+                                        addEditUsersCubit
+                                            .getManagerEmployeesByIdModel!.managerEmployees!.isEmpty)
+                                ? Container()
+                                : Container(
+                                    margin: EdgeInsets.only(top: 6),
+                                    child: Row(
+                                      children: [
+                                        Spacer(),
+                                        MyTextButtonScratch(
+                                            onPressed: () {
+                                              addEditUsersCubit.deleteManager();
+                                            },
+                                            child: Text('حذف المسؤول')),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                          // MyVerticalSpacer(),
-                        ],
+                            // MyVerticalSpacer(),
+                          ],
+                        ),
                       ),
-                    ),
-                    addEditUsersCubit.managerUser == null
-                        ? Container()
-                        : Expanded(
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 16),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 16),
-                                      Text(
-                                        'تحديد موظفين للمتابعة:',
-                                        style: TextStyle(
-                                          fontSize: 18,
+                      addEditUsersCubit.managerUser == null
+                          ? Container()
+                          : Expanded(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          'تحديد موظفين للمتابعة:',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
                                         ),
-                                      ),
-                                      MyTextFormField(
-                                        labelText: 'بحث عن موظفين',
-                                        onChanged: addEditUsersCubit.usersSearch,
-                                        prefixIcon: Icon(Icons.search),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Spacer(),
-                                          MyTextButtonScratch(
-                                              onPressed: addEditUsersCubit.managerUser == null
-                                                  ? null
-                                                  : () {
-                                                      addEditUsersCubit.toggleAllUsersSelection();
-                                                    },
-                                              child: Text('تحديد الكل')),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // select all
-
-                                Expanded(
-                                  child: ListView.builder(
-                                    itemCount: addEditUsersCubit.filteredAllUsers.length,
-                                    itemBuilder: (context, index) {
-                                      UserModel user = addEditUsersCubit.filteredAllUsers[index];
-                                      // Exclude the manager user from the list by its id
-                                      if (addEditUsersCubit.managerUser != null &&
-                                          addEditUsersCubit.filteredAllUsers[index].id ==
-                                              addEditUsersCubit.managerUser!.id) {
-                                        return const SizedBox.shrink();
-                                      }
-                                      return CheckboxListTile(
-                                        title: Row(
+                                        MyTextFormField(
+                                          labelText: 'بحث عن موظفين',
+                                          onChanged: addEditUsersCubit.usersSearch,
+                                          prefixIcon: Icon(Icons.search),
+                                        ),
+                                        Row(
                                           children: [
-                                            CircleAvatar(
-                                              radius: 20,
-                                              child: user.image != null
-                                                  ? MyCachedNetworkImage(
-                                                      imageUrl:
-                                                          EndPointsConstants.profileStorage + user.image!,
-                                                      imageBuilder: (context, imageProvider) =>
-                                                          MyCachedImageBuilder(imageProvider: imageProvider),
-                                                      isCircle: true,
-                                                    )
-                                                  : ClipOval(
-                                                      child: Image.asset(AssetsKeys.defaultProfileImage)),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                user.name ?? 'name',
-                                                style: const TextStyle(fontSize: 14),
-                                              ),
-                                            ),
+                                            Spacer(),
+                                            MyTextButtonScratch(
+                                                onPressed: addEditUsersCubit.managerUser == null
+                                                    ? null
+                                                    : () {
+                                                        addEditUsersCubit.toggleAllUsersSelection();
+                                                      },
+                                                child: Text('تحديد الكل')),
                                           ],
                                         ),
-                                        value: addEditUsersCubit.employeesUsers
-                                            .contains(addEditUsersCubit.filteredAllUsers[index]),
-                                        onChanged: (bool? value) {
-                                          addEditUsersCubit.toggleEmployeeSelection(
-                                              addEditUsersCubit.filteredAllUsers[index]);
-                                        },
-                                      );
-                                    },
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.all(16),
-                                  child: MyElevatedButton(
-                                    isWidthFull: true,
-                                    onPressed: addEditUsersCubit.managerUser == null ||
-                                            addEditUsersCubit.employeesUsers.isEmpty
-                                        ? null
-                                        : () {
-                                            addEditUsersCubit.addEditManagerEmployees();
+                                  // select all
+
+                                  Expanded(
+                                    child: ListView.builder(
+                                      itemCount: addEditUsersCubit.filteredAllUsers.length,
+                                      itemBuilder: (context, index) {
+                                        UserModel user = addEditUsersCubit.filteredAllUsers[index];
+                                        // Exclude the manager user from the list by its id
+                                        if (addEditUsersCubit.managerUser != null &&
+                                            addEditUsersCubit.filteredAllUsers[index].id ==
+                                                addEditUsersCubit.managerUser!.id) {
+                                          return const SizedBox.shrink();
+                                        }
+                                        return CheckboxListTile(
+                                          title: Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 20,
+                                                child: user.image != null
+                                                    ? MyCachedNetworkImage(
+                                                        imageUrl:
+                                                            EndPointsConstants.profileStorage + user.image!,
+                                                        imageBuilder: (context, imageProvider) =>
+                                                            MyCachedImageBuilder(imageProvider: imageProvider),
+                                                        isCircle: true,
+                                                      )
+                                                    : ClipOval(
+                                                        child: Image.asset(AssetsKeys.defaultProfileImage)),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  user.name ?? 'name',
+                                                  style: const TextStyle(fontSize: 14),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          value: addEditUsersCubit.employeesUsers
+                                              .contains(addEditUsersCubit.filteredAllUsers[index]),
+                                          onChanged: (bool? value) {
+                                            addEditUsersCubit.toggleEmployeeSelection(
+                                                addEditUsersCubit.filteredAllUsers[index]);
                                           },
-                                    buttonText: 'حفظ',
-                                    isDisabled: addEditUsersCubit.managerUser == null ||
-                                        addEditUsersCubit.employeesUsers.isEmpty,
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Container(
+                                    margin: EdgeInsets.all(16),
+                                    child: MyElevatedButton(
+                                      isWidthFull: true,
+                                      onPressed: addEditUsersCubit.managerUser == null ||
+                                              addEditUsersCubit.employeesUsers.isEmpty
+                                          ? null
+                                          : () {
+                                              addEditUsersCubit.addEditManagerEmployees();
+                                            },
+                                      buttonText: 'حفظ',
+                                      isDisabled: addEditUsersCubit.managerUser == null ||
+                                          addEditUsersCubit.employeesUsers.isEmpty,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              state is GetAllUsersLoadingState ||
-                      state is GetManagerEmployeesByIdLoadingState ||
-                      state is DeleteManagerLoadingState ||
-                      state is AddEditManagerEmployeesLoadingState
-                  ? const LoaderWithDisable()
-                  : Container(),
-            ],
+                state is GetAllUsersLoadingState ||
+                        state is GetManagerEmployeesByIdLoadingState ||
+                        state is DeleteManagerLoadingState ||
+                        state is AddEditManagerEmployeesLoadingState
+                    ? const LoaderWithDisable()
+                    : Container(),
+              ],
+            ),
           );
         },
       ),

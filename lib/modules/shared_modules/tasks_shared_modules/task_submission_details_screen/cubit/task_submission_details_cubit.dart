@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
@@ -9,7 +10,14 @@ import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
 class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
-  TaskSubmissionDetailsCubit() : super(TaskSubmissionDetailsInitialState());
+  TaskSubmissionDetailsCubit() : super(TaskSubmissionDetailsInitialState()) {
+    // Listen for TaskUpdatedEvent from EventBus
+    eventBus.on<TaskUpdatedEvent>().listen((event) {
+      // Replace the old submission with the new one
+      getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = event.submission;
+      emit(TasksUpdatedStateViaEventBus());
+    });
+  }
 
   static TaskSubmissionDetailsCubit get(context) => BlocProvider.of(context);
 
@@ -52,13 +60,13 @@ class TaskSubmissionDetailsCubit extends Cubit<TaskSubmissionDetailsStates> {
     });
   }
 
-  void afterEditSubmission({
-    required final TaskSubmissionModel newSubmissionModel,
-  }) {
-    // Replace the old submission with the new one
-    getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = newSubmissionModel;
-    emit(AfterEditSubmissionState());
-  }
+  // void afterEditSubmission({
+  //   required final TaskSubmissionModel newSubmissionModel,
+  // }) {
+  //   // Replace the old submission with the new one
+  //   getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission = newSubmissionModel;
+  //   emit(AfterEditSubmissionState());
+  // }
 
   void afterEditTask() async {
     // recall the function

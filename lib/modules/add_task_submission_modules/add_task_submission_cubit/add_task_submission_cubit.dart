@@ -13,6 +13,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categ
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
@@ -104,8 +105,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     emit(PickMultipleImagesState());
   }
 
-  void deletedPickedImageFromList(
-      {required int index, AttachmentsCategories? attachmentsCategories}) {
+  void deletedPickedImageFromList({required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
       attachmentsCategories.images?.removeAt(index);
@@ -241,14 +241,12 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
         String? mimeType = lookupMimeType(file.path!);
         String extension = file.extension ?? '';
 
-        if (mimeType != null &&
-            FilesExtensionsUtils.isAcceptedFileType(extension)) {
+        if (mimeType != null && FilesExtensionsUtils.isAcceptedFileType(extension)) {
           pickedFilesList.add(selectedFile);
           emit(AddTaskSubmissionFileSelectSuccessState());
         } else {
           emit(AddTaskSubmissionFileSelectErrorState(
-              error:
-                  'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+              error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
@@ -258,8 +256,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     }
   }
 
-  void deletedPickedFileFromList(
-      {required int index, AttachmentsCategories? attachmentsCategories}) {
+  void deletedPickedFileFromList({required int index, AttachmentsCategories? attachmentsCategories}) {
     if (attachmentsCategories != null) {
       // in edit, for the old data
       attachmentsCategories.files?.removeAt(index);
@@ -280,8 +277,7 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      print(
-          "Latitude: ${position?.latitude}, Longitude: ${position?.longitude}");
+      print("Latitude: ${position?.latitude}, Longitude: ${position?.longitude}");
     } catch (e) {
       print("Error: $e");
       emit(RequestLocationPermissionGetDeniedState());
@@ -343,14 +339,19 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   Future<void> addNewTaskSubmission({
     required int taskId,
     // required bool isEdit,
-    int? taskSubmissionId,
+    int? taskSubmissionId, // -1 first submission
     List<String> oldAttachments = const [],
   }) async {
     isAddTaskSubmissionLoading = true;
     emit(AddTaskSubmissionLoadingState());
+
     // compress images videos before send them to back-end
-    await compressAllImages();
-    await compressVideos();
+    if (pickedImagesList.isNotEmpty) {
+      await compressAllImages();
+    }
+    if (pickedVideosList.isNotEmpty) {
+      await compressVideos();
+    }
 
     Map<String, dynamic> dataObject = {
       'parent_id': taskSubmissionId, // -1 first submission
@@ -406,8 +407,16 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     ).then((value) {
       print(value?.data);
       addTaskSubmissionModel = AddTaskSubmissionModel.fromMap(value?.data);
-      emit(AddTaskSubmissionSuccessState(
-          addTaskSubmissionModel: addTaskSubmissionModel!));
+
+      // when edit submission
+      if (taskSubmissionId != -1 && addTaskSubmissionModel?.status == true) {
+        print('in AddTaskSubmission eventBus: ${addTaskSubmissionModel!.taskSubmission!.tsId}');
+        // Fire the TaskUpdatedEvent
+        eventBus.fire(TaskUpdatedEvent(addTaskSubmissionModel!.taskSubmission!));
+        print('after fire eventBus');
+      }
+
+      emit(AddTaskSubmissionSuccessState(addTaskSubmissionModel: addTaskSubmissionModel!));
     }).catchError((error) {
       emit(AddTaskSubmissionErrorState(error: error.toString()));
       print(error.toString());
@@ -434,24 +443,20 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       print('oldTaskSubmissionModel?.toMap(): ');
       print(GetOldTaskSubmissionModel?.toMap());
 
-      contentController.text =
-          GetOldTaskSubmissionModel!.taskSubmission!.tsContent ?? '';
+      contentController.text = GetOldTaskSubmissionModel!.taskSubmission!.tsContent ?? '';
 
       startTime = GetOldTaskSubmissionModel!.taskSubmission!.tsActualStartTime;
       endTime = GetOldTaskSubmissionModel!.taskSubmission!.tsActualEndTime;
 
-      selectedTaskCategoriesList =
-          GetOldTaskSubmissionModel!.taskSubmission!.tsCategories != null
-              ? getTaskCategoriesModel!.taskCategories!.where((category) {
-                  return GetOldTaskSubmissionModel!
-                      .taskSubmission!.tsCategories!
-                      .contains(category.cId.toString());
-                }).toList()
-              : [];
+      selectedTaskCategoriesList = GetOldTaskSubmissionModel!.taskSubmission!.tsCategories != null
+          ? getTaskCategoriesModel!.taskCategories!.where((category) {
+              return GetOldTaskSubmissionModel!.taskSubmission!.tsCategories!
+                  .contains(category.cId.toString());
+            }).toList()
+          : [];
 
-      for (var vid in GetOldTaskSubmissionModel!
-              .taskSubmission!.submissionAttachmentsCategories?.videos ??
-          []) {
+      for (var vid
+          in GetOldTaskSubmissionModel!.taskSubmission!.submissionAttachmentsCategories?.videos ?? []) {
         await initializeOldVideoController(vid.aAttachment!);
       }
       emit(GetOldSubmissionDataSuccessState());
@@ -469,8 +474,8 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       print('videoPath:: $videoPath');
       print('videoFullPath:: ${EndPointsConstants.taskSubmissionsStorage + videoPath}');
 
-      VideoPlayerController controller = VideoPlayerController.networkUrl(
-          Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
+      VideoPlayerController controller =
+          VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.taskSubmissionsStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);

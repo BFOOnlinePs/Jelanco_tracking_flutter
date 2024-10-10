@@ -4,8 +4,24 @@ class LaunchUrlUtils {
   static void launchMyUrl({required storagePath, required String uriString}) async {
     final Uri uri = Uri.parse(storagePath + uriString);
     print('uri: $uri');
-    if (!await launchUrl(uri)) {
-      print('can\'t open the file');
+
+    // if (!await launchUrl(uri)) {
+    //   print('can\'t open the file');
+    // }
+
+    try {
+      if (await canLaunchUrl(uri)) {
+        print('Launching URL...');
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        print('Could not launch $uri');
+        throw 'Could not launch $uri';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
     }
   }
 

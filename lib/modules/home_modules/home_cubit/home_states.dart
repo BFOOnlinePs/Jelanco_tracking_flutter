@@ -24,7 +24,10 @@ class GetUserByIdLoadingState extends HomeStates {}
 
 class GetUserByIdSuccessState extends HomeStates {}
 
+
 class GetUserByIdErrorState extends HomeStates {}
+
+class TasksUpdatedStateViaEventBus extends HomeStates {}
 
 // TasksToSubmitMixin
 class GetTasksToSubmitLoadingState extends HomeStates {}

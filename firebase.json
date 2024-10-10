@@ -1,1 +1,22 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"jelanco-tracking-f57af","appId":"1:1026037180604:android:79ff7eefec81317a3a88b9","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"jelanco-tracking-f57af","configurations":{"android":"1:1026037180604:android:79ff7eefec81317a3a88b9","ios":"1:1026037180604:ios:c6ff6fefa57db2993a88b9"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "jelanco-tracking-f57af",
+          "appId": "1:1026037180604:android:79ff7eefec81317a3a88b9",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "jelanco-tracking-f57af",
+          "configurations": {
+            "android": "1:1026037180604:android:79ff7eefec81317a3a88b9",
+            "ios": "1:1026037180604:ios:c6ff6fefa57db2993a88b9"
+          }
+        }
+      }
+    }
+  }
+}

@@ -47,9 +47,9 @@ class UserSubmissionWidget extends StatelessWidget {
               children: [
                 SubmissionHeaderWidget(
                   submissionModel: submission,
-                  homeCubit: homeCubit,
-                  userProfileCubit: userProfileCubit,
-                  todaySubmissionsCubit: todaySubmissionsCubit,
+                  // homeCubit: homeCubit,
+                  // userProfileCubit: userProfileCubit,
+                  // todaySubmissionsCubit: todaySubmissionsCubit,
                 ),
                 ContentWidget(
                   submission.tsContent ?? '',

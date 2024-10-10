@@ -383,8 +383,12 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(EditTaskLoadingState());
 
     // compress images videos before send them to back-end
-    await compressAllImages();
-    await compressVideos();
+    if (pickedImagesList.isNotEmpty) {
+      await compressAllImages();
+    }
+    if (pickedVideosList.isNotEmpty) {
+      await compressVideos();
+    }
 
     Map<String, dynamic> dataObject = {
       'content': contentController.text,

@@ -16,7 +16,9 @@ class GetCommentsCountSuccessState extends UserProfileStates {}
 
 class GetCommentsCountErrorState extends UserProfileStates {}
 
-class AfterEditSubmissionState extends UserProfileStates {}
+// class AfterEditSubmissionState extends UserProfileStates {}
+
+class TasksUpdatedStateViaEventBus extends UserProfileStates {}
 
 class UpdateProfileImageLoadingState extends UserProfileStates {}
 

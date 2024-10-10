@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/users_models/get_user_profile_by_id_model.dart';
@@ -16,9 +17,21 @@ import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 import '../../../core/utils/mixins/permission_mixin/permission_mixin.dart';
 
-class UserProfileCubit extends Cubit<UserProfileStates>
-    with PermissionsMixin, CompressImagesMixin {
-  UserProfileCubit() : super(UserProfileInitialState());
+class UserProfileCubit extends Cubit<UserProfileStates> with PermissionsMixin, CompressImagesMixin {
+  UserProfileCubit() : super(UserProfileInitialState()) {
+    // Listen for TaskUpdatedEvent from EventBus
+    eventBus.on<TaskUpdatedEvent>().listen((event) {
+      // event.submission.tsParentId id is the old submission id
+      int index = userProfileSubmissionsList
+          .indexWhere((submission) => submission.tsId == event.submission.tsParentId);
+
+      if (index != -1) {
+        // Replace the old submission with the new one
+        userProfileSubmissionsList[index] = event.submission;
+      }
+      emit(TasksUpdatedStateViaEventBus());
+    });
+  }
 
   static UserProfileCubit get(context) => BlocProvider.of(context);
 
@@ -45,12 +58,11 @@ class UserProfileCubit extends Cubit<UserProfileStates>
       }
       getUserProfileByIdModel = GetUserProfileByIdModel.fromMap(value?.data);
 
-      userProfileSubmissionsList.addAll(getUserProfileByIdModel
-          ?.userSubmissions?.submissions as Iterable<TaskSubmissionModel>);
+      userProfileSubmissionsList
+          .addAll(getUserProfileByIdModel?.userSubmissions?.submissions as Iterable<TaskSubmissionModel>);
 
-      isProfileSubmissionsLastPage =
-          getUserProfileByIdModel?.userSubmissions?.pagination?.lastPage ==
-              getUserProfileByIdModel?.userSubmissions?.pagination?.currentPage;
+      isProfileSubmissionsLastPage = getUserProfileByIdModel?.userSubmissions?.pagination?.lastPage ==
+          getUserProfileByIdModel?.userSubmissions?.pagination?.currentPage;
 
       isProfileSubmissionsLoading = false;
 
@@ -95,45 +107,42 @@ class UserProfileCubit extends Cubit<UserProfileStates>
       )
     ]);
 
-    DioHelper.postData(url: EndPointsConstants.updateProfile, data: formData)
-        .then((value) {
+    DioHelper.postData(url: EndPointsConstants.updateProfile, data: formData).then((value) {
       print(value?.data);
 
       updateProfileImageModel = UpdateProfileImageModel.fromMap(value?.data);
 
       // update the image in the screen immediately, and in the user data constants
       if (updateProfileImageModel?.status == true) {
-        getUserProfileByIdModel!.userInfo!.image =
-            updateProfileImageModel?.imageUrl;
+        getUserProfileByIdModel!.userInfo!.image = updateProfileImageModel?.imageUrl;
         UserDataConstants.image = updateProfileImageModel?.imageUrl;
       }
 
-      emit(UpdateProfileImageSuccessState(
-          updateProfileImageModel: updateProfileImageModel!));
+      emit(UpdateProfileImageSuccessState(updateProfileImageModel: updateProfileImageModel!));
     }).catchError((error) {
       print(error.toString());
       emit(UpdateProfileImageErrorState());
     });
   }
 
-  void afterEditSubmission({
-    required int oldSubmissionId,
-    required final TaskSubmissionModel newSubmissionModel,
-  }) {
-    // Replace the old submission with the new one
-    // Find the index of the submission with the old ID
-    int index = userProfileSubmissionsList
-        .indexWhere((submission) => submission.tsId == oldSubmissionId);
-
-    if (index != -1) {
-      // Replace the old submission with the new one
-      userProfileSubmissionsList[index] = newSubmissionModel;
-
-      print(userProfileSubmissionsList[index].toMap());
-      print(userProfileSubmissionsList[index].tsId);
-    }
-    emit(AfterEditSubmissionState());
-  }
+  // void afterEditSubmission({
+  //   required int oldSubmissionId,
+  //   required final TaskSubmissionModel newSubmissionModel,
+  // }) {
+  //   // Replace the old submission with the new one
+  //   // Find the index of the submission with the old ID
+  //   int index = userProfileSubmissionsList
+  //       .indexWhere((submission) => submission.tsId == oldSubmissionId);
+  //
+  //   if (index != -1) {
+  //     // Replace the old submission with the new one
+  //     userProfileSubmissionsList[index] = newSubmissionModel;
+  //
+  //     print(userProfileSubmissionsList[index].toMap());
+  //     print(userProfileSubmissionsList[index].tsId);
+  //   }
+  //   emit(AfterEditSubmissionState());
+  // }
 
   GetSubmissionCommentCountModel? getSubmissionCommentCountModel;
 
@@ -146,14 +155,12 @@ class UserProfileCubit extends Cubit<UserProfileStates>
       // /task-submissions/185/comments/count
     ).then((value) {
       print(value?.data);
-      getSubmissionCommentCountModel =
-          GetSubmissionCommentCountModel.fromMap(value?.data);
+      getSubmissionCommentCountModel = GetSubmissionCommentCountModel.fromMap(value?.data);
 
       // update the number of comments in the original submission model
 
-      userProfileSubmissionsList
-          .firstWhere((submission) => submission.tsId == submissionId)
-          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+      userProfileSubmissionsList.firstWhere((submission) => submission.tsId == submissionId).commentsCount =
+          getSubmissionCommentCountModel?.commentsCount;
 
       emit(GetCommentsCountSuccessState());
     }).catchError((error) {

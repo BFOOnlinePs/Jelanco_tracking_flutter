@@ -23,94 +23,99 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           FollowUpManagementCubit followUpManagementCubit = FollowUpManagementCubit.get(context);
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: const MyAppBar(
-                  title: 'المتابعين الحاليين',
-                ),
-                body: Column(
-                  children: [
-                    followUpManagementCubit.filteredUsers.isEmpty &&
-                            followUpManagementCubit.searchText.isEmpty
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: MyTextFormField(
-                              labelText: 'بحث عن متابع',
-                              onChanged: followUpManagementCubit.usersSearch,
-                              prefixIcon: const Icon(Icons.search),
-                            )),
-                    Expanded(
-                      child: followUpManagementCubit.filteredUsers.isEmpty &&
-                              state is! GetManagersLoadingState
-                          ? const Center(
-                              child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image(
-                                  image: AssetImage(
-                                    AssetsKeys.defaultNoUsersImage,
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Stack(
+              children: [
+                Scaffold(
+                  appBar: const MyAppBar(
+                    title: 'المتابعين الحاليين',
+                  ),
+                  body: Column(
+                    children: [
+                      followUpManagementCubit.filteredUsers.isEmpty &&
+                              followUpManagementCubit.searchText.isEmpty
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MyTextFormField(
+                                labelText: 'بحث عن متابع',
+                                onChanged: followUpManagementCubit.usersSearch,
+                                prefixIcon: const Icon(Icons.search),
+                              )),
+                      Expanded(
+                        child: followUpManagementCubit.filteredUsers.isEmpty &&
+                                state is! GetManagersLoadingState
+                            ? const Center(
+                                child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image(
+                                    image: AssetImage(
+                                      AssetsKeys.defaultNoUsersImage,
+                                    ),
+                                    height: 250,
                                   ),
-                                  height: 250,
-                                ),
-                                Text('لا يوجد متابعين'),
-                              ],
-                            ))
-                          : ListView.builder(
-                              itemCount: followUpManagementCubit.filteredUsers.length,
-                              itemBuilder: (context, index) {
-                                UserModel user = followUpManagementCubit.filteredUsers[index];
-                                return ListTile(
-                                  title: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 20,
-                                        child: user.image != null
-                                            ? MyCachedNetworkImage(
-                                                imageUrl: EndPointsConstants.profileStorage + user.image!,
-                                                imageBuilder: (context, imageProvider) =>
-                                                    MyCachedImageBuilder(imageProvider: imageProvider),
-                                                isCircle: true,
-                                              )
-                                            : ClipOval(child: Image.asset(AssetsKeys.defaultProfileImage)),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          user.name ?? 'name',
-                                          style: const TextStyle(fontSize: 14),
+                                  Text('لا يوجد متابعين'),
+                                ],
+                              ))
+                            : ListView.builder(
+                                itemCount: followUpManagementCubit.filteredUsers.length,
+                                itemBuilder: (context, index) {
+                                  UserModel user = followUpManagementCubit.filteredUsers[index];
+                                  return ListTile(
+                                    title: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 20,
+                                          child: user.image != null
+                                              ? MyCachedNetworkImage(
+                                                  imageUrl: EndPointsConstants.profileStorage + user.image!,
+                                                  imageBuilder: (context, imageProvider) =>
+                                                      MyCachedImageBuilder(imageProvider: imageProvider),
+                                                  isCircle: true,
+                                                )
+                                              : ClipOval(child: Image.asset(AssetsKeys.defaultProfileImage)),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: GestureDetector(
-                                    child: const Icon(Icons.edit),
-                                    onTap: () {
-                                      // Navigate to edit screen with the selected user
-                                      followUpManagementCubit.navigateToEditAddScreen(
-                                          context, followUpManagementCubit.filteredUsers[index]);
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
-                  ],
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            user.name ?? 'name',
+                                            style: const TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    trailing: GestureDetector(
+                                      child: const Icon(Icons.edit),
+                                      onTap: () {
+                                        // Navigate to edit screen with the selected user
+                                        followUpManagementCubit.navigateToEditAddScreen(
+                                            context, followUpManagementCubit.filteredUsers[index]);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
+                  floatingActionButton: MyFloatingActionButton(
+                    icon: Icons.add,
+                    labelText: 'متابع جديد',
+                    onPressed: () {
+                      // // Navigate to add a new user
+                      followUpManagementCubit.navigateToEditAddScreen(context, null);
+                    },
+                  ),
                 ),
-                floatingActionButton: MyFloatingActionButton(
-                  icon: Icons.add,
-                  labelText: 'متابع جديد',
-                  onPressed: () {
-                    // // Navigate to add a new user
-                    followUpManagementCubit.navigateToEditAddScreen(context, null);
-                  },
-                ),
-              ),
-              state is GetManagersLoadingState ? const LoaderWithDisable() : Container(),
-            ],
+                state is GetManagersLoadingState ? const LoaderWithDisable() : Container(),
+              ],
+            ),
           );
         },
       ),
