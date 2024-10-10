@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_today_submissions_model.dart';
@@ -7,7 +8,20 @@ import 'package:jelanco_tracking_system/modules/today_submissions_modules/cubit/
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class TodaySubmissionsCubit extends Cubit<TodaySubmissionsStates> {
-  TodaySubmissionsCubit() : super(TodaySubmissionsInitialState());
+  TodaySubmissionsCubit() : super(TodaySubmissionsInitialState()) {
+    // Listen for TaskUpdatedEvent from EventBus
+    eventBus.on<TaskUpdatedEvent>().listen((event) {
+      // event.submission.tsParentId id is the old submission id
+      int index =
+          todaySubmissionsList.indexWhere((submission) => submission.tsId == event.submission.tsParentId);
+
+      if (index != -1) {
+        // Replace the old submission with the new one
+        todaySubmissionsList[index] = event.submission;
+      }
+      emit(TasksUpdatedStateViaEventBus());
+    });
+  }
 
   static TodaySubmissionsCubit get(context) => BlocProvider.of(context);
 
@@ -30,11 +44,9 @@ class TodaySubmissionsCubit extends Cubit<TodaySubmissionsStates> {
         todaySubmissionsList.clear();
       }
       getTodaySubmissionsModel = GetTodaySubmissionsModel.fromMap(value?.data);
-      todaySubmissionsList.addAll(getTodaySubmissionsModel?.submissions
-          as Iterable<TaskSubmissionModel>);
+      todaySubmissionsList.addAll(getTodaySubmissionsModel?.submissions as Iterable<TaskSubmissionModel>);
       isTodaySubmissionsLastPage =
-          getTodaySubmissionsModel?.pagination?.lastPage ==
-              getTodaySubmissionsModel?.pagination?.currentPage;
+          getTodaySubmissionsModel?.pagination?.lastPage == getTodaySubmissionsModel?.pagination?.currentPage;
       isTodaySubmissionsLoading = false;
       emit(GetTodaySubmissionsSuccessState());
     }).catchError((error) {
@@ -42,24 +54,24 @@ class TodaySubmissionsCubit extends Cubit<TodaySubmissionsStates> {
     });
   }
 
-  void afterEditSubmission({
-    required int oldSubmissionId,
-    required final TaskSubmissionModel newSubmissionModel,
-  }) {
-    // Replace the old submission with the new one
-    // Find the index of the submission with the old ID
-    int index = todaySubmissionsList
-        .indexWhere((submission) => submission.tsId == oldSubmissionId);
-
-    if (index != -1) {
-      // Replace the old submission with the new one
-      todaySubmissionsList[index] = newSubmissionModel;
-
-      print(todaySubmissionsList[index].toMap());
-      print(todaySubmissionsList[index].tsId);
-    }
-    emit(AfterEditSubmissionState());
-  }
+  // void afterEditSubmission({
+  //   required int oldSubmissionId,
+  //   required final TaskSubmissionModel newSubmissionModel,
+  // }) {
+  //   // Replace the old submission with the new one
+  //   // Find the index of the submission with the old ID
+  //   int index = todaySubmissionsList
+  //       .indexWhere((submission) => submission.tsId == oldSubmissionId);
+  //
+  //   if (index != -1) {
+  //     // Replace the old submission with the new one
+  //     todaySubmissionsList[index] = newSubmissionModel;
+  //
+  //     print(todaySubmissionsList[index].toMap());
+  //     print(todaySubmissionsList[index].tsId);
+  //   }
+  //   emit(AfterEditSubmissionState());
+  // }
 
   GetSubmissionCommentCountModel? getSubmissionCommentCountModel;
 
@@ -72,12 +84,10 @@ class TodaySubmissionsCubit extends Cubit<TodaySubmissionsStates> {
       // /task-submissions/185/comments/count
     ).then((value) {
       print(value?.data);
-      getSubmissionCommentCountModel =
-          GetSubmissionCommentCountModel.fromMap(value?.data);
+      getSubmissionCommentCountModel = GetSubmissionCommentCountModel.fromMap(value?.data);
       // update the number of comments in the original submission model
-      todaySubmissionsList
-          .firstWhere((submission) => submission.tsId == submissionId)
-          .commentsCount = getSubmissionCommentCountModel?.commentsCount;
+      todaySubmissionsList.firstWhere((submission) => submission.tsId == submissionId).commentsCount =
+          getSubmissionCommentCountModel?.commentsCount;
 
       emit(GetCommentsCountSuccessState());
     }).catchError((error) {

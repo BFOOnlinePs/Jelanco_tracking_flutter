@@ -18,4 +18,6 @@ class ToggleVideoPlayPauseState extends TaskDetailsStates {}
 
 class ListenToNewCommentsState extends TaskDetailsStates {}
 
-class AfterEditSubmissionState extends TaskDetailsStates {}
+class AfterEditTaskState extends TaskDetailsStates {}
+
+class TasksUpdatedStateViaEventBus extends TaskDetailsStates {}

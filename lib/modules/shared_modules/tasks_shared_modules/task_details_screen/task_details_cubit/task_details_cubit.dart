@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
@@ -10,7 +11,27 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
-  TaskDetailsCubit() : super(TaskDetailsInitialState());
+  TaskDetailsCubit() : super(TaskDetailsInitialState()) {
+    print('in cubit');
+    // Listen for TaskUpdatedEvent from EventBus
+    eventBus.on<TaskUpdatedEvent>().listen((event) {
+      print('in cubit eventBus: ${event.submission.tsId}');
+      print('in cubit eventBus: ${event.submission.tsParentId}');
+      // Update the task in the current submissions list
+      // event.submission.tsParentId id is the old submission id
+      int? index = getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions!
+          .indexWhere((submission) => submission.tsId == event.submission.tsParentId);
+
+      if (index != -1) {
+        // Replace the old submission with the new one
+        getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!] = event.submission;
+      }
+
+      // Emit the updated state with the updated task list
+      print('in cubit eventBus: ${event.submission.tsId}');
+      emit(TasksUpdatedStateViaEventBus());
+    });
+  }
 
   static TaskDetailsCubit get(context) => BlocProvider.of(context);
 
@@ -55,23 +76,23 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
     });
   }
 
-  void afterEditSubmission({
-    required int oldSubmissionId,
-    required final TaskSubmissionModel newSubmissionModel,
-  }) {
-    // Replace the old submission with the new one
-    // Find the index of the submission with the old ID
-    int? index = getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions!
-        .indexWhere((submission) => submission.tsId == oldSubmissionId);
-
-    if (index != -1) {
-      // Replace the old submission with the new one
-      getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!] = newSubmissionModel;
-
-      print(getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!].toMap());
-    }
-    emit(AfterEditSubmissionState());
-  }
+  // void afterEditSubmission({
+  //   required int oldSubmissionId,
+  //   required final TaskSubmissionModel newSubmissionModel,
+  // }) {
+  //   // Replace the old submission with the new one
+  //   // Find the index of the submission with the old ID
+  //   int? index = getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions!
+  //       .indexWhere((submission) => submission.tsId == oldSubmissionId);
+  //
+  //   if (index != -1) {
+  //     // Replace the old submission with the new one
+  //     getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!] = newSubmissionModel;
+  //
+  //     print(getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions![index!].toMap());
+  //   }
+  //   emit(AfterEditSubmissionState());
+  // }
 
   void afterEditTask({
     // required int oldTaskId,
@@ -80,7 +101,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsStates> {
     // recall the function
     getTaskWithSubmissionsAndComments(taskId: newTaskModel.tId!);
 
-    emit(AfterEditSubmissionState());
+    emit(AfterEditTaskState());
   }
 
   @override

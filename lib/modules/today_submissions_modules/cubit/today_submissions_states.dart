@@ -10,6 +10,8 @@ class GetTodaySubmissionsErrorState extends TodaySubmissionsStates {}
 
 class AfterEditSubmissionState extends TodaySubmissionsStates {}
 
+class TasksUpdatedStateViaEventBus extends TodaySubmissionsStates {}
+
 class GetCommentsCountLoadingState extends TodaySubmissionsStates {}
 
 class GetCommentsCountSuccessState extends TodaySubmissionsStates {}

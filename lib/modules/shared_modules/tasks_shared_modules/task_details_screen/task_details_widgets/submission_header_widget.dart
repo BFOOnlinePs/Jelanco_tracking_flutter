@@ -25,21 +25,22 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final bool showSubmissionOptions;
-  final HomeCubit? homeCubit;
-  final TaskDetailsCubit? taskDetailsCubit;
-  final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
-  final UserProfileCubit? userProfileCubit;
-  final TodaySubmissionsCubit? todaySubmissionsCubit;
+  // final HomeCubit? homeCubit;
+  // final TaskDetailsCubit? taskDetailsCubit;
+  // final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
+  // final UserProfileCubit? userProfileCubit;
+  // final TodaySubmissionsCubit? todaySubmissionsCubit;
 
   SubmissionHeaderWidget(
       {super.key,
       required this.submissionModel,
       this.showSubmissionOptions = true,
-      this.homeCubit,
-      this.taskDetailsCubit,
-      this.taskSubmissionDetailsCubit,
-      this.userProfileCubit,
-      this.todaySubmissionsCubit});
+      // this.homeCubit,
+      // this.taskDetailsCubit,
+      // this.taskSubmissionDetailsCubit,
+      // this.userProfileCubit,
+      // this.todaySubmissionsCubit,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -135,24 +136,28 @@ class SubmissionHeaderWidget extends StatelessWidget {
                                   //       oldSubmissionId: submissionModel.tsId!,
                                   //       newSubmissionModel: newSubmissionModel);
                                   // } else
-                                    if (taskDetailsCubit != null) {
-                                    taskDetailsCubit!.afterEditSubmission(
-                                        oldSubmissionId: submissionModel.tsId!,
-                                        newSubmissionModel: newSubmissionModel);
-                                  } else if (taskSubmissionDetailsCubit != null) {
-                                    taskSubmissionDetailsCubit!
-                                        .afterEditSubmission(newSubmissionModel: newSubmissionModel);
-                                  } else if (userProfileCubit != null) {
-                                    userProfileCubit!.afterEditSubmission(
-                                        oldSubmissionId: submissionModel.tsId!,
-                                        newSubmissionModel: newSubmissionModel);
-                                  } else if (todaySubmissionsCubit != null) {
-                                    todaySubmissionsCubit!.afterEditSubmission(
-                                        oldSubmissionId: submissionModel.tsId!,
-                                        newSubmissionModel: newSubmissionModel);
-                                  } else {
-                                    print('no afterEditSubmission function provided');
-                                  }
+                                  //   if (taskDetailsCubit != null) {
+                                  //   taskDetailsCubit!.afterEditSubmission(
+                                  //       oldSubmissionId: submissionModel.tsId!,
+                                  //       newSubmissionModel: newSubmissionModel);
+                                  // } else
+                                  //   if (taskSubmissionDetailsCubit != null) {
+                                  //   taskSubmissionDetailsCubit!
+                                  //       .afterEditSubmission(newSubmissionModel: newSubmissionModel);
+                                  // } else
+
+                                  //   if (userProfileCubit != null) {
+                                  //   userProfileCubit!.afterEditSubmission(
+                                  //       oldSubmissionId: submissionModel.tsId!,
+                                  //       newSubmissionModel: newSubmissionModel);
+                                  // } else
+                                  //   if (todaySubmissionsCubit != null) {
+                                  //   todaySubmissionsCubit!.afterEditSubmission(
+                                  //       oldSubmissionId: submissionModel.tsId!,
+                                  //       newSubmissionModel: newSubmissionModel);
+                                  // } else {
+                                  //   print('no afterEditSubmission function provided');
+                                  // }
                                 },
                               ),
                             );
