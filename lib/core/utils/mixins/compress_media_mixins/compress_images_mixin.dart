@@ -22,7 +22,8 @@ mixin CompressImagesMixin<T> on Cubit<T> {
     final random = DateTime.now().millisecondsSinceEpoch.toString();
 
     // Create a unique file name for the compressed image
-    final compressedFileName = '$fileNameWithoutExtension.$fileExtension';
+    final compressedFileName = '$fileNameWithoutExtension.jpg';
+    // final compressedFileName = '$fileNameWithoutExtension.$fileExtension';
     final compressedFilePath = '$tempPath/$random$compressedFileName';
 
     print('fileName: $fileName');

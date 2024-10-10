@@ -73,5 +73,11 @@
     <key>NSUserTrackingUsageDescription</key>
     <string>This identifier will be used to deliver personalized ads to you.</string>
 
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>http</string>
+        <string>https</string>
+        <string>tel</string>
+    </array>
 </dict>
 </plist>

@@ -17,31 +17,36 @@ mixin PermissionsMixin<T> on Cubit<T> {
     print('requestPermission for $permissionType');
 
     // Check platform to avoid checking Android SDK on iOS
-    if (Theme.of(context).platform == TargetPlatform.android) {
-      // Get device info to check Android SDK version
-      final deviceInfo = await DeviceInfoPlugin().androidInfo;
-      final sdkVersion = deviceInfo.version.sdkInt;
 
-      if (permissionType == PermissionType.storage && sdkVersion > 32) {
-        await _requestPhotosAndVideosPermissions();
-        return;
-      }
+    TargetPlatform platform = Theme.of(context).platform;
+    // print('platform: ${platform}');
+    int sdkVersion = 0;
+    if (platform == TargetPlatform.android) {
+      final deviceInfo = await DeviceInfoPlugin().androidInfo;
+      print('Running on ${deviceInfo.model}');
+      sdkVersion = deviceInfo.version.sdkInt;
+      print('Running on ${sdkVersion}');
     }
 
     // Request permissions based on type and SDK version
     switch (permissionType) {
       case PermissionType.storage:
-        // if (sdkVersion > 32) {
-        //   await _requestPhotosAndVideosPermissions();
-        //   print('Storage permissions requested for Android SDK > 32');
-        // } else {
-        permissionStatus = await Permission.storage.request();
-        print('Storage permission requested for Android SDK <= 32 OR IOS');
-        // }
+        // print(Theme.of(context).platform == TargetPlatform.android && sdkVersion > 32);
+        // print(Theme.of(context).platform == TargetPlatform.android);
+        // print(sdkVersion > 32);
+        // print(sdkVersion );
+        // print(Theme.of(context).platform);
+
+        if (platform == TargetPlatform.android && sdkVersion > 32) {
+          await _requestPhotosAndVideosPermissions();
+          print('Storage permission requested for Android SDK > 32');
+        } else {
+          permissionStatus = await Permission.storage.request();
+          print('Storage permission requested for Android SDK <= 32   OR   IOS');
+        }
         break;
 
       case PermissionType.location:
-        //
         permissionStatus = await Permission.location.request();
         print('permissionStatus?.isRestricted? ${permissionStatus?.isRestricted}');
         permissionStatus = await Permission.locationWhenInUse.request();
@@ -75,9 +80,12 @@ mixin PermissionsMixin<T> on Cubit<T> {
     final photoPermission = await Permission.photos.request();
     final videoPermission = await Permission.videos.request();
 
+    print(
+        'photoPermission.isGranted && videoPermission.isGranted: ${photoPermission.isGranted}  ${videoPermission.isGranted}');
     // Combine the status of photo and video permissions
     if (photoPermission.isGranted && videoPermission.isGranted) {
       permissionStatus = photoPermission; // Assuming both are granted
+      print('permissionStatus: $permissionStatus');
     } else {
       permissionStatus = PermissionStatus.denied; // Default to denied if any are denied
     }
