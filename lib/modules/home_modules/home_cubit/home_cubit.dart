@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/comments_models/get_submission_comment_count_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/get_user_submissions_model.dart';
@@ -17,7 +18,27 @@ import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 class HomeCubit extends Cubit<HomeStates>
     with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
 {
-  HomeCubit() : super(HomeInitialState());
+  HomeCubit() : super(HomeInitialState()) {
+    // Listen for TaskUpdatedEvent from EventBus
+    eventBus.on<TaskUpdatedEvent>().listen((event) {
+      print('in HomeCubit eventBus: ${event.submission.tsId}');
+      print('in HomeCubit eventBus: ${event.submission.tsParentId}');
+      // Update the task in the current task list
+      // update the content of the submission
+      userSubmissionsList = userSubmissionsList.map((submission) {
+        if (submission.tsId == event.submission.tsParentId) {
+          print('in HomeCubit inside if eventBus: ${event.submission.tsId}');
+          return event.submission;
+        }
+        return submission;
+      }).toList();
+
+      // Emit the updated state with the updated task list
+      print('in HomeCubit eventBus: ${event.submission.tsId}');
+
+      emit(TasksUpdatedStateViaEventBus());
+    });
+  }
 
   static HomeCubit get(context) => BlocProvider.of(context);
 

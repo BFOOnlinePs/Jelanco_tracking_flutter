@@ -13,6 +13,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/categories_mixin/categ
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_images_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/add_task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
@@ -338,11 +339,13 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
   Future<void> addNewTaskSubmission({
     required int taskId,
     // required bool isEdit,
-    int? taskSubmissionId,
+    int? taskSubmissionId, // -1 first submission
     List<String> oldAttachments = const [],
   }) async {
     isAddTaskSubmissionLoading = true;
     emit(AddTaskSubmissionLoadingState());
+
+
     // compress images videos before send them to back-end
     if (pickedImagesList.isNotEmpty) {
       await compressAllImages();
@@ -405,6 +408,15 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     ).then((value) {
       print(value?.data);
       addTaskSubmissionModel = AddTaskSubmissionModel.fromMap(value?.data);
+
+      // when edit submission
+      if(taskSubmissionId != -1 && addTaskSubmissionModel?.status == true) {
+        // Fire the TaskUpdatedEvent
+        print('in AddTaskSubmission eventBus: ${addTaskSubmissionModel!.taskSubmission!.tsId}');
+        eventBus.fire(TaskUpdatedEvent(addTaskSubmissionModel!.taskSubmission!));
+        print('after fire eventBus');
+      }
+
       emit(AddTaskSubmissionSuccessState(addTaskSubmissionModel: addTaskSubmissionModel!));
     }).catchError((error) {
       emit(AddTaskSubmissionErrorState(error: error.toString()));

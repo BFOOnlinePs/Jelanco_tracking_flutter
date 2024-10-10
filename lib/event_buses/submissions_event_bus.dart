@@ -6,7 +6,8 @@ EventBus eventBus = EventBus();
 
 // Define a custom event for task updates
 class TaskUpdatedEvent {
-  final TaskSubmissionModel task;
+  // holds the task that has been updated.
+  final TaskSubmissionModel submission;
 
-  TaskUpdatedEvent(this.task);
+  TaskUpdatedEvent(this.submission);
 }
