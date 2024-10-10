@@ -345,7 +345,6 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
     isAddTaskSubmissionLoading = true;
     emit(AddTaskSubmissionLoadingState());
 
-
     // compress images videos before send them to back-end
     if (pickedImagesList.isNotEmpty) {
       await compressAllImages();
@@ -410,9 +409,9 @@ class AddTaskSubmissionCubit extends Cubit<AddTaskSubmissionStates>
       addTaskSubmissionModel = AddTaskSubmissionModel.fromMap(value?.data);
 
       // when edit submission
-      if(taskSubmissionId != -1 && addTaskSubmissionModel?.status == true) {
-        // Fire the TaskUpdatedEvent
+      if (taskSubmissionId != -1 && addTaskSubmissionModel?.status == true) {
         print('in AddTaskSubmission eventBus: ${addTaskSubmissionModel!.taskSubmission!.tsId}');
+        // Fire the TaskUpdatedEvent
         eventBus.fire(TaskUpdatedEvent(addTaskSubmissionModel!.taskSubmission!));
         print('after fire eventBus');
       }

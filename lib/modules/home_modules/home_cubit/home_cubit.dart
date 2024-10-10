@@ -19,23 +19,23 @@ class HomeCubit extends Cubit<HomeStates>
     with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
 {
   HomeCubit() : super(HomeInitialState()) {
+    print('in HomeCubit');
     // Listen for TaskUpdatedEvent from EventBus
     eventBus.on<TaskUpdatedEvent>().listen((event) {
       print('in HomeCubit eventBus: ${event.submission.tsId}');
       print('in HomeCubit eventBus: ${event.submission.tsParentId}');
-      // Update the task in the current task list
-      // update the content of the submission
-      userSubmissionsList = userSubmissionsList.map((submission) {
-        if (submission.tsId == event.submission.tsParentId) {
-          print('in HomeCubit inside if eventBus: ${event.submission.tsId}');
-          return event.submission;
-        }
-        return submission;
-      }).toList();
+      // Update the task in the current submissions list
+      // event.submission.tsParentId id is the old submission id
+      int index =
+          userSubmissionsList.indexWhere((submission) => submission.tsId == event.submission.tsParentId);
+
+      if (index != -1) {
+        // Replace the old submission with the new one
+        userSubmissionsList[index] = event.submission;
+      }
 
       // Emit the updated state with the updated task list
       print('in HomeCubit eventBus: ${event.submission.tsId}');
-
       emit(TasksUpdatedStateViaEventBus());
     });
   }
@@ -142,23 +142,23 @@ class HomeCubit extends Cubit<HomeStates>
     }
   }
 
-  void afterEditSubmission({
-    required int oldSubmissionId,
-    required final TaskSubmissionModel newSubmissionModel,
-  }) {
-    // Replace the old submission with the new one
-    // Find the index of the submission with the old ID
-    int index = userSubmissionsList.indexWhere((submission) => submission.tsId == oldSubmissionId);
-
-    if (index != -1) {
-      // Replace the old submission with the new one
-      userSubmissionsList[index] = newSubmissionModel;
-
-      print(userSubmissionsList[index].toMap());
-      print(userSubmissionsList[index].tsId);
-    }
-    emit(AfterEditSubmissionState());
-  }
+  // void afterEditSubmission({
+  //   required int oldSubmissionId,
+  //   required final TaskSubmissionModel newSubmissionModel,
+  // }) {
+  //   // Replace the old submission with the new one
+  //   // Find the index of the submission with the old ID
+  //   int index = userSubmissionsList.indexWhere((submission) => submission.tsId == oldSubmissionId);
+  //
+  //   if (index != -1) {
+  //     // Replace the old submission with the new one
+  //     userSubmissionsList[index] = newSubmissionModel;
+  //
+  //     print(userSubmissionsList[index].toMap());
+  //     print(userSubmissionsList[index].tsId);
+  //   }
+  //   emit(AfterEditSubmissionState());
+  // }
 
   GetUserByIdModel? getUserByIdModel;
 

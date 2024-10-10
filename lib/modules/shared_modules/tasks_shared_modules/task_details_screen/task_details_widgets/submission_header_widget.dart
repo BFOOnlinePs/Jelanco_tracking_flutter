@@ -130,11 +130,12 @@ class SubmissionHeaderWidget extends StatelessWidget {
                                 getDataCallback: (newSubmissionModel) {
                                   // shared with 5 screens (task details screen, submission details screen and home user submissions screen)
                                   // to edit the submission
-                                  if (homeCubit != null) {
-                                    homeCubit!.afterEditSubmission(
-                                        oldSubmissionId: submissionModel.tsId!,
-                                        newSubmissionModel: newSubmissionModel);
-                                  } else if (taskDetailsCubit != null) {
+                                  // if (homeCubit != null) {
+                                  //   homeCubit!.afterEditSubmission(
+                                  //       oldSubmissionId: submissionModel.tsId!,
+                                  //       newSubmissionModel: newSubmissionModel);
+                                  // } else
+                                    if (taskDetailsCubit != null) {
                                     taskDetailsCubit!.afterEditSubmission(
                                         oldSubmissionId: submissionModel.tsId!,
                                         newSubmissionModel: newSubmissionModel);
