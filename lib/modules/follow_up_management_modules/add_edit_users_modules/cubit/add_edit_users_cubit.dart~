@@ -90,7 +90,7 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     // If all users are selected (expect the manager), clear the list; otherwise, select all users
     print('employeesUsers.length: ${employeesUsers.length}');
     print('filteredAllUsers.length: ${filteredAllUsers.length}');
-    if (employeesUsers.length == filteredAllUsers.length  - 1) {
+    if (employeesUsers.length - 1 == filteredAllUsers.length) {
       employeesUsers.clear();
     } else {
       employeesUsers

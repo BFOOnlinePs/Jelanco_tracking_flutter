@@ -45,6 +45,9 @@ class EndPointsConstants {
   // categories
   static const String taskCategories = 'task-categories';
 
+  // departments
+  static const String departments = 'departments';
+
   // users
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1

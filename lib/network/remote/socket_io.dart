@@ -17,7 +17,6 @@ class SocketIO {
       'autoConnect': true,
       'secure': true,
       'forceNew': true,
-
     });
 
     socket.connect();
