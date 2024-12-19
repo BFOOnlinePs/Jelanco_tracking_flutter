@@ -14,7 +14,7 @@ class SocketIO {
     print('Socket.IO inside socket Service');
     socket = IO.io(EndPointsConstants.socketIoUrl, <String, dynamic>{
       'transports': ['websocket'],
-      'autoConnect': true,
+      'autoConnect': false,
       'secure': true,
       'forceNew': true,
 

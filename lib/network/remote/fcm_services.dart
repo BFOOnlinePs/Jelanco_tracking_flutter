@@ -83,6 +83,8 @@ class FCMServices {
       print('FCM Token updated successfully');
       await CacheHelper.saveData(
           key: MyCacheKeys.firebaseToken, value: newToken);
+      UserDataConstants.firebaseTokenVar =
+          CacheHelper.getData(key: MyCacheKeys.firebaseToken);
     }).catchError((error) {
       print(error.toString());
     });
