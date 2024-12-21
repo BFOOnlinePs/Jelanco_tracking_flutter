@@ -13,7 +13,7 @@ import 'package:jelanco_tracking_system/modules/manager_employees_modules/manage
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
-import 'package:jelanco_tracking_system/modules/users_management_modules/add_user_modules/add_user_screen.dart';
+import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/add_edit_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/users_management_screen.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_cubit.dart';

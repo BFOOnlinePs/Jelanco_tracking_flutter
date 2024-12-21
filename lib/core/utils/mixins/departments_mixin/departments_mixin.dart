@@ -8,9 +8,9 @@ mixin DepartmentsMixin<T> on Cubit<T> {
 
   GetDepartmentsModel? get getDepartmentsModel => _getDepartmentsModel;
 
-  void getAllDepartments({required T loadingState, required T successState, required T errorState}) {
+  Future<void> getAllDepartments({required T loadingState, required T successState, required T errorState}) async {
     emit(loadingState);
-    DioHelper.getData(url: EndPointsConstants.departments).then((value) {
+    await DioHelper.getData(url: EndPointsConstants.departments).then((value) {
       print(value?.data);
       _getDepartmentsModel = GetDepartmentsModel.fromMap(value?.data);
       emit(successState);

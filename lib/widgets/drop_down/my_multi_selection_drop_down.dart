@@ -64,16 +64,7 @@ class MyMultiSelectDropDown<T extends Object> extends StatelessWidget {
               : Container(),
           MultiDropdown<T>(
             controller: controller,
-            chipDecoration: ChipDecoration(
-              wrap: true,
-              backgroundColor: ColorsConstants.primaryColor.withOpacity(0.8),
-              labelStyle: const TextStyle(color: Colors.white),
-              deleteIcon: const Icon(
-                Icons.clear,
-                color: Colors.white,
-                size: 14,
-              ),
-            ),
+
             fieldDecoration: FieldDecoration(
               backgroundColor: Colors.white,
               hintText: hint ?? '',
@@ -93,6 +84,26 @@ class MyMultiSelectDropDown<T extends Object> extends StatelessWidget {
             ),
             items: items,
             onSelectionChange: onSelectionChange,
+            // design, the default is chip
+            selectedItemBuilder: (DropdownItem<T> selectedItem) {
+              return Row(
+                children: [
+                  Icon(Icons.check, color: Colors.green),
+                  SizedBox(width: 8),
+                  Text(selectedItem.label),
+                ],
+              );
+            },
+            chipDecoration: ChipDecoration(
+              wrap: true,
+              backgroundColor: ColorsConstants.primaryColor.withOpacity(0.8),
+              labelStyle: const TextStyle(color: Colors.white),
+              deleteIcon: const Icon(
+                Icons.clear,
+                color: Colors.white,
+                size: 14,
+              ),
+            ),
 
             // selectedOptionTextColor: ColorsConstants.primaryColor,
             // onOptionSelected: onOptionSelected,

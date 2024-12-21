@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_card_widget.dart';
-import 'package:jelanco_tracking_system/modules/users_management_modules/add_user_modules/add_user_screen.dart';
+import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/add_edit_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/cubit/users_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/cubit/users_management_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -55,7 +55,7 @@ class UsersManagementScreen extends StatelessWidget {
                 icon: Icons.add,
                 labelText: 'إضافة موظف',
                 onPressed: () {
-                  NavigationServices.navigateTo(context, const AddUserScreen());
+                  NavigationServices.navigateTo(context, const AddEditUserScreen());
                 }),
           );
         },

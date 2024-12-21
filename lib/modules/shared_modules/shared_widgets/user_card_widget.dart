@@ -5,7 +5,7 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
-import 'package:jelanco_tracking_system/modules/users_management_modules/add_user_modules/add_user_screen.dart';
+import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/add_edit_user_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
@@ -81,7 +81,7 @@ class UserCardWidget extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    NavigationServices.navigateTo(context, AddUserScreen(userId: userModel.id));
+                    NavigationServices.navigateTo(context, AddEditUserScreen(userId: userModel.id));
                   },
                 ),
             ],
