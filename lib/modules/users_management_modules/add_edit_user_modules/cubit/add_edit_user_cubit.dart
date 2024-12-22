@@ -79,7 +79,7 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
   AddUpdateUserModel? addUpdateUserModel;
 
   void addUpdateUser({int? userId}) {
-    emit(AddUserLoadingState());
+    emit(AddUpdateUserLoadingState());
     DioHelper.postData(url: EndPointsConstants.users + (userId != null ? '/$userId' : ''), data: {
       'name': nameController.text,
       'email': emailController.text,
@@ -92,9 +92,9 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
     }).then((value) {
       print(value?.data);
       addUpdateUserModel = AddUpdateUserModel.fromMap(value?.data);
-      emit(AddUserSuccessState(addUpdateUserModel!));
+      emit(AddUpdateUserSuccessState(addUpdateUserModel!));
     }).catchError((error) {
-      emit(AddUserErrorState());
+      emit(AddUpdateUserErrorState());
       print(error.toString());
     });
   }

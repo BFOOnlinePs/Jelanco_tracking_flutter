@@ -30,11 +30,10 @@ class AssignedTasksScreen extends StatelessWidget {
             return assignedTasksCubit.getTasksAssignedToUserModel == null
                 ? const Center(child: MyLoader())
                 : Container(
-                    child: assignedTasksCubit
-                            .getTasksAssignedToUserModel!.tasks!.isEmpty
+                    child: assignedTasksCubit.getTasksAssignedToUserModel!.tasks!.isEmpty
                         ? Center(
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
                                 AssetsKeys.defaultNoTasksImage,
@@ -49,26 +48,14 @@ class AssignedTasksScreen extends StatelessWidget {
                             },
                             child: ListView.builder(
                               physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: assignedTasksCubit
-                                      .tasksAssignedToUserList.length +
-                                  (assignedTasksCubit
-                                          .isTasksAssignedToUserLastPage
-                                      ? 0
-                                      : 1),
+                              itemCount: assignedTasksCubit.tasksAssignedToUserList.length +
+                                  (assignedTasksCubit.isTasksAssignedToUserLastPage ? 0 : 1),
                               itemBuilder: (context, index) {
-                                if (index ==
-                                        assignedTasksCubit
-                                            .tasksAssignedToUserList.length &&
-                                    !assignedTasksCubit
-                                        .isTasksAssignedToUserLastPage) {
-                                  if (!assignedTasksCubit
-                                      .isTasksAssignedToUserLoading) {
+                                if (index == assignedTasksCubit.tasksAssignedToUserList.length &&
+                                    !assignedTasksCubit.isTasksAssignedToUserLastPage) {
+                                  if (!assignedTasksCubit.isTasksAssignedToUserLoading) {
                                     assignedTasksCubit.getAssignedTasks(
-                                      page: assignedTasksCubit
-                                              .getTasksAssignedToUserModel!
-                                              .pagination!
-                                              .currentPage! +
-                                          1,
+                                      page: assignedTasksCubit.getTasksAssignedToUserModel!.pagination!.currentPage! + 1,
                                     );
                                   }
                                   return const Padding(
@@ -76,9 +63,7 @@ class AssignedTasksScreen extends StatelessWidget {
                                     child: Center(child: MyLoader()),
                                   );
                                 }
-                                return TaskItem(
-                                    taskModel: assignedTasksCubit
-                                        .tasksAssignedToUserList[index]);
+                                return TaskItem(taskModel: assignedTasksCubit.tasksAssignedToUserList[index]);
                               },
                             ),
                           ),

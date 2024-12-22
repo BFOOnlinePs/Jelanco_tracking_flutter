@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/modules/users_management_modules/cubit/u
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
+import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_title_screen/my_title_screen_widget.dart';
 
@@ -19,6 +20,7 @@ class UsersManagementScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => UsersManagementCubit()
         ..getAllUsers(
+          pagination: 1,
           loadingState: GetAllUsersLoadingState(),
           successState: GetAllUsersSuccessState(),
           errorState: (error) => GetAllUsersErrorState(),
@@ -39,12 +41,40 @@ class UsersManagementScreen extends StatelessWidget {
                     usersManagementCubit.getAllUsersModel == null
                         ? const MyLoader()
                         : Expanded(
-                            child: ListView.builder(
-                              itemCount: usersManagementCubit.getAllUsersModel?.users?.length ?? 0,
-                              itemBuilder: (context, index) => UserCardWidget(
-                                userModel: usersManagementCubit.getAllUsersModel!.users![index],
-                                showEditButton: true,
-                              ),
+                            child: MyRefreshIndicator(
+                              onRefresh: () async {
+                                await usersManagementCubit.getAllUsers(
+                                  pagination: 1,
+                                  loadingState: GetAllUsersLoadingState(),
+                                  successState: GetAllUsersSuccessState(),
+                                  errorState: (error) => GetAllUsersErrorState(),
+                                );
+                              },
+                              child: usersManagementCubit.usersList.isEmpty
+                                  ? const Center(child: Text('لا يوجد موظفين'))
+                                  : ListView.builder(
+                                      itemCount: usersManagementCubit.usersList.length + (usersManagementCubit.isUsersLastPage ? 0 : 1),
+                                      itemBuilder: (context, index) {
+                                        if (index == usersManagementCubit.usersList.length && !usersManagementCubit.isUsersLastPage) {
+                                          if (!usersManagementCubit.isUsersLoading) {
+                                            usersManagementCubit.getAllUsers(
+                                              page: usersManagementCubit.getAllUsersModel!.pagination!.currentPage! + 1,
+                                              pagination: 1,
+                                              loadingState: GetAllUsersLoadingState(),
+                                              successState: GetAllUsersSuccessState(),
+                                              errorState: (error) => GetAllUsersErrorState(),
+                                            );
+                                          }
+                                          return const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Center(child: MyLoader()),
+                                          );
+                                        }
+                                        return UserCardWidget(
+                                          userModel: usersManagementCubit.usersList[index],
+                                          showEditButton: true,
+                                        );
+                                      }),
                             ),
                           )
                   ],

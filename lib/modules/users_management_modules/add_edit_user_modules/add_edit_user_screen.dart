@@ -30,7 +30,7 @@ class AddEditUserScreen extends StatelessWidget {
       // ),
       child: BlocConsumer<AddEditUserCubit, AddEditUserStates>(
         listener: (context, state) {
-          if (state is AddUserSuccessState) {
+          if (state is AddUpdateUserSuccessState) {
             SnackbarHelper.showSnackbar(
                 context: context,
                 snackBarStates: state.addUserModel.status == true ? SnackBarStates.success : SnackBarStates.error,
@@ -46,7 +46,7 @@ class AddEditUserScreen extends StatelessWidget {
             children: [
               Scaffold(
                 appBar: MyAppBar(
-                  title: userId != null ? 'تعديل بيانات موظف' : 'إضافة موظف',
+                  title: userId != null ? 'تعديل بيانات الموظف' : 'إضافة موظف',
                 ),
                 body: addUserCubit.getUserByIdModel == null && userId != null
                     ? const Center(child: MyLoader())
@@ -144,7 +144,7 @@ class AddEditUserScreen extends StatelessWidget {
                         ),
                       ),
               ),
-              state is AddUserLoadingState ? const LoaderWithDisable() : Container(),
+              state is AddUpdateUserLoadingState ? const LoaderWithDisable() : Container(),
             ],
           );
         },

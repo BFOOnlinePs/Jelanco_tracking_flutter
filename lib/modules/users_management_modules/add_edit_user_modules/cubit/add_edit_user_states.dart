@@ -6,25 +6,15 @@ class AddUserInitialState extends AddEditUserStates {}
 
 class TogglePasswordVisibilityState extends AddEditUserStates {}
 
-class AddUserLoadingState extends AddEditUserStates {}
+class AddUpdateUserLoadingState extends AddEditUserStates {}
 
-class AddUserSuccessState extends AddEditUserStates {
+class AddUpdateUserSuccessState extends AddEditUserStates {
   final AddUpdateUserModel addUserModel;
 
-  AddUserSuccessState(this.addUserModel);
+  AddUpdateUserSuccessState(this.addUserModel);
 }
 
-class AddUserErrorState extends AddEditUserStates {}
-
-class UpdateUserLoadingState extends AddEditUserStates {}
-
-class UpdateUserSuccessState extends AddEditUserStates {
-  final AddUpdateUserModel addUserModel;
-
-  UpdateUserSuccessState(this.addUserModel);
-}
-
-class UpdateUserErrorState extends AddEditUserStates {}
+class AddUpdateUserErrorState extends AddEditUserStates {}
 
 class InitializeDataDoneState extends AddEditUserStates {}
 
