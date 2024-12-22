@@ -7,7 +7,9 @@ import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/launch_url_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
+import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
+import 'package:jelanco_tracking_system/modules/manager_employees_modules/managers_and_employees_of_user_modules/managers_and_employees_of_user_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_photo_view.dart';
@@ -64,8 +66,7 @@ class ProfileCardWidget extends StatelessWidget {
                     child: userInfo.image != null
                         ? MyCachedNetworkImage(
                             imageUrl: EndPointsConstants.profileStorage + userInfo.image!,
-                            imageBuilder: (context, imageProvider) =>
-                                MyCachedImageBuilder(imageProvider: imageProvider),
+                            imageBuilder: (context, imageProvider) => MyCachedImageBuilder(imageProvider: imageProvider),
                             isCircle: true,
                           )
                         : ClipOval(
@@ -303,6 +304,44 @@ class ProfileCardWidget extends StatelessWidget {
                     ],
                   )
                 : Container(),
+
+            if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(const Color(0xFFDC3545)),
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  NavigationServices.navigateTo(
+                      context,
+                      ManagersAndEmployeesOfUserScreen(
+                        userId: userInfo.id!,
+                      ));
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.userGroup,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'إدارة المدراء و الموظفين',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             // Divider(height: 0.5, color: Colors.grey[300],)
           ],
         ),

@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/add_edit_users_modules/cubit/add_edit_users_cubit.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/add_edit_users_modules/cubit/add_edit_users_states.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_cubit.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/check_box_user_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_search.dart';
@@ -55,8 +56,7 @@ class AddEditUsersScreen extends StatelessWidget {
                 message: state.addEditManagerEmployeesModel.message,
               );
               // return the new selected manager
-              NavigationServices.back(
-                  context, ManagerAction(managerModel: addEditUsersCubit.managerUser)); // isRemove = false
+              NavigationServices.back(context, ManagerAction(managerModel: addEditUsersCubit.managerUser)); // isRemove = false
             } else {
               SnackbarHelper.showSnackbar(
                 context: context,
@@ -72,8 +72,7 @@ class AddEditUsersScreen extends StatelessWidget {
                 message: state.deleteManagerModel.message,
               );
               // return the new selected manager
-              NavigationServices.back(
-                  context, ManagerAction(managerModel: addEditUsersCubit.managerUser, isRemove: true));
+              NavigationServices.back(context, ManagerAction(managerModel: addEditUsersCubit.managerUser, isRemove: true));
             } else {
               SnackbarHelper.showSnackbar(
                 context: context,
@@ -132,8 +131,7 @@ class AddEditUsersScreen extends StatelessWidget {
 
                             addEditUsersCubit.managerUser == null ||
                                     (addEditUsersCubit.getManagerEmployeesByIdModel != null &&
-                                        addEditUsersCubit
-                                            .getManagerEmployeesByIdModel!.managerEmployees!.isEmpty)
+                                        addEditUsersCubit.getManagerEmployeesByIdModel!.managerEmployees!.isEmpty)
                                 ? Container()
                                 : Container(
                                     margin: EdgeInsets.only(top: 6),
@@ -163,7 +161,7 @@ class AddEditUsersScreen extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 16),
-                                        Text(
+                                        const Text(
                                           'تحديد موظفين للمتابعة:',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -172,11 +170,11 @@ class AddEditUsersScreen extends StatelessWidget {
                                         MyTextFormField(
                                           labelText: 'بحث عن موظفين',
                                           onChanged: addEditUsersCubit.usersSearch,
-                                          prefixIcon: Icon(Icons.search),
+                                          prefixIcon: const Icon(Icons.search),
                                         ),
                                         Row(
                                           children: [
-                                            Spacer(),
+                                            const Spacer(),
                                             MyTextButtonScratch(
                                                 onPressed: addEditUsersCubit.managerUser == null
                                                     ? null
@@ -198,42 +196,14 @@ class AddEditUsersScreen extends StatelessWidget {
                                         UserModel user = addEditUsersCubit.filteredAllUsers[index];
                                         // Exclude the manager user from the list by its id
                                         if (addEditUsersCubit.managerUser != null &&
-                                            addEditUsersCubit.filteredAllUsers[index].id ==
-                                                addEditUsersCubit.managerUser!.id) {
+                                            addEditUsersCubit.filteredAllUsers[index].id == addEditUsersCubit.managerUser!.id) {
                                           return const SizedBox.shrink();
                                         }
-                                        return CheckboxListTile(
-                                          title: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 20,
-                                                child: user.image != null
-                                                    ? MyCachedNetworkImage(
-                                                        imageUrl:
-                                                            EndPointsConstants.profileStorage + user.image!,
-                                                        imageBuilder: (context, imageProvider) =>
-                                                            MyCachedImageBuilder(imageProvider: imageProvider),
-                                                        isCircle: true,
-                                                      )
-                                                    : ClipOval(
-                                                        child: Image.asset(AssetsKeys.defaultProfileImage)),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  user.name ?? 'name',
-                                                  style: const TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          value: addEditUsersCubit.employeesUsers
-                                              .contains(addEditUsersCubit.filteredAllUsers[index]),
+                                        return CheckBoxUserWidget(
+                                          user: user,
+                                          value: addEditUsersCubit.employeesUsers.contains(addEditUsersCubit.filteredAllUsers[index]),
                                           onChanged: (bool? value) {
-                                            addEditUsersCubit.toggleEmployeeSelection(
-                                                addEditUsersCubit.filteredAllUsers[index]);
+                                            addEditUsersCubit.toggleEmployeeSelection(addEditUsersCubit.filteredAllUsers[index]);
                                           },
                                         );
                                       },
@@ -243,15 +213,13 @@ class AddEditUsersScreen extends StatelessWidget {
                                     margin: EdgeInsets.all(16),
                                     child: MyElevatedButton(
                                       isWidthFull: true,
-                                      onPressed: addEditUsersCubit.managerUser == null ||
-                                              addEditUsersCubit.employeesUsers.isEmpty
+                                      onPressed: addEditUsersCubit.managerUser == null || addEditUsersCubit.employeesUsers.isEmpty
                                           ? null
                                           : () {
                                               addEditUsersCubit.addEditManagerEmployees();
                                             },
                                       buttonText: 'حفظ',
-                                      isDisabled: addEditUsersCubit.managerUser == null ||
-                                          addEditUsersCubit.employeesUsers.isEmpty,
+                                      isDisabled: addEditUsersCubit.managerUser == null || addEditUsersCubit.employeesUsers.isEmpty,
                                     ),
                                   ),
                                 ],

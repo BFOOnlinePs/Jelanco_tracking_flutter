@@ -27,8 +27,7 @@ class EndPointsConstants {
   static const String tasks = 'tasks';
   static const String tasksAddedByUser = '$tasks/added-by-user';
   static const String tasksAssignedToUser = '$tasks/assigned-to-user';
-  static const String tasksWithSubmissionsAndComments =
-      'submissions-and-comments'; // /tasks/10/submissions-and-comments
+  static const String tasksWithSubmissionsAndComments = 'submissions-and-comments'; // /tasks/10/submissions-and-comments
   static const String tasksToSubmit = '$tasks/user-not-submitted-tasks';
 
   // tasks submissions
@@ -59,6 +58,8 @@ class EndPointsConstants {
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
   static const String addEditManagerEmployees = '$managerEmployees/add-edit'; // /users/employees/add-edit
   static const String deleteManager = '$managers/delete'; // users/managers/delete
+  static const String getManagersAndEmployeesOfUser = 'managers-and-employees'; // users/{user_id}/managers-and-employees
+  static const String assignEmployeeForManagers = '$managers/assign';
 
   // notifications
   static const String notifications = 'notifications';

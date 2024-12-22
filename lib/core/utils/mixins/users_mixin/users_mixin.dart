@@ -14,7 +14,7 @@ mixin UsersMixin<T> on Cubit<T> {
   // is users loading
 
   Future<void> getAllUsers({
-    int pagination = 0, // 0 means no pagination, 1 means pagination
+    int pagination = 0, // 0 means no pagination, 1 means with pagination
     int page = 1,
     required T loadingState,
     required T successState,
@@ -39,4 +39,6 @@ mixin UsersMixin<T> on Cubit<T> {
       print(error.toString());
     });
   }
+
+
 }
