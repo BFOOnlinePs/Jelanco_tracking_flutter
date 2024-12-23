@@ -8,14 +8,18 @@ import 'package:jelanco_tracking_system/models/manager_employees_models/get_mana
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/managers_and_employees_of_user_modules/cubit/managers_and_employees_of_user_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
+import '../../../../models/basic_models/status_message_model.dart';
+
 class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserStates> with UsersMixin<ManagersAndEmployeesOfUserStates> {
   ManagersAndEmployeesOfUserCubit() : super(ManagersAndEmployeesOfUserInitialState());
 
   static ManagersAndEmployeesOfUserCubit get(context) => BlocProvider.of(context);
 
   List<UserModel> selectedManagers = [];
+  List<UserModel> initialSelectedManagers = []; // to prevent selecting the same user as manager and employee
   List<UserModel> filteredManagers = [];
   List<UserModel> selectedEmployees = [];
+  List<UserModel> initialSelectedEmployees = []; // to prevent selecting the same user as manager and employee
   List<UserModel> filteredEmployees = [];
 
   void enterScreenActions({required int userId}) async {
@@ -25,13 +29,22 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
           loadingState: GetAllUsersLoadingState(), successState: GetAllUsersSuccessState(), errorState: (error) => GetAllUsersErrorState()),
     ]);
 
-    selectedManagers =
+    initialSelectedManagers =
         getManagersAndEmployeesOfUserModel?.managerIds?.map((id) => usersList.firstWhere((user) => user.id == id)).toList() ?? [];
-    selectedEmployees =
+    selectedManagers = List.from(initialSelectedManagers);
+
+    initialSelectedEmployees =
         getManagersAndEmployeesOfUserModel?.employeeIds?.map((id) => usersList.firstWhere((user) => user.id == id)).toList() ?? [];
+    selectedEmployees = List.from(initialSelectedEmployees);
+
+    // Exclude the current user from usersList
+    usersList.removeWhere((user) => user.id == userId);
+
     emit(EnterScreenActionsState());
     print('selectedManagers: ${selectedManagers.length}');
+    print('initialSelectedManagers: ${initialSelectedManagers.length}');
     print('selectedEmployees: ${selectedEmployees.length}');
+    print('initialSelectedEmployees: ${initialSelectedEmployees.length}');
   }
 
   GetManagersAndEmployeesOfUserModel? getManagersAndEmployeesOfUserModel;
@@ -51,6 +64,8 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
   }
 
   void toggleUserSelection(UserModel user, bool isManager) {
+    print('initialSelectedManagers: ${initialSelectedManagers.length}');
+    print('initialSelectedEmployees: ${initialSelectedEmployees.length}');
     if (isManager) {
       if (selectedManagers.contains(user)) {
         selectedManagers.remove(user);
@@ -87,6 +102,7 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
     }).then((value) {
       print(value?.data);
       addEditManagerEmployeesModel = AddEditManagerEmployeesModel.fromMap(value?.data);
+      if (addEditManagerEmployeesModel!.status == true) initialSelectedEmployees = List.from(selectedEmployees);
       emit(AddEditManagerEmployeesSuccessState(addEditManagerEmployeesModel!));
     }).catchError((error) {
       emit(AddEditManagerEmployeesErrorState());
@@ -94,7 +110,8 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
     });
   }
 
-  /// todo: model
+  StatusMessageModel? assignEmployeeForManagersModel;
+
   void assignEmployeeForManagers({required int employeeId, required List<UserModel> managersUsers}) {
     emit(AssignEmployeeForManagersLoadingState());
     DioHelper.postData(url: EndPointsConstants.assignEmployeeForManagers, data: {
@@ -102,6 +119,8 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
       'manager_ids': managersUsers.map((manager) => manager.id).toList(),
     }).then((value) {
       print(value?.data);
+      assignEmployeeForManagersModel = StatusMessageModel.fromMap(value?.data);
+      if (assignEmployeeForManagersModel!.status == true) initialSelectedManagers = List.from(selectedManagers);
       emit(AssignEmployeeForManagersSuccessState());
     }).catchError((error) {
       emit(AssignEmployeeForManagersErrorState());

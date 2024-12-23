@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/modules/manager_employees_modules/manage
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/managers_and_employees_of_user_modules/cubit/managers_and_employees_of_user_states.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/managers_and_employees_of_user_modules/managers_employees_tap_body.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 
 class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
@@ -33,41 +34,52 @@ class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
           },
           builder: (context, state) {
             cubit = ManagersAndEmployeesOfUserCubit.get(context);
-            return DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  TabBar(
-                    labelPadding: EdgeInsets.zero,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorColor: ColorsConstants.primaryColor,
-                    labelColor: ColorsConstants.primaryColor,
-                    unselectedLabelColor: ColorsConstants.primaryColor.withOpacity(0.8),
-                    // indicator: BoxDecoration(
-                    //   color: ColorsConstants.primaryColor.withOpacity(0.1),
-                    // ),
-                    labelStyle: const TextStyle(
-                      fontSize: 16,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                    unselectedLabelStyle: const TextStyle(
-                      fontSize: 14,
-                      // fontWeight: FontWeight.normal,
-                    ),
-                    dividerHeight: 0.5,
-                    tabs: const [Tab(text: 'المدراء'), Tab(text: 'الموظفين')],
+            return Stack(
+              children: [
+                DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      TabBar(
+                        labelPadding: EdgeInsets.zero,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorColor: ColorsConstants.primaryColor,
+                        labelColor: ColorsConstants.primaryColor,
+                        unselectedLabelColor: ColorsConstants.primaryColor.withOpacity(0.8),
+                        // indicator: BoxDecoration(
+                        //   color: ColorsConstants.primaryColor.withOpacity(0.1),
+                        // ),
+                        labelStyle: const TextStyle(
+                          fontSize: 16,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                        unselectedLabelStyle: const TextStyle(
+                          fontSize: 14,
+                          // fontWeight: FontWeight.normal,
+                        ),
+                        dividerHeight: 0.5,
+                        tabs: const [Tab(text: 'المدراء'), Tab(text: 'الموظفين')],
+                      ),
+                      Expanded(
+                        child: state is GetManagersAndEmployeesOfUserLoadingState || state is GetAllUsersLoadingState
+                            ? const Center(child: CircularProgressIndicator())
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: TabBarView(
+                                  children: [
+                                    ManagersEmployeesTapBody(isManagersTab: true, cubit: cubit, userId: userId),
+                                    ManagersEmployeesTapBody(isManagersTab: false, cubit: cubit, userId: userId),
+                                  ],
+                                ),
+                              ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: TabBarView(children: [
-                        ManagersEmployeesTapBody(isManagersTab: true, cubit: cubit, userId: userId),
-                        ManagersEmployeesTapBody(isManagersTab: false, cubit: cubit, userId: userId),
-                      ]),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                state is AssignEmployeeForManagersLoadingState || state is AddEditManagerEmployeesLoadingState
+                    ? const LoaderWithDisable()
+                    : Container(),
+              ],
             );
           },
         ),

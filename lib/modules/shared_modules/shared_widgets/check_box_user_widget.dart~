@@ -9,9 +9,7 @@ class CheckBoxUserWidget extends StatelessWidget {
   final UserModel user;
   final bool value;
   final void Function(bool?)? onChanged;
-  final bool? enabled;
-
-  const CheckBoxUserWidget({super.key, required this.user, required this.value, required this.onChanged, this.enabled = true});
+  const CheckBoxUserWidget({super.key, required this.user, required this.value, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +20,14 @@ class CheckBoxUserWidget extends StatelessWidget {
             radius: 20,
             child: user.image != null
                 ? MyCachedNetworkImage(
-                    imageUrl: EndPointsConstants.profileStorage + user.image!,
-                    imageBuilder: (context, imageProvider) => MyCachedImageBuilder(imageProvider: imageProvider),
-                    isCircle: true,
-                  )
-                : ClipOval(child: Image.asset(AssetsKeys.defaultProfileImage)),
+              imageUrl:
+              EndPointsConstants.profileStorage + user.image!,
+              imageBuilder: (context, imageProvider) =>
+                  MyCachedImageBuilder(imageProvider: imageProvider),
+              isCircle: true,
+            )
+                : ClipOval(
+                child: Image.asset(AssetsKeys.defaultProfileImage)),
           ),
           const SizedBox(
             width: 10,
@@ -40,8 +41,13 @@ class CheckBoxUserWidget extends StatelessWidget {
         ],
       ),
       value: value,
+      // addEditUsersCubit.employeesUsers
+      //     .contains(addEditUsersCubit.filteredAllUsers[index]),
       onChanged: onChanged,
-      enabled: enabled,
+      //     (bool? value) {
+      //   addEditUsersCubit.toggleEmployeeSelection(
+      //       addEditUsersCubit.filteredAllUsers[index]);
+      // },
     );
   }
 }

@@ -7,7 +7,7 @@ import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_fie
 
 class ManagersEmployeesTapBody extends StatelessWidget {
   final bool isManagersTab;
-  final int userId;
+  final int userId; // the user we checked for
   final ManagersAndEmployeesOfUserCubit cubit;
 
   const ManagersEmployeesTapBody({super.key, required this.isManagersTab, required this.cubit, required this.userId});
@@ -30,11 +30,13 @@ class ManagersEmployeesTapBody extends StatelessWidget {
             itemCount: isManagersTab ? cubit.filteredManagers.length : cubit.filteredEmployees.length,
             itemBuilder: (context, index) {
               UserModel user = isManagersTab ? cubit.filteredManagers[index] : cubit.filteredEmployees[index];
-              // Exclude the manager user from the list by its id
-              // if (cubit.managerUser != null &&
-              //     cubit.filteredAllUsers[index].id == cubit.managerUser!.id) {
-              //   return const SizedBox.shrink();
-              // }
+
+              // print('selected: ${isManagersTab
+              //     ? '${!cubit.selectedEmployees.any((emp) => emp.id == user.id)}' '${!cubit.initialSelectedEmployees.any((emp) =>
+              // emp.id == user.id)}'
+              //     : '${!cubit.selectedManagers.any((man) => man.id == user.id)}' '${!cubit.initialSelectedManagers.any((man) =>
+              // man.id == user.id)}'
+              // })');
               return CheckBoxUserWidget(
                 user: user,
                 value: isManagersTab
@@ -43,6 +45,11 @@ class ManagersEmployeesTapBody extends StatelessWidget {
                 onChanged: (bool? value) {
                   cubit.toggleUserSelection(user, isManagersTab);
                 },
+                enabled: isManagersTab
+                    ? !cubit.selectedEmployees.any((emp) => emp.id == user.id) &&
+                        !cubit.initialSelectedEmployees.any((emp) => emp.id == user.id)
+                    : !cubit.selectedManagers.any((man) => man.id == user.id) &&
+                        !cubit.initialSelectedManagers.any((man) => man.id == user.id),
               );
             },
           ),
