@@ -37,6 +37,7 @@ class AddEditUserScreen extends StatelessWidget {
                 message: state.addUserModel.message);
             if (state.addUserModel.status == true) {
               Navigator.pop(context);
+              // Navigator.pop(context);
             }
           }
         },

@@ -104,7 +104,7 @@ class UserProfileScreen extends StatelessWidget {
 
       // if the current user can assign task to this user
       floatingActionButton: SystemPermissions.hasPermission(SystemPermissions.addTask) &&
-              (UserDataConstants.userEmployeeIds?.any((empId) => empId == userId) ?? false)
+              (UserDataConstants.userEmployeeIds?.any((empId) => empId == userId) ?? false) 
           ? MyFloatingActionButton(
               onPressed: () {
                 NavigationServices.navigateTo(

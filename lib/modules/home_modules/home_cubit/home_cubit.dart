@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/tasks_to_submit_mixin/tasks_to_submit_mixin.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/event_buses/submissions_event_bus.dart';
@@ -16,18 +17,18 @@ import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
 class HomeCubit extends Cubit<HomeStates>
-    with TasksToSubmitMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
+    with TasksToSubmitMixin<HomeStates>, ManagerEmployeesMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
 {
   HomeCubit() : super(HomeInitialState()) {
     print('in HomeCubit');
+
     // Listen for TaskUpdatedEvent from EventBus
     eventBus.on<TaskUpdatedEvent>().listen((event) {
       print('in HomeCubit eventBus: ${event.submission.tsId}');
       print('in HomeCubit eventBus: ${event.submission.tsParentId}');
       // Update the task in the current submissions list
       // event.submission.tsParentId id is the old submission id
-      int index =
-          userSubmissionsList.indexWhere((submission) => submission.tsId == event.submission.tsParentId);
+      int index = userSubmissionsList.indexWhere((submission) => submission.tsId == event.submission.tsParentId);
 
       if (index != -1) {
         // Replace the old submission with the new one
@@ -63,6 +64,7 @@ class HomeCubit extends Cubit<HomeStates>
   //   });
   // }
   //
+
   GetUserSubmissionsModel? getUserSubmissionsModel;
   List<TaskSubmissionModel> userSubmissionsList = [];
 
@@ -86,8 +88,7 @@ class HomeCubit extends Cubit<HomeStates>
 
       userSubmissionsList.addAll(getUserSubmissionsModel?.submissions as Iterable<TaskSubmissionModel>);
 
-      isUserSubmissionsLastPage =
-          getUserSubmissionsModel?.pagination?.lastPage == getUserSubmissionsModel?.pagination?.currentPage;
+      isUserSubmissionsLastPage = getUserSubmissionsModel?.pagination?.lastPage == getUserSubmissionsModel?.pagination?.currentPage;
 
       isUserSubmissionsLoading = false;
       emit(GetUserSubmissionsSuccessState());
@@ -122,7 +123,16 @@ class HomeCubit extends Cubit<HomeStates>
 
   Future<void> init(BuildContext context, {required int userId}) async {
     try {
-      await getUserById(userId: userId);
+      await Future.wait([
+        getManagerEmployees(
+            loadingState: GetManagerEmployeesLoadingState(),
+            successState: GetManagerEmployeesSuccessState(),
+            errorState: GetManagerEmployeesErrorState()),
+        getUserById(userId: userId)
+      ]);
+
+      UserDataConstants.userEmployeeIds = getManagerEmployeesModel?.managerEmployees?.map((user) => user.id).toList();
+
       NotificationsBadgeCubit.get(context).getUnreadNotificationsCount();
 
       if (SystemPermissions.hasPermission(SystemPermissions.viewSubmissions)) {

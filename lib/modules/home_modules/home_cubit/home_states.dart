@@ -24,7 +24,6 @@ class GetUserByIdLoadingState extends HomeStates {}
 
 class GetUserByIdSuccessState extends HomeStates {}
 
-
 class GetUserByIdErrorState extends HomeStates {}
 
 class TasksUpdatedStateViaEventBus extends HomeStates {}
@@ -46,3 +45,10 @@ class ListenToNewNotificationsState extends HomeStates {}
 class GetUnreadNotificationsCountSuccessState extends HomeStates {}
 
 // class NotificationsBadgeChangedState extends HomeStates {}
+
+// Manager employees mixin
+class GetManagerEmployeesLoadingState extends HomeStates {}
+
+class GetManagerEmployeesSuccessState extends HomeStates {}
+
+class GetManagerEmployeesErrorState extends HomeStates {}
