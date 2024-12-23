@@ -84,16 +84,18 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
   }
 
   void toggleAllUsersSelection() {
-    // If all users are selected (expect the manager), clear the list; otherwise, select all users
+    // If all users are selected clear the list; otherwise, select all users
+    // excluding the user itself and his managers
     print('employeesUsers.length: ${employeesUsers.length}');
     print('filteredAllUsers.length: ${filteredAllUsers.length}');
-    if (employeesUsers.length == filteredAllUsers.length - 1) {
+    if (employeesUsers.length == filteredAllUsers.length - 1 - (getManagerEmployeesByIdModel?.userManagerIds?.length ?? 0)) {
       employeesUsers.clear();
     } else {
       employeesUsers
         ..clear() // Clear any previously selected users
         ..addAll(filteredAllUsers)
-        ..removeWhere((user) => user.id == managerUser?.id); // Select all users expect the manager
+        ..removeWhere((user) => user.id == managerUser?.id || getManagerEmployeesByIdModel?.userManagerIds?.contains(user.id) == true);
+      // Select all users excluding the user itself and his managers
     }
 
     emit(ToggleAllUsersSelectionState());
@@ -122,6 +124,7 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     DioHelper.postData(url: EndPointsConstants.addEditManagerEmployees, data: {
       'manager_id': managerUser?.id,
       'employee_ids': FormatUtils.formatList<UserModel>(employeesUsers, (user) => user?.id.toString()),
+      // 'is_remove'
     }).then((value) {
       print(value?.data);
       addEditManagerEmployeesModel = AddEditManagerEmployeesModel.fromMap(value?.data);

@@ -99,6 +99,7 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
     DioHelper.postData(url: EndPointsConstants.addEditManagerEmployees, data: {
       'manager_id': managerId,
       'employee_ids': FormatUtils.formatList<UserModel>(employeesUsers, (user) => user?.id.toString()),
+      'is_remove': employeesUsers.isEmpty
     }).then((value) {
       print(value?.data);
       addEditManagerEmployeesModel = AddEditManagerEmployeesModel.fromMap(value?.data);

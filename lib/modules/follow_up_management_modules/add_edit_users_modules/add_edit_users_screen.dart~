@@ -205,8 +205,7 @@ class AddEditUsersScreen extends StatelessWidget {
                                           onChanged: (bool? value) {
                                             addEditUsersCubit.toggleEmployeeSelection(addEditUsersCubit.filteredAllUsers[index]);
                                           },
-                                          enabled:
-                                              !(addEditUsersCubit.getManagerEmployeesByIdModel?.userManagerIds?.contains(user.id) ?? false),
+                                          enabled: !(addEditUsersCubit.getManagerEmployeesByIdModel?.userManagerIds?.contains(user.id) ?? false),
                                         );
                                       },
                                     ),
