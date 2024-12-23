@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
@@ -11,11 +12,12 @@ mixin UsersMixin<T> on Cubit<T> {
   bool isUsersLoading = false;
   bool isUsersLastPage = false;
 
-  // is users loading
+  CancelToken? cancelToken;
 
   Future<void> getAllUsers({
     int pagination = 0, // 0 means no pagination, 1 means with pagination
     int page = 1,
+    String? search,
     required T loadingState,
     required T successState,
     required T Function(String error) errorState,
@@ -23,22 +25,35 @@ mixin UsersMixin<T> on Cubit<T> {
     emit(loadingState);
     isUsersLoading = true;
 
-    await DioHelper.getData(url: EndPointsConstants.users, query: {'paginate': pagination, 'page': page}).then((value) {
+    // Cancel previous request
+    cancelToken?.cancel();
+    // Create a new token for the current request
+    cancelToken = CancelToken();
+
+    await DioHelper.getData(
+      url: EndPointsConstants.users,
+      query: {'search': search, 'paginate': pagination, 'page': page},
+      cancelToken: cancelToken,
+    ).then((value) {
       print(value?.data);
-      // when refresh
-      if (page == 1) {
-        usersList.clear();
+      // when cancel the request (on search), it returns Null
+      if (value?.data != null) {
+        // when refresh
+        if (page == 1) {
+          usersList.clear();
+        }
+
+        getAllUsersModel = GetAllUsersModel.fromMap(value?.data);
+        usersList.addAll(getAllUsersModel?.users as Iterable<UserModel>);
+        isUsersLastPage = getAllUsersModel?.pagination?.lastPage == getAllUsersModel?.pagination?.currentPage;
+        isUsersLoading = false;
+        emit(successState);
+      } else {
+        print('Response data is null');
       }
-      getAllUsersModel = GetAllUsersModel.fromMap(value?.data);
-      usersList.addAll(getAllUsersModel?.users as Iterable<UserModel>);
-      isUsersLastPage = getAllUsersModel?.pagination?.lastPage == getAllUsersModel?.pagination?.currentPage;
-      isUsersLoading = false;
-      emit(successState);
     }).catchError((error) {
       emit(errorState(error.toString()));
       print(error.toString());
     });
   }
-
-
 }

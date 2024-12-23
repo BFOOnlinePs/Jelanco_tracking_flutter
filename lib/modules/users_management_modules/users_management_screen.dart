@@ -11,6 +11,7 @@ import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_bu
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_title_screen/my_title_screen_widget.dart';
+import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 class UsersManagementScreen extends StatelessWidget {
   const UsersManagementScreen({super.key});
@@ -38,6 +39,20 @@ class UsersManagementScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    MyTextFormField(
+                      labelText: 'إبحث عن موظف',
+                      onChanged: (value) {
+                        usersManagementCubit.getAllUsers(
+                          search: value,
+                          pagination: 1,
+                          loadingState: GetAllUsersLoadingState(),
+                          successState: GetAllUsersSuccessState(),
+                          errorState: (error) => GetAllUsersErrorState(),
+                        );
+                      },
+                      prefixIcon: const Icon(Icons.search),
+                      controller: usersManagementCubit.searchController,
+                    ),
                     usersManagementCubit.getAllUsersModel == null
                         ? const MyLoader()
                         : Expanded(
@@ -58,6 +73,7 @@ class UsersManagementScreen extends StatelessWidget {
                                         if (index == usersManagementCubit.usersList.length && !usersManagementCubit.isUsersLastPage) {
                                           if (!usersManagementCubit.isUsersLoading) {
                                             usersManagementCubit.getAllUsers(
+                                              search: usersManagementCubit.searchController.text,
                                               page: usersManagementCubit.getAllUsersModel!.pagination!.currentPage! + 1,
                                               pagination: 1,
                                               loadingState: GetAllUsersLoadingState(),

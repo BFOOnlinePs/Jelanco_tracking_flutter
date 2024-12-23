@@ -18,19 +18,13 @@ class UsersSearchState extends ManagersAndEmployeesOfUserStates {}
 
 class AddEditManagerEmployeesLoadingState extends ManagersAndEmployeesOfUserStates {}
 
-class AddEditManagerEmployeesSuccessState extends ManagersAndEmployeesOfUserStates {
-  final AddEditManagerEmployeesModel addEditManagerEmployeesModel;
-
-  AddEditManagerEmployeesSuccessState(this.addEditManagerEmployeesModel);
-}
+class AddEditManagerEmployeesSuccessState extends ManagersAndEmployeesOfUserStates {}
 
 class AddEditManagerEmployeesErrorState extends ManagersAndEmployeesOfUserStates {}
 
 class AssignEmployeeForManagersLoadingState extends ManagersAndEmployeesOfUserStates {}
 
-class AssignEmployeeForManagersSuccessState extends ManagersAndEmployeesOfUserStates {
-  // todo add model
-}
+class AssignEmployeeForManagersSuccessState extends ManagersAndEmployeesOfUserStates {}
 
 class AssignEmployeeForManagersErrorState extends ManagersAndEmployeesOfUserStates {}
 // all users mixin

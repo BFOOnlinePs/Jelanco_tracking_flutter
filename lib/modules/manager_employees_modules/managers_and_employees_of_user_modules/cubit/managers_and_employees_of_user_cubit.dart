@@ -104,7 +104,7 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
       print(value?.data);
       addEditManagerEmployeesModel = AddEditManagerEmployeesModel.fromMap(value?.data);
       if (addEditManagerEmployeesModel!.status == true) initialSelectedEmployees = List.from(selectedEmployees);
-      emit(AddEditManagerEmployeesSuccessState(addEditManagerEmployeesModel!));
+      emit(AddEditManagerEmployeesSuccessState());
     }).catchError((error) {
       emit(AddEditManagerEmployeesErrorState());
       print(error.toString());
