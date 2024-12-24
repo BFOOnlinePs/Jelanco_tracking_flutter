@@ -19,7 +19,6 @@ import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart'
 import 'package:jelanco_tracking_system/models/tasks_models/task_submissions_models/attachment_categories_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
-import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 import 'package:mime/mime.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';

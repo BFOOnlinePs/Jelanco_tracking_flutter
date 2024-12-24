@@ -1,4 +1,3 @@
-
 import '../../models/basic_models/user_model.dart';
 
 class UserDataConstants {
@@ -12,6 +11,7 @@ class UserDataConstants {
   static String? jobTitle;
   static List<String>? permissionsList;
 
-
   static String? firebaseTokenVar;
+
+  static List<int?>? userEmployeeIds = [];
 }

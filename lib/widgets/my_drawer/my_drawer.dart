@@ -13,6 +13,8 @@ import 'package:jelanco_tracking_system/modules/manager_employees_modules/manage
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
+import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/add_edit_user_screen.dart';
+import 'package:jelanco_tracking_system/modules/users_management_modules/users_management_screen.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_cubit.dart';
 import 'package:jelanco_tracking_system/widgets/my_drawer/drawer_cubit/drawer_states.dart';
@@ -105,7 +107,7 @@ class MyDrawer extends StatelessWidget {
                             children: [
                               DrawerItem(
                                 icon: Icons.person_outlined,
-                                text: 'الملف الشخصي'.tr(),
+                                text: 'الملف الشخصي',
                                 onTap: () {
                                   NavigationServices.navigateTo(
                                     context,
@@ -113,6 +115,15 @@ class MyDrawer extends StatelessWidget {
                                   );
                                 },
                               ),
+
+                              /// todo: add permission
+                              DrawerItem(
+                                  icon: Icons.manage_accounts_outlined,
+                                  text: 'إدارة الموظفين',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(context, const UsersManagementScreen());
+                                  }),
+
                               if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
                                 DrawerItem(
                                   icon: Icons.person_add_alt,
@@ -120,8 +131,8 @@ class MyDrawer extends StatelessWidget {
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,
-                                        UsersFollowUpManagementScreen(),
-                                       // UserFollowUpManagement(),
+                                      UsersFollowUpManagementScreen(),
+                                      // UserFollowUpManagement(),
                                     );
                                   },
                                 ),
@@ -136,8 +147,7 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              if (SystemPermissions.hasPermission(
-                                  SystemPermissions.viewSubmissions)) // submitTask
+                              if (SystemPermissions.hasPermission(SystemPermissions.viewSubmissions)) // submitTask
                                 DrawerItem(
                                   icon: Icons.today_rounded,
                                   text: 'سجلات اليوم',

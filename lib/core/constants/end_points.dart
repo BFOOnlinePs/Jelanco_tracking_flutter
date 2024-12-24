@@ -2,7 +2,7 @@ class EndPointsConstants {
   /// SERVER
   // static const String baseUrl = '$url/api/';
   // static const String url = 'https://jelanco.bfohost.com';
-  // static const String socketIoUrl = 'http://46.60.127.162:3000'; //  https://jelanco.bfohost.com:3000
+  // static const String socketIoUrl = 'https://socket.bfohost.com:3000'; //  https://jelanco.bfohost.com:3000 OR https://socket.bfohost.com:3000
   // static const String tasksStorage = '$url/storage/tasks_attachments/';
   // static const String taskSubmissionsStorage = '$url/storage/uploads/';
   // static const String taskSubmissionsCommentStorage = '$url/storage/comments_attachments/';
@@ -27,8 +27,7 @@ class EndPointsConstants {
   static const String tasks = 'tasks';
   static const String tasksAddedByUser = '$tasks/added-by-user';
   static const String tasksAssignedToUser = '$tasks/assigned-to-user';
-  static const String tasksWithSubmissionsAndComments =
-      'submissions-and-comments'; // /tasks/10/submissions-and-comments
+  static const String tasksWithSubmissionsAndComments = 'submissions-and-comments'; // /tasks/10/submissions-and-comments
   static const String tasksToSubmit = '$tasks/user-not-submitted-tasks';
 
   // tasks submissions
@@ -45,6 +44,9 @@ class EndPointsConstants {
   // categories
   static const String taskCategories = 'task-categories';
 
+  // departments
+  static const String departments = 'departments';
+
   // users
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1
@@ -56,6 +58,8 @@ class EndPointsConstants {
   static const String managerEmployeesWithTaskAssignees = '$users/employees/with-task-assignees';
   static const String addEditManagerEmployees = '$managerEmployees/add-edit'; // /users/employees/add-edit
   static const String deleteManager = '$managers/delete'; // users/managers/delete
+  static const String getManagersAndEmployeesOfUser = 'managers-and-employees'; // users/{user_id}/managers-and-employees
+  static const String assignEmployeeForManagers = '$managers/assign';
 
   // notifications
   static const String notifications = 'notifications';

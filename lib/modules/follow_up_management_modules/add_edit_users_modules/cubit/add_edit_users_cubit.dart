@@ -18,7 +18,7 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
   UserModel? managerUser;
   List<UserModel> employeesUsers = []; // Selected users for follow-up
   List<UserModel> filteredAllUsers = []; // Filtered list of all users
-  String searchTextAll = '';
+  // String searchTextAll = '';
 
   void initValues(int? selectedUserId) async {
     // Initialize selected user if provided map first id
@@ -35,9 +35,8 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
   }
 
   void usersSearch(String query) {
-    searchTextAll = query;
-    filteredAllUsers =
-        allUsers.where((user) => user.name!.toLowerCase().contains(query.toLowerCase())).toList();
+    // searchTextAll = query;
+    filteredAllUsers = allUsers.where((user) => user.name!.toLowerCase().contains(query.toLowerCase())).toList();
     emit(UsersSearchState());
   }
 
@@ -67,11 +66,9 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
   // set the selected users (when changing manager)
   void setInitialSelectedUsers(List<UserModel> selectedUsers) {
     print('employeesUsers before: $employeesUsers');
-    employeesUsers =
-        allUsers.where((user) => selectedUsers.any((selectedUser) => selectedUser.id == user.id)).toList();
+    employeesUsers = allUsers.where((user) => selectedUsers.any((selectedUser) => selectedUser.id == user.id)).toList();
     // reorder the filteredAllUsers lost, make the employeesUsers at the beginning of the filteredAllUsers list
-    filteredAllUsers =
-        employeesUsers + filteredAllUsers.where((user) => !employeesUsers.contains(user)).toList();
+    filteredAllUsers = employeesUsers + filteredAllUsers.where((user) => !employeesUsers.contains(user)).toList();
 
     print('employeesUsers after: $employeesUsers');
     emit(SetInitialSelectedUsersState());
@@ -87,14 +84,18 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
   }
 
   void toggleAllUsersSelection() {
-    // If all users are selected, clear the list; otherwise, select all users
-    if (employeesUsers.length == filteredAllUsers.length) {
+    // If all users are selected clear the list; otherwise, select all users
+    // excluding the user itself and his managers
+    print('employeesUsers.length: ${employeesUsers.length}');
+    print('filteredAllUsers.length: ${filteredAllUsers.length}');
+    if (employeesUsers.length == filteredAllUsers.length - 1 - (getManagerEmployeesByIdModel?.userManagerIds?.length ?? 0)) {
       employeesUsers.clear();
     } else {
       employeesUsers
         ..clear() // Clear any previously selected users
         ..addAll(filteredAllUsers)
-        ..removeWhere((user) => user.id == managerUser?.id); // Select all users expect the manager
+        ..removeWhere((user) => user.id == managerUser?.id || getManagerEmployeesByIdModel?.userManagerIds?.contains(user.id) == true);
+      // Select all users excluding the user itself and his managers
     }
 
     emit(ToggleAllUsersSelectionState());
@@ -123,6 +124,7 @@ class AddEditUsersCubit extends Cubit<AddEditUsersStates> with UsersMixin<AddEdi
     DioHelper.postData(url: EndPointsConstants.addEditManagerEmployees, data: {
       'manager_id': managerUser?.id,
       'employee_ids': FormatUtils.formatList<UserModel>(employeesUsers, (user) => user?.id.toString()),
+      // 'is_remove'
     }).then((value) {
       print(value?.data);
       addEditManagerEmployeesModel = AddEditManagerEmployeesModel.fromMap(value?.data);
