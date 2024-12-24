@@ -38,4 +38,13 @@ class FormatUtils {
     // Check if the number is in the list
     return intList.contains(number);
   }
+
+  static List<int> convertStringListToIntList(String stringList) {
+    // Convert the string format into a list of integers
+    List<int> intList = (stringList.replaceAll(RegExp(r'[\[\]"]'), '').split(','))
+        .map((e) => int.parse(e.trim()))
+        .toList();
+
+    return intList;
+  }
 }

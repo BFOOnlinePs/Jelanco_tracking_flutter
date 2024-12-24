@@ -1,5 +1,3 @@
-import 'package:bloc/bloc.dart';
-
 // import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/firebase_options.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_screen.dart';
-import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/remote/firebase_api.dart';
 import 'package:jelanco_tracking_system/network/remote/socket_io.dart';

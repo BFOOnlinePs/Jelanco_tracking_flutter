@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permi
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_screen.dart';
+import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/user_submission_widget.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_states.dart';
@@ -33,9 +34,7 @@ class UserProfileScreen extends StatelessWidget {
             if (state is UpdateProfileImageSuccessState) {
               SnackbarHelper.showSnackbar(
                   context: context,
-                  snackBarStates: state.updateProfileImageModel.status == true
-                      ? SnackBarStates.success
-                      : SnackBarStates.error,
+                  snackBarStates: state.updateProfileImageModel.status == true ? SnackBarStates.success : SnackBarStates.error,
                   message: state.updateProfileImageModel.message);
             }
           },
@@ -81,9 +80,7 @@ class UserProfileScreen extends StatelessWidget {
                                 if (!userProfileCubit.isProfileSubmissionsLoading) {
                                   userProfileCubit.getUserProfileById(
                                     userId: userId,
-                                    page: userProfileCubit.getUserProfileByIdModel!.userSubmissions!
-                                            .pagination!.currentPage! +
-                                        1,
+                                    page: userProfileCubit.getUserProfileByIdModel!.userSubmissions!.pagination!.currentPage! + 1,
                                   );
                                 }
                                 return const Padding(
@@ -92,8 +89,7 @@ class UserProfileScreen extends StatelessWidget {
                                 );
                               }
                               final submission = userProfileCubit.userProfileSubmissionsList[index];
-                              return UserSubmissionWidget(
-                                  submission: submission, userProfileCubit: userProfileCubit);
+                              return UserSubmissionWidget(submission: submission, userProfileCubit: userProfileCubit);
                             },
                             childCount: userProfileCubit.userProfileSubmissionsList.length +
                                 (userProfileCubit.isProfileSubmissionsLastPage ? 0 : 1),
@@ -107,21 +103,21 @@ class UserProfileScreen extends StatelessWidget {
       ),
 
       // if the current user can assign task to this user
-      floatingActionButton:
-          userId != UserDataConstants.userId && SystemPermissions.hasPermission(SystemPermissions.addTask)
-              ? MyFloatingActionButton(
-                  onPressed: () {
-                    NavigationServices.navigateTo(
-                      context,
-                      AddTaskScreen(
-                        initialSelectedUserId: userId,
-                      ),
-                    );
-                  },
-                  labelText: 'إضافة تكليف',
-                  icon: Icons.add_task,
-                )
-              : Container(),
+      floatingActionButton: SystemPermissions.hasPermission(SystemPermissions.addTask) &&
+              (UserDataConstants.userEmployeeIds?.any((empId) => empId == userId) ?? false)
+          ? MyFloatingActionButton(
+              onPressed: () {
+                NavigationServices.navigateTo(
+                  context,
+                  AddTaskScreen(
+                    initialSelectedUserId: userId,
+                  ),
+                );
+              },
+              labelText: 'إضافة تكليف',
+              icon: Icons.add_task,
+            )
+          : Container(),
     );
   }
 }

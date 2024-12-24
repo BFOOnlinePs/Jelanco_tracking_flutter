@@ -40,7 +40,7 @@ class MyTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.autofocus = false,
     this.validator,
-    this.textInputAction,
+    this.textInputAction = TextInputAction.next,
     this.focusNode,
     this.onFieldSubmitted,
     this.enabled = true,
