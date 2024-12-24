@@ -18,9 +18,11 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
   List<UserModel> selectedManagers = [];
   List<UserModel> initialSelectedManagers = []; // to prevent selecting the same user as manager and employee
   List<UserModel> filteredManagers = [];
+  List<UserModel> reorderedUsersListForManagers = [];
   List<UserModel> selectedEmployees = [];
   List<UserModel> initialSelectedEmployees = []; // to prevent selecting the same user as manager and employee
   List<UserModel> filteredEmployees = [];
+  List<UserModel> reorderedUsersListForEmployees = [];
 
   void enterScreenActions({required int userId}) async {
     await Future.wait([
@@ -39,6 +41,19 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
 
     // Exclude the current user from usersList
     usersList.removeWhere((user) => user.id == userId);
+
+    // reordered lists for each tab
+    reorderedUsersListForManagers = [
+      ...initialSelectedManagers, // Selected managers first
+      ...usersList.where((user) => !initialSelectedManagers.contains(user)), // Other users
+    ];
+
+    reorderedUsersListForEmployees = [
+      ...initialSelectedEmployees, // Selected employees first
+      ...usersList.where((user) => !initialSelectedEmployees.contains(user)), // Other users
+    ];
+
+
 
     emit(EnterScreenActionsState());
     print('selectedManagers: ${selectedManagers.length}');
@@ -85,9 +100,9 @@ class ManagersAndEmployeesOfUserCubit extends Cubit<ManagersAndEmployeesOfUserSt
 
   void usersSearch(String query, bool isManager) {
     if (isManager) {
-      filteredManagers = usersList.where((user) => user.name!.toLowerCase().contains(query.toLowerCase())).toList();
+      filteredManagers = reorderedUsersListForManagers.where((user) => user.name!.toLowerCase().contains(query.toLowerCase())).toList();
     } else {
-      filteredEmployees = usersList.where((user) => user.name!.toLowerCase().contains(query.toLowerCase())).toList();
+      filteredEmployees = reorderedUsersListForEmployees.where((user) => user.name!.toLowerCase().contains(query.toLowerCase())).toList();
     }
     emit(UsersSearchState());
   }

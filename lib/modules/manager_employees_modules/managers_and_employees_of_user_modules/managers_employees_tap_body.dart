@@ -3,19 +3,46 @@ import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/managers_and_employees_of_user_modules/cubit/managers_and_employees_of_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/check_box_user_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
+import 'package:jelanco_tracking_system/widgets/my_title_screen/my_title_screen_widget.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 class ManagersEmployeesTapBody extends StatelessWidget {
   final bool isManagersTab;
   final int userId; // the user we checked for
+  final String userName;
   final ManagersAndEmployeesOfUserCubit cubit;
 
-  const ManagersEmployeesTapBody({super.key, required this.isManagersTab, required this.cubit, required this.userId});
+  const ManagersEmployeesTapBody(
+      {super.key, required this.isManagersTab, required this.cubit, required this.userId, required this.userName});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Text(
+        //   '${isManagersTab ? 'تحديد الاشخاص الذين لهم صلاحية الوصول وادارة سجلات عمل الموظف ${userName}' : 'تحديد الأشخاص الذين يدير ${userName} سجلات عملهم ولديه صلاحية الوصول إليها'}',
+        //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        //   textAlign: TextAlign.center,
+        // ),
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: isManagersTab ? 'تحديد الاشخاص الذين لهم صلاحية الوصول وادارة سجلات عمل الموظف ' : 'تحديد الأشخاص الذين يدير ',
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: userName,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+              ),
+              TextSpan(
+                text: isManagersTab ? '' : ' سجلات عملهم ولديه صلاحية الوصول إليها',
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
           child: MyTextFormField(

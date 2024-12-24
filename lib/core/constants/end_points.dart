@@ -2,7 +2,7 @@ class EndPointsConstants {
   /// SERVER
   // static const String baseUrl = '$url/api/';
   // static const String url = 'https://jelanco.bfohost.com';
-  // static const String socketIoUrl = 'http://46.60.127.162:3000'; //  https://jelanco.bfohost.com:3000
+  // static const String socketIoUrl = 'https://socket.bfohost.com:3000'; //  https://jelanco.bfohost.com:3000 OR https://socket.bfohost.com:3000
   // static const String tasksStorage = '$url/storage/tasks_attachments/';
   // static const String taskSubmissionsStorage = '$url/storage/uploads/';
   // static const String taskSubmissionsCommentStorage = '$url/storage/comments_attachments/';

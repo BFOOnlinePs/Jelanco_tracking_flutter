@@ -10,8 +10,9 @@ import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_bu
 
 class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
   final int userId;
+  final String userName;
 
-  ManagersAndEmployeesOfUserScreen({super.key, required this.userId});
+  ManagersAndEmployeesOfUserScreen({super.key, required this.userId, required this.userName});
 
   late ManagersAndEmployeesOfUserCubit cubit;
 
@@ -27,8 +28,8 @@ class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is GetAllUsersSuccessState) {
               // cubit.allUsers = cubit.getAllUsersModel?.users ?? [];
-              cubit.filteredManagers = cubit.usersList; // Initialize with all users
-              cubit.filteredEmployees = cubit.usersList; // Initialize with all users
+              cubit.filteredManagers = cubit.reorderedUsersListForManagers; // Initialize with all users
+              cubit.filteredEmployees = cubit.reorderedUsersListForEmployees; // Initialize with all users
               // cubit.initValues(selectedUserId);
             }
           },
@@ -49,14 +50,8 @@ class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
                         // indicator: BoxDecoration(
                         //   color: ColorsConstants.primaryColor.withOpacity(0.1),
                         // ),
-                        labelStyle: const TextStyle(
-                          fontSize: 16,
-                          // fontWeight: FontWeight.bold,
-                        ),
-                        unselectedLabelStyle: const TextStyle(
-                          fontSize: 14,
-                          // fontWeight: FontWeight.normal,
-                        ),
+                        labelStyle: const TextStyle(fontSize: 16, fontFamily: 'Tajawal'),
+                        unselectedLabelStyle: const TextStyle(fontSize: 14, fontFamily: 'Tajawal'),
                         dividerHeight: 0.5,
                         tabs: const [Tab(text: 'المدراء'), Tab(text: 'الموظفين')],
                       ),
@@ -67,8 +62,8 @@ class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 4),
                                 child: TabBarView(
                                   children: [
-                                    ManagersEmployeesTapBody(isManagersTab: true, cubit: cubit, userId: userId),
-                                    ManagersEmployeesTapBody(isManagersTab: false, cubit: cubit, userId: userId),
+                                    ManagersEmployeesTapBody(isManagersTab: true, cubit: cubit, userId: userId, userName: userName),
+                                    ManagersEmployeesTapBody(isManagersTab: false, cubit: cubit, userId: userId, userName: userName),
                                   ],
                                 ),
                               ),
