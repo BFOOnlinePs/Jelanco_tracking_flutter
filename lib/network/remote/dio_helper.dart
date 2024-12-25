@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 
 import '../../core/constants/end_points.dart';
 import '../../core/constants/user_data.dart';
 
 class DioHelper {
   static late Dio dio;
+
 
   static init() {
     dio = Dio(
@@ -13,6 +17,12 @@ class DioHelper {
         receiveDataWhenStatusError: true,
       ),
     );
+
+    // dio.httpClientAdapter = IOHttpClientAdapter()
+    //   ..onHttpClientCreate = (HttpClient client) {
+    //     client.badCertificateCallback = (cert, host, port) => true;
+    //     return client;
+    //   };
   }
 
   static Future<Response?> getData({

@@ -33,7 +33,8 @@ class DrawerCubit extends Cubit<DrawerStates> {
         CacheHelper.removeData(key: MyCacheKeys.userId);
       }).then((_) async {
         // i have to delete my fcm token from local and server before clear user data constants
-        await FCMServices.deleteFCMTokenFromLocalAndServer(UserDataConstants.firebaseTokenVar ?? '');
+        /// todo return for firebase
+        // await FCMServices.deleteFCMTokenFromLocalAndServer(UserDataConstants.firebaseTokenVar ?? '');
 
         // Clear static user data constants
         UserDataConstants.userId = null;

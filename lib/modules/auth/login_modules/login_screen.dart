@@ -71,7 +71,8 @@ class LoginScreen extends StatelessWidget {
                               userLoginModel: state.userLoginModel);
 
                           // for firebase token
-                          await FirebaseApi().initNotification();
+                          /// todo return for firebase
+                          // await FirebaseApi().initNotification();
 
                           NavigationServices.navigateTo(
                             context,
