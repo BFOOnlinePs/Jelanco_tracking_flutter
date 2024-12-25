@@ -10,6 +10,7 @@ import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/follow_up_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
+import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_dashboard_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
@@ -113,6 +114,14 @@ class MyDrawer extends StatelessWidget {
                                     context,
                                     UserProfileScreen(userId: UserDataConstants.userId!),
                                   );
+                                },
+                              ),
+
+                              DrawerItem(
+                                icon: Icons.vpn_key_outlined,
+                                text: 'إدارة الصلاحيات والأدوار',
+                                onTap: () {
+                                  NavigationServices.navigateTo(context, const PermissionsDashboardScreen());
                                 },
                               ),
 
