@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
-import 'package:jelanco_tracking_system/models/auth_models/permission_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/permission_model.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 
 mixin SystemPermissionsMixin<T> on Cubit<T> {

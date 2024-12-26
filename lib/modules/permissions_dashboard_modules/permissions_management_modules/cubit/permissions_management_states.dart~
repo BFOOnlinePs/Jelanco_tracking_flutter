@@ -25,9 +25,9 @@ class ChangePermissionNameState extends PermissionsManagementStates {}
 class UpdatePermissionLoadingState extends PermissionsManagementStates {}
 
 class UpdatePermissionSuccessState extends PermissionsManagementStates {
-  final AddUpdatePermissionModel updatePermissionModel;
+  final AddUpdatePermissionModel addPermissionModel;
 
-  UpdatePermissionSuccessState(this.updatePermissionModel);
+  UpdatePermissionSuccessState(this.addPermissionModel);
 }
 
 class UpdatePermissionErrorState extends PermissionsManagementStates {}

@@ -1,9 +1,10 @@
 class PermissionModel {
   final int? id;
-  final String? name;
+  String? name;
   final String? guardName;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  // final RoleHasPermissionsModel? pivot;
 
   PermissionModel({
     this.id,

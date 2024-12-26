@@ -14,7 +14,6 @@ import 'package:jelanco_tracking_system/models/users_models/get_user_by_id_model
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/notifications_badge_modules/cubit/notifications_badge_cubit.dart';
 import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
-import 'package:jelanco_tracking_system/network/remote/socket_io.dart';
 
 class HomeCubit extends Cubit<HomeStates>
     with TasksToSubmitMixin<HomeStates>, ManagerEmployeesMixin<HomeStates> // NotificationsBadgeMixin<HomeStates>
