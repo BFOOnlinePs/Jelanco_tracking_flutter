@@ -61,8 +61,10 @@ class EndPointsConstants {
   static const String getManagersAndEmployeesOfUser = 'managers-and-employees'; // users/{user_id}/managers-and-employees
   static const String assignEmployeeForManagers = '$managers/assign';
 
-  // permissions
+  // permissions and roles
   static const String permissions = 'permissions';
+  static const String roles = 'roles';
+  static const String rolesWithPermissions = '$roles/roles-with-permissions';
 
   // notifications
   static const String notifications = 'notifications';

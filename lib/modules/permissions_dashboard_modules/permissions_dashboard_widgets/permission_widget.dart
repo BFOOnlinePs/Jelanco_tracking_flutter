@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 
-class PermissionWidget extends StatelessWidget {
+class SystemPermissionWidget extends StatelessWidget {
   final String permissionText;
   final Function onEditTap;
 
-  PermissionWidget({
+  const SystemPermissionWidget({
+    super.key,
     required this.permissionText,
     required this.onEditTap,
   });

@@ -59,7 +59,7 @@ class PermissionsManagementCubit extends Cubit<PermissionsManagementStates> {
     ).then((value) {
       print(value?.data);
       updatePermissionModel = AddUpdatePermissionModel.fromMap(value?.data);
-      emit(UpdatePermissionSuccessState());
+      emit(UpdatePermissionSuccessState(updatePermissionModel!));
     }).catchError((error) {
       print(error.toString());
       emit(UpdatePermissionErrorState());

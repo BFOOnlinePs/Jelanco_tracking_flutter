@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/my_alert_dialog/my_alert_dialog.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
+import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 class PermissionsManagementScreen extends StatelessWidget {
@@ -30,52 +31,57 @@ class PermissionsManagementScreen extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       itemCount: permissionsManagementCubit.allPermissionsList.length,
-                      itemBuilder: (context, index) => PermissionWidget(
-                        permissionText: permissionsManagementCubit.allPermissionsList[index].name ?? '',
-                        onEditTap: () {
-                          TextEditingController controller =
-                              TextEditingController(text: permissionsManagementCubit.allPermissionsList[index].name);
+                      itemBuilder: (context, index) => Container(
+                        margin:
+                            index == permissionsManagementCubit.allPermissionsList.length - 1 ? const EdgeInsets.only(bottom: 70) : null,
+                        child: SystemPermissionWidget(
+                          permissionText: permissionsManagementCubit.allPermissionsList[index].name ?? '',
+                          onEditTap: () {
+                            TextEditingController controller =
+                                TextEditingController(text: permissionsManagementCubit.allPermissionsList[index].name);
 
-                          showDialog(
-                            context: context,
-                            builder: (context) => BlocProvider.value(
-                              value: permissionsManagementCubit,
-                              child: BlocConsumer<PermissionsManagementCubit, PermissionsManagementStates>(
-                                listener: (context, state) {},
-                                builder: (context, state) {
-                                  return MyAlertDialog(
-                                    title: 'تعديل الصلاحية',
-                                    content: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('قم بتعديل اسم الصلاحية'),
-                                        MyTextFormField(
-                                          labelText: 'اسم الصلاحية',
-                                          controller: controller,
-                                          onChanged: (value) {
-                                            permissionsManagementCubit.onChangePermissionName(controller, value);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    confirmText: 'تعديل',
-                                    cancelText: 'إلغاء',
-                                    onConfirm: controller.text.isEmpty
-                                        ? null
-                                        : () {
-                                            // permissionsManagementCubit.addPermission(
-                                            //   permissionName: controller.text,
-                                            // );
-                                          },
-                                    onCancel: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
-                                },
+                            showDialog(
+                              context: context,
+                              builder: (context) => BlocProvider.value(
+                                value: permissionsManagementCubit,
+                                child: BlocConsumer<PermissionsManagementCubit, PermissionsManagementStates>(
+                                  listener: (context, state) {},
+                                  builder: (context, state) {
+                                    return MyAlertDialog(
+                                      title: 'تعديل الصلاحية',
+                                      content: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('قم بتعديل اسم الصلاحية'),
+                                          MyTextFormField(
+                                            labelText: 'اسم الصلاحية',
+                                            controller: controller,
+                                            onChanged: (value) {
+                                              permissionsManagementCubit.onChangePermissionName(controller, value);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      confirmText: 'تعديل',
+                                      cancelText: 'إلغاء',
+                                      onConfirm: controller.text.isEmpty
+                                          ? null
+                                          : () {
+                                              permissionsManagementCubit.updatePermission(
+                                                permissionId: permissionsManagementCubit.allPermissionsList[index].id!,
+                                                permissionName: controller.text,
+                                              );
+                                            },
+                                      onCancel: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

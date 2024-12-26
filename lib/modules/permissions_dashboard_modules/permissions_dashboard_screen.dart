@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_dashboard_widgets/navigateWidget.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_management_modules/permissions_management_screen.dart';
+import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/role_permissions_management_modules/role_permissions_management_screen.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
@@ -19,18 +20,17 @@ class PermissionsDashboardScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  NavigateTextWidget(
+                  const NavigateTextWidget(
                     title: 'إدارة الصلاحيات',
                     description: 'إضافة وتعديل الصلاحيات المتاحة في النظام.',
-                    targetScreen: const PermissionsManagementScreen(),
+                    targetScreen: PermissionsManagementScreen(),
                     icon: Icons.security,
                   ),
                   const MyVerticalSpacer(),
-                  NavigateTextWidget(
+                  const NavigateTextWidget(
                     title: 'إدارة صلاحيات الأدوار',
                     description: "تخصيص الصلاحيات للأدوار المختلفة في النظام.",
-                    // targetScreen: ManageRolePermissionsScreen(),
-                    targetScreen: Container(),
+                    targetScreen: RolePermissionsManagementScreen(),
                     icon: Icons.group,
                   ),
                   const MyVerticalSpacer(),
