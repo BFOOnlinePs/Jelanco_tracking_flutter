@@ -15,6 +15,7 @@ mixin UsersMixin<T> on Cubit<T> {
   CancelToken? cancelToken;
 
   Future<void> getAllUsers({
+    int isRole = 0, // 0 means with user roles, 1 means without user roles
     int pagination = 0, // 0 means no pagination, 1 means with pagination
     int page = 1,
     String? search,
@@ -32,7 +33,7 @@ mixin UsersMixin<T> on Cubit<T> {
 
     await DioHelper.getData(
       url: EndPointsConstants.users,
-      query: {'search': search, 'paginate': pagination, 'page': page},
+      query: {'search': search, 'paginate': pagination, 'page': page, 'is_role': isRole},
       cancelToken: cancelToken,
     ).then((value) {
       print(value?.data);

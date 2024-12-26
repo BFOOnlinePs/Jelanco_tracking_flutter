@@ -38,7 +38,8 @@ class RolePermissionsManagementCubit extends Cubit<RolePermissionsManagementStat
       expandedIndex = index;
       // after 1 second, set the selected role permissions ids
       Future.delayed(const Duration(milliseconds: 500),
-          () => setSelectedRolePermissionsIds(roleId: getAllRolesWithPermissionsModel!.roles![index].id!));
+          () =>
+              setSelectedRolePermissionsIds(roleId: getAllRolesWithPermissionsModel!.roles![index].id!));
     }
     emit(SetExpandedIndexState());
   }

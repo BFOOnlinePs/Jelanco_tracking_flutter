@@ -1,3 +1,5 @@
+import 'package:jelanco_tracking_system/models/basic_models/status_message_model.dart';
+
 abstract class RolePermissionsManagementStates {}
 
 class RolePermissionsManagementInitialState extends RolePermissionsManagementStates {}
@@ -15,7 +17,9 @@ class SetSelectedRolePermissionsIdsState extends RolePermissionsManagementStates
 class AssignPermissionsToRoleLoadingState extends RolePermissionsManagementStates {}
 
 class AssignPermissionsToRoleSuccessState extends RolePermissionsManagementStates {
-  // todo add the model (status message)
+  final StatusMessageModel? assignPermissionsToRoleStatusMessageModel;
+
+  AssignPermissionsToRoleSuccessState(this.assignPermissionsToRoleStatusMessageModel);
 }
 
 class AssignPermissionsToRoleErrorState extends RolePermissionsManagementStates {}
