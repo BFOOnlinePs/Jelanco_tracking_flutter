@@ -65,6 +65,7 @@ class EndPointsConstants {
   static const String permissions = 'permissions';
   static const String roles = 'roles';
   static const String rolesWithPermissions = '$roles/roles-with-permissions';
+  static const String userRolesAndPermissions = 'roles-and-permissions';
 
   // notifications
   static const String notifications = 'notifications';

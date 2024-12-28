@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
+import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 
 class MyAlertDialog extends StatelessWidget {
   final String title;
@@ -22,6 +23,10 @@ class MyAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+            Radius.circular(SharedSize.alertDialogBorderRadius)),
+      ),
       title: Text(
         title,
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

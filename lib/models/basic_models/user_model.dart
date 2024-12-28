@@ -1,4 +1,5 @@
 import 'package:jelanco_tracking_system/models/basic_models/department_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/role_model.dart';
 
 class UserModel {
   final int? id;
@@ -12,6 +13,7 @@ class UserModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<DepartmentModel>? userDepartments;
+  final List<RoleModel>? roles;
 
   UserModel({
     this.id,
@@ -25,6 +27,7 @@ class UserModel {
     this.createdAt,
     this.updatedAt,
     this.userDepartments,
+    this.roles,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
@@ -41,6 +44,7 @@ class UserModel {
         userDepartments: json["user_departments"] == null
             ? []
             : List<DepartmentModel>.from(json["user_departments"]!.map((x) => DepartmentModel.fromMap(x))),
+        roles: json["roles"] == null ? [] : List<RoleModel>.from(json["roles"]!.map((x) => RoleModel.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -54,8 +58,7 @@ class UserModel {
         "email_verified_at": emailVerifiedAt,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-        "user_departments":
-            userDepartments == null ? [] : List<dynamic>.from(userDepartments!.map((x) => x.toMap())),
+        "user_departments": userDepartments == null ? [] : List<dynamic>.from(userDepartments!.map((x) => x.toMap())),
+        "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x.toMap())),
       };
 }
-

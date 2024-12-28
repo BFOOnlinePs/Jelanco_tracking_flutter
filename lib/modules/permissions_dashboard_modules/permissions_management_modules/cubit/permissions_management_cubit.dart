@@ -27,12 +27,14 @@ class PermissionsManagementCubit extends Cubit<PermissionsManagementStates> with
     DioHelper.postData(url: EndPointsConstants.permissions, data: {'name': permissionName}).then((value) {
       print(value?.data);
       addPermissionModel = AddUpdatePermissionModel.fromMap(value?.data);
-      allPermissionsList!.add(addPermissionModel!.permission!);
-      // scroll to the end
-      ScrollUtils.scrollPosition(
-          scrollController: scrollController,
-          offset: scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 2000));
+      if (addPermissionModel!.status == true) {
+        allPermissionsList!.add(addPermissionModel!.permission!);
+        // scroll to the end
+        ScrollUtils.scrollPosition(
+            scrollController: scrollController,
+            offset: scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 2000));
+      }
       emit(AddPermissionSuccessState(addPermissionModel!));
     }).catchError((error) {
       print(error.toString());
@@ -50,7 +52,9 @@ class PermissionsManagementCubit extends Cubit<PermissionsManagementStates> with
     ).then((value) {
       print(value?.data);
       updatePermissionModel = AddUpdatePermissionModel.fromMap(value?.data);
-      allPermissionsList!.where((permission) => permission.id == permissionId).first.name = updatePermissionModel!.permission!.name;
+      if (updatePermissionModel!.status == true) {
+        allPermissionsList!.where((permission) => permission.id == permissionId).first.name = updatePermissionModel!.permission!.name;
+      }
       emit(UpdatePermissionSuccessState(updatePermissionModel!));
     }).catchError((error) {
       print(error.toString());

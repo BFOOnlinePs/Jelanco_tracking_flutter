@@ -9,16 +9,8 @@ class MyElevatedButton extends StatelessWidget {
   final bool isDisabled;
   final EdgeInsetsGeometry? margin;
 
-  // final
-
-  const MyElevatedButton({
-    Key? key,
-    required this.onPressed,
-    this.isWidthFull = false,
-    required this.buttonText,
-    this.isDisabled = false,
-    this.margin
-  }) : super(key: key);
+  const MyElevatedButton(
+      {super.key, required this.onPressed, this.isWidthFull = false, required this.buttonText, this.isDisabled = false, this.margin});
 
   @override
   Widget build(BuildContext context) {

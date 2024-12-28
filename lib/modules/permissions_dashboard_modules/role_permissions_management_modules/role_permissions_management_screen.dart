@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/role_permissions_management_modules/cubit/role_permissions_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/role_permissions_management_modules/cubit/role_permissions_management_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/components/my_chip_widget.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
@@ -72,27 +73,13 @@ class RolePermissionsManagementScreen extends StatelessWidget {
                                           children: rolePermissionsManagementCubit.allPermissionsList!.map<Widget>((permission) {
                                             bool isSelected =
                                                 rolePermissionsManagementCubit.selectedRolePermissionsIds.contains(permission.id!);
-                                            return GestureDetector(
+                                            return MyChipWidget(
+                                              label: permission.name ?? 'No name',
+                                              isSelected: isSelected,
                                               onTap: () {
                                                 rolePermissionsManagementCubit.addRemoveSelectedRolePermissionsIds(
                                                     permissionId: permission.id!);
                                               },
-                                              child: Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                                decoration: BoxDecoration(
-                                                  color: isSelected ? Colors.blue.shade100 : Colors.white,
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  border: Border.all(color: Colors.blue.shade300),
-                                                ),
-                                                child: Text(
-                                                  permission.name ?? 'No name',
-                                                  style: TextStyle(
-                                                    color: Colors.blue.shade800,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 10,
-                                                  ),
-                                                ),
-                                              ),
                                             );
                                           }).toList(),
                                         ),

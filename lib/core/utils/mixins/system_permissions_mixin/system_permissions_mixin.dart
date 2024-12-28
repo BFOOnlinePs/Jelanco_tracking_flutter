@@ -6,9 +6,9 @@ import 'package:jelanco_tracking_system/network/remote/dio_helper.dart';
 mixin SystemPermissionsMixin<T> on Cubit<T> {
   List<PermissionModel>? allPermissionsList;
 
-  void getAllPermissions({required T loadingState, required T successState, required T errorState}) {
+  Future<void> getAllPermissions({required T loadingState, required T successState, required T errorState}) async {
     emit(loadingState);
-    DioHelper.getData(url: EndPointsConstants.permissions).then((value) {
+    await DioHelper.getData(url: EndPointsConstants.permissions).then((value) {
       print(value?.data);
       if (value?.data != null) {
         allPermissionsList = [];

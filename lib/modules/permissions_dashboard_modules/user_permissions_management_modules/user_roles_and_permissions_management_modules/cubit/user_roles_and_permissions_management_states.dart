@@ -1,0 +1,13 @@
+abstract class UserRolesAndPermissionsManagementStates {}
+
+class UserRolesAndPermissionsManagementInitialState extends UserRolesAndPermissionsManagementStates {}
+
+class UserRolesAndPermissionsManagementLoadingState extends UserRolesAndPermissionsManagementStates {}
+
+class UserRolesAndPermissionsManagementSuccessState extends UserRolesAndPermissionsManagementStates {}
+
+class UserRolesAndPermissionsManagementErrorState extends UserRolesAndPermissionsManagementStates {}
+
+class ToggleRoleSelectionState extends UserRolesAndPermissionsManagementStates {}
+
+class TogglePermissionSelectionState extends UserRolesAndPermissionsManagementStates {}
