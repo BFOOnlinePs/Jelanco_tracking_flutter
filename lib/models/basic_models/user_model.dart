@@ -13,7 +13,7 @@ class UserModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<DepartmentModel>? userDepartments;
-  final List<RoleModel>? roles;
+  List<RoleModel>? roles;
 
   UserModel({
     this.id,

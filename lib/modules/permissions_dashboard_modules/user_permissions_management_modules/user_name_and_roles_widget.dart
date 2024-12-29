@@ -25,7 +25,7 @@ class UserNameAndRoleWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(CardSizeConstants.cardRadius)),
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,12 +53,13 @@ class UserNameAndRoleWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.arrow_forward),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UserRolesAndPermissionsManagementScreen(user: user)));
-                    },
-                  ),
+                  Icon(Icons.arrow_forward),
+                  // IconButton(
+                  //   icon: const Icon(Icons.arrow_forward),
+                  //   onPressed: () {
+                  //     // Navigator.push(context, MaterialPageRoute(builder: (context) => UserRolesAndPermissionsManagementScreen(user: user)));
+                  //   },
+                  // ),
                 ],
               ),
               user.roles!.isEmpty

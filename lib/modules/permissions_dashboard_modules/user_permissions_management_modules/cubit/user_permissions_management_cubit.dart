@@ -19,7 +19,7 @@ class UserPermissionsManagementCubit extends Cubit<UserPermissionsManagementStat
           loadingState: GetAllPermissionsLoadingState(),
           successState: GetAllPermissionsSuccessState(),
           errorState: GetAllPermissionsErrorState()),
-      getAllRoles(loadingState: GetAllRolesLoadingState(), successState: GetAllRolesSuccessState(), errorState: GetAllRolesErrorState()),
+      getAllRolesWithPermissions(loadingState: GetAllRolesWithPermissionsLoadingState(), successState: GetAllRolesWithPermissionsSuccessState(), errorState: GetAllRolesWithPermissionsErrorState()),
       getAllUsers(
         pagination: 1,
         isRole: 1,

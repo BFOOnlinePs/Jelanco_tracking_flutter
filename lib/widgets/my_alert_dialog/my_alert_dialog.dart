@@ -9,14 +9,18 @@ class MyAlertDialog extends StatelessWidget {
   final String cancelText;
   final VoidCallback? onConfirm;
   final VoidCallback? onCancel;
+  final bool? showConfirmButton;
+  final bool? showCancelButton;
 
   const MyAlertDialog({
     required this.title,
     required this.content,
-    required this.confirmText,
-    required this.cancelText,
-    required this.onConfirm,
+    this.confirmText = 'تأكيد',
+    this.cancelText = 'إلغاء',
+    this.onConfirm,
     this.onCancel,
+    this.showConfirmButton = true,
+    this.showCancelButton = true,
     super.key,
   });
 
@@ -24,8 +28,7 @@ class MyAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-            Radius.circular(SharedSize.alertDialogBorderRadius)),
+        borderRadius: BorderRadius.all(Radius.circular(SharedSize.alertDialogBorderRadius)),
       ),
       title: Text(
         title,
@@ -43,22 +46,27 @@ class MyAlertDialog extends StatelessWidget {
           ),
         ),
       ),
+      // contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       actions: [
-        ElevatedButton(
-          onPressed: onConfirm,
-          style: ElevatedButton.styleFrom(backgroundColor: ColorsConstants.primaryColor),
-          child: Text(
-            confirmText,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
-        TextButton(
-          onPressed: onCancel ?? () => Navigator.of(context).pop(),
-          child: Text(
-            cancelText,
-            style: const TextStyle(color: Colors.grey),
-          ),
-        ),
+        showConfirmButton == false
+            ? const SizedBox.shrink()
+            : ElevatedButton(
+                onPressed: onConfirm,
+                style: ElevatedButton.styleFrom(backgroundColor: ColorsConstants.primaryColor),
+                child: Text(
+                  confirmText,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+        showCancelButton == false
+            ? const SizedBox.shrink()
+            : TextButton(
+                onPressed: onCancel ?? () => Navigator.of(context).pop(),
+                child: Text(
+                  cancelText,
+                  // style: const TextStyle(color: Colors.grey),
+                ),
+              ),
       ],
     );
   }

@@ -34,12 +34,16 @@ class UserPermissionsManagementScreen extends StatelessWidget {
                                 child: UserNameAndRoleWidget(
                               user: userPermissionsManagementCubit.usersList[index],
                               onTap: () {
+                                // userPermissionsManagementCubit.usersList[index].roles =
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => BlocProvider.value(
                                       value: userPermissionsManagementCubit,
-                                      child: UserRolesAndPermissionsManagementScreen(user: userPermissionsManagementCubit.usersList[index]),
+                                      child: UserRolesAndPermissionsManagementScreen(
+                                        user: userPermissionsManagementCubit.usersList[index],
+                                        userPermissionsManagementCubit: userPermissionsManagementCubit,
+                                      ),
                                     ),
                                   ),
                                 );

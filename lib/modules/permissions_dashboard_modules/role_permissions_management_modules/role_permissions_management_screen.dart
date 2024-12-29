@@ -17,7 +17,11 @@ class RolePermissionsManagementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RolePermissionsManagementCubit()
-        ..getAllRolesWithPermissions()
+        ..getAllRolesWithPermissions(
+          loadingState: GetAllRolesWithPermissionsLoadingState(),
+          successState: GetAllRolesWithPermissionsSuccessState(),
+          errorState: GetAllRolesWithPermissionsErrorState(),
+        )
         ..getAllPermissions(
           loadingState: GetAllPermissionsLoadingState(),
           successState: GetAllPermissionsSuccessState(),

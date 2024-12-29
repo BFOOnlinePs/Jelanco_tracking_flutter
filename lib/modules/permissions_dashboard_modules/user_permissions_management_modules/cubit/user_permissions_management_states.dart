@@ -18,8 +18,8 @@ class GetAllPermissionsErrorState extends UserPermissionsManagementStates {}
 
 // roles mixin
 
-class GetAllRolesLoadingState extends UserPermissionsManagementStates {}
+class GetAllRolesWithPermissionsLoadingState extends UserPermissionsManagementStates {}
 
-class GetAllRolesSuccessState extends UserPermissionsManagementStates {}
+class GetAllRolesWithPermissionsSuccessState extends UserPermissionsManagementStates {}
 
-class GetAllRolesErrorState extends UserPermissionsManagementStates {}
+class GetAllRolesWithPermissionsErrorState extends UserPermissionsManagementStates {}
