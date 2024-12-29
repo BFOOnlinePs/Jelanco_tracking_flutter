@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/system_permissions_mixin/system_permissions_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/system_roles_mixin/system_roles_mixin.dart';
@@ -12,6 +13,9 @@ class UserPermissionsManagementCubit extends Cubit<UserPermissionsManagementStat
   UserPermissionsManagementCubit() : super(UserPermissionsManagementInitialState());
 
   static UserPermissionsManagementCubit get(context) => BlocProvider.of(context);
+
+  TextEditingController searchController = TextEditingController();
+
 
   void getInitialData() async {
     await Future.wait([

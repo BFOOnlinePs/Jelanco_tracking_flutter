@@ -33,15 +33,13 @@ class TasksAddedByUserScreen extends StatelessWidget {
         child: BlocConsumer<TasksAddedByUserCubit, TasksAddedByUserStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            TasksAddedByUserCubit tasksAddedByUserCubit =
-                TasksAddedByUserCubit.get(context);
+            TasksAddedByUserCubit tasksAddedByUserCubit = TasksAddedByUserCubit.get(context);
             return tasksAddedByUserCubit.getTasksAddedByUserModel == null
                 ? const Center(
                     child: MyLoader(),
                   )
                 : Container(
-                    child: tasksAddedByUserCubit
-                            .getTasksAddedByUserModel!.tasks!.isEmpty
+                    child: tasksAddedByUserCubit.getTasksAddedByUserModel!.tasks!.isEmpty
                         ? Center(
                             child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -59,26 +57,14 @@ class TasksAddedByUserScreen extends StatelessWidget {
                             },
                             child: ListView.builder(
                               physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: tasksAddedByUserCubit
-                                      .tasksAddedByUserList.length +
-                                  (tasksAddedByUserCubit
-                                          .isTasksAddedByUserLastPage
-                                      ? 0
-                                      : 1),
+                              itemCount: tasksAddedByUserCubit.tasksAddedByUserList.length +
+                                  (tasksAddedByUserCubit.isTasksAddedByUserLastPage ? 0 : 1),
                               itemBuilder: (context, index) {
-                                if (index ==
-                                        tasksAddedByUserCubit
-                                            .tasksAddedByUserList.length &&
-                                    !tasksAddedByUserCubit
-                                        .isTasksAddedByUserLastPage) {
-                                  if (!tasksAddedByUserCubit
-                                      .isTasksAddedByUserLoading) {
+                                if (index == tasksAddedByUserCubit.tasksAddedByUserList.length &&
+                                    !tasksAddedByUserCubit.isTasksAddedByUserLastPage) {
+                                  if (!tasksAddedByUserCubit.isTasksAddedByUserLoading) {
                                     tasksAddedByUserCubit.getTasksAddedByUser(
-                                      page: tasksAddedByUserCubit
-                                              .getTasksAddedByUserModel!
-                                              .pagination!
-                                              .currentPage! +
-                                          1,
+                                      page: tasksAddedByUserCubit.getTasksAddedByUserModel!.pagination!.currentPage! + 1,
                                     );
                                   }
                                   return const Padding(
@@ -86,9 +72,7 @@ class TasksAddedByUserScreen extends StatelessWidget {
                                     child: Center(child: MyLoader()),
                                   );
                                 }
-                                return TaskItem(
-                                    taskModel: tasksAddedByUserCubit
-                                        .tasksAddedByUserList[index]);
+                                return TaskItem(taskModel: tasksAddedByUserCubit.tasksAddedByUserList[index]);
                               },
                             ),
                           ),
@@ -96,19 +80,18 @@ class TasksAddedByUserScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton:
-          (SystemPermissions.hasPermission(SystemPermissions.addTask))
-              ? MyFloatingActionButton(
-                  icon: Icons.add_task,
-                  labelText: 'إضافة تكليف',
-                  onPressed: () {
-                    NavigationServices.navigateTo(
-                      context,
-                      AddTaskScreen(),
-                    );
-                  },
-                )
-              : Container(),
+      floatingActionButton: (SystemPermissions.hasPermission(SystemPermissions.addTask))
+          ? MyFloatingActionButton(
+              icon: Icons.add_task,
+              labelText: 'إضافة تكليف',
+              onPressed: () {
+                NavigationServices.navigateTo(
+                  context,
+                  AddTaskScreen(),
+                );
+              },
+            )
+          : Container(),
     );
   }
 }
