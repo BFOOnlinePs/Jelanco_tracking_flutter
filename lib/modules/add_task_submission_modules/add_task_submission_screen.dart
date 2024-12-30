@@ -17,7 +17,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_wi
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
 
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
@@ -199,7 +199,7 @@ class AddTaskSubmissionScreen extends StatelessWidget {
                                       children: [
                                         //from camera
 
-                                        TaskOptionsWidget(
+                                        OptionsWidget(
                                             menuItems: [
                                               MenuItemModel(
                                                 icon: Icons.image,

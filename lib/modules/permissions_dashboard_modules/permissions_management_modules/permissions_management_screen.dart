@@ -146,15 +146,11 @@ class PermissionsManagementScreen extends StatelessWidget {
                                 ],
                               ),
                               confirmText: 'إضافة',
-                              cancelText: 'إلغاء',
                               onConfirm: controller.text.isEmpty
                                   ? null
                                   : () {
                                       Navigator.of(context).pop();
-
-                                      permissionsManagementCubit.addPermission(
-                                        permissionName: controller.text,
-                                      );
+                                      permissionsManagementCubit.addPermission(permissionName: controller.text);
                                     },
                               onCancel: () {
                                 Navigator.of(context).pop();

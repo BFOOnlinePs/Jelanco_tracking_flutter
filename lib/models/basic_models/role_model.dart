@@ -2,7 +2,7 @@ import 'package:jelanco_tracking_system/models/basic_models/permission_model.dar
 
 class RoleModel {
   final int? id;
-  final String? name;
+  String? name;
   final String? guardName;
   final DateTime? createdAt;
   final DateTime? updatedAt;

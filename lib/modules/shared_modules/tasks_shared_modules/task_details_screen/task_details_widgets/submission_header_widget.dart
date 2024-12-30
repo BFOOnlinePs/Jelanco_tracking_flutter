@@ -10,7 +10,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_submission_mode
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_location_dialog.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_submission_details_screen/cubit/task_submission_details_cubit.dart';
@@ -25,22 +25,23 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final bool showSubmissionOptions;
+
   // final HomeCubit? homeCubit;
   // final TaskDetailsCubit? taskDetailsCubit;
   // final TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
   // final UserProfileCubit? userProfileCubit;
   // final TodaySubmissionsCubit? todaySubmissionsCubit;
 
-  SubmissionHeaderWidget(
-      {super.key,
-      required this.submissionModel,
-      this.showSubmissionOptions = true,
-      // this.homeCubit,
-      // this.taskDetailsCubit,
-      // this.taskSubmissionDetailsCubit,
-      // this.userProfileCubit,
-      // this.todaySubmissionsCubit,
-      });
+  SubmissionHeaderWidget({
+    super.key,
+    required this.submissionModel,
+    this.showSubmissionOptions = true,
+    // this.homeCubit,
+    // this.taskDetailsCubit,
+    // this.taskSubmissionDetailsCubit,
+    // this.userProfileCubit,
+    // this.todaySubmissionsCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                NavigationServices.navigateTo(
-                    context, UserProfileScreen(userId: submissionModel.tsSubmitter!));
+                NavigationServices.navigateTo(context, UserProfileScreen(userId: submissionModel.tsSubmitter!));
               },
               child: Row(
                 // crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,8 +66,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                     padding: EdgeInsets.all(2.w),
                     child: submissionModel.submitterUser?.image != null
                         ? MyCachedNetworkImage(
-                            imageUrl:
-                                EndPointsConstants.profileStorage + submissionModel.submitterUser!.image!,
+                            imageUrl: EndPointsConstants.profileStorage + submissionModel.submitterUser!.image!,
                             width: 34.w,
                             height: 34.w,
                             fit: BoxFit.cover,
@@ -114,7 +113,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                       (submissionModel.tsParentId != -1 ||
                           (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
                               submissionModel.tsSubmitter == UserDataConstants.userId))
-                  ? TaskOptionsWidget(menuItems: [
+                  ? OptionsWidget(menuItems: [
                       if (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
                           submissionModel.tsSubmitter == UserDataConstants.userId)
                         MenuItemModel(
@@ -163,8 +162,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                             );
                           },
                         ),
-                      if (submissionModel.tsParentId !=
-                          -1) // if the submission is not the parent, then it has history
+                      if (submissionModel.tsParentId != -1) // if the submission is not the parent, then it has history
                         MenuItemModel(
                           icon: Icons.history,
                           label: 'عرض التعديلات',

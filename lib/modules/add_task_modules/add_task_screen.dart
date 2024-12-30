@@ -14,7 +14,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_wi
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
@@ -274,7 +274,7 @@ class AddTaskScreen extends StatelessWidget {
                                       children: [
                                         //from camera
 
-                                        TaskOptionsWidget(
+                                        OptionsWidget(
                                             menuItems: [
                                               MenuItemModel(
                                                 icon: Icons.image,
