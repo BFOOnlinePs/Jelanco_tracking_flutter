@@ -136,7 +136,7 @@ class MyDrawer extends StatelessWidget {
                               if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
                                 DrawerItem(
                                   icon: Icons.person_add_alt,
-                                  text: 'تعيين متابعين',
+                                  text: 'تعيين مسؤولين',
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,

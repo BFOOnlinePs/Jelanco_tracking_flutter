@@ -16,14 +16,16 @@ class UserPermissionsManagementCubit extends Cubit<UserPermissionsManagementStat
 
   TextEditingController searchController = TextEditingController();
 
-
   void getInitialData() async {
     await Future.wait([
       getAllPermissions(
           loadingState: GetAllPermissionsLoadingState(),
           successState: GetAllPermissionsSuccessState(),
           errorState: GetAllPermissionsErrorState()),
-      getAllRolesWithPermissions(loadingState: GetAllRolesWithPermissionsLoadingState(), successState: GetAllRolesWithPermissionsSuccessState(), errorState: GetAllRolesWithPermissionsErrorState()),
+      getAllRolesWithPermissions(
+          loadingState: GetAllRolesWithPermissionsLoadingState(),
+          successState: GetAllRolesWithPermissionsSuccessState(),
+          errorState: GetAllRolesWithPermissionsErrorState()),
       getAllUsers(
         pagination: 1,
         isRole: 1,
@@ -32,5 +34,7 @@ class UserPermissionsManagementCubit extends Cubit<UserPermissionsManagementStat
         errorState: (error) => GetAllUsersErrorState(),
       )
     ]);
+    emit(GetInitialDataSuccessState());
+
   }
 }

@@ -20,21 +20,21 @@ class PermissionsDashboardScreen extends StatelessWidget {
             // Text('إدارة الصلاحيات'),
             Expanded(
               child: ListView(
-                children: const [
-                  NavigateTextWidget(
+                children:  [
+                  const NavigateTextWidget(
                     title: 'إدارة الصلاحيات',
                     description: 'إضافة وتعديل الصلاحيات المتاحة في النظام.',
                     targetScreen: PermissionsManagementScreen(),
                     icon: Icons.security,
                   ),
-                  MyVerticalSpacer(),
-                  NavigateTextWidget(
+                  const MyVerticalSpacer(),
+                  const NavigateTextWidget(
                     title: 'إدارة صلاحيات الأدوار',
                     description: "تخصيص الصلاحيات للأدوار المختلفة في النظام.",
                     targetScreen: RolePermissionsManagementScreen(),
                     icon: Icons.group,
                   ),
-                  MyVerticalSpacer(),
+                  const MyVerticalSpacer(),
                   NavigateTextWidget(
                     title: 'إدارة صلاحيات المستخدمين',
                     description: "تعديل الصلاحيات المرتبطة بالمستخدمين بشكل فردي.",

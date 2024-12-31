@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/cubit/user_permissions_management_cubit.dart';
-import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/cubit/user_permissions_management_states.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_roles_and_permissions_management_modules/cubit/user_roles_and_permissions_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_roles_and_permissions_management_modules/cubit/user_roles_and_permissions_management_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -79,6 +78,7 @@ class UserRolesAndPermissionsManagementScreen extends StatelessWidget {
                         Expanded(
                           child: SingleChildScrollView(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const MyHorizontalDivider(topMargin: 10, bottomMargin: 10),
                                 Text('الأدوار', style: Theme.of(context).textTheme.headlineSmall),
@@ -150,15 +150,25 @@ class UserRolesAndPermissionsManagementScreen extends StatelessWidget {
                                 MyElevatedButton(
                                   buttonText: 'حفظ الأدوار',
                                   onPressed: () {
-                                    userRolesAndPermissionsManagementCubit.assignRolesToUser(
-                                        userId: user.id!,
-                                        roleIds: userRolesAndPermissionsManagementCubit.getUserRoleAndPermissionIdsModel?.roleIds ?? []);
+                                    if (userRolesAndPermissionsManagementCubit.getUserRoleAndPermissionIdsModel?.roleIds?.isEmpty ?? true) {
+                                      SnackbarHelper.showSnackbar(
+                                          context: context, snackBarStates: SnackBarStates.error, message: 'يرجى تحديد دور واحد على الأقل');
+                                    } else {
+                                      userRolesAndPermissionsManagementCubit.assignRolesToUser(
+                                          userId: user.id!,
+                                          roleIds: userRolesAndPermissionsManagementCubit.getUserRoleAndPermissionIdsModel?.roleIds ?? []);
+                                    }
                                   },
                                   isWidthFull: true,
                                   margin: const EdgeInsets.only(top: 10, bottom: 8),
                                 ),
                                 MyVerticalSpacer(),
                                 Text('الصلاحيات الإضافية', style: Theme.of(context).textTheme.headlineSmall),
+                                Text(
+                                  'اختر الصلاحيات الإضافية التي يمكن منحها للموظف، والتي لا تتوفر ضمن صلاحيات أدواره الحالية.',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  textAlign: TextAlign.center,
+                                ),
                                 Wrap(
                                   // spacing: 8,
                                   // runSpacing: 8,

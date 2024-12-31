@@ -25,7 +25,7 @@ class UserPermissionsManagementScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is GetInitialDataSuccessState && userId != null) {
             print('navigate to roles and permissions');
-
+ 
             Navigator.push(
               context,
               MaterialPageRoute(

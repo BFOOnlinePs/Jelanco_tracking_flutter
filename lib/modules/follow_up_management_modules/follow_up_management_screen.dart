@@ -31,7 +31,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
               children: [
                 Scaffold(
                   appBar: const MyAppBar(
-                    title: 'المتابعين الحاليين',
+                    title: 'المسؤولين الحاليين',
                   ),
                   body: Column(
                     children: [
@@ -41,7 +41,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                           : Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: MyTextFormField(
-                                labelText: 'بحث عن متابع',
+                                labelText: 'بحث عن مسؤول',
                                 onChanged: followUpManagementCubit.usersSearch,
                                 prefixIcon: const Icon(Icons.search),
                               )),
@@ -58,7 +58,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                                     ),
                                     height: 250,
                                   ),
-                                  Text('لا يوجد متابعين'),
+                                  Text('لا يوجد مسؤولين'),
                                 ],
                               ))
                             : ListView.builder(
@@ -106,7 +106,7 @@ class UsersFollowUpManagementScreen extends StatelessWidget {
                   ),
                   floatingActionButton: MyFloatingActionButton(
                     icon: Icons.add,
-                    labelText: 'متابع جديد',
+                    labelText: 'مسؤول جديد',
                     onPressed: () {
                       // // Navigate to add a new user
                       followUpManagementCubit.navigateToEditAddScreen(context, null);

@@ -49,8 +49,7 @@ class PermissionsManagementScreen extends StatelessWidget {
                 body: MyScreen(
                   child: Column(
                     children: [
-                      const Text(
-                          'في هذه الشاشة، يمكنك عرض وتعديل الصلاحيات المتاحة للمستخدمين والأدوار المختلفة في النظام. قم بتحديد الصلاحيات التي يمكن منحها أو إلغاءها بناءً على متطلبات العمل.'),
+                      const Text('في هذه الشاشة، يمكنك عرض وتعديل الصلاحيات المتاحة للمستخدمين والأدوار المختلفة في النظام.'),
                       Expanded(
                         child: permissionsManagementCubit.allPermissionsList == null
                             ? const Center(child: MyLoader())
@@ -117,53 +116,55 @@ class PermissionsManagementScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                floatingActionButton: MyFloatingActionButton(
-                  labelText: 'اضافة صلاحية جديدة',
-                  icon: Icons.add,
-                  onPressed: () {
-                    TextEditingController controller = TextEditingController();
 
-                    showDialog(
-                      context: context,
-                      builder: (context) => BlocProvider.value(
-                        value: permissionsManagementCubit,
-                        child: BlocConsumer<PermissionsManagementCubit, PermissionsManagementStates>(
-                          listener: (context, state) {},
-                          builder: (context, state) {
-                            return MyAlertDialog(
-                              title: 'إضافة صلاحية',
-                              content: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('ادخل اسم الصلاحية المراد اضافتها'),
-                                  MyTextFormField(
-                                    labelText: 'اسم الصلاحية',
-                                    controller: controller,
-                                    onChanged: (value) {
-                                      permissionsManagementCubit.onChangePermissionName(controller, value);
-                                    },
-                                  ),
-                                ],
-                              ),
-                              confirmText: 'إضافة',
-                              onConfirm: controller.text.isEmpty
-                                  ? null
-                                  : () {
-                                      Navigator.of(context).pop();
-                                      permissionsManagementCubit.addPermission(permissionName: controller.text);
-                                    },
-                              onCancel: () {
-                                Navigator.of(context).pop();
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                /// don't active nor delete
+                // floatingActionButton: MyFloatingActionButton(
+                //   labelText: 'اضافة صلاحية جديدة',
+                //   icon: Icons.add,
+                //   onPressed: () {
+                //     TextEditingController controller = TextEditingController();
+                //
+                //     showDialog(
+                //       context: context,
+                //       builder: (context) => BlocProvider.value(
+                //         value: permissionsManagementCubit,
+                //         child: BlocConsumer<PermissionsManagementCubit, PermissionsManagementStates>(
+                //           listener: (context, state) {},
+                //           builder: (context, state) {
+                //             return MyAlertDialog(
+                //               title: 'إضافة صلاحية',
+                //               content: Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   const Text('ادخل اسم الصلاحية المراد اضافتها'),
+                //                   MyTextFormField(
+                //                     labelText: 'اسم الصلاحية',
+                //                     controller: controller,
+                //                     onChanged: (value) {
+                //                       permissionsManagementCubit.onChangePermissionName(controller, value);
+                //                     },
+                //                   ),
+                //                 ],
+                //               ),
+                //               confirmText: 'إضافة',
+                //               onConfirm: controller.text.isEmpty
+                //                   ? null
+                //                   : () {
+                //                       Navigator.of(context).pop();
+                //                       permissionsManagementCubit.addPermission(permissionName: controller.text);
+                //                     },
+                //               onCancel: () {
+                //                 Navigator.of(context).pop();
+                //               },
+                //             );
+                //           },
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
               ),
-              state is AddPermissionLoadingState || state is UpdatePermissionLoadingState  ? const LoaderWithDisable() : Container()
+              state is AddPermissionLoadingState || state is UpdatePermissionLoadingState ? const LoaderWithDisable() : Container()
             ],
           );
         },

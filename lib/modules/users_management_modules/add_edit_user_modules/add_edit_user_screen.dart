@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
 import 'package:jelanco_tracking_system/models/basic_models/department_model.dart';
+import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_permissions_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_states.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
@@ -37,7 +39,16 @@ class AddEditUserScreen extends StatelessWidget {
                 message: state.addUserModel.message);
             if (state.addUserModel.status == true) {
               Navigator.pop(context);
-              // Navigator.pop(context);
+              Navigator.pop(context);
+
+              // when add
+              if (userId == null) {
+                print('navigate to permissions');
+                NavigationServices.navigateTo(
+                  context,
+                  UserPermissionsManagementScreen(userId: state.addUserModel.user!.id),
+                );
+              }
             }
           }
         },

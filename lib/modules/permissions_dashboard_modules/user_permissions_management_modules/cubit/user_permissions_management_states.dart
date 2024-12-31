@@ -8,6 +8,8 @@ class GetAllUsersSuccessState extends UserPermissionsManagementStates {}
 
 class GetAllUsersErrorState extends UserPermissionsManagementStates {}
 
+class GetInitialDataSuccessState extends UserPermissionsManagementStates {}
+
 // permissions mixin
 
 class GetAllPermissionsLoadingState extends UserPermissionsManagementStates {}

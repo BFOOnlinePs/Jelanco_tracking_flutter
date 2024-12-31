@@ -20,7 +20,7 @@ class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(
-        title: 'إدارة المدراء و الموظفين',
+        title: 'إدارة المسؤولين و الموظفين',
       ),
       body: BlocProvider(
         create: (context) => ManagersAndEmployeesOfUserCubit()..enterScreenActions(userId: userId),
@@ -53,7 +53,7 @@ class ManagersAndEmployeesOfUserScreen extends StatelessWidget {
                         labelStyle: const TextStyle(fontSize: 16, fontFamily: 'Tajawal'),
                         unselectedLabelStyle: const TextStyle(fontSize: 14, fontFamily: 'Tajawal'),
                         dividerHeight: 0.5,
-                        tabs: const [Tab(text: 'المدراء'), Tab(text: 'الموظفين')],
+                        tabs: const [Tab(text: 'المسؤولين'), Tab(text: 'الموظفين')],
                       ),
                       Expanded(
                         child: state is GetManagersAndEmployeesOfUserLoadingState || state is GetAllUsersLoadingState
