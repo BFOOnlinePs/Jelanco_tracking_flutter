@@ -64,8 +64,7 @@ class DioHelper {
       final response = await dio.post(url,
           data: data,
           queryParameters: query,
-          options: Options(
-              headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
+          options: Options(headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
           cancelToken: cancelToken);
       print('response is good'); // 200
       return response;
@@ -100,8 +99,36 @@ class DioHelper {
         url,
         data: data,
         queryParameters: query,
-        options: Options(
-            headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
+        options: Options(headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
+      );
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        print(e.response?.data);
+        print(e.response?.statusCode);
+        print(e.response?.statusMessage);
+        return e.response;
+      } else {
+        print(e.requestOptions);
+        print(e.message);
+        print(e.error);
+      }
+    }
+    return null;
+  }
+
+  static Future<Response?> deleteData({
+    required String url,
+    Map<String, dynamic>? query,
+  }) async {
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      final response = await dio.delete(
+        url,
+        queryParameters: query,
+        options: Options(headers: {'Authorization': 'Bearer ${UserDataConstants.token}'}),
       );
       return response;
     } on DioException catch (e) {

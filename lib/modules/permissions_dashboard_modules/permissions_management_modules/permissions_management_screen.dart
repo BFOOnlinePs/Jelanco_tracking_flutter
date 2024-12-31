@@ -163,7 +163,7 @@ class PermissionsManagementScreen extends StatelessWidget {
                   },
                 ),
               ),
-              state is AddPermissionLoadingState || state is UpdatePermissionLoadingState ? const LoaderWithDisable() : Container()
+              state is AddPermissionLoadingState || state is UpdatePermissionLoadingState  ? const LoaderWithDisable() : Container()
             ],
           );
         },

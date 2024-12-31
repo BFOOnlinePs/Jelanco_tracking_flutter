@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/role_permissions_management_modules/cubit/role_permissions_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/role_permissions_management_modules/cubit/role_permissions_management_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
@@ -40,6 +41,18 @@ class RolePermissionsManagementScreen extends StatelessWidget {
                   state.assignPermissionsToRoleStatusMessageModel?.status == true ? SnackBarStates.success : SnackBarStates.error,
               message: state.assignPermissionsToRoleStatusMessageModel?.message,
             );
+          } else if (state is EditRoleSuccessState) {
+            SnackbarHelper.showSnackbar(
+              context: context,
+              snackBarStates: state.editRoleModel?.status == true ? SnackBarStates.success : SnackBarStates.error,
+              message: state.editRoleModel?.message,
+            );
+          } else if (state is DeleteRoleSuccessState) {
+            SnackbarHelper.showSnackbar(
+              context: context,
+              snackBarStates: state.deleteRoleModel?.status == true ? SnackBarStates.success : SnackBarStates.error,
+              message: state.deleteRoleModel?.message,
+            );
           }
         },
         builder: (context, state) {
@@ -67,34 +80,90 @@ class RolePermissionsManagementScreen extends StatelessWidget {
                                     rolePermissionsManagementCubit.getAllRolesWithPermissionsModel!.roles!.map<ExpansionPanel>((role) {
                                   return ExpansionPanel(
                                     headerBuilder: (BuildContext context, bool isExpanded) {
-                                      return Row(
-                                        children: [
-                                          // Leading widget
-                                          OptionsWidget(padding: const EdgeInsets.all(0), menuItems: []),
+                                      return Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                        child: Row(
+                                          children: [
+                                            OptionsWidget(padding: const EdgeInsets.all(0), menuItems: [
+                                              MenuItemModel(
+                                                label: 'تعديل',
+                                                icon: Icons.edit,
+                                                onTap: () {
+                                                  TextEditingController controller = TextEditingController(text: role.name);
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return BlocProvider.value(
+                                                        value: rolePermissionsManagementCubit,
+                                                        child: MyAlertDialog(
+                                                            title: 'تعديل الدور',
+                                                            content: MyTextFormField(
+                                                              controller: controller,
+                                                              onChanged: (value) {
+                                                                rolePermissionsManagementCubit.onChangeRoleName(controller, value);
+                                                              },
+                                                              titleText: 'اسم الدور',
+                                                            ),
+                                                            confirmText: 'تعديل',
+                                                            cancelText: 'اغلاق',
+                                                            onConfirm: controller.text.isEmpty
+                                                                ? null
+                                                                : () {
+                                                                    Navigator.of(context).pop();
+                                                                    rolePermissionsManagementCubit.editRole(
+                                                                        roleId: role.id!, roleName: controller.text);
+                                                                  }),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              MenuItemModel(
+                                                label: 'حذف',
+                                                icon: Icons.delete,
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return MyAlertDialog(
+                                                        title: 'حذف الدور',
+                                                        content: Text('هل انت متأكد من انك تريد حذف دور "${role.name}"؟'),
+                                                        confirmText: 'حذف',
+                                                        cancelText: 'اغلاق',
+                                                        onConfirm: () {
+                                                          Navigator.of(context).pop();
+                                                          rolePermissionsManagementCubit.deleteRole(roleId: role.id!);
+                                                        },
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              )
+                                            ]),
 
-                                          const SizedBox(width: 16), // Space between the leading widget and text
+                                            const SizedBox(width: 16),
 
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  role.name ?? 'no name',
-                                                  style: Theme.of(context).textTheme.bodyLarge,
-                                                ),
-                                                Text(
-                                                  'عدد الصلاحيات: ${role.permissions!.length}',
-                                                  style: Theme.of(context).textTheme.bodyMedium,
-                                                ),
-                                              ],
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    role.name ?? 'no name',
+                                                    style: Theme.of(context).textTheme.bodyLarge,
+                                                  ),
+                                                  Text(
+                                                    'عدد الصلاحيات: ${role.permissions!.length}',
+                                                    style: Theme.of(context).textTheme.bodySmall,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
 
-                                          // Trailing widget
-                                          // Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
-                                        ],
+                                            // Trailing widget
+                                            // Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
+                                          ],
+                                        ),
                                       );
-
                                     },
                                     canTapOnHeader: true,
                                     body: Column(
@@ -183,7 +252,10 @@ class RolePermissionsManagementScreen extends StatelessWidget {
                   },
                 ),
               ),
-              state is AssignPermissionsToRoleLoadingState || state is AddRoleLoadingState || state is EditRoleLoadingState
+              state is AssignPermissionsToRoleLoadingState ||
+                      state is AddRoleLoadingState ||
+                      state is EditRoleLoadingState ||
+                      state is DeleteRoleLoadingState
                   ? const LoaderWithDisable()
                   : Container(),
             ],

@@ -47,6 +47,16 @@ class EditRoleErrorState extends RolePermissionsManagementStates {}
 
 class ChangeRoleNameState extends RolePermissionsManagementStates {}
 
+class DeleteRoleLoadingState extends RolePermissionsManagementStates {}
+
+class DeleteRoleSuccessState extends RolePermissionsManagementStates {
+  final StatusMessageModel? deleteRoleModel;
+
+  DeleteRoleSuccessState(this.deleteRoleModel);
+}
+
+class DeleteRoleErrorState extends RolePermissionsManagementStates {}
+
 // all permissions mixin
 class GetAllPermissionsLoadingState extends RolePermissionsManagementStates {}
 

@@ -110,4 +110,19 @@ class RolePermissionsManagementCubit extends Cubit<RolePermissionsManagementStat
       emit(EditRoleErrorState());
     });
   }
+
+  StatusMessageModel? deleteRoleModel;
+
+  void deleteRole({required int roleId}) {
+    emit(DeleteRoleLoadingState());
+    DioHelper.deleteData(url: '${EndPointsConstants.roles}/$roleId').then((value) {
+      print(value?.data);
+      deleteRoleModel = StatusMessageModel.fromMap(value?.data);
+      getAllRolesWithPermissionsModel!.roles!.removeWhere((role) => role.id == roleId);
+      emit(DeleteRoleSuccessState(deleteRoleModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(DeleteRoleErrorState());
+    });
+  }
 }
