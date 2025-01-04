@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/departments_mixin/departments_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/password_visibility_mixin/password_visibility_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/get_user_by_id_mixin.dart';
+import 'package:jelanco_tracking_system/enums/user_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/department_model.dart';
 import 'package:jelanco_tracking_system/models/users_models/add_update_user_model.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_states.dart';
@@ -25,6 +26,7 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
   TextEditingController jobTitleController = TextEditingController();
   MultiSelectController<DepartmentModel>? dropDownDepartmentsController = MultiSelectController<DepartmentModel>();
   List<DepartmentModel> selectedDepartments = [];
+  UserStatusEnum? userStatusEnum;
 
   String? validatePhoneAndEmail() {
     if (phoneController.text.isEmpty && emailController.text.isEmpty) {
@@ -57,7 +59,7 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
       emailController.text = getUserByIdModel?.user?.email ?? '';
       phoneController.text = getUserByIdModel?.user?.phoneNumber ?? '';
       jobTitleController.text = getUserByIdModel?.user?.jobTitle ?? '';
-
+      userStatusEnum = UserStatusEnum.getStatus(getUserByIdModel?.user?.userStatus);
       selectedDepartments = getDepartmentsModel?.departments
               ?.where((dep) => getUserByIdModel?.user?.userDepartments?.any((element) => element.dId == dep.dId) ?? false)
               .toList() ??
@@ -79,6 +81,7 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
   AddUpdateUserModel? addUpdateUserModel;
 
   void addUpdateUser({int? userId}) {
+    print("user status ${userStatusEnum?.statusDBName}");
     emit(AddUpdateUserLoadingState());
     DioHelper.postData(url: EndPointsConstants.users + (userId != null ? '/$userId' : ''), data: {
       'name': nameController.text,
@@ -86,9 +89,11 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
       'phone': phoneController.text,
       'password': passwordController.text,
       'job_title': jobTitleController.text,
+      'status': 1,
       'departments': selectedDepartments.isEmpty
           ? null
           : FormatUtils.formatList<DepartmentModel>(selectedDepartments, (department) => department?.dId.toString()),
+      'status': userStatusEnum?.statusDBName,
     }).then((value) {
       print(value?.data);
       addUpdateUserModel = AddUpdateUserModel.fromMap(value?.data);
@@ -97,6 +102,13 @@ class AddEditUserCubit extends Cubit<AddEditUserStates>
       emit(AddUpdateUserErrorState());
       print(error.toString());
     });
+  }
+
+  void updateUserStatus({required bool isActive}) {
+    print('user status ${userStatusEnum?.statusDBName}');
+    userStatusEnum = isActive ? UserStatusEnum.active : UserStatusEnum.inactive;
+    print('user status ${userStatusEnum?.statusDBName}');
+    emit(UpdateUserStatusState());
   }
 
 // void updateUser({required int userId}) {

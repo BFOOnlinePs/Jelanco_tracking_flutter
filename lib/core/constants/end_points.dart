@@ -11,8 +11,8 @@ class EndPointsConstants {
 
   /// LOCAL
   static const String baseUrl = '$url/public/api/';
-  static const String url = 'http://192.168.1.12/BFO/jelanco_tracking';
-  static const String socketIoUrl = 'http://192.168.1.12:3000';
+  static const String url = 'http://192.168.1.42/BFO/jelanco_tracking';
+  static const String socketIoUrl = 'http://192.168.1.42:3000';
   static const String tasksStorage = '$url/public/storage/tasks_attachments/';
   static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
   static const String taskSubmissionsCommentStorage = '$url/public/storage/comments_attachments/';

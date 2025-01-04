@@ -9,6 +9,7 @@ class UserModel {
   final String? jobTitle;
   final String? departments;
   final String? phoneNumber;
+  String? userStatus;
   final dynamic emailVerifiedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -23,6 +24,7 @@ class UserModel {
     this.jobTitle,
     this.departments,
     this.phoneNumber,
+    this.userStatus,
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,
@@ -38,6 +40,7 @@ class UserModel {
         jobTitle: json["job_title"],
         departments: json["departments"],
         phoneNumber: json["phone_number"],
+        userStatus: json["user_status"],
         emailVerifiedAt: json["email_verified_at"],
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
@@ -55,6 +58,7 @@ class UserModel {
         "job_title": jobTitle,
         "departments": departments,
         "phone_number": phoneNumber,
+        "user_status": userStatus,
         "email_verified_at": emailVerifiedAt,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

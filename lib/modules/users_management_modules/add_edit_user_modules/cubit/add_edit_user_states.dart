@@ -18,6 +18,8 @@ class AddUpdateUserErrorState extends AddEditUserStates {}
 
 class InitializeDataDoneState extends AddEditUserStates {}
 
+class UpdateUserStatusState extends AddEditUserStates {}
+
 // departments mixins
 
 class GetAllDepartmentsLoadingState extends AddEditUserStates {}
