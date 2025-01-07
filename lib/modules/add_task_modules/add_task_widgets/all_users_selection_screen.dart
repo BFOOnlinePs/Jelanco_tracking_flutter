@@ -70,7 +70,13 @@ class AllUsersSelectionScreen extends StatelessWidget {
                                   child: Center(child: MyLoader()),
                                 );
                               }
-                              return CheckBoxUserWidget(user: addTaskCubit.usersList[index], value: false, onChanged: (value) {});
+                              return CheckBoxUserWidget(
+                                user: addTaskCubit.usersList[index],
+                                value: addTaskCubit.selectedInterestedParties.contains(addTaskCubit.usersList[index]),
+                                onChanged: (value) {
+                                  addTaskCubit.toggleSelectedInterestedParties(addTaskCubit.usersList[index]);
+                                },
+                              );
                             },
                             separatorBuilder: (context, index) => const Divider(),
                           ),

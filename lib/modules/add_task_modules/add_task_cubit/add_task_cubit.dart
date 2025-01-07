@@ -47,6 +47,17 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   List<UserModel> selectedInterestedParties = [];
   TextEditingController searchController = TextEditingController();
 
+  void toggleSelectedInterestedParties(UserModel user) {
+    if (selectedInterestedParties.contains(user)) {
+      selectedInterestedParties.remove(user);
+    } else {
+      selectedInterestedParties.add(user);
+    }
+    print('selectedInterestedParties: ${selectedInterestedParties.length}');
+
+    emit(ToggleSelectedInterestedPartiesState());
+  }
+
   Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
     DateTime initialDate = isStartTime
         ? (plannedStartTime ?? DateTime.now()) // when reopen

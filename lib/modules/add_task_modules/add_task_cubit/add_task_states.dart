@@ -56,6 +56,8 @@ class DeletePickedFilesFromListState extends AddTaskStates {}
 
 class DeletePickedImageFromListState extends AddTaskStates {}
 
+class ToggleSelectedInterestedPartiesState extends AddTaskStates {}
+
 // Categories Mixin
 
 class CategoriesLoadingState extends AddTaskStates {}
