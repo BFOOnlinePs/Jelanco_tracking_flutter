@@ -53,7 +53,6 @@ class AddTaskScreen extends StatelessWidget {
           errorState: GetManagerEmployeesErrorState(),
         )
         ..getAllUsers(
-          pagination: 1,
           loadingState: GetAllUsersLoadingState(),
           successState: GetAllUsersSuccessState(),
           errorState: (error) => GetAllUsersErrorState(),

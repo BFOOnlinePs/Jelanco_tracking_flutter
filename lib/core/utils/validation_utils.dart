@@ -40,9 +40,6 @@ class ValidationUtils {
     return 'صيغة البريد الإلكتروني / رقم الجوال غير صحيحة.';
   }
 
-
-
-
   // static String? validateEmailOrPhone(String? value) {
   //   final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
   //   final phoneRegex = RegExp(r'^\d{10}$'); // Example:
@@ -61,11 +58,11 @@ class ValidationUtils {
     }
     return true;
   }
-
-  static bool isConfirmedPasswordValid(
-    String password,
-    String confirmedPassword,
-  ) {
-    return password == confirmedPassword;
-  }
+//
+// static bool isConfirmedPasswordValid(
+//   String password,
+//   String confirmedPassword,
+// ) {
+//   return password == confirmedPassword;
+// }
 }

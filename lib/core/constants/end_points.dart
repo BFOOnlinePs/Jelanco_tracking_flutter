@@ -51,6 +51,7 @@ class EndPointsConstants {
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1
   static const String updateProfile = '$userProfile/image'; // /users/profile/image
+  static const String changePassword = '$userProfile/change-password';
 
   // manager employees
   static const String managers = '$users/managers';

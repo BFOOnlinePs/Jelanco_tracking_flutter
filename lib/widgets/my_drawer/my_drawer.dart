@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/change_password_module/change_password_screen.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/follow_up_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_dashboard_screen.dart';
@@ -189,6 +190,12 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
+                              DrawerItem(
+                                  icon: Icons.lock_reset_outlined,
+                                  text: 'تغيير كلمة المرور',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(context, const ChangePasswordScreen());
+                                  })
                               // DrawerItem(
                               //   icon: Icons.logout,
                               //   text: 'drawer_logout_title'.tr(),

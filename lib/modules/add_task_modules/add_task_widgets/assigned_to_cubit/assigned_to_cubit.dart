@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
-import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_states/assigned_to_states.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_cubit/assigned_to_states.dart';
 
 class AssignedToCubit extends Cubit<AssignedToStates> {
   AssignedToCubit() : super(AssignedToInitialState());

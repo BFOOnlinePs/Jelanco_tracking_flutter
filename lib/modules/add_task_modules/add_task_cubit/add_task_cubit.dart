@@ -13,6 +13,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart';
@@ -29,7 +30,8 @@ class AddTaskCubit extends Cubit<AddTaskStates>
         PermissionsMixin,
         ManagerEmployeesMixin<AddTaskStates>,
         CompressVideoMixin<AddTaskStates>,
-        CompressImagesMixin<AddTaskStates> {
+        CompressImagesMixin<AddTaskStates>,
+        UsersMixin<AddTaskStates> {
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
@@ -41,6 +43,9 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   DateTime? plannedEndTime;
   TaskCategoryModel? selectedCategory;
   List<UserModel> selectedUsers = [];
+
+  List<UserModel> selectedInterestedParties = [];
+  TextEditingController searchController = TextEditingController();
 
   Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
     DateTime initialDate = isStartTime
@@ -225,15 +230,11 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     if (isOldVideos) {
       print('old videos');
       // in edit
-      oldVideoControllers[index]!.value.isPlaying
-          ? oldVideoControllers[index]!.pause()
-          : oldVideoControllers[index]!.play();
+      oldVideoControllers[index]!.value.isPlaying ? oldVideoControllers[index]!.pause() : oldVideoControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     } else if (videosControllers[index] != null) {
       print('new videos');
-      videosControllers[index]!.value.isPlaying
-          ? videosControllers[index]!.pause()
-          : videosControllers[index]!.play();
+      videosControllers[index]!.value.isPlaying ? videosControllers[index]!.pause() : videosControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     }
   }
@@ -262,8 +263,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
     if (videoPath.endsWith('.mp4')) {
       print('videoPath:: $videoPath');
 
-      VideoPlayerController controller =
-          VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.tasksStorage + videoPath));
+      VideoPlayerController controller = VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);
@@ -297,8 +297,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
           pickedFilesList.add(selectedFile);
           emit(AddTaskFileSelectSuccessState());
         } else {
-          emit(AddTaskFileSelectErrorState(
-              error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+          emit(AddTaskFileSelectErrorState(error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
