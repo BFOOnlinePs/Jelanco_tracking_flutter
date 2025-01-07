@@ -1,4 +1,4 @@
-import 'package:jelanco_tracking_system/models/auth_models/permission_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/permission_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 
 class UserLoginModel {
@@ -21,10 +21,8 @@ class UserLoginModel {
         message: json["message"],
         user: json["user"] == null ? null : UserModel.fromMap(json["user"]),
         token: json["token"],
-        permissions: json["permissions"] == null
-            ? []
-            : List<PermissionModel>.from(
-                json["permissions"]!.map((x) => PermissionModel.fromMap(x))),
+        permissions:
+            json["permissions"] == null ? [] : List<PermissionModel>.from(json["permissions"]!.map((x) => PermissionModel.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -32,8 +30,6 @@ class UserLoginModel {
         "message": message,
         "user": user?.toMap(),
         "token": token,
-        "permissions": permissions == null
-            ? []
-            : List<dynamic>.from(permissions!.map((x) => x.toMap())),
+        "permissions": permissions == null ? [] : List<dynamic>.from(permissions!.map((x) => x.toMap())),
       };
 }

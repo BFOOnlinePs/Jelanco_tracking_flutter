@@ -1,12 +1,10 @@
-import 'package:jelanco_tracking_system/models/auth_models/role_has_permissions_model.dart';
-
 class PermissionModel {
   final int? id;
-  final String? name;
+  String? name;
   final String? guardName;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final RoleHasPermissionsModel? pivot;
+  // final RoleHasPermissionsModel? pivot;
 
   PermissionModel({
     this.id,
@@ -14,7 +12,6 @@ class PermissionModel {
     this.guardName,
     this.createdAt,
     this.updatedAt,
-    this.pivot,
   });
 
   factory PermissionModel.fromMap(Map<String, dynamic> json) => PermissionModel(
@@ -23,7 +20,6 @@ class PermissionModel {
     guardName: json["guard_name"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    pivot: json["pivot"] == null ? null : RoleHasPermissionsModel.fromMap(json["pivot"]),
   );
 
   Map<String, dynamic> toMap() => {
@@ -32,7 +28,5 @@ class PermissionModel {
     "guard_name": guardName,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
-    "pivot": pivot?.toMap(),
   };
 }
-

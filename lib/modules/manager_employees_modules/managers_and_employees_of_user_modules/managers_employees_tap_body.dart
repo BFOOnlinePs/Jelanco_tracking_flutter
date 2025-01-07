@@ -49,7 +49,7 @@ class ManagersEmployeesTapBody extends StatelessWidget {
             onChanged: (query) {
               cubit.usersSearch(query, isManagersTab);
             },
-            labelText: 'بحث عن ${isManagersTab ? 'مدير' : 'موظف'}',
+            labelText: 'بحث عن ${isManagersTab ? 'مسؤول' : 'موظف'}',
           ),
         ),
         Expanded(
@@ -92,7 +92,7 @@ class ManagersEmployeesTapBody extends StatelessWidget {
                 cubit.addEditManagerEmployees(managerId: userId, employeesUsers: cubit.selectedEmployees);
               }
             },
-            buttonText: isManagersTab ? 'تحديث المدراء' : 'تحديث الموظفين',
+            buttonText: isManagersTab ? 'تحديث المسؤولين' : 'تحديث الموظفين',
           ),
         )
       ],

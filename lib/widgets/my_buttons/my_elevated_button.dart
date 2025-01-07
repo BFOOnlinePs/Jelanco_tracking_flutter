@@ -7,21 +7,16 @@ class MyElevatedButton extends StatelessWidget {
   final bool isWidthFull;
   final String buttonText;
   final bool isDisabled;
+  final EdgeInsetsGeometry? margin;
 
-  // final
-
-  const MyElevatedButton({
-    Key? key,
-    required this.onPressed,
-    this.isWidthFull = false,
-    required this.buttonText,
-    this.isDisabled = false,
-  }) : super(key: key);
+  const MyElevatedButton(
+      {super.key, required this.onPressed, this.isWidthFull = false, required this.buttonText, this.isDisabled = false, this.margin});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: isWidthFull ? double.infinity : null,
+      margin: margin,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(

@@ -10,11 +10,12 @@ import 'package:jelanco_tracking_system/models/basic_models/task_category_model.
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_attachments_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
@@ -50,6 +51,12 @@ class AddTaskScreen extends StatelessWidget {
           loadingState: GetManagerEmployeesLoadingState(),
           successState: GetManagerEmployeesSuccessState(),
           errorState: GetManagerEmployeesErrorState(),
+        )
+        ..getAllUsers(
+          pagination: 1,
+          loadingState: GetAllUsersLoadingState(),
+          successState: GetAllUsersSuccessState(),
+          errorState: (error) => GetAllUsersErrorState(),
         ),
       child: BlocConsumer<AddTaskCubit, AddTaskStates>(
         listener: (context, state) {
@@ -85,8 +92,7 @@ class AddTaskScreen extends StatelessWidget {
               message: state.error,
             );
           } else if (state is GetManagerEmployeesErrorState) {
-            SnackbarHelper.showSnackbar(
-                context: context, snackBarStates: SnackBarStates.error, message: 'ERROR !!');
+            SnackbarHelper.showSnackbar(context: context, snackBarStates: SnackBarStates.error, message: 'ERROR !!');
           }
         },
         builder: (context, state) {
@@ -118,12 +124,10 @@ class AddTaskScreen extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          Text('add_task_assign_to_field'.tr(),
-                                              style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                          Text('add_task_assign_to_field'.tr(), style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                                           Text(
                                             ' *',
-                                            style: TextStyle(
-                                                fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                            style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
                                           ),
                                         ],
                                       ),
@@ -160,8 +164,7 @@ class AddTaskScreen extends StatelessWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                          borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
                                           border: Border.all(
                                             color: Colors.black,
                                             width: 1.0,
@@ -176,9 +179,7 @@ class AddTaskScreen extends StatelessWidget {
                                                 child: Text(
                                                   addTaskCubit.selectedUsers.isEmpty
                                                       ? 'add_task_assign_to_field'.tr()
-                                                      : addTaskCubit.selectedUsers
-                                                          .map((user) => user.name)
-                                                          .join(', '),
+                                                      : addTaskCubit.selectedUsers.map((user) => user.name).join(', '),
                                                   style: const TextStyle(color: Colors.black54),
                                                 ),
                                               ),
@@ -189,10 +190,71 @@ class AddTaskScreen extends StatelessWidget {
                                   ),
                                   // addTaskCubit.addTaskModel != null &&
                                   addTaskCubit.isAddClicked && addTaskCubit.selectedUsers.isEmpty
-                                      ? MyErrorFieldText(
-                                          text: 'add_task_assign_to_field_required_validation'.tr())
+                                      ? MyErrorFieldText(text: 'add_task_assign_to_field_required_validation'.tr())
                                       : Container(),
                                   const MyVerticalSpacer(),
+                                  // interested parties
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return BlocProvider.value(
+                                                value: addTaskCubit,
+                                                child: AllUsersSelectionScreen(
+                                                  addTaskCubit: addTaskCubit,
+                                                ));
+                                            // return AssignedToScreen(
+                                            //   isAddTask: true,
+                                            //   users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
+                                            //   selectedUsers: addTaskCubit.selectedUsers,
+                                            // );
+                                          },
+                                        ),
+                                      ).then((_) {
+                                        // This code will run when the AnotherScreen is popped off the stack
+                                        addTaskCubit.emitAfterReturn();
+                                      });
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 15,
+                                          horizontal: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Text(
+                                                  addTaskCubit.selectedInterestedParties.isEmpty
+                                                      ? 'الجهات المعنية'
+                                                      : addTaskCubit.selectedInterestedParties.map((user) => user.name).join(', '),
+                                                  style: const TextStyle(color: Colors.black54),
+                                                ),
+                                              ),
+                                            ),
+                                            const Icon(Icons.arrow_forward),
+                                          ],
+                                        )),
+                                  ),
+                                  // enable if interested parties if required
+                                  // addTaskCubit.isAddClicked && addTaskCubit.selectedInterestedParties.isEmpty
+                                  //     ? MyErrorFieldText(
+                                  //     text: 'add_task_assign_to_field_required_validation'.tr())
+                                  //     : Container(),
+                                  // const MyVerticalSpacer(),
+
                                   MyTextFormField(
                                     titleText: 'add_task_content_field'.tr(),
                                     labelText: 'add_task_content_field_label'.tr(),
@@ -274,7 +336,7 @@ class AddTaskScreen extends StatelessWidget {
                                       children: [
                                         //from camera
 
-                                        TaskOptionsWidget(
+                                        OptionsWidget(
                                             menuItems: [
                                               MenuItemModel(
                                                 icon: Icons.image,
@@ -295,8 +357,7 @@ class AddTaskScreen extends StatelessWidget {
                                                   addTaskCubit.requestPermission(
                                                       context: context,
                                                       permissionType: PermissionType.camera,
-                                                      functionWhenGranted: () =>
-                                                          addTaskCubit.pickMediaFromCamera(isImage: false));
+                                                      functionWhenGranted: () => addTaskCubit.pickMediaFromCamera(isImage: false));
                                                 },
                                               ),
                                             ],
@@ -317,8 +378,7 @@ class AddTaskScreen extends StatelessWidget {
                                             addTaskCubit.requestPermission(
                                                 context: context,
                                                 permissionType: PermissionType.storage,
-                                                functionWhenGranted:
-                                                    addTaskCubit.pickMultipleImagesFromGallery);
+                                                functionWhenGranted: addTaskCubit.pickMultipleImagesFromGallery);
                                           },
                                         ),
                                         Container(width: 0.2, height: 26, color: Colors.grey),

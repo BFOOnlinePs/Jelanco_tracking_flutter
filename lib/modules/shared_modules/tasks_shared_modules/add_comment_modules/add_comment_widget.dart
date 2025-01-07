@@ -7,7 +7,7 @@ import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
-import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/task_options_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/add_comment_modules/add_comment_cubit/add_comment_states.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
@@ -210,7 +210,7 @@ class AddCommentWidget extends StatelessWidget {
                   // Media Options (File, Image, Video)
                   Row(
                     children: [
-                      TaskOptionsWidget(
+                      OptionsWidget(
                         menuItems: [
                           MenuItemModel(
                             icon: Icons.image_outlined,

@@ -11,8 +11,8 @@ class EndPointsConstants {
 
   /// LOCAL
   static const String baseUrl = '$url/public/api/';
-  static const String url = 'http://192.168.1.13/BFO/jelanco_tracking';
-  static const String socketIoUrl = 'http://192.168.1.13:3000';
+  static const String url = 'http://192.168.1.42/BFO/jelanco_tracking';
+  static const String socketIoUrl = 'http://192.168.1.42:3000';
   static const String tasksStorage = '$url/public/storage/tasks_attachments/';
   static const String taskSubmissionsStorage = '$url/public/storage/uploads/';
   static const String taskSubmissionsCommentStorage = '$url/public/storage/comments_attachments/';
@@ -51,6 +51,7 @@ class EndPointsConstants {
   static const String users = 'users';
   static const String userProfile = '$users/profile'; // /users/profile/1
   static const String updateProfile = '$userProfile/image'; // /users/profile/image
+  static const String changePassword = '$userProfile/change-password';
 
   // manager employees
   static const String managers = '$users/managers';
@@ -60,6 +61,12 @@ class EndPointsConstants {
   static const String deleteManager = '$managers/delete'; // users/managers/delete
   static const String getManagersAndEmployeesOfUser = 'managers-and-employees'; // users/{user_id}/managers-and-employees
   static const String assignEmployeeForManagers = '$managers/assign';
+
+  // permissions and roles
+  static const String permissions = 'permissions';
+  static const String roles = 'roles';
+  static const String rolesWithPermissions = '$roles/roles-with-permissions';
+  static const String userRolesAndPermissions = 'roles-and-permissions';
 
   // notifications
   static const String notifications = 'notifications';

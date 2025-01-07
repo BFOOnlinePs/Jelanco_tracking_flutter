@@ -1,4 +1,4 @@
-import 'package:jelanco_tracking_system/models/auth_models/permission_model.dart';
+import 'package:jelanco_tracking_system/models/basic_models/permission_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 
 class GetUserByIdModel {

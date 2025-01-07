@@ -45,8 +45,7 @@ class HomeScreen extends StatelessWidget {
               onRefresh: () async {
                 await Future.wait([
                   NotificationsBadgeCubit.get(context).getUnreadNotificationsCount(),
-                  if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
-                    homeCubit.getUserSubmissions(),
+                  if (SystemPermissions.hasPermission(SystemPermissions.submitTask)) homeCubit.getUserSubmissions(),
                   if (SystemPermissions.hasPermission(SystemPermissions.submitTask))
                     homeCubit.getTasksToSubmit(
                       perPage: 3,
@@ -78,8 +77,7 @@ class HomeScreen extends StatelessWidget {
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                if (index == homeCubit.userSubmissionsList.length &&
-                                    !homeCubit.isUserSubmissionsLastPage) {
+                                if (index == homeCubit.userSubmissionsList.length && !homeCubit.isUserSubmissionsLastPage) {
                                   if (!homeCubit.isUserSubmissionsLoading) {
                                     homeCubit.getUserSubmissions(
                                       page: homeCubit.getUserSubmissionsModel!.pagination!.currentPage! + 1,
@@ -90,14 +88,9 @@ class HomeScreen extends StatelessWidget {
                                     child: const LinearProgressIndicator(),
                                   );
                                 }
-                                final submission = homeCubit.userSubmissionsList[index];
-
-                                return UserSubmissionWidget(homeCubit: homeCubit, submission: submission);
+                                return UserSubmissionWidget(homeCubit: homeCubit, submission: homeCubit.userSubmissionsList[index]);
                               },
-                              childCount: homeCubit.userSubmissionsList.length +
-                                  (homeCubit.isUserSubmissionsLastPage
-                                      ? 0
-                                      : 1), // Replace with your data length
+                              childCount: homeCubit.userSubmissionsList.length + (homeCubit.isUserSubmissionsLastPage ? 0 : 1),
                             ),
                           ),
                       ],

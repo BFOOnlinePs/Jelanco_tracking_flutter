@@ -322,6 +322,7 @@ class ProfileCardWidget extends StatelessWidget {
                       context,
                       ManagersAndEmployeesOfUserScreen(
                         userId: userInfo.id!,
+                        userName: userInfo.name!,
                       ));
                 },
                 child: const Row(

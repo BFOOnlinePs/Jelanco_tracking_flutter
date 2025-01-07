@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
+import 'package:jelanco_tracking_system/enums/user_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/department_model.dart';
+import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_permissions_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_states.dart';
+import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/user_status_toggle.dart';
 import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_multi_selection_drop_down.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
@@ -38,6 +43,15 @@ class AddEditUserScreen extends StatelessWidget {
             if (state.addUserModel.status == true) {
               Navigator.pop(context);
               // Navigator.pop(context);
+
+              // when add
+              if (userId == null) {
+                print('navigate to permissions');
+                NavigationServices.navigateTo(
+                  context,
+                  UserPermissionsManagementScreen(userId: state.addUserModel.user!.id),
+                );
+              }
             }
           }
         },
@@ -55,7 +69,7 @@ class AddEditUserScreen extends StatelessWidget {
                         child: Form(
                           key: addUserCubit.formKey,
                           child: SingleChildScrollView(
-                            child: Column(children: [
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                               MyTextFormField(
                                 titleText: 'إسم الموظف',
                                 labelText: 'إسم الموظف',
@@ -122,6 +136,21 @@ class AddEditUserScreen extends StatelessWidget {
                                         print(addUserCubit.dropDownDepartmentsController?.selectedItems.length);
                                       },
                                     ),
+                              // const MyVerticalSpacer(height: TextFormFieldSizeConstants.padding,),
+                              Row(
+                                children: [
+                                  Text(
+                                    'حالة الحساب',
+                                    style: TextStyle(fontSize: SharedSize.textFiledTitleSize),
+                                  ),
+                                  const Spacer(),
+                                  UserStatusToggle(
+                                      status: addUserCubit.userStatusEnum ?? UserStatusEnum.active,
+                                      onStatusChanged: (value) {
+                                        addUserCubit.updateUserStatus(isActive: value);
+                                      }),
+                                ],
+                              ),
                               const MyVerticalSpacer(),
                               SizedBox(
                                 width: double.infinity,

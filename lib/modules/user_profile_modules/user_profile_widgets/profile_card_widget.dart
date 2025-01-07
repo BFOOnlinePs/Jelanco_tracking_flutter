@@ -336,7 +336,7 @@ class ProfileCardWidget extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      'إدارة المدراء و الموظفين',
+                      'إدارة المسؤولين و الموظفين',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.white,

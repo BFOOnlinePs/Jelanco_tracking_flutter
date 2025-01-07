@@ -56,6 +56,8 @@ class DeletePickedFilesFromListState extends AddTaskStates {}
 
 class DeletePickedImageFromListState extends AddTaskStates {}
 
+class ToggleSelectedInterestedPartiesState extends AddTaskStates {}
+
 // Categories Mixin
 
 class CategoriesLoadingState extends AddTaskStates {}
@@ -96,3 +98,10 @@ class CompressVideoErrorState extends AddTaskStates {
   CompressVideoErrorState({required this.error});
 }
 
+// users mixin
+
+class GetAllUsersLoadingState extends AddTaskStates {}
+
+class GetAllUsersSuccessState extends AddTaskStates {}
+
+class GetAllUsersErrorState extends AddTaskStates {}

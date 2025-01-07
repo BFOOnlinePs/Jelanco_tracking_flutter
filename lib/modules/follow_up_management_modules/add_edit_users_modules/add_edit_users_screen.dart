@@ -92,7 +92,7 @@ class AddEditUsersScreen extends StatelessWidget {
               children: [
                 Scaffold(
                   appBar: const MyAppBar(
-                    title: 'إضافة / تعديل المتابعين',
+                    title: 'إضافة / تعديل المسؤولين',
                   ),
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

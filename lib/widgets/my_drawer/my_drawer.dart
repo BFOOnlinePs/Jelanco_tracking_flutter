@@ -8,8 +8,10 @@ import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
+import 'package:jelanco_tracking_system/modules/change_password_module/change_password_screen.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/follow_up_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/manager_employees_modules/manager_employees_screen.dart';
+import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_dashboard_screen.dart';
 import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/tasks_added_by_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/today_submissions_modules/today_submissions_screen.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
@@ -116,6 +118,14 @@ class MyDrawer extends StatelessWidget {
                                 },
                               ),
 
+                              DrawerItem(
+                                icon: Icons.vpn_key_outlined,
+                                text: 'إدارة الصلاحيات والأدوار',
+                                onTap: () {
+                                  NavigationServices.navigateTo(context, const PermissionsDashboardScreen());
+                                },
+                              ),
+
                               /// todo: add permission
                               DrawerItem(
                                   icon: Icons.manage_accounts_outlined,
@@ -127,7 +137,7 @@ class MyDrawer extends StatelessWidget {
                               if (SystemPermissions.hasPermission(SystemPermissions.usersFollowUpManagement))
                                 DrawerItem(
                                   icon: Icons.person_add_alt,
-                                  text: 'تعيين متابعين',
+                                  text: 'تعيين مسؤولين',
                                   onTap: () {
                                     NavigationServices.navigateTo(
                                       context,
@@ -180,6 +190,12 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
+                              DrawerItem(
+                                  icon: Icons.lock_reset_outlined,
+                                  text: 'تغيير كلمة المرور',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(context, const ChangePasswordScreen());
+                                  })
                               // DrawerItem(
                               //   icon: Icons.logout,
                               //   text: 'drawer_logout_title'.tr(),

@@ -12,7 +12,7 @@ class WrappedLabelValueWidget extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded( // Ensures text can expand and wrap within available space
+        Expanded(
           child: Text.rich(
             TextSpan(
               children: [
