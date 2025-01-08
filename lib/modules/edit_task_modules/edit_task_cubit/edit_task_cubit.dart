@@ -14,6 +14,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/
 import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_with_task_assignees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/models/basic_models/interested_party_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/edit_task_model.dart';
@@ -46,6 +47,8 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   DateTime? plannedEndTime;
   TaskCategoryModel? selectedCategory;
   List<UserModel> selectedUsers = [];
+  List<InterestedPartyModel> selectedInterestedParties = [];
+  List<UserModel> selectedInterestedPartiesUsers = [];
   TaskStatusEnum? selectedTaskStatusEnum;
 
   GetTaskByIdModel? getOldTaskDataByIdModel;
@@ -69,6 +72,9 @@ class EditTaskCubit extends Cubit<EditTaskStates>
         plannedStartTime = getOldTaskDataByIdModel!.task!.tPlanedStartTime;
         plannedEndTime = getOldTaskDataByIdModel!.task!.tPlanedEndTime;
         selectedTaskStatusEnum = TaskStatusEnum.getStatus(getOldTaskDataByIdModel!.task!.tStatus!);
+
+        selectedInterestedParties = getOldTaskDataByIdModel!.task!.interestedParties ?? [];
+        selectedInterestedPartiesUsers = selectedInterestedParties.map((e) => e.user!).toList();
 
         for (var vid in getOldTaskDataByIdModel!.task!.taskAttachmentsCategories?.videos ?? []) {
           await initializeOldVideoController(vid.aAttachment!);
@@ -276,15 +282,11 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     if (isOldVideos) {
       print('old videos');
       // in edit
-      oldVideoControllers[index]!.value.isPlaying
-          ? oldVideoControllers[index]!.pause()
-          : oldVideoControllers[index]!.play();
+      oldVideoControllers[index]!.value.isPlaying ? oldVideoControllers[index]!.pause() : oldVideoControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     } else if (videosControllers[index] != null) {
       print('new videos');
-      videosControllers[index]!.value.isPlaying
-          ? videosControllers[index]!.pause()
-          : videosControllers[index]!.play();
+      videosControllers[index]!.value.isPlaying ? videosControllers[index]!.pause() : videosControllers[index]!.play();
       emit(ToggleVideoPlayPauseState());
     }
   }
@@ -313,8 +315,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     if (videoPath.endsWith('.mp4')) {
       print('videoPath:: $videoPath');
 
-      VideoPlayerController controller =
-          VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.tasksStorage + videoPath));
+      VideoPlayerController controller = VideoPlayerController.networkUrl(Uri.parse(EndPointsConstants.tasksStorage + videoPath));
       try {
         await controller.initialize();
         oldVideoControllers.add(controller);
@@ -348,8 +349,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
           pickedFilesList.add(selectedFile);
           emit(AddTaskFileSelectSuccessState());
         } else {
-          emit(AddTaskFileSelectErrorState(
-              error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
+          emit(AddTaskFileSelectErrorState(error: 'يجب ان يكون الملف من نوع pdf, doc, docx, xls, xlsx, ppt, pptx'));
           // Show an error message if the file type is not accepted
           // ScaffoldMessenger.of(context).showSnackBar(
           //   SnackBar(content: Text('Only specific file types are accepted: pdf, doc, docx, xls, xlsx, ppt, pptx.')),
@@ -396,6 +396,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
       'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
+      'interested_party_ids[]': FormatUtils.getIds(selectedInterestedPartiesUsers, (user) => user.id!),
       'status': selectedTaskStatusEnum!.statusName,
       'old_attachments[]': oldAttachments
     };

@@ -4,12 +4,14 @@ import 'package:jelanco_tracking_system/core/constants/button_size.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
 import 'package:jelanco_tracking_system/core/constants/text_form_field_size.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
+import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
-import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_screen.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/all_users_selection_screen.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_screen.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
@@ -73,10 +75,9 @@ class EditTaskScreen extends StatelessWidget {
 
           if (state is GetManagerEmployeesSuccessState) {
             // to display the old assigned to users
-            editTaskCubit.selectedUsers = editTaskCubit
-                .getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!
-                .where((user) => editTaskCubit.getOldTaskDataByIdModel!.task!.assignedToUsers!
-                    .any((assignedUser) => assignedUser.id == user.id))
+            editTaskCubit.selectedUsers = editTaskCubit.getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!
+                .where((user) =>
+                    editTaskCubit.getOldTaskDataByIdModel!.task!.assignedToUsers!.any((assignedUser) => assignedUser.id == user.id))
                 .toList();
           } else if (state is CategoriesSuccessState) {
             print('state is CategoriesSuccessState');
@@ -86,8 +87,8 @@ class EditTaskScreen extends StatelessWidget {
             // to display the old category
             editTaskCubit.selectedCategory = editTaskCubit.getOldTaskDataByIdModel?.task?.tCategoryId == null
                 ? null
-                : editTaskCubit.getTaskCategoriesModel!.taskCategories!.firstWhere(
-                    (category) => category.cId == editTaskCubit.getOldTaskDataByIdModel!.task!.tCategoryId);
+                : editTaskCubit.getTaskCategoriesModel!.taskCategories!
+                    .firstWhere((category) => category.cId == editTaskCubit.getOldTaskDataByIdModel!.task!.tCategoryId);
           } else if (state is EditTaskSuccessState) {
             SnackbarHelper.showSnackbar(
               context: context,
@@ -143,12 +144,10 @@ class EditTaskScreen extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Text('الموظفين المكلفين',
-                                        style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                    Text('الموظفين المكلفين', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                                     Text(
                                       ' *',
-                                      style: TextStyle(
-                                          fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                      style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
                                     ),
                                     const SizedBox(height: 8.0),
                                   ],
@@ -164,8 +163,7 @@ class EditTaskScreen extends StatelessWidget {
                                         builder: (context) {
                                           return AssignedToScreen(
                                             isAddTask: true,
-                                            users: editTaskCubit
-                                                .getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!,
+                                            users: editTaskCubit.getManagerEmployeesWithTaskAssigneesModel!.managerEmployees!,
                                             selectedUsers: editTaskCubit.selectedUsers,
                                           );
                                         },
@@ -196,9 +194,7 @@ class EditTaskScreen extends StatelessWidget {
                                             child: Text(
                                               editTaskCubit.selectedUsers.isEmpty
                                                   ? 'الموظفين المكلفين'
-                                                  : editTaskCubit.selectedUsers
-                                                      .map((user) => user.name)
-                                                      .join(', '),
+                                                  : editTaskCubit.selectedUsers.map((user) => user.name).join(', '),
                                               style: const TextStyle(color: Colors.black54),
                                             ),
                                           ),
@@ -208,75 +204,80 @@ class EditTaskScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                // const MyVerticalSpacer(),
-                                // Column(
-                                //   children: [
-                                //     Row(
-                                //       children: [
-                                //         Text('الجهات المعنية', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
-                                //         // Text(
-                                //         //   ' *',
-                                //         //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
-                                //         // ),
-                                //       ],
-                                //     ),
-                                //     const SizedBox(height: 10.0),
-                                //   ],
-                                // ),
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //         builder: (context) {
-                                //           return BlocProvider.value(
-                                //               value: addTaskCubit,
-                                //               child: AllUsersSelectionScreen(
-                                //                 addTaskCubit: addTaskCubit,
-                                //               ));
-                                //           // return AssignedToScreen(
-                                //           //   isAddTask: true,
-                                //           //   users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
-                                //           //   selectedUsers: addTaskCubit.selectedUsers,
-                                //           // );
-                                //         },
-                                //       ),
-                                //     ).then((_) {
-                                //       // This code will run when the AnotherScreen is popped off the stack
-                                //       addTaskCubit.emitAfterReturn();
-                                //     });
-                                //   },
-                                //   child: Container(
-                                //       padding: const EdgeInsets.symmetric(
-                                //         vertical: 15,
-                                //         horizontal: 10,
-                                //       ),
-                                //       decoration: BoxDecoration(
-                                //         color: Colors.white,
-                                //         borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
-                                //         border: Border.all(
-                                //           color: Colors.black,
-                                //           width: 1.0,
-                                //         ),
-                                //       ),
-                                //       child: Row(
-                                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //         children: [
-                                //           Expanded(
-                                //             child: SingleChildScrollView(
-                                //               scrollDirection: Axis.horizontal,
-                                //               child: Text(
-                                //                 addTaskCubit.selectedInterestedParties.isEmpty
-                                //                     ? 'الجهات المعنية'
-                                //                     : addTaskCubit.selectedInterestedParties.map((user) => user.name).join(', '),
-                                //                 style: const TextStyle(color: Colors.black54),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //           const Icon(Icons.arrow_forward),
-                                //         ],
-                                //       )),
-                                // ),
+                                const MyVerticalSpacer(),
+                                // interested parties
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('الجهات المعنية', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                        // Text(
+                                        //   ' *',
+                                        //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                        // ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                  ],
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          print(
+                                              'editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList() : ${editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList()}');
+                                          return AllUsersSelectionScreen(
+                                            selectedUsersList:
+                                                editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList(),
+                                            // user id where ipAddedById != current User Id , return e.ipInterestedPartyId
+                                            usersCanNotEdit: editTaskCubit.selectedInterestedParties
+                                                .where((e) => e.ipAddedById != UserDataConstants.userId)
+                                                .map((e) => e.ipInterestedPartyId!)
+                                                .toList(),
+                                          );
+                                        },
+                                      ),
+                                    ).then((result) {
+                                      print('popped');
+                                      // This code will run when the AnotherScreen is popped off the stack
+                                      if (result == null) return;
+                                      editTaskCubit.selectedInterestedPartiesUsers = result;
+                                      editTaskCubit.emitAfterReturn();
+                                    });
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15,
+                                        horizontal: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                editTaskCubit.selectedInterestedPartiesUsers.isEmpty
+                                                    ? 'الجهات المعنية'
+                                                    : editTaskCubit.selectedInterestedPartiesUsers.map((e) => e.name).join(', '),
+                                                style: const TextStyle(color: Colors.black54),
+                                              ),
+                                            ),
+                                          ),
+                                          const Icon(Icons.arrow_forward),
+                                        ],
+                                      )),
+                                ),
                                 const MyVerticalSpacer(),
                                 MyTextFormField(
                                     titleText: 'محتوى التكليف',
@@ -301,8 +302,8 @@ class EditTaskScreen extends StatelessWidget {
                                         titleText: 'موعد البدء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
-                                        onTap: () => editTaskCubit.selectDateTime(context, true,
-                                            editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
+                                        onTap: () => editTaskCubit.selectDateTime(
+                                            context, true, editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedStartTime == null
                                         //         ? 'Select a start time'
@@ -322,8 +323,8 @@ class EditTaskScreen extends StatelessWidget {
                                         titleText: 'موعد الإنتهاء',
                                         labelText: 'إختر الموعد',
                                         readOnly: true,
-                                        onTap: () => editTaskCubit.selectDateTime(context, false,
-                                            editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
+                                        onTap: () => editTaskCubit.selectDateTime(
+                                            context, false, editTaskCubit.getOldTaskDataByIdModel!.task!.createdAt),
                                         // validator: (value) =>
                                         //     editTaskCubit.plannedEndTime == null
                                         //         ? 'Select an end time'
@@ -394,8 +395,7 @@ class EditTaskScreen extends StatelessWidget {
                                                 editTaskCubit.requestPermission(
                                                     context: context,
                                                     permissionType: PermissionType.camera,
-                                                    functionWhenGranted: () =>
-                                                        editTaskCubit.pickMediaFromCamera(isImage: false));
+                                                    functionWhenGranted: () => editTaskCubit.pickMediaFromCamera(isImage: false));
                                               },
                                             ),
                                           ],
@@ -416,8 +416,7 @@ class EditTaskScreen extends StatelessWidget {
                                           editTaskCubit.requestPermission(
                                               context: context,
                                               permissionType: PermissionType.storage,
-                                              functionWhenGranted:
-                                                  editTaskCubit.pickMultipleImagesFromGallery);
+                                              functionWhenGranted: editTaskCubit.pickMultipleImagesFromGallery);
                                         },
                                       ),
                                       Container(width: 0.2, height: 26, color: Colors.grey),
@@ -485,14 +484,11 @@ class EditTaskScreen extends StatelessWidget {
                               editTaskCubit.editTask(
                                 taskId: editTaskCubit.getOldTaskDataByIdModel!.task!.tId!,
                                 oldAttachments: [
-                                  ...editTaskCubit
-                                      .getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.images!
+                                  ...editTaskCubit.getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.images!
                                       .map((e) => e.aAttachment!),
-                                  ...editTaskCubit
-                                      .getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.videos!
+                                  ...editTaskCubit.getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.videos!
                                       .map((e) => e.aAttachment!),
-                                  ...editTaskCubit
-                                      .getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.files!
+                                  ...editTaskCubit.getOldTaskDataByIdModel!.task!.taskAttachmentsCategories!.files!
                                       .map((e) => e.aAttachment!),
                                 ],
                               );

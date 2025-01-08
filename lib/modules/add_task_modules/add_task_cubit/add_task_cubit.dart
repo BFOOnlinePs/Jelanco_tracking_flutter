@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +29,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
         PermissionsMixin,
         ManagerEmployeesMixin<AddTaskStates>,
         CompressVideoMixin<AddTaskStates>,
-        CompressImagesMixin<AddTaskStates>,
-        UsersMixin<AddTaskStates> {
+        CompressImagesMixin<AddTaskStates> {
   AddTaskCubit() : super(AddTaskInitialState());
 
   static AddTaskCubit get(context) => BlocProvider.of(context);
@@ -44,20 +41,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   DateTime? plannedEndTime;
   TaskCategoryModel? selectedCategory;
   List<UserModel> selectedUsers = [];
-
   List<UserModel> selectedInterestedParties = [];
-  TextEditingController searchController = TextEditingController();
-
-  void toggleSelectedInterestedParties(UserModel user) {
-    if (selectedInterestedParties.contains(user)) {
-      selectedInterestedParties.remove(user);
-    } else {
-      selectedInterestedParties.add(user);
-    }
-    print('selectedInterestedParties: ${selectedInterestedParties.length}');
-
-    emit(ToggleSelectedInterestedPartiesState());
-  }
 
   Future<void> selectDateTime(BuildContext context, bool isStartTime) async {
     DateTime initialDate = isStartTime
@@ -361,12 +345,10 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
       'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
-      };
+      'interested_party_ids[]': FormatUtils.getIds(selectedInterestedParties, (user) => user.id!),
+    };
     print(dataObject.values);
     FormData formData = FormData.fromMap(dataObject);
-
-    // formData.fields.add(MapEntry('interested_party_ids',  FormatUtils.getIds(selectedInterestedParties, (user) => user.id!)));
-
 
     // compressedImagesList instead of pickedImagesList
     for (int i = 0; i < compressedImagesList.length; i++) {

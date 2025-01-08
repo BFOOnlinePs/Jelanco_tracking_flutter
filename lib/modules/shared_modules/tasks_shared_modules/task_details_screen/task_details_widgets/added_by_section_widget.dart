@@ -7,6 +7,7 @@ import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/all_users_selection_screen.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
@@ -110,8 +111,7 @@ class AddedBySectionWidget extends StatelessWidget {
           ],
         ),
         // edit task
-        if (SystemPermissions.hasPermission(SystemPermissions.editTask) &&
-            taskModel.addedByUser?.id == UserDataConstants.userId)
+        if (SystemPermissions.hasPermission(SystemPermissions.editTask) && taskModel.addedByUser?.id == UserDataConstants.userId)
           OptionsWidget(menuItems: [
             MenuItemModel(
               icon: Icons.edit,
@@ -159,6 +159,13 @@ class AddedBySectionWidget extends StatelessWidget {
                 );
               },
             ),
+            MenuItemModel(
+                icon: Icons.people_outline_sharp,
+                label: 'الجهات المعنية',
+                onTap: () {
+                  NavigationServices.navigateTo(
+                      context, AllUsersSelectionScreen(callInterestedParties: true, articleType: 'task', articleId: taskModel.tId));
+                }),
           ])
 
         // status != null

@@ -10,7 +10,7 @@ import 'package:jelanco_tracking_system/models/basic_models/task_category_model.
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_cubit/add_task_states.dart';
-import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_screen.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/all_users_selection_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_attachments_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_images_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_widgets/selected_videos_widget.dart';
@@ -51,12 +51,6 @@ class AddTaskScreen extends StatelessWidget {
           loadingState: GetManagerEmployeesLoadingState(),
           successState: GetManagerEmployeesSuccessState(),
           errorState: GetManagerEmployeesErrorState(),
-        )
-        ..getAllUsers(
-          pagination: 1,
-          loadingState: GetAllUsersLoadingState(),
-          successState: GetAllUsersSuccessState(),
-          errorState: (error) => GetAllUsersErrorState(),
         ),
       child: BlocConsumer<AddTaskCubit, AddTaskStates>(
         listener: (context, state) {
@@ -214,20 +208,16 @@ class AddTaskScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) {
-                                            return BlocProvider.value(
-                                                value: addTaskCubit,
-                                                child: AllUsersSelectionScreen(
-                                                  addTaskCubit: addTaskCubit,
-                                                ));
-                                            // return AssignedToScreen(
-                                            //   isAddTask: true,
-                                            //   users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
-                                            //   selectedUsers: addTaskCubit.selectedUsers,
-                                            // );
+                                            return AllUsersSelectionScreen(
+                                              selectedUsersList: addTaskCubit.selectedInterestedParties.map((user) => user.id!).toList(),
+                                            );
                                           },
                                         ),
-                                      ).then((_) {
+                                      ).then((result) {
+                                        print('popped');
                                         // This code will run when the AnotherScreen is popped off the stack
+                                        if (result == null) return;
+                                        addTaskCubit.selectedInterestedParties = result;
                                         addTaskCubit.emitAfterReturn();
                                       });
                                     },
