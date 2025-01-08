@@ -8,8 +8,11 @@ import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_cubit/assigned_to_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_cubit/assigned_to_states.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/check_box_user_widget.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_image_builder.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
+import 'package:jelanco_tracking_system/widgets/my_screen.dart';
+import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
 class AssignedToScreen extends StatelessWidget {
   final bool isAddTask;
@@ -41,74 +44,58 @@ class AssignedToScreen extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             assignedToCubit = AssignedToCubit.get(context);
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'assigned_to_search_box'.tr(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
-                      ),
-                    ),
+            return MyScreen(
+              child: Column(
+                children: [
+                  MyTextFormField(
+                    labelText: 'إبحث عن موظف',
                     onChanged: assignedToCubit.filterUsers,
+                    prefixIcon: const Icon(Icons.search),
                   ),
-                ),
-                Expanded(
-                  child: assignedToCubit.filteredUsers.isEmpty ||
-                          !SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers)
-                      ? Center(
-                          child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Image(
-                              image: AssetImage(
-                                AssetsKeys.defaultNoUsersImage,
-                              ),
-                              height: 250,
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: TextField(
+                  //     decoration: InputDecoration(
+                  //       hintText: 'assigned_to_search_box'.tr(),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                  //       ),
+                  //     ),
+                  //     onChanged: assignedToCubit.filterUsers,
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: assignedToCubit.filteredUsers.isEmpty || !SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers)
+                        ? Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Image(
+                                  image: AssetImage(
+                                    AssetsKeys.defaultNoUsersImage,
+                                  ),
+                                  height: 250,
+                                ),
+                                Text(assignedToCubit.filteredUsers.isEmpty ? 'لا يوجد مستخدمين' : 'ليس لديك صلاحية لمتابعة الموظفين'),
+                              ],
                             ),
-                            Text(assignedToCubit.filteredUsers.isEmpty
-                                ? 'لا يوجد مستخدمين'
-                                : 'ليس لديك صلاحية لمتابعة الموظفين'),
-                          ],
-                        ))
-                      : ListView(
-                          children: assignedToCubit.filteredUsers.map((user) {
-                            return CheckboxListTile(
-                              title: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    child: user.image != null
-                                        ? MyCachedNetworkImage(
-                                            imageUrl: EndPointsConstants.profileStorage + user.image!,
-                                            imageBuilder: (context, imageProvider) =>
-                                                MyCachedImageBuilder(imageProvider: imageProvider),
-                                            isCircle: true,
-                                          )
-                                        : ClipOval(child: Image.asset(AssetsKeys.defaultProfileImage)),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      user.name ?? 'name',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              value: assignedToCubit.selectedUsers.contains(user),
-                              onChanged: (bool? value) {
-                                assignedToCubit.checkBoxChanged(value, user);
-                              },
-                            );
-                          }).toList(),
-                        ),
-                ),
-              ],
+                          )
+                        : ListView.separated(
+                            itemCount: assignedToCubit.filteredUsers.length,
+                            separatorBuilder: (context, index) => const Divider(),
+                            itemBuilder: (context, index) {
+                              UserModel user = assignedToCubit.filteredUsers[index];
+                              return CheckBoxUserWidget(
+                                  user: user,
+                                  value: assignedToCubit.selectedUsers.contains(user),
+                                  onChanged: (bool? value) {
+                                    assignedToCubit.checkBoxChanged(value, user);
+                                  });
+                            },
+                          ),
+                  ),
+                ],
+              ),
             );
           },
         ),

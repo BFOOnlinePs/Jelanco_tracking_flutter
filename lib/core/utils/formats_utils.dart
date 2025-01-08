@@ -47,4 +47,10 @@ class FormatUtils {
 
     return intList;
   }
+
+  // from object list, return an array of ids
+  static List<int> getIds<T>(List<T> list, int Function(T) getId) {
+    return list.map((item) => getId(item)).toList();
+  }
+
 }

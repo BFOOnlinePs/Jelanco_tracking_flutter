@@ -9,6 +9,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permi
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_screen.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/assigned_to_screen.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_cubit.dart';
 import 'package:jelanco_tracking_system/modules/edit_task_modules/edit_task_cubit/edit_task_states.dart';
@@ -207,6 +208,75 @@ class EditTaskScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                // const MyVerticalSpacer(),
+                                // Column(
+                                //   children: [
+                                //     Row(
+                                //       children: [
+                                //         Text('الجهات المعنية', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                //         // Text(
+                                //         //   ' *',
+                                //         //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                //         // ),
+                                //       ],
+                                //     ),
+                                //     const SizedBox(height: 10.0),
+                                //   ],
+                                // ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //         builder: (context) {
+                                //           return BlocProvider.value(
+                                //               value: addTaskCubit,
+                                //               child: AllUsersSelectionScreen(
+                                //                 addTaskCubit: addTaskCubit,
+                                //               ));
+                                //           // return AssignedToScreen(
+                                //           //   isAddTask: true,
+                                //           //   users: addTaskCubit.getManagerEmployeesModel!.managerEmployees!,
+                                //           //   selectedUsers: addTaskCubit.selectedUsers,
+                                //           // );
+                                //         },
+                                //       ),
+                                //     ).then((_) {
+                                //       // This code will run when the AnotherScreen is popped off the stack
+                                //       addTaskCubit.emitAfterReturn();
+                                //     });
+                                //   },
+                                //   child: Container(
+                                //       padding: const EdgeInsets.symmetric(
+                                //         vertical: 15,
+                                //         horizontal: 10,
+                                //       ),
+                                //       decoration: BoxDecoration(
+                                //         color: Colors.white,
+                                //         borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                //         border: Border.all(
+                                //           color: Colors.black,
+                                //           width: 1.0,
+                                //         ),
+                                //       ),
+                                //       child: Row(
+                                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //         children: [
+                                //           Expanded(
+                                //             child: SingleChildScrollView(
+                                //               scrollDirection: Axis.horizontal,
+                                //               child: Text(
+                                //                 addTaskCubit.selectedInterestedParties.isEmpty
+                                //                     ? 'الجهات المعنية'
+                                //                     : addTaskCubit.selectedInterestedParties.map((user) => user.name).join(', '),
+                                //                 style: const TextStyle(color: Colors.black54),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //           const Icon(Icons.arrow_forward),
+                                //         ],
+                                //       )),
+                                // ),
                                 const MyVerticalSpacer(),
                                 MyTextFormField(
                                     titleText: 'محتوى التكليف',

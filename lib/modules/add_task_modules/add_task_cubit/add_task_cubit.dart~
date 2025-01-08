@@ -361,7 +361,8 @@ class AddTaskCubit extends Cubit<AddTaskStates>
       'end_time': plannedEndTime?.toString(),
       'category_id': selectedCategory?.cId,
       'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
-      };
+      'interested_party_ids[]': FormatUtils.getIds(selectedInterestedParties, (user) => user.id!),
+    };
     print(dataObject.values);
     FormData formData = FormData.fromMap(dataObject);
 

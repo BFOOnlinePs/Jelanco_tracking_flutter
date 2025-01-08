@@ -194,6 +194,20 @@ class AddTaskScreen extends StatelessWidget {
                                       : Container(),
                                   const MyVerticalSpacer(),
                                   // interested parties
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text('الجهات المعنية', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                          // Text(
+                                          //   ' *',
+                                          //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                          // ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                    ],
+                                  ),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -253,7 +267,7 @@ class AddTaskScreen extends StatelessWidget {
                                   //     ? MyErrorFieldText(
                                   //     text: 'add_task_assign_to_field_required_validation'.tr())
                                   //     : Container(),
-                                  // const MyVerticalSpacer(),
+                                  const MyVerticalSpacer(),
 
                                   MyTextFormField(
                                     titleText: 'add_task_content_field'.tr(),

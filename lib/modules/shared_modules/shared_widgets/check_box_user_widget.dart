@@ -16,7 +16,9 @@ class CheckBoxUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 4),
       title: Row(
+        // mainAxisAlignment: MainAxisAlignment.sp,
         children: [
           CircleAvatar(
             radius: 20,

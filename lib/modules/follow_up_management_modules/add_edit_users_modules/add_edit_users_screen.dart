@@ -187,8 +187,6 @@ class AddEditUsersScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  // select all
-
                                   Expanded(
                                     child: ListView.builder(
                                       itemCount: addEditUsersCubit.filteredAllUsers.length,
@@ -199,14 +197,17 @@ class AddEditUsersScreen extends StatelessWidget {
                                             addEditUsersCubit.filteredAllUsers[index].id == addEditUsersCubit.managerUser!.id) {
                                           return const SizedBox.shrink();
                                         }
-                                        return CheckBoxUserWidget(
-                                          user: user,
-                                          value: addEditUsersCubit.employeesUsers.contains(addEditUsersCubit.filteredAllUsers[index]),
-                                          onChanged: (bool? value) {
-                                            addEditUsersCubit.toggleEmployeeSelection(addEditUsersCubit.filteredAllUsers[index]);
-                                          },
-                                          enabled:
-                                              !(addEditUsersCubit.getManagerEmployeesByIdModel?.userManagerIds?.contains(user.id) ?? false),
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                                          child: CheckBoxUserWidget(
+                                            user: user,
+                                            value: addEditUsersCubit.employeesUsers.contains(addEditUsersCubit.filteredAllUsers[index]),
+                                            onChanged: (bool? value) {
+                                              addEditUsersCubit.toggleEmployeeSelection(addEditUsersCubit.filteredAllUsers[index]);
+                                            },
+                                            enabled: !(addEditUsersCubit.getManagerEmployeesByIdModel?.userManagerIds?.contains(user.id) ??
+                                                false),
+                                          ),
                                         );
                                       },
                                     ),
