@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/interested_parties_mixins/get_interested_parties_mixin.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/interested_parties_mixins/handle_interested_parties_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/cubit/all_users_selection_states.dart';
 
 class AllUsersSelectionCubit extends Cubit<AllUsersSelectionStates>
-    with UsersMixin<AllUsersSelectionStates>, GetInterestedPartiesMixin<AllUsersSelectionStates> {
+    with
+        UsersMixin<AllUsersSelectionStates>,
+        GetInterestedPartiesMixin<AllUsersSelectionStates>,
+        HandleInterestedPartiesMixin<AllUsersSelectionStates> {
   AllUsersSelectionCubit() : super(AllUsersSelectionInitialState());
 
   static AllUsersSelectionCubit get(context) => BlocProvider.of(context);
@@ -55,11 +59,11 @@ class AllUsersSelectionCubit extends Cubit<AllUsersSelectionStates>
     emit(InitialValuesState());
   }
 
-  void toggleSelectedUsers(UserModel user) {
-    if (selectedUsers.contains(user)) {
-      selectedUsers.remove(user);
+  void toggleSelectedUsers(int userId) {
+    if (selectedUsers.any((selectedUser) => selectedUser.id == userId)) {
+      selectedUsers.removeWhere((selectedUser) => selectedUser.id == userId);
     } else {
-      selectedUsers.add(user);
+      selectedUsers.add(usersList.firstWhere((user) => user.id == userId));
     }
     print('selectedInterestedParties: ${selectedUsers.length}');
 

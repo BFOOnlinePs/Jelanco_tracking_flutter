@@ -8,6 +8,7 @@ import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
+import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/all_users_selection_screen.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
@@ -22,6 +23,7 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 
 // the cubits are used for:
 // show the edited submission immediately (when back from edit submission screen)
+// i changed it, i'm using event bus instead
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
   final bool showSubmissionOptions;
@@ -110,9 +112,12 @@ class SubmissionHeaderWidget extends StatelessWidget {
           Row(
             children: [
               showSubmissionOptions &&
-                      (submissionModel.tsParentId != -1 ||
-                          (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
-                              submissionModel.tsSubmitter == UserDataConstants.userId))
+                          (submissionModel.tsParentId != -1 ||
+                              (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
+                                  submissionModel.tsSubmitter == UserDataConstants.userId)) ||
+                      (SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers) &&
+                          submissionModel.tsTaskId == -1 &&
+                          UserDataConstants.userEmployeeIds!.contains(submissionModel.tsSubmitter))
                   ? OptionsWidget(menuItems: [
                       if (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
                           submissionModel.tsSubmitter == UserDataConstants.userId)
@@ -174,20 +179,30 @@ class SubmissionHeaderWidget extends StatelessWidget {
                               ),
                             );
                           },
-                        ), //
+                        ),
+
+                      // if the user has a permission and the submission has no task and the submission user is one of his employees
+                      if (SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers) &&
+                          submissionModel.tsTaskId == -1 &&
+                          UserDataConstants.userEmployeeIds!.contains(submissionModel.tsSubmitter))
+                        MenuItemModel(
+                          icon: Icons.edit,
+                          label: 'الجهات المعنية',
+                          onTap: () {
+                            NavigationServices.navigateTo(
+                                context,
+                                AllUsersSelectionScreen(
+                                    callInterestedParties: true, articleType: 'submission', articleId: submissionModel.tsId));
+                          },
+                        ),
                     ])
                   : Container(),
               GestureDetector(
                 onTap: () {
-                  // NavigationServices.navigateTo(context, SubmissionLocationDialog(
-                  //   taskSubmissionModel: submissionModel,
-                  // ));
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return SubmissionLocationDialog(
-                        taskSubmissionModel: submissionModel,
-                      );
+                      return SubmissionLocationDialog(taskSubmissionModel: submissionModel);
                     },
                   );
                 },
