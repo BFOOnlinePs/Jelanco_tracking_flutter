@@ -6,7 +6,7 @@
 // import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_cubit/bottom_nav_bar_cubit.dart';
 // import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_cubit/bottom_nav_bar_states.dart';
 // import 'package:jelanco_tracking_system/modules/bottom_nav_bar_modules/bottom_nav_bar_widgets/nav_bar_icon_widget.dart';
-// import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+// import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 // import 'package:jelanco_tracking_system/widgets/my_drawer/my_drawer.dart';
 //
 // class BottomNavBarScreens extends StatelessWidget {

@@ -9,7 +9,7 @@ import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/us
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_cubit.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/cubit/add_edit_user_states.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/user_status_toggle.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_multi_selection_drop_down.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';

@@ -64,6 +64,7 @@ class EndPointsConstants {
 
   // interested parties
   static const String interestedParties = 'interested-parties';
+  static const String articles = 'articles';
 
   // permissions and roles
   static const String permissions = 'permissions';

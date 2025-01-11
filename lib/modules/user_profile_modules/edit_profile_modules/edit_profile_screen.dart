@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+// import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 //
 // class EditProfileScreen extends StatelessWidget {
 //   const EditProfileScreen({super.key});

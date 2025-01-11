@@ -6,6 +6,7 @@ import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/modules/articles_of_interest_modules/articles_of_interest_screen.dart';
 import 'package:jelanco_tracking_system/modules/assigned_tasks_modules/assigned_tasks_screen.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_screen.dart';
 import 'package:jelanco_tracking_system/modules/change_password_module/change_password_screen.dart';
@@ -190,19 +191,21 @@ class MyDrawer extends StatelessWidget {
                                     );
                                   },
                                 ),
+
+                              /// todo check if he has some when enter the app
+                              DrawerItem(
+                                  icon: Icons.interests_outlined,
+                                  text: 'الإشارات والوسوم',
+                                  onTap: () {
+                                    NavigationServices.navigateTo(
+                                        context, ArticlesOfInterestScreen(interestedPartyId: UserDataConstants.userId!));
+                                  }),
                               DrawerItem(
                                   icon: Icons.lock_reset_outlined,
                                   text: 'تغيير كلمة المرور',
                                   onTap: () {
                                     NavigationServices.navigateTo(context, const ChangePasswordScreen());
                                   })
-                              // DrawerItem(
-                              //   icon: Icons.logout,
-                              //   text: 'drawer_logout_title'.tr(),
-                              //   onTap: () {
-                              //     drawerCubit.userLogout();
-                              //   },
-                              // ),
                             ],
                           ),
                         ),

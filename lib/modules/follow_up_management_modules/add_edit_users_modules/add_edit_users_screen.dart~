@@ -8,7 +8,7 @@ import 'package:jelanco_tracking_system/modules/follow_up_management_modules/add
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/add_edit_users_modules/cubit/add_edit_users_states.dart';
 import 'package:jelanco_tracking_system/modules/follow_up_management_modules/cubit/follow_up_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/check_box_user_widget.dart';
-import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_search.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';

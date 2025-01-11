@@ -22,6 +22,7 @@ class TaskModel {
   final UserModel? addedByUser;
   final AttachmentsCategories? taskAttachmentsCategories;
   final List<InterestedPartyModel>? interestedParties;
+  final List<UserModel>? interestedPartyUsers;
 
   List<TaskSubmissionModel>? taskSubmissions;
 
@@ -43,6 +44,7 @@ class TaskModel {
     this.addedByUser,
     this.taskAttachmentsCategories,
     this.interestedParties,
+    this.interestedPartyUsers,
     this.taskSubmissions,
   });
 
@@ -68,6 +70,9 @@ class TaskModel {
         interestedParties: json["interested_parties"] == null
             ? []
             : List<InterestedPartyModel>.from(json["interested_parties"]!.map((x) => InterestedPartyModel.fromMap(x))),
+        interestedPartyUsers: json["interested_party_users"] == null
+            ? []
+            : List<UserModel>.from(json["interested_party_users"]!.map((x) => UserModel.fromMap(x))),
         taskSubmissions: json["task_submissions"] == null
             ? []
             : List<TaskSubmissionModel>.from(json["task_submissions"]!.map((x) => TaskSubmissionModel.fromMap(x))),
@@ -91,6 +96,7 @@ class TaskModel {
         "added_by_user": addedByUser?.toMap(),
         "task_attachments_categories": taskAttachmentsCategories?.toMap(),
         "interested_parties": interestedParties == null ? [] : List<dynamic>.from(interestedParties!.map((x) => x.toMap())),
+        "interested_party_users": interestedPartyUsers == null ? [] : List<dynamic>.from(interestedPartyUsers!.map((x) => x.toMap())),
         "task_submissions": taskSubmissions == null ? [] : List<dynamic>.from(taskSubmissions!.map((x) => x.toMap())),
       };
 }

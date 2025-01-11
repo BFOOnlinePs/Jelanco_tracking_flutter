@@ -21,7 +21,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_wi
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
@@ -210,7 +210,7 @@ class EditTaskScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        Text('الجهات المعنية', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                        Text('الإشارات والوسوم', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                                         // Text(
                                         //   ' *',
                                         //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
@@ -268,7 +268,7 @@ class EditTaskScreen extends StatelessWidget {
                                               scrollDirection: Axis.horizontal,
                                               child: Text(
                                                 editTaskCubit.selectedInterestedPartiesUsers.isEmpty
-                                                    ? 'الجهات المعنية'
+                                                    ? 'الإشارات والوسوم'
                                                     : editTaskCubit.selectedInterestedPartiesUsers.map((e) => e.name).join(', '),
                                                 style: const TextStyle(color: Colors.black54),
                                               ),

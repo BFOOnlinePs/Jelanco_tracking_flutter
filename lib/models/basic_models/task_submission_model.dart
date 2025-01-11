@@ -26,6 +26,7 @@ class TaskSubmissionModel {
   int? commentsCount;
   final TaskModel? taskDetails;
   final List<TaskCategoryModel>? submissionCategories;
+  final List<UserModel>? interestedPartyUsers;
 
   TaskSubmissionModel({
     this.tsId,
@@ -49,6 +50,7 @@ class TaskSubmissionModel {
     this.commentsCount,
     this.taskDetails,
     this.submissionCategories,
+    this.interestedPartyUsers,
   });
 
   TaskSubmissionModel copyWith({
@@ -92,59 +94,44 @@ class TaskSubmissionModel {
       updatedAt: updatedAt ?? this.updatedAt,
       submitterUser: submitterUser ?? this.submitterUser,
       submissionComments: submissionComments ?? this.submissionComments,
-      submissionAttachmentsCategories: submissionAttachmentsCategories ??
-          this.submissionAttachmentsCategories,
+      submissionAttachmentsCategories: submissionAttachmentsCategories ?? this.submissionAttachmentsCategories,
       commentsCount: commentsCount ?? this.commentsCount,
       taskDetails: taskDetails ?? this.taskDetails,
       submissionCategories: submissionCategories ?? this.submissionCategories,
     );
   }
 
-  factory TaskSubmissionModel.fromMap(Map<String, dynamic> json) =>
-      TaskSubmissionModel(
+  factory TaskSubmissionModel.fromMap(Map<String, dynamic> json) => TaskSubmissionModel(
         tsId: json["ts_id"],
         tsTaskId: json["ts_task_id"],
         tsSubmitter: json["ts_submitter"],
         tsContent: json["ts_content"],
         tsCategories: json["ts_categories"],
-        tsActualStartTime: json["ts_actual_start_time"] == null
-            ? null
-            : DateTime.parse(json["ts_actual_start_time"]),
-        tsActualEndTime: json["ts_actual_end_time"] == null
-            ? null
-            : DateTime.parse(json["ts_actual_end_time"]),
+        tsActualStartTime: json["ts_actual_start_time"] == null ? null : DateTime.parse(json["ts_actual_start_time"]),
+        tsActualEndTime: json["ts_actual_end_time"] == null ? null : DateTime.parse(json["ts_actual_end_time"]),
         tsStartLatitude: json["ts_start_latitude"],
         tsStartLongitude: json["ts_start_longitude"],
         tsEndLatitude: json["ts_end_latitude"],
         tsEndLongitude: json["ts_end_longitude"],
         tsStatus: json["ts_status"],
         tsParentId: json["ts_parent_id"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-        submitterUser: json["submitter_user"] == null
-            ? null
-            : UserModel.fromMap(json["submitter_user"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        submitterUser: json["submitter_user"] == null ? null : UserModel.fromMap(json["submitter_user"]),
         submissionComments: json["submission_comments"] == null
             ? []
-            : List<TaskSubmissionCommentModel>.from(json["submission_comments"]!
-                .map((x) => TaskSubmissionCommentModel.fromMap(x))),
-        submissionAttachmentsCategories:
-            json["submission_attachments_categories"] == null
-                ? null
-                : AttachmentsCategories.fromMap(
-                    json["submission_attachments_categories"]),
-        commentsCount: json["comments_count"],
-        taskDetails: json["task_details"] == null
+            : List<TaskSubmissionCommentModel>.from(json["submission_comments"]!.map((x) => TaskSubmissionCommentModel.fromMap(x))),
+        submissionAttachmentsCategories: json["submission_attachments_categories"] == null
             ? null
-            : TaskModel.fromMap(json["task_details"]),
+            : AttachmentsCategories.fromMap(json["submission_attachments_categories"]),
+        commentsCount: json["comments_count"],
+        taskDetails: json["task_details"] == null ? null : TaskModel.fromMap(json["task_details"]),
         submissionCategories: json["submission_categories"] == null
             ? []
-            : List<TaskCategoryModel>.from(json["submission_categories"]!
-                .map((x) => TaskCategoryModel.fromMap(x))),
+            : List<TaskCategoryModel>.from(json["submission_categories"]!.map((x) => TaskCategoryModel.fromMap(x))),
+        interestedPartyUsers: json["interested_party_users"] == null
+            ? []
+            : List<UserModel>.from(json["interested_party_users"]!.map((x) => UserModel.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -165,15 +152,11 @@ class TaskSubmissionModel {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "submitter_user": submitterUser?.toMap(),
-        "submission_comments": submissionComments == null
-            ? []
-            : List<dynamic>.from(submissionComments!.map((x) => x.toMap())),
-        "submission_attachments_categories":
-            submissionAttachmentsCategories?.toMap(),
+        "submission_comments": submissionComments == null ? [] : List<dynamic>.from(submissionComments!.map((x) => x.toMap())),
+        "submission_attachments_categories": submissionAttachmentsCategories?.toMap(),
         "comments_count": commentsCount,
         "task_details": taskDetails?.toMap(),
-        "submission_categories": submissionCategories == null
-            ? []
-            : List<dynamic>.from(submissionCategories!.map((x) => x.toMap())),
+        "submission_categories": submissionCategories == null ? [] : List<dynamic>.from(submissionCategories!.map((x) => x.toMap())),
+        "interested_party_users": interestedPartyUsers == null ? [] : List<dynamic>.from(interestedPartyUsers!.map((x) => x.toMap())),
       };
 }

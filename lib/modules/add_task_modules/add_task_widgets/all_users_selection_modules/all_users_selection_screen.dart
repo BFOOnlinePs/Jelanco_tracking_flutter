@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/cubit/all_users_selection_cubit.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/cubit/all_users_selection_states.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/check_box_user_widget.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
@@ -50,7 +50,7 @@ class AllUsersSelectionScreen extends StatelessWidget {
           return Stack(
             children: [
               Scaffold(
-                appBar: const MyAppBar(title: 'الجهات المعنية'),
+                appBar: const MyAppBar(title: 'الإشارات والوسوم'),
                 body: MyScreen(
                   child: Column(
                     children: [
@@ -109,12 +109,14 @@ class AllUsersSelectionScreen extends StatelessWidget {
                                         },
                                         enabled: callInterestedParties == true
                                             ? !allUsersSelectionCubit.usersCanNotEdit!.contains(allUsersSelectionCubit.usersList[index].id)
-                                            : !usersCanNotEdit!.contains(allUsersSelectionCubit.usersList[index].id));
+                                            : usersCanNotEdit != null
+                                                ? !usersCanNotEdit!.contains(allUsersSelectionCubit.usersList[index].id)
+                                                : true);
                                   },
                                   separatorBuilder: (context, index) => const Divider(),
                                 ),
                               ),
-                      )
+                      ) 
                     ],
                   ),
                 ),

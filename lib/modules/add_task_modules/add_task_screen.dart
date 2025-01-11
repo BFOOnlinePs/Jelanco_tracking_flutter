@@ -17,7 +17,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/selected_media_wi
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/media_option_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/options_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_screen.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/drop_down/my_drop_down_button.dart';
 import 'package:jelanco_tracking_system/widgets/error_text/my_error_field_text.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
@@ -192,7 +192,7 @@ class AddTaskScreen extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          Text('الجهات المعنية', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                          Text('الإشارات والوسوم', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
                                           // Text(
                                           //   ' *',
                                           //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
@@ -209,6 +209,7 @@ class AddTaskScreen extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) {
                                             return AllUsersSelectionScreen(
+                                              callInterestedParties: false,
                                               selectedUsersList: addTaskCubit.selectedInterestedParties.map((user) => user.id!).toList(),
                                             );
                                           },
@@ -242,7 +243,7 @@ class AddTaskScreen extends StatelessWidget {
                                                 scrollDirection: Axis.horizontal,
                                                 child: Text(
                                                   addTaskCubit.selectedInterestedParties.isEmpty
-                                                      ? 'الجهات المعنية'
+                                                      ? 'الإشارات والوسوم'
                                                       : addTaskCubit.selectedInterestedParties.map((user) => user.name).join(', '),
                                                   style: const TextStyle(color: Colors.black54),
                                                 ),

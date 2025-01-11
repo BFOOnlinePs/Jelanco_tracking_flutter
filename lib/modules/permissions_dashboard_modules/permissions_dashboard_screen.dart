@@ -3,7 +3,7 @@ import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/pe
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_management_modules/permissions_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/role_permissions_management_modules/role_permissions_management_screen.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_permissions_management_screen.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 

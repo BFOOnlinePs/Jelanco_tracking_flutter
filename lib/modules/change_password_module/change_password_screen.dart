@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
 import 'package:jelanco_tracking_system/modules/change_password_module/cubit/change_password_cubit.dart';
 import 'package:jelanco_tracking_system/modules/change_password_module/cubit/change_password_states.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_elevated_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_screen.dart';

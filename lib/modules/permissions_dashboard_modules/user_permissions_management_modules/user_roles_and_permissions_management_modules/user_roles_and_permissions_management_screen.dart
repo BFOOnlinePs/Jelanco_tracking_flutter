@@ -4,7 +4,7 @@ import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/cubit/user_permissions_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_roles_and_permissions_management_modules/cubit/user_roles_and_permissions_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/user_permissions_management_modules/user_roles_and_permissions_management_modules/cubit/user_roles_and_permissions_management_states.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/components/my_chip_widget.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/my_alert_dialog/my_alert_dialog.dart';
@@ -53,7 +53,7 @@ class UserRolesAndPermissionsManagementScreen extends StatelessWidget {
             return Stack(
               children: [
                 Scaffold(
-                  appBar: MyAppBar(title: 'صلاحيات المستخدم'),
+                  appBar: const MyAppBar(title: 'صلاحيات المستخدم'),
                   body: MyScreen(
                     child: Column(
                       children: [

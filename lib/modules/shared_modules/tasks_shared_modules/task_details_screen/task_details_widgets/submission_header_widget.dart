@@ -187,7 +187,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
                           UserDataConstants.userEmployeeIds!.contains(submissionModel.tsSubmitter))
                         MenuItemModel(
                           icon: Icons.edit,
-                          label: 'الجهات المعنية',
+                          label: 'الإشارات والوسوم',
                           onTap: () {
                             NavigationServices.navigateTo(
                                 context,

@@ -161,7 +161,7 @@ class AddedBySectionWidget extends StatelessWidget {
             ),
             MenuItemModel(
                 icon: Icons.people_outline_sharp,
-                label: 'الجهات المعنية',
+                label: 'الإشارات والوسوم',
                 onTap: () {
                   NavigationServices.navigateTo(
                       context, AllUsersSelectionScreen(callInterestedParties: true, articleType: 'task', articleId: taskModel.tId));

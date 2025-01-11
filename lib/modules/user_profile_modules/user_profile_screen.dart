@@ -10,7 +10,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/us
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_cubit.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/cubit/user_profile_states.dart';
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_widgets/profile_card_widget.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';

@@ -5,7 +5,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/shared_widgets/us
 import 'package:jelanco_tracking_system/modules/users_management_modules/add_edit_user_modules/add_edit_user_screen.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/cubit/users_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/users_management_modules/cubit/users_management_states.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_buttons/my_floating_action_button.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_dashboard_widgets/permission_widget.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_management_modules/cubit/permissions_management_cubit.dart';
 import 'package:jelanco_tracking_system/modules/permissions_dashboard_modules/permissions_management_modules/cubit/permissions_management_states.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_alert_dialog/my_alert_dialog.dart';

@@ -4,7 +4,7 @@ import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/noti
 import 'package:jelanco_tracking_system/modules/notifications_modules/cubit/notifications_states.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_widgets/notification_card.dart';
 import 'package:jelanco_tracking_system/modules/notifications_modules/notifications_widgets/notification_filter_widget.dart';
-import 'package:jelanco_tracking_system/widgets/app_bar/my_app_bar.dart';
+import 'package:jelanco_tracking_system/widgets/my_bars/my_app_bar.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/loader_with_disable.dart';
 import 'package:jelanco_tracking_system/widgets/loaders/my_loader.dart';
 import 'package:jelanco_tracking_system/widgets/my_refresh_indicator/my_refresh_indicator.dart';
