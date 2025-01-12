@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
 import 'package:jelanco_tracking_system/core/constants/shared_size.dart';
+import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/utils/user_data_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/validation_utils.dart';
@@ -18,7 +19,9 @@ import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_fie
 import '../../home_modules/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  late LoginCubit loginCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +70,12 @@ class LoginScreen extends StatelessWidget {
                       if (state is LoginSuccessState) {
                         if (state.userLoginModel.status == true) {
                           print(state.userLoginModel.message);
-                          await UserDataUtils.saveUserDataToLocalStorage(
-                              userLoginModel: state.userLoginModel);
+                          await UserDataUtils.saveUserDataToLocalStorage(userLoginModel: state.userLoginModel);
 
                           // for firebase token
                           await FirebaseApi().initNotification();
+                          // ask for storage permission
+                          await loginCubit.requestPermission(context: context, permissionType: PermissionType.storage);
 
                           NavigationServices.navigateTo(
                             context,
@@ -102,7 +106,7 @@ class LoginScreen extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
-                      LoginCubit loginCubit = LoginCubit.get(context);
+                      loginCubit = LoginCubit.get(context);
                       return Form(
                         key: loginCubit.loginFormKey,
                         child: Column(

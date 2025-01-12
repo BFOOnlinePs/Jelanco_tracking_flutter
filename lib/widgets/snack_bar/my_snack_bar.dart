@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-enum SnackBarStates { success, error, warning }
+enum SnackBarStates { success, error, warning, none }
 
 class SnackbarHelper {
-
   static void showSnackbar({
     required BuildContext context,
     String? message,
@@ -15,14 +14,13 @@ class SnackbarHelper {
         content: Text(message ?? ''),
         backgroundColor: chooseSnackBarColor(snackBarStates),
         duration: duration ?? const Duration(milliseconds: 4000),
-        // showCloseIcon: true,
-        // closeIconColor: Colors.white,
+
       ),
     );
   }
 
-  static Color chooseSnackBarColor(SnackBarStates snackBarState) {
-    Color snackBarColor;
+  static Color? chooseSnackBarColor(SnackBarStates snackBarState) {
+    Color? snackBarColor;
     switch (snackBarState) {
       case SnackBarStates.success:
         snackBarColor = Colors.green;
@@ -32,6 +30,8 @@ class SnackbarHelper {
         break;
       case SnackBarStates.warning:
         snackBarColor = Colors.amber;
+        break;
+      case SnackBarStates.none:
         break;
     }
     return snackBarColor;

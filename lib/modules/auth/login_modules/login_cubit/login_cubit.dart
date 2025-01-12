@@ -6,13 +6,13 @@ import 'package:jelanco_tracking_system/models/auth_models/user_login_model.dart
 import 'package:jelanco_tracking_system/models/basic_models/login_test_model.dart';
 import 'package:jelanco_tracking_system/modules/auth/login_modules/login_cubit/login_states.dart';
 
+import '../../../../core/utils/mixins/permission_mixin/permission_mixin.dart';
 import '../../../../network/remote/dio_helper.dart';
 
-class LoginCubit extends Cubit<LoginStates> {
+class LoginCubit extends Cubit<LoginStates> with PermissionsMixin<LoginStates> {
   LoginCubit() : super(LoginInitialState());
 
   static LoginCubit get(context) => BlocProvider.of(context);
-
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   TextEditingController emailPhoneController = TextEditingController();
@@ -51,13 +51,9 @@ class LoginCubit extends Cubit<LoginStates> {
 
   void selectActor({required int newId}) {
     selectedActorId = newId;
-    emailPhoneController.text = newId == 1
-        ? loginTestModelsList[0].email
-        : loginTestModelsList[0].email;
+    emailPhoneController.text = newId == 1 ? loginTestModelsList[0].email : loginTestModelsList[0].email;
 
-    passwordController.text = newId == 1
-        ? loginTestModelsList[0].password
-        : loginTestModelsList[0].password;
+    passwordController.text = newId == 1 ? loginTestModelsList[0].password : loginTestModelsList[0].password;
     emit(ChangeSelectedActorState());
   }
 }

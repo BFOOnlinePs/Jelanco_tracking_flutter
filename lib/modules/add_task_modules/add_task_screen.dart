@@ -407,7 +407,7 @@ class AddTaskScreen extends StatelessWidget {
                                             addTaskCubit.requestPermission(
                                                 context: context,
                                                 permissionType: PermissionType.storage,
-                                                functionWhenGranted: addTaskCubit.pickReportFile);
+                                                functionWhenGranted: addTaskCubit.pickFile);
                                           },
                                         ),
                                       ],

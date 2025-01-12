@@ -41,7 +41,7 @@ class MyDrawer extends StatelessWidget {
                 snackBarStates: SnackBarStates.success,
                 message: state.userLogoutModel.message,
               );
-              NavigationServices.navigateTo(context, const LoginScreen());
+              NavigationServices.navigateTo(context, LoginScreen());
             } else {
               SnackbarHelper.showSnackbar(
                 context: context,

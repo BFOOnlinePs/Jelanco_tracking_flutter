@@ -8,7 +8,6 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_image.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_media_viewer.dart';
 import 'package:jelanco_tracking_system/widgets/my_media_view/my_thumbnail_video.dart';
-import 'package:jelanco_tracking_system/widgets/my_spacers/my_vertical_spacer.dart';
 
 class MediaWidget extends StatelessWidget {
   final AttachmentsCategories? attachmentsCategories;
@@ -51,8 +50,7 @@ class MediaWidget extends StatelessWidget {
                         height: 220.0,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              attachmentsCategories!.images!.length + attachmentsCategories!.videos!.length,
+                          itemCount: attachmentsCategories!.images!.length + attachmentsCategories!.videos!.length,
                           itemBuilder: (context, index) {
                             // Determine if the current item is an image or a video
                             if (index < attachmentsCategories!.images!.length) {
@@ -69,12 +67,10 @@ class MediaWidget extends StatelessWidget {
                                               builder: (context) => MyMediaViewer(
                                                 storagePath: storagePath,
                                                 mediaList: attachmentsCategories!.images!
-                                                    .map((image) => MediaItem(
-                                                        type: MediaType.image, url: image.aAttachment!))
+                                                    .map((image) => MediaItem(type: MediaType.image, url: image.aAttachment!))
                                                     .toList()
-                                                  ..addAll(attachmentsCategories!.videos!.map((video) =>
-                                                      MediaItem(
-                                                          type: MediaType.video, url: video.aAttachment!))),
+                                                  ..addAll(attachmentsCategories!.videos!
+                                                      .map((video) => MediaItem(type: MediaType.video, url: video.aAttachment!))),
                                                 startIndex: index, // Start at the tapped image index
                                               ),
                                             ),
@@ -85,8 +81,7 @@ class MediaWidget extends StatelessWidget {
                                     height: 220,
                                     width: 132,
                                     child: MyCachedNetworkImage(
-                                      imageUrl:
-                                          '$storagePath${attachmentsCategories!.images![index].aAttachment}',
+                                      imageUrl: '$storagePath${attachmentsCategories!.images![index].aAttachment}',
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -104,12 +99,10 @@ class MediaWidget extends StatelessWidget {
                                             builder: (context) => MyMediaViewer(
                                               storagePath: storagePath,
                                               mediaList: attachmentsCategories!.images!
-                                                  .map((image) => MediaItem(
-                                                      type: MediaType.image, url: image.aAttachment!))
+                                                  .map((image) => MediaItem(type: MediaType.image, url: image.aAttachment!))
                                                   .toList()
-                                                ..addAll(attachmentsCategories!.videos!.map((video) =>
-                                                    MediaItem(
-                                                        type: MediaType.video, url: video.aAttachment!))),
+                                                ..addAll(attachmentsCategories!.videos!
+                                                    .map((video) => MediaItem(type: MediaType.video, url: video.aAttachment!))),
                                               startIndex: index, // Start at the tapped video index
                                             ),
                                           ),
@@ -126,17 +119,16 @@ class MediaWidget extends StatelessWidget {
                                         index: videoIndex,
                                         height: 220,
                                         showVideoIcon: true,
-                                        thumbnail:
-                                            attachmentsCategories!.videos![videoIndex].thumbnail != null
-                                                ? MyCachedNetworkImage(
-                                                    imageUrl: EndPointsConstants.thumbnailStorage +
-                                                        attachmentsCategories!.videos![videoIndex].thumbnail!,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Image.asset(
-                                                    AssetsKeys.defaultVideoThumbnail,
-                                                    fit: BoxFit.cover,
-                                                  ),
+                                        thumbnail: attachmentsCategories!.videos![videoIndex].thumbnail != null
+                                            ? MyCachedNetworkImage(
+                                                imageUrl: EndPointsConstants.thumbnailStorage +
+                                                    attachmentsCategories!.videos![videoIndex].thumbnail!,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(
+                                                AssetsKeys.defaultVideoThumbnail,
+                                                fit: BoxFit.cover,
+                                              ),
                                       ),
                                     ],
                                   ),

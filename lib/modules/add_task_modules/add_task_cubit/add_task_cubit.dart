@@ -12,7 +12,6 @@ import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
-import 'package:jelanco_tracking_system/core/utils/mixins/users_mixin/users_mixin.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
 import 'package:jelanco_tracking_system/models/tasks_models/add_task_model.dart';
@@ -280,7 +279,7 @@ class AddTaskCubit extends Cubit<AddTaskStates>
   FilePickerResult? result;
   List<File> pickedFilesList = [];
 
-  Future<void> pickReportFile() async {
+  Future<void> pickFile() async {
     result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null) {

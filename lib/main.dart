@@ -54,7 +54,7 @@ void main() async {
   Widget homeWidget;
 
   if (UserDataConstants.token == null || UserDataConstants.token == '') {
-    homeWidget = const LoginScreen();
+    homeWidget =  LoginScreen();
   } else {
     // if the user logged in (to ensure that it did not initialize twice)
     await FirebaseApi().initNotification();

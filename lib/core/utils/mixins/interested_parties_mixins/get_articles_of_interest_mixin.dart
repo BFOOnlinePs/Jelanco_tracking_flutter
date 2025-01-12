@@ -26,7 +26,11 @@ mixin GetArticlesOfInterestMixin<T> on Cubit<T> {
     required T errorState,
   }) async {
     emit(loadingState);
-    isTasksOfInterestLoading = true;
+    if (articleType == 'task') {
+      isTasksOfInterestLoading = true;
+    } else if (articleType == 'submission') {
+      isSubmissionsOfInterestLoading = true;
+    }
 
     DioHelper.postData(
       url: '${EndPointsConstants.interestedParties}/${EndPointsConstants.articles}',
@@ -54,10 +58,10 @@ mixin GetArticlesOfInterestMixin<T> on Cubit<T> {
         getSubmissionsOfInterestModel = GetArticlesOfInterestModel.fromMap(value?.data);
         submissionsOfInterestList.addAll(getSubmissionsOfInterestModel?.articlesOfInterest as Iterable<InterestedPartyModel>);
 
-        isSubmissionsOfInterestLastPage = getSubmissionsOfInterestModel?.pagination?.lastPage == getSubmissionsOfInterestModel?.pagination?.currentPage;
+        isSubmissionsOfInterestLastPage =
+            getSubmissionsOfInterestModel?.pagination?.lastPage == getSubmissionsOfInterestModel?.pagination?.currentPage;
 
         isSubmissionsOfInterestLoading = false;
-
       } else {
         emit(errorState);
       }
