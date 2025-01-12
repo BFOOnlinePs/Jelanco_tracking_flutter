@@ -35,22 +35,28 @@ class ArticleItem extends StatelessWidget {
           children: [
             // Header with Image and Name
             ListTile(
-              leading:
-                  interestedPartyModel.task?.addedByUser?.image != null || interestedPartyModel.submission?.submitterUser?.image != null
-                      ? MyCachedNetworkImage(
-                          imageUrl: isTask
-                              ? EndPointsConstants.profileStorage + interestedPartyModel.task!.addedByUser!.image!
-                              : EndPointsConstants.profileStorage + interestedPartyModel.submission!.submitterUser!.image!,
-                          width: 34.w,
-                          height: 34.w,
-                          fit: BoxFit.cover,
-                        )
-                      : Image(
-                          image: const AssetImage(AssetsKeys.defaultProfileImage) as ImageProvider,
-                          width: 34.w,
-                          height: 34.w,
-                          fit: BoxFit.cover,
-                        ),
+              leading: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 0.5),
+                ),
+                padding: const EdgeInsets.all(2),
+                child:
+                    interestedPartyModel.task?.addedByUser?.image != null || interestedPartyModel.submission?.submitterUser?.image != null
+                        ? MyCachedNetworkImage(
+                            imageUrl: isTask
+                                ? EndPointsConstants.profileStorage + interestedPartyModel.task!.addedByUser!.image!
+                                : EndPointsConstants.profileStorage + interestedPartyModel.submission!.submitterUser!.image!,
+                            width: 34.w,
+                            height: 34.w,
+                            fit: BoxFit.cover,
+                          )
+                        : Image(
+                            image: const AssetImage(AssetsKeys.defaultProfileImage) as ImageProvider,
+                            width: 34.w,
+                            height: 34.w,
+                            fit: BoxFit.cover,
+                          ),
+              ),
               title: Text(
                 isTask ? interestedPartyModel.task?.addedByUser?.name ?? '' : interestedPartyModel.submission?.submitterUser?.name ?? '',
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -58,10 +64,6 @@ class ArticleItem extends StatelessWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text(
-                  //   'Added By: Admin User',
-                  //   style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  // ),
                   Text(
                     MyDateUtils.formatDateTimeWithAmPm(
                         isTask ? interestedPartyModel.task?.createdAt : interestedPartyModel.submission?.createdAt),

@@ -23,8 +23,8 @@ class ArticlesOfInterestScreen extends StatelessWidget {
           tabs: const [Tab(text: 'المهام'), Tab(text: 'التكليفات')],
           expandedChild: TabBarView(
             children: [
-              ArticlesOfInterestTabBody(isTask: true),
-              ArticlesOfInterestTabBody(isTask: false),
+              ArticlesOfInterestTabBody(isTask: true, interestedPartyId: interestedPartyId),
+              ArticlesOfInterestTabBody(isTask: false, interestedPartyId: interestedPartyId),
             ],
           ),
         ),

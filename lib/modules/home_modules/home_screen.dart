@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                               homeCubit: homeCubit,
                             ),
                           ),
-                        if (SystemPermissions.hasPermission(SystemPermissions.viewSubmissions))
+                        if (SystemPermissions.hasPermission(SystemPermissions.viewSubmissions) && homeCubit.getUserSubmissionsModel != null)
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {

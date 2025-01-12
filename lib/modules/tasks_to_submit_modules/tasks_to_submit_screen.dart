@@ -42,44 +42,28 @@ class TasksToSubmitScreen extends StatelessWidget {
                   child: tasksToSubmitCubit.getTasksToSubmitModel != null
                       ? ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: tasksToSubmitCubit
-                                  .tasksAssignedToUserList.length +
-                              (tasksToSubmitCubit.isTasksAssignedToUserLastPage
-                                  ? 0
-                                  : 1),
+                          itemCount: tasksToSubmitCubit.tasksAssignedToUserList.length +
+                              (tasksToSubmitCubit.isTasksAssignedToUserLastPage ? 0 : 1),
                           itemBuilder: (context, index) {
-                            if (index ==
-                                    tasksToSubmitCubit
-                                        .tasksAssignedToUserList.length &&
-                                !tasksToSubmitCubit
-                                    .isTasksAssignedToUserLastPage) {
-                              if (!tasksToSubmitCubit
-                                  .isTasksAssignedToUserLoading) {
+                            if (index == tasksToSubmitCubit.tasksAssignedToUserList.length &&
+                                !tasksToSubmitCubit.isTasksAssignedToUserLastPage) {
+                              if (!tasksToSubmitCubit.isTasksAssignedToUserLoading) {
                                 tasksToSubmitCubit.getTasksToSubmit(
                                   loadingState: GetTasksToSubmitLoadingState(),
                                   successState: GetTasksToSubmitSuccessState(),
-                                  errorState: (error) =>
-                                      GetTasksToSubmitErrorState(error),
-                                  page: tasksToSubmitCubit
-                                          .getTasksToSubmitModel!
-                                          .pagination!
-                                          .currentPage! +
-                                      1,
+                                  errorState: (error) => GetTasksToSubmitErrorState(error),
+                                  page: tasksToSubmitCubit.getTasksToSubmitModel!.pagination!.currentPage! + 1,
                                 );
                               }
                               return const Padding(
                                 padding: EdgeInsets.all(8.0),
-                                child:
-                                    Center(child: MyLoader()),
+                                child: Center(child: MyLoader()),
                               );
                             }
-                            return TaskToSubmitCardWidget(
-                                task: tasksToSubmitCubit
-                                    .tasksAssignedToUserList[index]);
+                            return TaskToSubmitCardWidget(task: tasksToSubmitCubit.tasksAssignedToUserList[index]);
                           },
                         )
-                      : const Center(child: MyLoader())
-                  ),
+                      : const Center(child: MyLoader())),
             );
           },
         ),
