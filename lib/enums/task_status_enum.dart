@@ -26,6 +26,13 @@ class TaskStatusEnum {
     statusColor: Colors.red,
   );
 
+  static const TaskStatusEnum canceled = TaskStatusEnum(
+    statusName: 'canceled',
+    statusAr: 'ملغي',
+    statusEn: 'Canceled',
+    statusColor: Colors.red,
+  );
+
   static const TaskStatusEnum undefined = TaskStatusEnum(
     statusName: 'undefined',
     statusAr: 'غير معرف',
@@ -34,7 +41,7 @@ class TaskStatusEnum {
   );
 
   static List<TaskStatusEnum> getAllStatuses() {
-    return [active, notActive];
+    return [active, notActive, canceled];
   }
 
   static TaskStatusEnum getStatus(String? status) {
@@ -43,6 +50,8 @@ class TaskStatusEnum {
         return active;
       case 'notActive':
         return notActive;
+      case 'canceled':
+        return canceled;
       default:
         return undefined;
     }

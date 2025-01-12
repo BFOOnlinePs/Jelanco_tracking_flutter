@@ -44,8 +44,7 @@ void main() async {
 
   UserDataConstants.token = CacheHelper.getData(key: MyCacheKeys.token);
   UserDataConstants.userId = CacheHelper.getData(key: MyCacheKeys.userId);
-  UserDataConstants.firebaseTokenVar =
-      CacheHelper.getData(key: MyCacheKeys.firebaseToken);
+  UserDataConstants.firebaseTokenVar = CacheHelper.getData(key: MyCacheKeys.firebaseToken);
 
   print('token: ${UserDataConstants.token.toString()}');
   print('userId: ${UserDataConstants.userId.toString()}');
@@ -54,15 +53,13 @@ void main() async {
   Widget homeWidget;
 
   if (UserDataConstants.token == null || UserDataConstants.token == '') {
-    homeWidget =  LoginScreen();
+    homeWidget = LoginScreen();
   } else {
     // if the user logged in (to ensure that it did not initialize twice)
     await FirebaseApi().initNotification();
 
     homeWidget = HomeScreen();
-    // homeWidget = BottomNavBarScreens();
   }
-
 
   // SystemChrome.setPreferredOrientations([
   //   DeviceOrientation.portraitUp,
@@ -123,8 +120,7 @@ class MyApp extends StatelessWidget {
           title: 'جيلانكو - نظام التتبع',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme:
-                ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
+            colorScheme: ColorScheme.fromSeed(seedColor: ColorsConstants.primaryColor),
             fontFamily: 'Tajawal',
             useMaterial3: true,
             visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -5,6 +5,7 @@ import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/all_users_selection_screen.dart';
@@ -16,13 +17,15 @@ import 'package:jelanco_tracking_system/modules/tasks_added_by_user_modules/task
 import 'package:jelanco_tracking_system/modules/user_profile_modules/user_profile_screen.dart';
 import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cached_network_image.dart';
 
-class AddedBySectionWidget extends StatelessWidget {
+class TaskAddedBySectionWidget extends StatelessWidget {
   final TaskModel taskModel;
 
-  const AddedBySectionWidget(this.taskModel, {super.key});
+  const TaskAddedBySectionWidget(this.taskModel, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    TaskStatusEnum taskStatusEnum = TaskStatusEnum.getStatus(taskModel.tStatus);
+    print('taskStatusEnum: ${taskStatusEnum.statusAr}');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -110,7 +113,25 @@ class AddedBySectionWidget extends StatelessWidget {
             ),
           ],
         ),
-        // edit task
+
+
+        if(taskStatusEnum == TaskStatusEnum.canceled)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: taskStatusEnum.statusColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Text(
+              'ملغي',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+
         if (SystemPermissions.hasPermission(SystemPermissions.editTask) && taskModel.addedByUser?.id == UserDataConstants.userId)
           OptionsWidget(menuItems: [
             MenuItemModel(
@@ -166,21 +187,8 @@ class AddedBySectionWidget extends StatelessWidget {
                   NavigationServices.navigateTo(
                       context, AllUsersSelectionScreen(callInterestedParties: true, articleType: 'task', articleId: taskModel.tId));
                 }),
-          ])
+          ]),
 
-        // status != null
-        //     ? Row(
-        //         children: [
-        //           Icon(statusIcon, color: status?.statusColor, size: 18),
-        //           SizedBox(width: 6),
-        //           Text(
-        //             status?.statusAr ?? '',
-        //             style:
-        //                 TextStyle(color: status?.statusColor, fontSize: 16),
-        //           ),
-        //         ],
-        //       )
-        //     : Container(),
       ],
     );
   }
