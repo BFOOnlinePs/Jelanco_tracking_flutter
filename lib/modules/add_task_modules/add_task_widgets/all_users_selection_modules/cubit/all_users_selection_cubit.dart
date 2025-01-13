@@ -25,6 +25,7 @@ class AllUsersSelectionCubit extends Cubit<AllUsersSelectionStates>
     bool callInterestedParties = false, // when enter the screen from task/submission item (not from add or edit)
     String? articleType, // when enter the screen from task/submission item
     int? articleId, // when enter the screen from task/submission item
+    List<int>? usersAssignedTo, // except the assigned users
   }) async {
     print('initialSelectedUserIds: $initialSelectedUserIds');
 
@@ -44,6 +45,15 @@ class AllUsersSelectionCubit extends Cubit<AllUsersSelectionStates>
           errorState: GetInterestedPartiesErrorState(),
         ),
     ]);
+
+    // except the current user
+    usersList.removeWhere((user) => user.id == UserDataConstants.userId);
+
+    // except the assigned users
+    if (usersAssignedTo != null) {
+      usersList.removeWhere((user) => usersAssignedTo.contains(user.id));
+    }
+
     selectedUsers = callInterestedParties
         ? getInterestedPartiesModel!.interestedParties!.map((e) => e.user!).toList()
         : usersList.where((user) => initialSelectedUserIds.any((selectedUserId) => selectedUserId == user.id)).toList();
@@ -53,6 +63,9 @@ class AllUsersSelectionCubit extends Cubit<AllUsersSelectionStates>
           .where((e) => e.ipAddedById != UserDataConstants.userId)
           .map((e) => e.ipInterestedPartyId!)
           .toList();
+      
+      // // except the assigned users
+      // usersCanNotEdit.add(value)
     }
 
     print('selectedUsers: ${selectedUsers.length}');

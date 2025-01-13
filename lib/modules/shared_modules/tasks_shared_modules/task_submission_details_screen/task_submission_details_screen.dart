@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/wrapped_label_value_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
@@ -46,21 +47,16 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
                     onRefresh: () {
                       // new id if edited
                       return taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndComments(
-                          submissionId: taskSubmissionDetailsCubit
-                              .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!);
+                          submissionId: taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!);
                     },
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission
-                                      ?.taskDetails !=
-                                  null
+                          taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel?.taskSubmission?.taskDetails != null
                               ? TaskDetailsSectionWidget(
-                                  taskModel: taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!
-                                      .taskDetails!)
+                                  taskModel:
+                                      taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.taskDetails!)
                               : Container(),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
@@ -68,57 +64,54 @@ class TaskSubmissionDetailsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SubmissionHeaderWidget(
-                                  submissionModel: taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!,
-                                  // taskSubmissionDetailsCubit: taskSubmissionDetailsCubit,
+                                  isTaskCancelled: taskSubmissionDetailsCubit
+                                          .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.taskDetails?.tStatus ==
+                                      TaskStatusEnum.canceled.statusName,
+                                  submissionModel: taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!,
                                 ),
                                 ContentWidget(
-                                  taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                          .taskSubmission!.tsContent ??
-                                      '',
+                                  taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsContent ?? '',
                                   isSubmission: true,
                                 ),
-                                taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                        .taskSubmission!.submissionCategories!.isNotEmpty
+                                taskSubmissionDetailsCubit
+                                        .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.submissionCategories!.isNotEmpty
                                     ? WrappedLabelValueWidget(
                                         'التصنيف',
-                                        taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                                .taskSubmission?.submissionCategories
+                                        taskSubmissionDetailsCubit
+                                                .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission?.submissionCategories
                                                 ?.map((category) => category.cName)
                                                 .join(', ') ??
                                             '')
                                     : Container(),
                                 SubmissionTimeWidget(
-                                    submission: taskSubmissionDetailsCubit
-                                        .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!),
+                                    submission: taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!),
                                 MediaWidget(
                                   attachmentsCategories: taskSubmissionDetailsCubit
-                                      .getTaskSubmissionWithTaskAndCommentsModel!
-                                      .taskSubmission!
-                                      .submissionAttachmentsCategories!,
+                                      .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.submissionAttachmentsCategories!,
                                   storagePath: EndPointsConstants.taskSubmissionsStorage,
                                 ),
 
                                 // SubmissionTimeWidget(submission: submission),
-                                taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!
-                                        .taskSubmission!.submissionComments!.isNotEmpty
+                                taskSubmissionDetailsCubit
+                                        .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.submissionComments!.isNotEmpty
                                     ? CommentsSectionWidget(
                                         comments: taskSubmissionDetailsCubit
-                                            .getTaskSubmissionWithTaskAndCommentsModel!
-                                            .taskSubmission!
-                                            .submissionComments!,
+                                            .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.submissionComments!,
                                       )
                                     : Container(),
                                 const SizedBox(
                                   height: 6,
                                 ),
-                                if (SystemPermissions.hasPermission(SystemPermissions.addComment))
+                                if (SystemPermissions.hasPermission(
+                                        SystemPermissions.addComment) && // can't add comment if the task is cancelled
+                                    taskSubmissionDetailsCubit
+                                            .getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission?.taskDetails?.tStatus !=
+                                        TaskStatusEnum.canceled.statusName)
                                   ShowModalAddCommentButton(
-                                      taskId: taskSubmissionDetailsCubit
-                                          .getTaskSubmissionWithTaskAndCommentsModel!
-                                          .taskSubmission!
-                                          .tsTaskId!,
-                                      submissionId: taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!),
+                                      taskId:
+                                          taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsTaskId!,
+                                      submissionId:
+                                          taskSubmissionDetailsCubit.getTaskSubmissionWithTaskAndCommentsModel!.taskSubmission!.tsId!),
                               ],
                             ),
                           ),

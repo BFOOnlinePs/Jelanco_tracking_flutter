@@ -6,6 +6,7 @@ import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
 import 'package:jelanco_tracking_system/modules/add_task_modules/add_task_widgets/all_users_selection_modules/all_users_selection_screen.dart';
@@ -26,6 +27,7 @@ import 'package:jelanco_tracking_system/widgets/my_cached_network_image/my_cache
 // i changed it, i'm using event bus instead
 class SubmissionHeaderWidget extends StatelessWidget {
   TaskSubmissionModel submissionModel;
+  final bool? isTaskCancelled;
   final bool showSubmissionOptions;
 
   // final HomeCubit? homeCubit;
@@ -37,6 +39,7 @@ class SubmissionHeaderWidget extends StatelessWidget {
   SubmissionHeaderWidget({
     super.key,
     required this.submissionModel,
+    this.isTaskCancelled,
     this.showSubmissionOptions = true,
     // this.homeCubit,
     // this.taskDetailsCubit,
@@ -54,9 +57,12 @@ class SubmissionHeaderWidget extends StatelessWidget {
         children: [
           Expanded(
             child: InkWell(
-              onTap: () {
-                NavigationServices.navigateTo(context, UserProfileScreen(userId: submissionModel.tsSubmitter!));
-              },
+              onTap: // he can navigate to another user screen if he manager of him
+                  UserDataConstants.userEmployeeIds!.contains(submissionModel.tsSubmitter)
+                      ? () {
+                          NavigationServices.navigateTo(context, UserProfileScreen(userId: submissionModel.tsSubmitter!));
+                        }
+                      : null,
               child: Row(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -114,13 +120,15 @@ class SubmissionHeaderWidget extends StatelessWidget {
               showSubmissionOptions &&
                           (submissionModel.tsParentId != -1 ||
                               (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
-                                  submissionModel.tsSubmitter == UserDataConstants.userId)) ||
+                                      submissionModel.tsSubmitter == UserDataConstants.userId) &&
+                                  isTaskCancelled != true) ||
                       (SystemPermissions.hasPermission(SystemPermissions.viewManagerUsers) &&
                           submissionModel.tsTaskId == -1 &&
                           UserDataConstants.userEmployeeIds!.contains(submissionModel.tsSubmitter))
                   ? OptionsWidget(menuItems: [
                       if (SystemPermissions.hasPermission(SystemPermissions.editSubmission) &&
-                          submissionModel.tsSubmitter == UserDataConstants.userId)
+                          submissionModel.tsSubmitter == UserDataConstants.userId &&
+                          isTaskCancelled != true)
                         MenuItemModel(
                           icon: Icons.edit,
                           label: 'تعديل',

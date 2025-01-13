@@ -187,78 +187,7 @@ class AddTaskScreen extends StatelessWidget {
                                       ? MyErrorFieldText(text: 'add_task_assign_to_field_required_validation'.tr())
                                       : Container(),
                                   const MyVerticalSpacer(),
-                                  // interested parties
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text('الإشارات والوسوم', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
-                                          // Text(
-                                          //   ' *',
-                                          //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
-                                          // ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10.0),
-                                    ],
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return AllUsersSelectionScreen(
-                                              callInterestedParties: false,
-                                              selectedUsersList: addTaskCubit.selectedInterestedParties.map((user) => user.id!).toList(),
-                                            );
-                                          },
-                                        ),
-                                      ).then((result) {
-                                        print('popped');
-                                        // This code will run when the AnotherScreen is popped off the stack
-                                        if (result == null) return;
-                                        addTaskCubit.selectedInterestedParties = result;
-                                        addTaskCubit.emitAfterReturn();
-                                      });
-                                    },
-                                    child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 15,
-                                          horizontal: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: SingleChildScrollView(
-                                                scrollDirection: Axis.horizontal,
-                                                child: Text(
-                                                  addTaskCubit.selectedInterestedParties.isEmpty
-                                                      ? 'الإشارات والوسوم'
-                                                      : addTaskCubit.selectedInterestedParties.map((user) => user.name).join(', '),
-                                                  style: const TextStyle(color: Colors.black54),
-                                                ),
-                                              ),
-                                            ),
-                                            const Icon(Icons.arrow_forward),
-                                          ],
-                                        )),
-                                  ),
-                                  // enable if interested parties if required
-                                  // addTaskCubit.isAddClicked && addTaskCubit.selectedInterestedParties.isEmpty
-                                  //     ? MyErrorFieldText(
-                                  //     text: 'add_task_assign_to_field_required_validation'.tr())
-                                  //     : Container(),
-                                  const MyVerticalSpacer(),
+
 
                                   MyTextFormField(
                                     titleText: 'add_task_content_field'.tr(),
@@ -333,6 +262,78 @@ class AddTaskScreen extends StatelessWidget {
                                     // validator: (value) =>
                                     //     value == null ? 'Select a category' : null,
                                   ),
+                                  const MyVerticalSpacer(),
+                                  // interested parties
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text('الإشارات والوسوم', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                          // Text(
+                                          //   ' *',
+                                          //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                          // ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                    ],
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return AllUsersSelectionScreen(
+                                              callInterestedParties: false,
+                                              selectedUsersList: addTaskCubit.selectedInterestedParties.map((user) => user.id!).toList(),
+                                            );
+                                          },
+                                        ),
+                                      ).then((result) {
+                                        print('popped');
+                                        // This code will run when the AnotherScreen is popped off the stack
+                                        if (result == null) return;
+                                        addTaskCubit.selectedInterestedParties = result;
+                                        addTaskCubit.emitAfterReturn();
+                                      });
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 15,
+                                          horizontal: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Text(
+                                                  addTaskCubit.selectedInterestedParties.isEmpty
+                                                      ? 'الإشارات والوسوم'
+                                                      : addTaskCubit.selectedInterestedParties.map((user) => user.name).join(', '),
+                                                  style: const TextStyle(color: Colors.black54),
+                                                ),
+                                              ),
+                                            ),
+                                            const Icon(Icons.arrow_forward),
+                                          ],
+                                        )),
+                                  ),
+                                  // enable if interested parties if required
+                                  // addTaskCubit.isAddClicked && addTaskCubit.selectedInterestedParties.isEmpty
+                                  //     ? MyErrorFieldText(
+                                  //     text: 'add_task_assign_to_field_required_validation'.tr())
+                                  //     : Container(),
                                   const MyVerticalSpacer(),
                                   Container(
                                     margin: const EdgeInsets.only(top: 14, bottom: 16),

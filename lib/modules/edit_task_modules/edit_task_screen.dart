@@ -206,80 +206,7 @@ class EditTaskScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const MyVerticalSpacer(),
-                                // interested parties
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('الإشارات والوسوم', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
-                                        // Text(
-                                        //   ' *',
-                                        //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
-                                        // ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10.0),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          print(
-                                              'editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList() : ${editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList()}');
-                                          return AllUsersSelectionScreen(
-                                            selectedUsersList:
-                                                editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList(),
-                                            // user id where ipAddedById != current User Id , return e.ipInterestedPartyId
-                                            usersCanNotEdit: editTaskCubit.selectedInterestedParties
-                                                .where((e) => e.ipAddedById != UserDataConstants.userId)
-                                                .map((e) => e.ipInterestedPartyId!)
-                                                .toList(),
-                                          );
-                                        },
-                                      ),
-                                    ).then((result) {
-                                      print('popped');
-                                      // This code will run when the AnotherScreen is popped off the stack
-                                      if (result == null) return;
-                                      editTaskCubit.selectedInterestedPartiesUsers = result;
-                                      editTaskCubit.emitAfterReturn();
-                                    });
-                                  },
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 15,
-                                        horizontal: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Text(
-                                                editTaskCubit.selectedInterestedPartiesUsers.isEmpty
-                                                    ? 'الإشارات والوسوم'
-                                                    : editTaskCubit.selectedInterestedPartiesUsers.map((e) => e.name).join(', '),
-                                                style: const TextStyle(color: Colors.black54),
-                                              ),
-                                            ),
-                                          ),
-                                          const Icon(Icons.arrow_forward),
-                                        ],
-                                      )),
-                                ),
-                                const MyVerticalSpacer(),
+
                                 MyTextFormField(
                                     titleText: 'محتوى التكليف',
                                     labelText: 'أكتب محتوى التكليف',
@@ -352,6 +279,80 @@ class EditTaskScreen extends StatelessWidget {
                                   displayText: (TaskCategoryModel taskCategory) => taskCategory.cName ?? '',
                                   // validator: (value) =>
                                   //     value == null ? 'Select a category' : null,
+                                ),
+                                const MyVerticalSpacer(),
+                                // interested parties
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('الإشارات والوسوم', style: TextStyle(fontSize: SharedSize.textFiledTitleSize)),
+                                        // Text(
+                                        //   ' *',
+                                        //   style: TextStyle(fontSize: SharedSize.textFiledTitleSize, color: Colors.red),
+                                        // ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                  ],
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          print(
+                                              'editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList() : ${editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList()}');
+                                          return AllUsersSelectionScreen(
+                                            selectedUsersList:
+                                            editTaskCubit.selectedInterestedParties.map((e) => e.ipInterestedPartyId!).toList(),
+                                            // user id where ipAddedById != current User Id , return e.ipInterestedPartyId
+                                            usersCanNotEdit: editTaskCubit.selectedInterestedParties
+                                                .where((e) => e.ipAddedById != UserDataConstants.userId)
+                                                .map((e) => e.ipInterestedPartyId!)
+                                                .toList(),
+                                          );
+                                        },
+                                      ),
+                                    ).then((result) {
+                                      print('popped');
+                                      // This code will run when the AnotherScreen is popped off the stack
+                                      if (result == null) return;
+                                      editTaskCubit.selectedInterestedPartiesUsers = result;
+                                      editTaskCubit.emitAfterReturn();
+                                    });
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15,
+                                        horizontal: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(ButtonSizeConstants.borderRadius),
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                editTaskCubit.selectedInterestedPartiesUsers.isEmpty
+                                                    ? 'الإشارات والوسوم'
+                                                    : editTaskCubit.selectedInterestedPartiesUsers.map((e) => e.name).join(', '),
+                                                style: const TextStyle(color: Colors.black54),
+                                              ),
+                                            ),
+                                          ),
+                                          const Icon(Icons.arrow_forward),
+                                        ],
+                                      )),
                                 ),
                                 const MyVerticalSpacer(),
                                 MyDropdownButton<TaskStatusEnum>(

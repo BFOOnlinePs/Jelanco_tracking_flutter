@@ -11,15 +11,27 @@ import 'package:jelanco_tracking_system/widgets/my_screen.dart';
 import 'package:jelanco_tracking_system/widgets/snack_bar/my_snack_bar.dart';
 import 'package:jelanco_tracking_system/widgets/text_form_field/my_text_form_field.dart';
 
+
+/// todo remove the pagination OR add the selected at the first of the list
+///
+
+
 class AllUsersSelectionScreen extends StatelessWidget {
   List<int>? selectedUsersList = [];
-  List<int>? usersCanNotEdit = []; // the list of users where the current user can't edit
+  List<int>? usersCanNotEdit = []; // the list of users where the current user can't edit, since they selected by another user
+  List<int>? usersAssignedTo = []; // when it is task
   bool? callInterestedParties = false;
   String? articleType;
   int? articleId;
 
   AllUsersSelectionScreen(
-      {super.key, this.selectedUsersList, this.usersCanNotEdit, this.callInterestedParties, this.articleType, this.articleId});
+      {super.key,
+      this.selectedUsersList,
+      this.usersCanNotEdit,
+      this.callInterestedParties,
+      this.articleType,
+      this.articleId,
+      this.usersAssignedTo});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +66,41 @@ class AllUsersSelectionScreen extends StatelessWidget {
                 body: MyScreen(
                   child: Column(
                     children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'اختر الموظفين الذين ترغب بالإشارة إليهم.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (articleType == 'task')
+                            Column(
+                              children: [
+                                const SizedBox(height: 8),
+                                Text(
+                                  'لا يمكنك تعديل الإشارات التي تمت إضافتها من قِبل الآخرين.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'لا يمكنك الإشارة إلى الموظفين المكلفين',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
                       MyTextFormField(
                         labelText: 'إبحث عن موظف',
                         onChanged: (value) {
@@ -116,7 +163,7 @@ class AllUsersSelectionScreen extends StatelessWidget {
                                   separatorBuilder: (context, index) => const Divider(),
                                 ),
                               ),
-                      ) 
+                      )
                     ],
                   ),
                 ),

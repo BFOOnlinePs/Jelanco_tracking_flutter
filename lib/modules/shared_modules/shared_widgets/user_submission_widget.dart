@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/submission_comments_screen.dart';
@@ -24,12 +25,13 @@ class UserSubmissionWidget extends StatelessWidget {
   TodaySubmissionsCubit? todaySubmissionsCubit;
   TaskSubmissionModel submission;
 
-  UserSubmissionWidget(
-      {super.key,
-      this.userProfileCubit,
-      this.homeCubit,
-      this.todaySubmissionsCubit,
-      required this.submission});
+  UserSubmissionWidget({
+    super.key,
+    this.userProfileCubit,
+    this.homeCubit,
+    this.todaySubmissionsCubit,
+    required this.submission,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +41,13 @@ class UserSubmissionWidget extends StatelessWidget {
           margin: EdgeInsetsDirectional.only(start: 16.w, end: 16.w, top: 6.h, bottom: 0.h),
           child: InkWell(
             onTap: () {
-              NavigationServices.navigateTo(
-                  context, TaskSubmissionDetailsScreen(submissionId: submission.tsId!));
+              NavigationServices.navigateTo(context, TaskSubmissionDetailsScreen(submissionId: submission.tsId!));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SubmissionHeaderWidget(
+                  isTaskCancelled: submission.taskDetails?.tStatus == TaskStatusEnum.canceled.statusName,
                   submissionModel: submission,
                   // homeCubit: homeCubit,
                   // userProfileCubit: userProfileCubit,
@@ -66,8 +68,7 @@ class UserSubmissionWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // const MyVerticalSpacer(),
-                          SubmissionTaskWidget(
-                              taskContent: submission.taskDetails!.tContent!, taskId: submission.tsTaskId!),
+                          SubmissionTaskWidget(taskContent: submission.taskDetails!.tContent!, taskId: submission.tsTaskId!),
                         ],
                       )
                     : Container(),
@@ -98,17 +99,13 @@ class UserSubmissionWidget extends StatelessWidget {
                                           taskId: submission.tsTaskId ?? -1,
                                           submissionId: submission.tsId!,
                                           onPopCallback: () {
-                                            if (SystemPermissions.hasPermission(
-                                                SystemPermissions.viewComments)) {
+                                            if (SystemPermissions.hasPermission(SystemPermissions.viewComments)) {
                                               if (homeCubit != null) {
-                                                return homeCubit!
-                                                    .getCommentsCount(submissionId: submission.tsId!);
+                                                return homeCubit!.getCommentsCount(submissionId: submission.tsId!);
                                               } else if (userProfileCubit != null) {
-                                                return userProfileCubit!
-                                                    .getCommentsCount(submissionId: submission.tsId!);
+                                                return userProfileCubit!.getCommentsCount(submissionId: submission.tsId!);
                                               } else if (todaySubmissionsCubit != null) {
-                                                return todaySubmissionsCubit!
-                                                    .getCommentsCount(submissionId: submission.tsId!);
+                                                return todaySubmissionsCubit!.getCommentsCount(submissionId: submission.tsId!);
                                               } else {
                                                 print('no get comments count function provided');
                                               }
@@ -139,11 +136,9 @@ class UserSubmissionWidget extends StatelessWidget {
                                     if (homeCubit != null) {
                                       return homeCubit!.getCommentsCount(submissionId: submission.tsId!);
                                     } else if (userProfileCubit != null) {
-                                      return userProfileCubit!
-                                          .getCommentsCount(submissionId: submission.tsId!);
+                                      return userProfileCubit!.getCommentsCount(submissionId: submission.tsId!);
                                     } else if (todaySubmissionsCubit != null) {
-                                      return todaySubmissionsCubit!
-                                          .getCommentsCount(submissionId: submission.tsId!);
+                                      return todaySubmissionsCubit!.getCommentsCount(submissionId: submission.tsId!);
                                     } else {
                                       print('no get comments count function provided');
                                     }
@@ -162,9 +157,8 @@ class UserSubmissionWidget extends StatelessWidget {
                               contentPadding: const EdgeInsets.only(bottom: 0),
 
                               /// may change later
-                              hintText: SystemPermissions.hasPermission(SystemPermissions.addComment)
-                                  ? "أضف تعليق ..."
-                                  : 'مشاهدة التعليقات',
+                              hintText:
+                                  SystemPermissions.hasPermission(SystemPermissions.addComment) ? "أضف تعليق ..." : 'مشاهدة التعليقات',
                               enabledBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
                               ),

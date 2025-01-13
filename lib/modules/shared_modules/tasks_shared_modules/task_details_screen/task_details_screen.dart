@@ -4,6 +4,7 @@ import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
@@ -55,11 +56,8 @@ class TaskDetailsScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TaskDetailsSectionWidget(
-                              taskModel: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!,
-                            ),
-                            taskDetailsCubit
-                                    .getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!.isNotEmpty
+                            TaskDetailsSectionWidget(taskModel: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!),
+                            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.taskSubmissions!.isNotEmpty
                                 ? SubmissionsSectionWidget(
                                     taskDetailsCubit: taskDetailsCubit,
                                   )
@@ -71,14 +69,15 @@ class TaskDetailsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-              floatingActionButton: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null
+              floatingActionButton: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null ||
+                      // can't submit task if it cancelled
+                      taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus == TaskStatusEnum.canceled.statusName
                   ? Center(
                       child: Container(),
                     )
                   : SystemPermissions.hasPermission(SystemPermissions.submitTask) &&
                           FormatUtils.checkIfNumberInList(
-                              taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tAssignedTo!,
-                              UserDataConstants.userId!)
+                              taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tAssignedTo!, UserDataConstants.userId!)
                       ? MyFloatingActionButton(
                           onPressed: () {
                             NavigationServices.navigateTo(
@@ -89,8 +88,7 @@ class TaskDetailsScreen extends StatelessWidget {
                                   print('call the data');
                                   taskDetailsCubit.getTaskWithSubmissionsAndComments(taskId: taskId);
                                   // scroll to the beginning
-                                  ScrollUtils.scrollPosition(
-                                      scrollController: taskDetailsCubit.scrollController);
+                                  ScrollUtils.scrollPosition(scrollController: taskDetailsCubit.scrollController);
                                 },
                               ),
                             );

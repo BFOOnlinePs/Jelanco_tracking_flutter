@@ -24,8 +24,7 @@ class TaskAddedBySectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TaskStatusEnum taskStatusEnum = TaskStatusEnum.getStatus(taskModel.tStatus);
-    print('taskStatusEnum: ${taskStatusEnum.statusAr}');
+    final TaskStatusEnum taskStatusEnum = TaskStatusEnum.getStatus(taskModel.tStatus);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -33,9 +32,12 @@ class TaskAddedBySectionWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
-              onTap: () {
-                NavigationServices.navigateTo(context, UserProfileScreen(userId: taskModel.addedByUser!.id!));
-              },
+              onTap: // he can navigate to another user screen if he manager of him
+                  UserDataConstants.userEmployeeIds!.contains(taskModel.addedByUser!.id)
+                      ? () {
+                          NavigationServices.navigateTo(context, UserProfileScreen(userId: taskModel.addedByUser!.id!));
+                        }
+                      : null,
               child: Row(
                 children: [
                   Container(
@@ -113,82 +115,86 @@ class TaskAddedBySectionWidget extends StatelessWidget {
             ),
           ],
         ),
+        Column(children: [
+          if (SystemPermissions.hasPermission(SystemPermissions.editTask) && taskModel.addedByUser?.id == UserDataConstants.userId)
+            OptionsWidget(menuItems: [
+              MenuItemModel(
+                icon: Icons.edit,
+                label: 'تعديل',
+                onTap: () {
+                  TaskDetailsCubit? taskDetailsCubit;
+                  TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
+                  TasksAddedByUserCubit? tasksAddedByUserCubit;
 
+                  try {
+                    taskSubmissionDetailsCubit = TaskSubmissionDetailsCubit.get(context);
+                  } catch (e) {
+                    print('Error in my catch: $e');
+                  }
 
-        if(taskStatusEnum == TaskStatusEnum.canceled)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: taskStatusEnum.statusColor,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Text(
-              'ملغي',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+                  try {
+                    // to show the edited task immediately
+                    taskDetailsCubit = TaskDetailsCubit.get(context);
+                  } catch (e) {
+                    print('Error in my catch: $e');
+                  }
+
+                  try {
+                    tasksAddedByUserCubit = TasksAddedByUserCubit.get(context);
+                  } catch (e) {
+                    print('Error in my catch: $e');
+                  }
+
+                  NavigationServices.navigateTo(
+                    context,
+                    EditTaskScreen(
+                      taskId: taskModel.tId!,
+                      getDataCallback: (editedTaskModel) {
+                        if (taskSubmissionDetailsCubit != null) {
+                          taskSubmissionDetailsCubit.afterEditTask();
+                        }
+                        if (taskDetailsCubit != null) {
+                          taskDetailsCubit.afterEditTask(newTaskModel: editedTaskModel);
+                        }
+                        if (tasksAddedByUserCubit != null) {
+                          tasksAddedByUserCubit.afterEditTask(oldTaskId: taskModel.tId!, newTaskModel: editedTaskModel);
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+              MenuItemModel(
+                  icon: Icons.people_outline_sharp,
+                  label: 'الإشارات والوسوم',
+                  onTap: () {
+                    NavigationServices.navigateTo(
+                        context,
+                        AllUsersSelectionScreen(
+                          callInterestedParties: true,
+                          articleType: 'task',
+                          articleId: taskModel.tId,
+                          usersAssignedTo: taskModel.assignedToUsers?.map((user) => user.id!).toList(),
+                        ));
+                  }),
+            ]),
+          if (taskStatusEnum == TaskStatusEnum.canceled)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: taskStatusEnum.statusColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'ملغي',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-
-        if (SystemPermissions.hasPermission(SystemPermissions.editTask) && taskModel.addedByUser?.id == UserDataConstants.userId)
-          OptionsWidget(menuItems: [
-            MenuItemModel(
-              icon: Icons.edit,
-              label: 'تعديل',
-              onTap: () {
-                TaskDetailsCubit? taskDetailsCubit;
-                TaskSubmissionDetailsCubit? taskSubmissionDetailsCubit;
-                TasksAddedByUserCubit? tasksAddedByUserCubit;
-
-                try {
-                  taskSubmissionDetailsCubit = TaskSubmissionDetailsCubit.get(context);
-                } catch (e) {
-                  print('Error in my catch: $e');
-                }
-
-                try {
-                  // to show the edited task immediately
-                  taskDetailsCubit = TaskDetailsCubit.get(context);
-                } catch (e) {
-                  print('Error in my catch: $e');
-                }
-
-                try {
-                  tasksAddedByUserCubit = TasksAddedByUserCubit.get(context);
-                } catch (e) {
-                  print('Error in my catch: $e');
-                }
-
-                NavigationServices.navigateTo(
-                  context,
-                  EditTaskScreen(
-                    taskId: taskModel.tId!,
-                    getDataCallback: (editedTaskModel) {
-                      if (taskSubmissionDetailsCubit != null) {
-                        taskSubmissionDetailsCubit.afterEditTask();
-                      }
-                      if (taskDetailsCubit != null) {
-                        taskDetailsCubit.afterEditTask(newTaskModel: editedTaskModel);
-                      }
-                      if (tasksAddedByUserCubit != null) {
-                        tasksAddedByUserCubit.afterEditTask(oldTaskId: taskModel.tId!, newTaskModel: editedTaskModel);
-                      }
-                    },
-                  ),
-                );
-              },
-            ),
-            MenuItemModel(
-                icon: Icons.people_outline_sharp,
-                label: 'الإشارات والوسوم',
-                onTap: () {
-                  NavigationServices.navigateTo(
-                      context, AllUsersSelectionScreen(callInterestedParties: true, articleType: 'task', articleId: taskModel.tId));
-                }),
-          ]),
-
+        ]),
       ],
     );
   }

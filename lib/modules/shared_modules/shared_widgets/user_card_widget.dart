@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/card_size.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
+import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/core/values/assets_keys.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';

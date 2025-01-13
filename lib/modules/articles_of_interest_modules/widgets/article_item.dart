@@ -89,43 +89,23 @@ class ArticleItem extends StatelessWidget {
             // Footer Section
             Container(
               padding: const EdgeInsets.all(16.0),
-              // decoration: BoxDecoration(
-              //   borderRadius: BorderRadius.circular(12.0),
-              //   boxShadow: [
-              //     BoxShadow(
-              //       color: Colors.grey.withOpacity(0.2),
-              //       blurRadius: 6.0,
-              //       spreadRadius: 2.0,
-              //       offset: const Offset(0, 4),
-              //     ),
-              //   ],
-              // ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.person, size: 20, color: Colors.blueAccent),
+                      const Icon(Icons.person, size: 16, color: Colors.blueAccent),
                       const SizedBox(width: 8),
                       Expanded(
                         child: RichText(
                           text: TextSpan(
                             text: 'تم إضافة الإشارة من قبل: ',
-                            style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
+                            style: const TextStyle(fontFamily: 'Tajawal', fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black87),
                             children: [
                               TextSpan(
-                                text: interestedPartyModel.addedByUser?.name ?? 'غير معروف',
+                                text: interestedPartyModel.addedByUser?.name ?? '',
                                 style: const TextStyle(
-                                  fontFamily: 'Tajawal',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black54,
-                                ),
+                                    fontFamily: 'Tajawal', fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black54),
                               ),
                             ],
                           ),
@@ -137,18 +117,13 @@ class ArticleItem extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.group, size: 20, color: Colors.green),
+                      const Icon(Icons.group, size: 16, color: Colors.green),
                       const SizedBox(width: 8),
                       Expanded(
                         child: RichText(
                           text: TextSpan(
-                            text: 'جميع الأشخاص المشار إليهم: ',
-                            style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
+                            // text: 'جميع الأشخاص المشار إليهم: ',
+                            style: const TextStyle(fontFamily: 'Tajawal', fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black87),
                             children: [
                               TextSpan(
                                 text: isTask
@@ -156,11 +131,7 @@ class ArticleItem extends StatelessWidget {
                                     : interestedPartyModel.submission?.interestedPartyUsers?.map((user) => user.name).join(", ") ??
                                         'لا يوجد',
                                 style: const TextStyle(
-                                  fontFamily: 'Tajawal',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black54,
-                                ),
+                                    fontFamily: 'Tajawal', fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black54),
                               ),
                             ],
                           ),

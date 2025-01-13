@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
+import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/category_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
@@ -23,9 +24,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-            padding: const EdgeInsetsDirectional.only(start: 16, top: 6),
-            child: const SectionTitleWidget('عمليات التسليم')),
+        Container(padding: const EdgeInsetsDirectional.only(start: 16, top: 6), child: const SectionTitleWidget('عمليات التسليم')),
         ...taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel?.task?.taskSubmissions?.map((submission) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,6 +35,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SubmissionHeaderWidget(
+                          isTaskCancelled: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus == TaskStatusEnum.canceled.statusName,
                           submissionModel: submission,
                           // taskDetailsCubit: taskDetailsCubit,
                         ),
@@ -49,11 +49,7 @@ class SubmissionsSectionWidget extends StatelessWidget {
                         ),
                         submission.submissionCategories!.isNotEmpty
                             ? WrappedLabelValueWidget(
-                                'التصنيف',
-                                submission.submissionCategories
-                                        ?.map((category) => category.cName)
-                                        .join(', ') ??
-                                    '')
+                                'التصنيف', submission.submissionCategories?.map((category) => category.cName).join(', ') ?? '')
                             : Container(),
                         SubmissionTimeWidget(submission: submission),
                         submission.submissionComments!.isNotEmpty
@@ -64,7 +60,9 @@ class SubmissionsSectionWidget extends StatelessWidget {
                         const SizedBox(
                           height: 6,
                         ),
-                        if (SystemPermissions.hasPermission(SystemPermissions.addComment))
+                        if (SystemPermissions.hasPermission(SystemPermissions.addComment) &&
+                            // can't add comment if the task is cancelled
+                            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus != TaskStatusEnum.canceled.statusName)
                           ShowModalAddCommentButton(
                             taskId: submission.tsTaskId!,
                             submissionId: submission.tsId!,
