@@ -13,7 +13,7 @@ import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/
 import 'package:jelanco_tracking_system/core/utils/mixins/compress_media_mixins/compress_video_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/manager_employees_mixin/manager_employees_with_task_assignees_mixin.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/enums/task_and_submission_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/interested_party_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/user_model.dart';
@@ -49,8 +49,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
   List<UserModel> selectedUsers = [];
   List<InterestedPartyModel> selectedInterestedParties = [];
   List<UserModel> selectedInterestedPartiesUsers = [];
-  TaskStatusEnum? selectedTaskStatusEnum;
-
+  TaskAndSubmissionStatusEnum? selectedTaskStatusEnum;
 
   GetTaskByIdModel? getOldTaskDataByIdModel;
 
@@ -72,7 +71,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
         contentController.text = getOldTaskDataByIdModel!.task!.tContent ?? '';
         plannedStartTime = getOldTaskDataByIdModel!.task!.tPlanedStartTime;
         plannedEndTime = getOldTaskDataByIdModel!.task!.tPlanedEndTime;
-        selectedTaskStatusEnum = TaskStatusEnum.getStatus(getOldTaskDataByIdModel!.task!.tStatus!);
+        selectedTaskStatusEnum = TaskAndSubmissionStatusEnum.getStatus(getOldTaskDataByIdModel!.task!.tStatus!);
 
         selectedInterestedParties = getOldTaskDataByIdModel!.task!.interestedParties ?? [];
         selectedInterestedPartiesUsers = selectedInterestedParties.map((e) => e.user!).toList();
@@ -151,7 +150,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
     emit(ChangeSelectedCategoryState());
   }
 
-  void changeSelectedTaskStatus({required TaskStatusEnum taskStatusEnum}) {
+  void changeSelectedTaskStatus({required TaskAndSubmissionStatusEnum taskStatusEnum}) {
     selectedTaskStatusEnum = taskStatusEnum;
     emit(ChangeSelectedTaskStatusState());
   }
@@ -398,7 +397,7 @@ class EditTaskCubit extends Cubit<EditTaskStates>
       'category_id': selectedCategory?.cId,
       'assigned_to': FormatUtils.formatList<UserModel>(selectedUsers, (user) => user?.id.toString()),
       'interested_party_ids[]': FormatUtils.getIds(selectedInterestedPartiesUsers, (user) => user.id!),
-      'status': selectedTaskStatusEnum!.statusName,
+      'status': selectedTaskStatusEnum!.statusDBName,
       'old_attachments[]': oldAttachments
     };
 

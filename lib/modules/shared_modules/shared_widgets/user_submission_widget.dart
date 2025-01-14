@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jelanco_tracking_system/core/constants/end_points.dart';
 import 'package:jelanco_tracking_system/core/utils/navigation_services.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/enums/task_and_submission_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_model.dart';
 import 'package:jelanco_tracking_system/modules/home_modules/home_cubit/home_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/submission_comments_modules/submission_comments_screen.dart';
@@ -47,7 +47,7 @@ class UserSubmissionWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SubmissionHeaderWidget(
-                  isTaskCancelled: submission.taskDetails?.tStatus == TaskStatusEnum.canceled.statusName,
+                  isTaskCancelled: submission.taskDetails?.tStatus == TaskAndSubmissionStatusEnum.canceled.statusDBName,
                   submissionModel: submission,
                   // homeCubit: homeCubit,
                   // userProfileCubit: userProfileCubit,

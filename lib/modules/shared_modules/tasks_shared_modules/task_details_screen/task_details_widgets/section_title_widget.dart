@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jelanco_tracking_system/core/constants/colors_constants.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/enums/task_and_submission_status_enum.dart';
 
 class SectionTitleWidget extends StatelessWidget {
   final String title;
-  final TaskStatusEnum? status;
+  final TaskAndSubmissionStatusEnum? status;
   final IconData? statusIcon;
 
   const SectionTitleWidget(this.title,

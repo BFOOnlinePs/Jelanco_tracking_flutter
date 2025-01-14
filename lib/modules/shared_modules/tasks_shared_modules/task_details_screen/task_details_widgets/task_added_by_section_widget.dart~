@@ -178,22 +178,22 @@ class TaskAddedBySectionWidget extends StatelessWidget {
                         ));
                   }),
             ]),
-          // if (taskStatusEnum == TaskAndSubmissionStatusEnum.canceled)
-          //   Container(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          //     decoration: BoxDecoration(
-          //       color: taskStatusEnum.statusColor,
-          //       borderRadius: BorderRadius.circular(8),
-          //     ),
-          //     child: const Text(
-          //       'ملغي',
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 12,
-          //         fontWeight: FontWeight.w600,
-          //       ),
-          //     ),
-          //   ),
+          if (taskStatusEnum == TaskAndSubmissionStatusEnum.canceled)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: taskStatusEnum.statusColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'ملغي',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
         ]),
       ],
     );

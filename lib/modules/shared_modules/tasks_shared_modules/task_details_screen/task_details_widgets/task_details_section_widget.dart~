@@ -40,7 +40,7 @@ class TaskDetailsSectionWidget extends StatelessWidget {
           taskModel.taskCategory != null ? CategoryRowWidget('التصنيف', taskModel.taskCategory!.cName ?? '') : Container(),
           taskModel.assignedToUsers!.isNotEmpty
               ? WrappedLabelValueWidget('الموظفين المكلفين', taskModel.assignedToUsers!.map((user) => user.name).join(', ') ?? '')
-              : Container(),
+              : Container(), 
           const MyVerticalSpacer(),
           TaskPlanedTimeWidget(taskModel: taskModel),
           const MyVerticalSpacer(),

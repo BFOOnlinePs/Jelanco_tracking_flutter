@@ -4,7 +4,7 @@ import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/formats_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/scroll_utils.dart';
 import 'package:jelanco_tracking_system/enums/system_permissions.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/enums/task_and_submission_status_enum.dart';
 import 'package:jelanco_tracking_system/modules/add_task_submission_modules/add_task_submission_screen.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_cubit.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_cubit/task_details_states.dart';
@@ -71,7 +71,7 @@ class TaskDetailsScreen extends StatelessWidget {
                     ),
               floatingActionButton: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel == null ||
                       // can't submit task if it cancelled
-                      taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus == TaskStatusEnum.canceled.statusName
+                      taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus == TaskAndSubmissionStatusEnum.canceled.statusDBName
                   ? Center(
                       child: Container(),
                     )

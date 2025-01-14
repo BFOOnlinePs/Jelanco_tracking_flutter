@@ -8,7 +8,7 @@ import 'package:jelanco_tracking_system/core/constants/user_data.dart';
 import 'package:jelanco_tracking_system/core/utils/date_utils.dart';
 import 'package:jelanco_tracking_system/core/utils/mixins/permission_mixin/permission_mixin.dart';
 import 'package:jelanco_tracking_system/core/values/cache_keys.dart';
-import 'package:jelanco_tracking_system/enums/task_status_enum.dart';
+import 'package:jelanco_tracking_system/enums/task_and_submission_status_enum.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/shared_models/menu_item_model.dart';
@@ -355,15 +355,15 @@ class EditTaskScreen extends StatelessWidget {
                                       )),
                                 ),
                                 const MyVerticalSpacer(),
-                                MyDropdownButton<TaskStatusEnum>(
+                                MyDropdownButton<TaskAndSubmissionStatusEnum>(
                                   label: 'الحالة',
                                   hint: 'إختر الحالة',
                                   displayText: (status) => status.statusAr,
                                   value: editTaskCubit.selectedTaskStatusEnum,
-                                  onChanged: (TaskStatusEnum? newStatus) {
+                                  onChanged: (TaskAndSubmissionStatusEnum? newStatus) {
                                     editTaskCubit.changeSelectedTaskStatus(taskStatusEnum: newStatus!);
                                   },
-                                  items: TaskStatusEnum.getAllStatuses(),
+                                  items: TaskAndSubmissionStatusEnum.getAllTaskStatuses(),
                                 ),
                                 const MyVerticalSpacer(),
 
