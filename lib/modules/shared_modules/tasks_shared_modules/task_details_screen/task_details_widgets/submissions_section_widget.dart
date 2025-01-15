@@ -6,6 +6,7 @@ import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modu
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/category_row_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/comments_section_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/content_widget.dart';
+import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/average_evaluation_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/section_title_widget.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/show_modal_add_comment_button.dart';
 import 'package:jelanco_tracking_system/modules/shared_modules/tasks_shared_modules/task_details_screen/task_details_widgets/submission_header_widget.dart';
@@ -35,7 +36,8 @@ class SubmissionsSectionWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SubmissionHeaderWidget(
-                          isTaskCancelled: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus == TaskAndSubmissionStatusEnum.canceled.statusDBName,
+                          isTaskCancelled: taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus ==
+                              TaskAndSubmissionStatusEnum.canceled.statusDBName,
                           submissionModel: submission,
                           // taskDetailsCubit: taskDetailsCubit,
                         ),
@@ -52,21 +54,19 @@ class SubmissionsSectionWidget extends StatelessWidget {
                                 'التصنيف', submission.submissionCategories?.map((category) => category.cName).join(', ') ?? '')
                             : Container(),
                         SubmissionTimeWidget(submission: submission),
+                        AverageEvaluationWidget(
+                            taskId: submission.tsTaskId, submissionId: submission.tsId!, submissionEvaluations: submission.evaluations),
                         submission.submissionComments!.isNotEmpty
-                            ? CommentsSectionWidget(
-                                comments: submission.submissionComments!,
-                              )
+                            ? CommentsSectionWidget(comments: submission.submissionComments!)
                             : Container(),
                         const SizedBox(
                           height: 6,
                         ),
                         if (SystemPermissions.hasPermission(SystemPermissions.addComment) &&
                             // can't add comment if the task is cancelled
-                            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus != TaskAndSubmissionStatusEnum.canceled.statusDBName)
-                          ShowModalAddCommentButton(
-                            taskId: submission.tsTaskId!,
-                            submissionId: submission.tsId!,
-                          ),
+                            taskDetailsCubit.getTaskWithSubmissionsAndCommentsModel!.task!.tStatus !=
+                                TaskAndSubmissionStatusEnum.canceled.statusDBName)
+                          ShowModalAddCommentButton(taskId: submission.tsTaskId!, submissionId: submission.tsId!),
                         const MyVerticalSpacer(),
                       ],
                     ),

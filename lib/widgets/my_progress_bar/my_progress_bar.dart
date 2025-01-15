@@ -22,8 +22,8 @@ class MyProgressBar extends StatelessWidget {
               flex: (segment.percent * 100).toInt(),
               child: Container(
                 height: 4,
-                margin: EdgeInsetsDirectional.only(end: 1),
-                color: currentStatus.order < segment.order ? Colors.grey :  segment.statusColor,
+                margin: const EdgeInsetsDirectional.only(end: 1),
+                color: currentStatus.order < segment.order ? Colors.grey : segment.statusColor,
               ),
             );
           }).toList(),
@@ -52,5 +52,3 @@ class MyProgressBar extends StatelessWidget {
     );
   }
 }
-
-

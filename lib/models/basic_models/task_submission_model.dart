@@ -1,3 +1,4 @@
+import 'package:jelanco_tracking_system/models/basic_models/submission_evaluation_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_category_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_model.dart';
 import 'package:jelanco_tracking_system/models/basic_models/task_submission_comment_model.dart';
@@ -27,6 +28,7 @@ class TaskSubmissionModel {
   final TaskModel? taskDetails;
   final List<TaskCategoryModel>? submissionCategories;
   final List<UserModel>? interestedPartyUsers;
+  final List<SubmissionEvaluationModel>? evaluations;
 
   TaskSubmissionModel({
     this.tsId,
@@ -51,6 +53,7 @@ class TaskSubmissionModel {
     this.taskDetails,
     this.submissionCategories,
     this.interestedPartyUsers,
+    this.evaluations,
   });
 
   TaskSubmissionModel copyWith({
@@ -132,6 +135,7 @@ class TaskSubmissionModel {
         interestedPartyUsers: json["interested_party_users"] == null
             ? []
             : List<UserModel>.from(json["interested_party_users"]!.map((x) => UserModel.fromMap(x))),
+        evaluations: json["evaluations"] == null ? [] : List<SubmissionEvaluationModel>.from(json["evaluations"]!.map((x) => SubmissionEvaluationModel.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
@@ -158,5 +162,6 @@ class TaskSubmissionModel {
         "task_details": taskDetails?.toMap(),
         "submission_categories": submissionCategories == null ? [] : List<dynamic>.from(submissionCategories!.map((x) => x.toMap())),
         "interested_party_users": interestedPartyUsers == null ? [] : List<dynamic>.from(interestedPartyUsers!.map((x) => x.toMap())),
+        "evaluations": evaluations == null ? [] : List<dynamic>.from(evaluations!.map((x) => x.toMap())),
       };
 }
